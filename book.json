@@ -1,5 +1,7 @@
 {
-  "plugins": ["disqus"],
+  "plugins": [
+  	"disqus",
+    "katex"],
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy"
