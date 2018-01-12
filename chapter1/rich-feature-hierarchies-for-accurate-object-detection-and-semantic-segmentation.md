@@ -103,7 +103,7 @@ Selective Search 伪代码 区域的合并规则是：
 
 #### 特征
 
-位置精校和\[5\]的思路类似，不同之处是使用CNN提取的特征而非DNN。同SVM一样，回归器也是使用的从Pool5层提取的特征。候选区域是从
+位置精校和\[5\]的思路类似，不同之处是使用CNN提取的特征而非DNN。同SVM一样，回归器也是使用的从Pool5层提取的特征。候选区域是选取的样本是和Ground Truth的IoU大于0.6的样本。
 
 #### 标签
 
@@ -123,9 +123,9 @@ $$t_h = log(G_y / P_h)$$
 
 作者通过对比Alex-Net5\[1\] \(论文中叫做T-Net\), O-Net\[6\], 通过折中考虑mAP和训练时间，最终采用了Alex-Net。Alex-Net的网络结构如下图：
 
-![](/assets/R-CNN_3.png)
+![](/assets/rcnn_3.png)
 
-预训练就是在ILSVRC训练分类网络，不再赘述，训练任务是一个N类的分类器。
+预训练就是在ILSVRC训练分类网络，不再赘述。
 
 微调训练使用了mini-batch的SGD进行优化，batchsize的大小是128，其中32个正样本，96个负样本。CNN使用的loss是SOFTMAX loss。
 
