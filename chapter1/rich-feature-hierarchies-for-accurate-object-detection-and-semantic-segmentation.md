@@ -23,7 +23,7 @@ R-CNN测试过程可分成四个步骤
 3. 将CNN得到的特征Pool5层的特征输入N个（类别数量）SVM分类器对物体类别进行打分
 4. 根据Pool5的特征输入岭回归器进行位置精校。
 
-所以，R-CNN的训练过程也涉及 
+所以，R-CNN的训练过程也涉及
 
 * CNN特征提取器
 * SVM分类器
@@ -33,15 +33,55 @@ R-CNN测试过程可分成四个步骤
 
 论文中给出的图（图1）没有画出回归器部分。
 
-![](/assets/R-CNN_1.png)
+\[图1\]
 
 # 2. 候选区域提取
 
-R-CNN输入网络的并不是
+R-CNN输入网络的并不是原始图片，而是经过Selective Search选择的候选区域。
+
+1. Selective Search 使⽤ \[4\]的⽅法，将图像分成若⼲个⼩区域
+2. 计算相似度，合并相似度较⾼的区域，直到⼩区域全部合并完毕
+3.  输出所有存在过的区域，即候选区域 如下面伪代码：
+
+Algorithm 1: Hierarchial Grouping Algorithm
+
+```
+Input: (color) image
+Output: Set of object location hypotheses L
+
+Obtain initial regions R = {r1, ..., r13}
+Initial similarity set S = []
+
+foreach Neighbouring region pair(ri, rj) do
+    Calculate similarity s(ri, rj)
+    S.insert(s(ri, rj))
+    
+while S != [] do
+    Get highest similarity s(ri, rj) = max(S)
+    Merge corresponding regions ri = Union(ri, rj)
+    Remove similarities regarding ri: S = S.delete(ri, r*)
+    Remove similarities regarding sj: S = S.delete(r*, rj)
+    Calculate similarity set St between rt and its neighbours
+    S = Union(S, St)
+    R = Union(R, rt)
+    
+Extact object location boxes L from all regions in R
+```
+
+Selective Search 伪代码 区域的合并规则是： 
+
+1. 优先合并颜⾊相近的
+2. 优先合并纹理相近的
+3. 优先合并合并后总⾯积⼩的
+4. 合并后，总⾯积在其BBOX中所占⽐例⼤的优先合并
 
 # 参考文献
 
 \[1\] \] A. Krizhevsky, I. Sutskever, and G. Hinton. ImageNet classification with deep convolutional neural networks. In NIPS, 2012. 1, 3, 4, 7
 
 \[2\] C. Gu, J. J. Lim, P. Arbelaez, and J. Malik. Recognition ´ using regions. In CVPR, 2009. 2
+
+\[3\] J. Uijlings, K. van de Sande, T. Gevers, and A. Smeulders. Selective search for object recognition. IJCV, 2013. 1, 2, 3, 4, 5, 9
+
+\[4\]. P. F. Felzenszwalb and D. P. Huttenlocher. Efficient GraphBased Image Segmentation. IJCV, 59:167–181, 2004. 1, 3, 4, 5, 7
 
