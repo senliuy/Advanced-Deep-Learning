@@ -34,7 +34,7 @@ R-CNN测试过程可分成五个步骤
 
 论文中给出的图（图1）没有画出回归器部分。
 
-\[图1\]
+![](/assets/R-CNN_1.png)
 
 # 2. 候选区域提取
 
@@ -78,7 +78,7 @@ Selective Search 伪代码 区域的合并规则是：
 
 图2是通过Selective Search得到的一候选区域
 
-\[图2\]
+![](/assets/R-CNN_2.png)
 
 ## 3. 训练数据准备
 
@@ -103,10 +103,44 @@ Selective Search 伪代码 区域的合并规则是：
 
 #### 特征
 
-位置精校和\[5\]的思路类似，不同之处是使用CNN提取的特征而非DNN。同SVM一样，回归器也是使用的从Pool5层提取的特征。
+位置精校和\[5\]的思路类似，不同之处是使用CNN提取的特征而非DNN。同SVM一样，回归器也是使用的从Pool5层提取的特征。候选区域是从
 
 #### 标签
 
+回归器使用的是相对位置，$$G=\{G_x, G_y, G_w, G_h\}$$ 表示Ground Truth的坐标和长宽，$$P = \{P_x, P_y, P_w, P_h\}$$表示候选区域的大小和长宽。相对的回归目标T={}的计算方式如下：
+
+$$t_x = (G_x − P_x)/P_w$$
+
+$$t_y = (G_y − P_y)/P_h$$
+
+$$t_w = log(G_x / P_w)$$
+
+$$t_h = log(G_y / P_h)$$
+
+## 4. 训练
+
+### 4.1 CNN
+
+作者通过对比Alex-Net5\[1\] \(论文中叫做T-Net\), O-Net\[6\], 通过折中考虑mAP和训练时间，最终采用了Alex-Net。Alex-Net的网络结构如下图：
+
+![](/assets/rcnn_3.png)
+
+预训练就是在ILSVRC训练分类网络，不再赘述。
+
+微调训练使用了mini-batch的SGD进行优化，batchsize的大小是128，其中32个正样本，96个负样本。CNN使用的loss是SOFTMAX loss。
+
+### 4.2 SVM训练
+
+SVM的训练使用了Hard Negative Mining, 对于目标检测中我们会事先标记处ground truth，然后再算法中会生成一系列proposal，这些proposal有跟标记的ground truth重合的也有没重合的，那么重合度（IOU）超过一定阈值（通常0.5）的则认定为是正样本，以下的则是负样本。然后扔进网络中训练。However，这也许会出现一个问题那就是正样本的数量远远小于负样本，这样训练出来的分类器的效果总是有限的，会出现许多false positive，把其中得分较高的这些false positive当做所谓的Hard negative，既然mining出了这些Hard negative，就把这些扔进网络再训练一次，从而加强分类器判别假阳性的能力。
+
+### 4.3 岭回归训练
+
+精校器的作用是找到一组映射，是后续区域的位置信息P通过某种映射，能够转化为G。也可以理解为将Pool5层的图像特征，学习G和P的相对位置关系\(3.3 中的t\)，然后根据相对位置关系，便可以将候选区域还原成Ground Truch。所以可以有下面目标函数
+
+
+$$
+w_{\star} = argmin_{\hat{w}_{\star}}\sum_{i}^{N}(t_{\star}^i - \hat{w}^T_{\star}\phi_{5}(P^i))^2 + \lambda ||\hat{w}_{\star}||^2
+$$
 
 
 # 参考文献
@@ -120,6 +154,8 @@ Selective Search 伪代码 区域的合并规则是：
 \[4\]. P. F. Felzenszwalb and D. P. Huttenlocher. Efficient GraphBased Image Segmentation. IJCV, 59:167–181, 2004. 1, 3, 4, 5, 7
 
 \[5\]. P. Felzenszwalb, R. Girshick, D. McAllester, and D. Ramanan. Object detection with discriminatively trained part based models. TPAMI, 2010. 2, 4, 7, 12
+
+\[6\]. K. Simonyan and A. Zisserman. Very Deep Convolutional Networks for Large-Scale Image Recognition. arXiv preprint, arXiv:1409.1556, 2014. 6, 7, 14
 
 [^1]: 原文：historically speaking, we arrived at these definition because we started by training SVMs on features computed by the ImageNet pre-trained CNN, and so fine-tuning was not a consideration at that point in time.
 
