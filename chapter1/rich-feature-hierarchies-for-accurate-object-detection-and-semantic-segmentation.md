@@ -16,12 +16,13 @@
 
 ## 1. R-CNN流程
 
-R-CNN测试过程可分成四个步骤
+R-CNN测试过程可分成五个步骤
 
 1. 使用Selective Search在输入图像上提取候选区域;
 2. 使用CNN对每个wrap到固定大小（227 \* 227）的候选区域上提取特征;
 3. 将CNN得到的特征Pool5层的特征输入N个（类别数量）SVM分类器对物体类别进行打分
 4. 根据Pool5的特征输入岭回归器进行位置精校。
+5. 使用贪心的非极大值抑制（NMS）合并候选区域，得到输出结果
 
 所以，R-CNN的训练过程也涉及
 
@@ -41,7 +42,7 @@ R-CNN输入网络的并不是原始图片，而是经过Selective Search选择�
 
 1. Selective Search 使⽤ \[4\]的⽅法，将图像分成若⼲个⼩区域
 2. 计算相似度，合并相似度较⾼的区域，直到⼩区域全部合并完毕
-3.  输出所有存在过的区域，即候选区域 如下面伪代码：
+3. 输出所有存在过的区域，即候选区域 如下面伪代码：
 
 Algorithm 1: Hierarchial Grouping Algorithm
 
@@ -55,7 +56,7 @@ Initial similarity set S = []
 foreach Neighbouring region pair(ri, rj) do
     Calculate similarity s(ri, rj)
     S.insert(s(ri, rj))
-    
+
 while S != [] do
     Get highest similarity s(ri, rj) = max(S)
     Merge corresponding regions ri = Union(ri, rj)
@@ -64,16 +65,33 @@ while S != [] do
     Calculate similarity set St between rt and its neighbours
     S = Union(S, St)
     R = Union(R, rt)
-    
+
 Extact object location boxes L from all regions in R
 ```
 
-Selective Search 伪代码 区域的合并规则是： 
+Selective Search 伪代码 区域的合并规则是：
 
 1. 优先合并颜⾊相近的
 2. 优先合并纹理相近的
 3. 优先合并合并后总⾯积⼩的
 4. 合并后，总⾯积在其BBOX中所占⽐例⼤的优先合并
+
+图2是通过Selective Search得到的一候选区域
+
+\[图2\]
+
+## 3. 训练数据准备
+
+### 3.1 CNN的数据准备
+
+1. 预训练：使用ILSVRC 2012的数据，训练一个N类任务的分类器。在该数据集上，top-1的error是2.2%，达到了比较理想的初始化效果。
+2. 微调：每个候选区域是一个N+1类的分类任务（在PASCAL上，N=20；ILSVRC，N=200）。表示该候选区域是某一类或者是背景。当候选区域和某一类物体的Ground Truth box的重合度（IoU）大于0.5时，该样本被判定为正样本，否则为负样本。
+
+### 3.2 SVM分类器的数据准备
+
+
+
+
 
 # 参考文献
 
