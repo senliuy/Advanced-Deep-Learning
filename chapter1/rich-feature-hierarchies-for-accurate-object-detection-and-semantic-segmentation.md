@@ -89,7 +89,11 @@ Selective Search 伪代码 区域的合并规则是：
 
 ### 3.2 SVM分类器的数据准备
 
+由于SVM只能做二分类，所以在N分类任务中，作者使用了N个SVM分类器。对于第K类物体，与该物体的Ground Truth box的IoU大于0.3的视为正样本，其余视为负样本。论文中指出，0.3是通过Grid Search得到的最优阈值。
 
+通过实验结果选取IoU阈值是一方面。作者在附录B[^1]中给了解释，其实不太理解其思路，希望明白的大神能够帮忙给出解释。
+
+### 3.3 岭回归精校器的数据准备
 
 
 
@@ -102,4 +106,6 @@ Selective Search 伪代码 区域的合并规则是：
 \[3\] J. Uijlings, K. van de Sande, T. Gevers, and A. Smeulders. Selective search for object recognition. IJCV, 2013. 1, 2, 3, 4, 5, 9
 
 \[4\]. P. F. Felzenszwalb and D. P. Huttenlocher. Efficient GraphBased Image Segmentation. IJCV, 59:167–181, 2004. 1, 3, 4, 5, 7
+
+[^1]: 原文：historically speaking, we arrived at these definition because we started by training SVMs on features computed by the ImageNet pre-trained CNN, and so fine-tuning was not a consideration at that point in time.
 
