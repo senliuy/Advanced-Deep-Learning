@@ -125,7 +125,7 @@ $$t_h = log(G_y / P_h)$$
 
 ![](/assets/R-CNN_3.png)
 
-预训练就是在ILSVRC训练分类网络，不再赘述。
+预训练就是在ILSVRC训练分类网络，不再赘述，训练任务是一个N类的分类器。
 
 微调训练使用了mini-batch的SGD进行优化，batchsize的大小是128，其中32个正样本，96个负样本。CNN使用的loss是SOFTMAX loss。
 
