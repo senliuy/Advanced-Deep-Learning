@@ -44,7 +44,7 @@ R-CNN输入网络的并不是原始图片，而是经过Selective Search选择�
 2. 计算相似度，合并相似度较⾼的区域，直到⼩区域全部合并完毕
 3. 输出所有存在过的区域，即候选区域 如下面伪代码：
 
-Algorithm 1: Hierarchial Grouping Algorithm
+##### Algorithm 1: Hierarchial Grouping Algorithm
 
 ```
 Input: (color) image
@@ -89,13 +89,19 @@ Selective Search 伪代码 区域的合并规则是：
 
 ### 3.2 SVM分类器的数据准备
 
+#### 标签
+
 由于SVM只能做二分类，所以在N分类任务中，作者使用了N个SVM分类器。对于第K类物体，与该物体的Ground Truth box的IoU大于0.3的视为正样本，其余视为负样本。论文中指出，0.3是通过Grid Search得到的最优阈值。
 
 通过实验结果选取IoU阈值是一方面。作者在附录B[^1]中给了解释，其实不太理解其思路，希望明白的大神能够帮忙给出解释。
 
+#### 特征
+
+作者通过对比CNN网络中的Pool5，fc6，fc7三层的特征在PASCAL VOC 2007数据集上的表现，发现Pool5层得到的error更低，所以得出结论Pool5更能表达输入数据的特征，所以SVM使用的是从Pool5提取的特征。原因可能是图像的特征更容易通过卷积而非全连接来表示。
+
 ### 3.3 岭回归精校器的数据准备
 
-
+位置精校和\[5\]的思路类似，不同之处是使用CNN提取的特征而非DNN。
 
 # 参考文献
 
@@ -106,6 +112,8 @@ Selective Search 伪代码 区域的合并规则是：
 \[3\] J. Uijlings, K. van de Sande, T. Gevers, and A. Smeulders. Selective search for object recognition. IJCV, 2013. 1, 2, 3, 4, 5, 9
 
 \[4\]. P. F. Felzenszwalb and D. P. Huttenlocher. Efficient GraphBased Image Segmentation. IJCV, 59:167–181, 2004. 1, 3, 4, 5, 7
+
+\[5\]. P. Felzenszwalb, R. Girshick, D. McAllester, and D. Ramanan. Object detection with discriminatively trained part based models. TPAMI, 2010. 2, 4, 7, 12
 
 [^1]: 原文：historically speaking, we arrived at these definition because we started by training SVMs on features computed by the ImageNet pre-trained CNN, and so fine-tuning was not a consideration at that point in time.
 
