@@ -109,7 +109,7 @@ Selective Search 伪代码 区域的合并规则是：
 
 回归器使用的是相对位置，$$G=\{G_x, G_y, G_w, G_h\}$$ 表示Ground Truth的坐标和长宽，$$P = \{P_x, P_y, P_w, P_h\}$$表示候选区域的大小和长宽。相对的回归目标T={}的计算方式如下：
 
-$$t_x = (G_x − P_x)/P_w$$
+$$t_x = (G_x-P_x)/P_w$$
 
 $$t_y = (G_y − P_y)/P_h$$
 
