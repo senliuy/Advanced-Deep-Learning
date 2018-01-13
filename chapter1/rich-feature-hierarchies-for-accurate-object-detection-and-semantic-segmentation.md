@@ -111,7 +111,7 @@ Selective Search 伪代码 区域的合并规则是：
 
 $$t_x = (G_x-P_x)/P_w$$
 
-$$t_y = (G_y−P_y)/P_h$$
+$$t_y=(G_y−P_y)/P_h$$
 
 $$t_w = log(G_x/P_w)$$
 
