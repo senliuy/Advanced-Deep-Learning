@@ -37,7 +37,7 @@
 
 强化学习与监督学习的异同：共同点是两者都需要大量的数据进行训练，但是两者需要的数据类型不同。监督学习需要的是多样化的标签数据，强化学习需要的是带有回报的交互数据。
 
-## ![](/assets/srqcqhxx_1_3_1.png)
+![](/assets/srqcqhxx_1_3_1.png)
 
 ## 1.4 强化学习的算法分类及发展趋势
 
@@ -171,4 +171,46 @@ $$
 最优状态-行为值函数$$q^*(s,a)$$为在所有策略中最大的状态-行为值函数，即$$q^*(s,a)=max_\pi q_\pi(s,a)$$
 
 定义一个离散时间有限范围的折扣马尔科夫决策过程$$M=(S,A,P,r,\rho_0,\gamma,T)$$其中$$S$$为状态集，$$A$$为动作集，$$P: S\times A \times S \rightarrow R$$是转移概率， $$r:S\times A\rightarrow[-R_{max}, R_{max}]$$为立即回报函数，$$\rho_0: S \rightarrow R$$是初始状态分布，$$\gamma \in [0,1]$$是折扣因子，T为水平范围（其实是步数）。$$\tau$$为一个轨道序列，即$$\tau = (s_0,a_0,s_1,a_1,...)$$，累积回报为$$R = \sum_{t=0}^T \gamma^t r^t$$,强化学习的目标就是找到最优策略$$\pi$$，使得该策略下的累积回报期望最大，即$$max_{\pi}\int R(\tau)p_\pi (\tau)d\tau$$。
+
+## 2.2 MDP中的概率学基础讲解
+
+强化学习中常采用的随机策略。
+
+（1）贪心策略
+$$
+\pi_*(a|s)=\begin{equation}
+\begin{cases}
+1&a=argmax_a\in Aq_*(s,a)\\
+0&otherwise
+\end{cases}
+\end{equation}
+$$
+
+
+（2）$$\varepsilon$$-greedy策略
+$$
+\pi_*(a|s)=\begin{equation}
+\begin{cases}
+1-\varepsilon+\frac{\varepsilon}{|A(s)|}&a=argmax_a\in Aq_*(s,a)\\
+\frac{\varepsilon}{|A(s)|}&otherwise
+\end{cases}
+\end{equation}
+$$
+
+
+（3）高斯策略
+$$
+\pi_\theta = \mu + \varepsilon, \varepsilon~N(0,\sigma^2)
+$$
+
+
+（4）玻尔兹曼分布
+
+
+$$
+\pi(a|s,\theta)=\frac{exp(Q(s,a,\theta))}{\sum_b exp(Q(s,b,\theta))}
+$$
+
+
+
 
