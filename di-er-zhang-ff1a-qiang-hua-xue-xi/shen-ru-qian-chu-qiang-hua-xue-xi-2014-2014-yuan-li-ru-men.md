@@ -148,23 +148,27 @@ $$
 $$
 q_{\pi}(s,a)=E_{\pi}[R_{t+1}+\gamma q_{\pi}(S_{t+1}, A_{t+1})|S_t=s, A_t=a]
 $$
+
+
 状态值函数的计算方式
+
+
 $$
 v_{\pi}(s)=\sum_{a\in A}\pi(a|s)(R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a v_\pi (s'))
 $$
+
+
 状态行为值函数
+
+
 $$
 q_\pi (s,a) = R_s^a+\gamma \sum_{s' \in S} P_{ss'}^a \sum_{a' \in A}\pi(a'|s')q_{\pi}(s',a')
 $$
 
 
+最优状态值函数$$v^*(s)$$为在所有策略中值最大的值函数，即$$v^*(s)=max_\pi v_\pi(s)$$。
 
+最优状态-行为值函数$$q^*(s,a)$$为在所有策略中最大的状态-行为值函数，即$$q^*(s,a)=max_\pi q_\pi(s,a)$$
 
-
-
-
-
-
-
-
+定义一个离散时间有限范围的折扣马尔科夫决策过程$$M=(S,A,P,r,\rho_0,\gamma,T)$$其中$$S$$为状态集，$$A$$为动作集，$$P: S\times A \times S \rightarrow R$$是转移概率， $$r:S\times A\rightarrow[-R_{max}, R_{max}]$$为立即回报函数，$$\rho_0: S \rightarrow R$$是初始状态分布，$$\gamma \in [0,1]$$是折扣因子，T为水平范围（其实是步数）。$$\tau$$为一个轨道序列，即$$\tau = (s_0,a_0,s_1,a_1,...)$$，累积回报为$$R = \sum_{t=0}^T \gamma^t r^t$$,强化学习的目标就是找到最优策略$$\pi$$，使得该策略下的累积回报期望最大，即$$max_{\pi}\int R(\tau)p_\pi (\tau)d\tau$$。
 
