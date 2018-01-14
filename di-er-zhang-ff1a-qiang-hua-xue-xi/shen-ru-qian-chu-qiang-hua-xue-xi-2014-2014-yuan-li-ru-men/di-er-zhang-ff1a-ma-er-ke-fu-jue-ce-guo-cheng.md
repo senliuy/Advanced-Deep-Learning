@@ -102,6 +102,16 @@ $$
 
 最优状态-行为值函数$$q^*(s,a)$$为在所有策略中最大的状态-行为值函数，即$$q^*(s,a)=max_\pi q_\pi(s,a)$$
 
+因此可以得到最优状态值函数和最优状态-行为值函数的贝尔曼最优方程
+$$
+v^*(s)=max_a R^a_s + \gamma \sum_{s' \in S}P^a_{ss'}v^*(s')
+$$
+
+$$
+q^*(s,a)=R^a_s + \gamma \sum_{s' \in S}P^a_{ss'}max_{a'}q^*(s',a')
+$$
+
+
 定义一个离散时间有限范围的折扣马尔科夫决策过程$$M=(S,A,P,r,\rho_0,\gamma,T)$$其中$$S$$为状态集，$$A$$为动作集，$$P: S\times A \times S \rightarrow R$$是转移概率， $$r:S\times A\rightarrow[-R_{max}, R_{max}]$$为立即回报函数，$$\rho_0: S \rightarrow R$$是初始状态分布，$$\gamma \in [0,1]$$是折扣因子，T为水平范围（其实是步数）。$$\tau$$为一个轨道序列，即$$\tau = (s_0,a_0,s_1,a_1,...)$$，累积回报为$$R = \sum_{t=0}^T \gamma^t r^t$$,强化学习的目标就是找到最优策略$$\pi$$，使得该策略下的累积回报期望最大，即$$max_{\pi}\int R(\tau)p_\pi (\tau)d\tau$$。
 
 ## 2.2 MDP中的概率学基础讲解
