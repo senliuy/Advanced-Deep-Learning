@@ -9,4 +9,5 @@
     * [推荐序](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/tui-jian-xu.md)
     * [第一章：绪论](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-yi-zhang-ff1a-xu-lun.md)
     * [第二章：马尔科夫决策过程](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-er-zhang-ff1a-ma-er-ke-fu-jue-ce-guo-cheng.md)
+    * [第三章：基于模型的动态规划方法](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-san-zhang-ff1a-ji-yu-mo-xing-de-dong-tai-gui-hua-fang-fa.md)
 

@@ -112,12 +112,11 @@ $$
 
 
 $$
-\pi_*(a|s)=\begin{equation}
+\pi_*(a|s)=
 \begin{cases}
 1&a=argmax_a\in Aq_*(s,a)\\
 0&otherwise
 \end{cases}
-\end{equation}
 $$
 
 
@@ -125,12 +124,11 @@ $$
 
 
 $$
-\pi_*(a|s)=\begin{equation}
+\pi_*(a|s)=
 \begin{cases}
 1-\varepsilon+\frac{\varepsilon}{|A(s)|}&a=argmax_a\in Aq_*(s,a)\\
 \frac{\varepsilon}{|A(s)|}&otherwise
 \end{cases}
-\end{equation}
 $$
 
 
@@ -148,9 +146,5 @@ $$
 $$
 \pi(a|s,\theta)=\frac{exp(Q(s,a,\theta))}{\sum_b exp(Q(s,b,\theta))}
 $$
-
-
-
-
 
 
