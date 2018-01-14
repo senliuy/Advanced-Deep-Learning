@@ -132,20 +132,30 @@ $$
 $$
 q_{\pi}(s,a)=E_{\pi}[\sum^{\infty}_{k=0}\gamma^kR_{t+k+1}|S_t=s,A_t=a]
 $$
+
+
 状态值函数的贝尔曼方程
+
+
 $$
 v_{\pi}(s)=E_{\pi}[R_{t+1}+\gamma v_{\pi}(S_{t+1})|S_t=s]
 $$
+
+
 状态行为值函数的贝尔曼方程
+
+
 $$
 q_{\pi}(s,a)=E_{\pi}[R_{t+1}+\gamma q_{\pi}(S_{t+1}, A_{t+1})|S_t=s, A_t=a]
 $$
-
-
-
-
-
-
+状态值函数的计算方式
+$$
+v_{\pi}(s)=\sum_{a\in A}\pi(a|s)(R_s^a+\gamma \sum_{s' \in S}P_{ss'}^a v_\pi (s'))
+$$
+状态行为值函数
+$$
+q_\pi (s,a) = R_s^a+\gamma \sum_{s' \in S} P_{ss'}^a \sum_{a' \in A}\pi(a'|s')q_{\pi}(s',a')
+$$
 
 
 
