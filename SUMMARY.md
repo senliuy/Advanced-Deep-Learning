@@ -8,4 +8,5 @@
   * [深入浅出强化学习——原理入门](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men.md)
     * [推荐序](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/tui-jian-xu.md)
     * [第一章：绪论](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-yi-zhang-ff1a-xu-lun.md)
+    * 第二章：马尔科夫决策过程
 
