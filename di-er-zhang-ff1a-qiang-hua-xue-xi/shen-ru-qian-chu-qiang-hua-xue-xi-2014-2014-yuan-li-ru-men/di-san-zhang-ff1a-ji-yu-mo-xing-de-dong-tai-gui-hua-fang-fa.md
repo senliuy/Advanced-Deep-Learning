@@ -165,7 +165,7 @@ def policy_evaluate(self, grid_mdp):
 
 #### 策略改善方法
 
-```
+```py
 def policy_improve(self, grid_mdp):
     for state in grid_mdp.states:
         if state in grid_mdp.terminal_states: continue
@@ -179,6 +179,32 @@ def policy_improve(self, grid_mdp):
                     v1 = r + grid_mdp.gamma * v[s]
         self.pi[state] = a1
 ```
+
+#### 值迭代算法
+
+```py
+def value_iteration(self, grid_mdp):
+    for i in range(1000):
+        delta = 0.0
+        for state in grid_mdp.states:
+            if state in grid_mdp.terminal_states: continue
+            a1 = grid_mdp.actions[0]
+            t, s, r = grid_mdp.transform(state, a1)
+            v1 = r + grid_mdp.gamma * v[s]
+            for action in grid_mdp.actions:
+                t, s, r = grid_mdp.transform(state, action)
+                    if v1 < r + grid_mdp.gamma * v[s]:
+                    a1 = action
+                    v1 = r + grid_mdp.gamma * v[s]
+
+            delta += abs(self.v[state] - new_v)
+            self.v[state] = v1
+            self.pi[state] = a1
+        if delta < 1e-6:
+            break
+```
+
+## 3.3 最优控制与强化学习比较
 
 
 
