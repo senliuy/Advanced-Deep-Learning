@@ -142,3 +142,26 @@ $$
 
 定理1是说：从度量空间任何一点出发，只要满足压缩映射，压缩映射的序列必定会收敛到唯一的不动点。所以可以通过证明压缩映射来评估策略的收敛性。
 
+## 3.3 基于gym的变成实例
+
+下面给出重要函数的代码片段
+
+#### 策略迭代方法
+
+```py
+def policy_evaluate(self, grid_mdp):
+    for i in range(1000):
+        delta = 0.0
+        for state in grid_mdp.states:
+            if state in grid_mdp.terminal_states: continue
+            action = self.pi[state]
+            t, s, r = grid_mdp.transform(state, action)
+            new_r = r + grid_mdp.gamma * self.v[s]
+            delta += abs(self.v[state] - new_v)
+            self.v[state] = new_v
+        if delta < 1e-6:
+            break
+```
+
+
+
