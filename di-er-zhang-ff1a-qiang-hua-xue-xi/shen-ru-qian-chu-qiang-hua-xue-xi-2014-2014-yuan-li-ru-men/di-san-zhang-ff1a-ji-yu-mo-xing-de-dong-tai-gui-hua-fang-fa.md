@@ -29,7 +29,7 @@ v_{k+1}(s) = \sum_{a \in A}\pi(a|s)(R_s^a+\gamma\sum_{s'\in S}P^a_{ss'}v_k(s'))
 $$
 
 
-策略评估算法
+#### 策略评估算法
 
 ```
 输入：需要评估的策略pi和状态转移概率p,回报函数r,折扣因子gamma
@@ -161,6 +161,23 @@ def policy_evaluate(self, grid_mdp):
             self.v[state] = new_v
         if delta < 1e-6:
             break
+```
+
+#### 策略改善方法
+
+```
+def policy_improve(self, grid_mdp):
+    for state in grid_mdp.states:
+        if state in grid_mdp.terminal_states: continue
+        a1 = grid_mdp.actions[0]
+        t, s, r = grid_mdp.transform(state, a1)
+        v1 = r + grid_mdp.gamma * v[s]
+        for action in grid_mdp.actions:
+            t, s, r = grid_mdp.transform(state, action)
+                if v1 < r + grid_mdp.gamma * v[s]:
+                    a1 = action
+                    v1 = r + grid_mdp.gamma * v[s]
+        self.pi[state] = a1
 ```
 
 
