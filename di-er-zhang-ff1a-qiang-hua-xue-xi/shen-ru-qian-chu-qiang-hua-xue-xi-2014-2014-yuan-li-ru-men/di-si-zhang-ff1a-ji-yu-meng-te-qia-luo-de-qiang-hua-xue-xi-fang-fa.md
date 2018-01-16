@@ -21,7 +21,7 @@
 
 ```
 [1] 初始化所有：
-    s ∈ S, a ∈ A(s), Q(s,a)←Arbitrary, π(s)←Arbitrary: Returns(s, a)←Empty List
+    s ∈ S, a ∈ A(s), Q(s,a)←Arbitrary, π(s)←Arbitrary, Returns(s, a)←Empty List
 [2] Repeat:
         随机选择 S0 ∈ S, A0 ∈ A(S0), 从A0,S0开始策略V, 生成一个实验（episode）, 对每队在这个实验中出现的状态和动作s,a:
 [3]         #策略评估
@@ -35,16 +35,72 @@
 
 探索性初始化在迭代每一幕时，初始状态时随机分配的。初始化需要精心设计，以保证每一个状态都有可能被访问到，即对任意状态s，a都满足：$$\pi(a|s) > 0$$，折中策略叫做温和的，一个典型的策略是$$\varepsilon-soft$$策略：
 
-$$x = y$$$$\pi(a|s)=
+```
+\pi(a|s)=
 \begin{cases}
 1-\varepsilon+\frac{\varepsilon}{|A(s)|}&a=argmax_aQ_*(s,a)\\
 \frac{\varepsilon}{|A(s)|}&otherwise
-\end{cases}$$
+\end{cases}
+```
 
 根据探索策略和评估策略是否是同一个策略，蒙特卡洛方法分成同策略（on-policy）和异策略（off-policy）：
 
 1. 同策略：产生数据的策略与评估和要改善的策略是同一个策略。
-2. 异策略：产生数据的策略与评估和要改善的策略不是同一个策略。
+2. 异策略：产生数据的策略\(μ\)与评估和要改善的策略\(π\)不是同一个策略。
+
+基于异策略的目标策略（π）和行动策略（μ）的旋转要满足**覆盖性条件，**即行动策略产生的行为要覆盖或者包含目标策略产生的行为。
+
+利用行为策略产生的数据评估目标策略需要利用**重要性采样**方法。
+
+重要性采样来源于求期望
+
+```
+E[f] = \int f(z)p(z)dz
+```
+
+![](/assets/srqcqhxx_4_2.png)
+
+上图中的p\(z\)是一个非常复杂的分布，无法通过解析的方法产生用于逼近期望的样本，这时，可以采用一个简单的分布。原来的分布可以变成
+
+```
+E[f]= \int f(z)\frac{p(z)}{q(z)}q(z)dz \approx \frac{1}{N} \sum_n \frac{p(z^n)}{q(z^n)}f(z^n), z^n \sim q(z)
+```
+
+定义重要性权重：$$\omega^n = p(z^n)/q(z^n)$$，普通的重要性采样求积分变成方程：
+
+```
+E[f] = \frac{1}{N}\sum_n \omega^n f(z^n)
+```
+
+该估计为无偏估计（估计的期望等于真实期望），但是方差为无穷大，一种减小方差的方法是采用加权重要性采样。
+
+```
+E[f] \approx \sum^N_{n=1}\frac{\omega^n}{\sum^N_{m=1}\omega^m}f(z^n)
+```
+
+回归到蒙特卡洛方法，行动策略μ用来产生样本，对应的轨迹是重要性采样中的q\[z\]，用来评估和改进的策略π对应的轨迹概率分布是p\[z\]。加权重要性采样值函数估计为
+
+```
+V(s) = \frac{\sum_{t\in \mathcal{T}(s)\rho^(T(t))_t}G_t}{\sum_{t\in \mathcal{T}(s)\rho^(T(t))_t}}
+```
+
+其中G\(t\)是从t到T\(t\)的返回值
+
+```
+\rho^T_t = \prod_{k=t}^{T-1}\frac{\pi(A_k|S_k)}{\miu(A_k|S_k)}
+```
+
+###### 蒙特卡洛方法伪代码
+
+```
+[1] 初始化所有：
+    s ∈ S, a ∈ A(s), Q(s,a)←Arbitrary, C(s,a)←0, π(s)←相对于Q的贪婪策略
+[2] Repeat forever
+    利用软测率μ产生一次实验
+    S[0], A[0], R[1], ..., S[T-1], A[T-1], R[T],S[T]
+    G←0， W←0
+[3] For
+```
 
 
 
