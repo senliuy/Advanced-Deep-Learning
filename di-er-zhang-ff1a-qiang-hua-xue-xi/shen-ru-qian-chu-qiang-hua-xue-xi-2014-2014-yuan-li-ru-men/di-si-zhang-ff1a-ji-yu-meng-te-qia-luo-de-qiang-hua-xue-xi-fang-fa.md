@@ -17,5 +17,34 @@
 
 蒙特卡罗方法中必须采取一定的策略来保证每个状态都能被访问到。
 
+###### 探索性初始化蒙特卡罗方法
+
+```
+[1] 初始化所有：
+    s ∈ S, a ∈ A(s), Q(s,a)←Arbitrary, π(s)←Arbitrary: Returns(s, a)←Empty List
+[2] Repeat:
+        随机选择 S0 ∈ S, A0 ∈ A(S0), 从A0,S0开始策略V, 生成一个实验（episode）, 对每队在这个实验中出现的状态和动作s,a:
+[3]         #策略评估
+            G←s,a第一次出现后的回报
+            将G附加于回报Returns(s,a)上
+            Q(s,a)←average(Returns(s,a))对回报取均值
+[4] 对实验中的每一个s:
+        #策略改进
+        π(s)←argmax_a Q(s,a)
+```
+
+探索性初始化在迭代每一幕时，初始状态时随机分配的。初始化需要精心设计，以保证每一个状态都有可能被访问到，即对任意状态s，a都满足：$$\pi(a|s) > 0$$，折中策略叫做温和的，一个典型的策略是$$\varepsilon-soft$$策略：
+
+$$x = y$$$$\pi(a|s)=
+\begin{cases}
+1-\varepsilon+\frac{\varepsilon}{|A(s)|}&a=argmax_aQ_*(s,a)\\
+\frac{\varepsilon}{|A(s)|}&otherwise
+\end{cases}$$
+
+根据探索策略和评估策略是否是同一个策略，蒙特卡洛方法分成同策略（on-policy）和异策略（off-policy）：
+
+1. 同策略：产生数据的策略与评估和要改善的策略是同一个策略。
+2. 异策略：产生数据的策略与评估和要改善的策略不是同一个策略。
+
 
 

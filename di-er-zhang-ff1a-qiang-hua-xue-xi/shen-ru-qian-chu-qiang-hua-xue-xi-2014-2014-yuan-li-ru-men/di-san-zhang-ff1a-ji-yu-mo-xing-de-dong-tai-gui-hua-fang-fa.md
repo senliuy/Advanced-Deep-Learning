@@ -29,7 +29,7 @@ v_{k+1}(s) = \sum_{a \in A}\pi(a|s)(R_s^a+\gamma\sum_{s'\in S}P^a_{ss'}v_k(s'))
 $$
 
 
-#### 策略评估算法
+###### 策略评估算法
 
 ```
 输入：需要评估的策略pi和状态转移概率p,回报函数r,折扣因子gamma
@@ -83,7 +83,7 @@ def updateValue(s):
 
 至此，已经可以得到策略改善算法
 
-#### 策略改善算法
+###### 策略改善算法
 
 ```
 输入：需要评估的策略pi和状态转移概率p,回报函数r,折扣因子gamma
@@ -146,7 +146,7 @@ $$
 
 下面给出重要函数的代码片段
 
-#### 策略迭代方法
+###### 策略迭代方法
 
 ```py
 def policy_evaluate(self, grid_mdp):
@@ -163,7 +163,7 @@ def policy_evaluate(self, grid_mdp):
             break
 ```
 
-#### 策略改善方法
+###### 策略改善方法
 
 ```py
 def policy_improve(self, grid_mdp):
@@ -180,7 +180,7 @@ def policy_improve(self, grid_mdp):
         self.pi[state] = a1
 ```
 
-#### 值迭代算法
+###### 值迭代算法
 
 ```py
 def value_iteration(self, grid_mdp):
@@ -220,6 +220,4 @@ def value_iteration(self, grid_mdp):
 ##### 最优控制和强化学习的联系
 
 在基于模型的强化学习中，智能体会先利用交互数据拟合一个模型，有了模型，我们就可以利用最优控制的计算方法计算当前最优解，产生当前的最优控制率。智能体会利用当前的最优控制率与环境交互，进一步优化行为。
-
-
 
