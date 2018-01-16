@@ -54,41 +54,53 @@
 
 重要性采样来源于求期望
 
-```
+
+$$
 E[f] = \int f(z)p(z)dz
-```
+$$
+
 
 ![](/assets/srqcqhxx_4_2.png)
 
 上图中的p\(z\)是一个非常复杂的分布，无法通过解析的方法产生用于逼近期望的样本，这时，可以采用一个简单的分布。原来的分布可以变成
 
-```
+
+$$
 E[f]= \int f(z)\frac{p(z)}{q(z)}q(z)dz \approx \frac{1}{N} \sum_n \frac{p(z^n)}{q(z^n)}f(z^n), z^n \sim q(z)
-```
+$$
+
 
 定义重要性权重：$$\omega^n = p(z^n)/q(z^n)$$，普通的重要性采样求积分变成方程：
 
-```
+
+$$
 E[f] = \frac{1}{N}\sum_n \omega^n f(z^n)
-```
+$$
+
 
 该估计为无偏估计（估计的期望等于真实期望），但是方差为无穷大，一种减小方差的方法是采用加权重要性采样。
 
-```
+
+$$
 E[f] \approx \sum^N_{n=1}\frac{\omega^n}{\sum^N_{m=1}\omega^m}f(z^n)
-```
+$$
+
 
 回归到蒙特卡洛方法，行动策略μ用来产生样本，对应的轨迹是重要性采样中的q\[z\]，用来评估和改进的策略π对应的轨迹概率分布是p\[z\]。加权重要性采样值函数估计为
 
-```
+
+$$
 V(s) = \frac{\sum_{t\in \mathcal{T}(s)\rho^(T(t))_t}G_t}{\sum_{t\in \mathcal{T}(s)\rho^(T(t))_t}}
-```
+$$
+
 
 其中G\(t\)是从t到T\(t\)的返回值
 
-```
-\rho^T_t = \prod_{k=t}^{T-1}\frac{\pi(A_k|S_k)}{\miu(A_k|S_k)}
-```
+
+$$
+\rho^T_t = \prod_{k=t}^{T-1}\frac{\pi(A_k|S_k)}{\mu(A_k|S_k)}
+$$
+
 
 ###### 蒙特卡洛方法伪代码
 
@@ -99,7 +111,13 @@ V(s) = \frac{\sum_{t\in \mathcal{T}(s)\rho^(T(t))_t}G_t}{\sum_{t\in \mathcal{T}(
     利用软测率μ产生一次实验
     S[0], A[0], R[1], ..., S[T-1], A[T-1], R[T],S[T]
     G←0， W←0
-[3] For
+[3] for t = T-1, T-2, ..., 0
+    G←gamma*G+R[t-1]
+    C(S[t], A[t]) ← C(S[t], A[t]) + W #策略评估
+    G(S[t], A[t]) ← G(S[t], A[t]) + W/C(S[t], A[t])*(G-Q(S[t], A[t])) #重要性采样
+    π(S[t])←argmax_a Q(s[t], a) #策略改善 #策略改善
+    如果A[t] != π(s[t])则退出循环
+    W←W/μ(A[t]|S[t])
 ```
 
 
