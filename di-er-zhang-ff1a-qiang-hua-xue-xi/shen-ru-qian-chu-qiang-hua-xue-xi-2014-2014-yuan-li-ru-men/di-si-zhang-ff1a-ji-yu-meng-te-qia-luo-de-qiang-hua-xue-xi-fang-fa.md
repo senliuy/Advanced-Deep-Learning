@@ -137,6 +137,8 @@ $$
 
 ### MCMC
 
+\[1\] 可以参考这篇文章：[https://www.jianshu.com/p/27829d842fbc](https://www.jianshu.com/p/27829d842fbc)
+
 MCMC不需要提议分布，只需要一个随机样本点，下一个样本会由当前的随机样本点产生，如此循环源源不断地产生很多样本点，最终这些样本点服从目标分布。
 
 MCMC背后的原理是：目标分步为**马氏链平稳分布**：
@@ -144,4 +146,133 @@ MCMC背后的原理是：目标分步为**马氏链平稳分布**：
 该目标分步存在一个转移概率矩阵P，满足$$\pi(j) = \sum_{i=0}^{\infty}\pi(i)P_{ij}$$; $$\pi$$是方程的唯一非负解。
 
 当转移矩阵满足此条件时，从任意出事分步$$\pi_0$$出发，经过一段时间迭代，分步$$\pi_t$$都会收敛到目标分步$$\pi$$。给定一个初始状态$$x_0$$，那么会得到连续的转移序列$$x_0,x_1,...,x_n,x_{n+1},...$$。如果该马氏链在n时收敛到目标分步$$\pi$$，我们就得到了目标分步的样本$$x_n,x_{n+1},...$$。那么如何构造转移概率$$P$$呢？
+
+定理：细致平稳条件
+
+如果非周期马氏链的转移矩阵$$P$$和分布$$\pi(x)$$满足
+
+
+$$
+\pi(i)P_{ij} = \pi(j)P_{ji}; \forall i,j
+$$
+
+
+则$$\pi(x)$$是马氏链的平稳分布，上式叫做细致平稳条件。
+
+假设我们已经有一个转移矩阵为$$Q$$的马氏链，显然，通常情况下：
+
+
+$$
+p(i)q(i,j) \neq p(j)q(j,i)
+$$
+
+
+也就是细致平稳条件不成立，所以$$p(x)$$不太可能是这个马氏链的平稳分布。我们可否对马氏链做一个改造，使得细致平稳条件成立呢？譬如，我们引入一个$$\alpha(i,j)$$, 我们希望：
+
+
+$$
+p(i)q(i,j)\alpha(i,j) =p(j)q(j,i)\alpha(j,i)
+$$
+
+
+取什么样的$$\alpha(i,j)$$以上等式能成立呢？最简单的，按照对称性，我们可以取：
+
+
+$$
+\alpha(i,j) = p(j)q(j,i), \alpha(j,i) = p(i)q(i,j)
+$$
+
+
+于是上式式就成立了。
+
+于是我们把原来具有转移矩阵$$Q$$的一个很普通的马氏链，改造为了具有转移矩阵$$Q'$$ 的马氏链，而$$Q'$$恰好满足细致平稳条件，由此马氏链$$Q'$$的平稳分布就是$$p(x)$$。
+
+在改造$$Q$$的过程中引入的$$\alpha(i,j)$$称为接受率，物理意义可以理解为在原来的马氏链上，从状态$$i$$以$$q(i,j)$$的概率转跳转到状态$$j$$的时候，我们以$$α(i,j)$$的概率接受这个转移，于是得到新的马氏链$$Q'$$的转移概率为$$q(i,j)α(i,j)$$。
+
+![](/assets/srqcqhxx_4_3.png)
+
+假设我们已经有一个转移矩阵$$Q$$\(对应元素为$$q(i,j)$$\), 把以上的过程整理一下，我们就得到了如下的用于采样概率分布$$p(x)$$的算法。
+
+###### MCMC采样算法
+
+```
+[1] 初始化马氏链初始状态X[0] = x[0]
+[2] 对t=1,2,3..., 循环进行下面采样
+        第t个时刻马氏链状态为X[t] = x[t], 采样y \sim q(x|x[t])
+        从均匀分布中采样 u \sim Uniform[0,1]
+        if u < α(x[t],y) = p(y)q(x[t]|y): 接受转移x[t] → y, 即X[t+1] = y
+        else 不接受转移，即X[t+1]=x[t]
+```
+
+为了提高接受率，使样本多样化，Metropolis-Hasting算法将$$α(i,j)$$改为
+
+
+$$
+\alpha(i,j) = min\{\frac{p(y)q(x_t|y)}{p(x_t)q(y|x_t)}, 1\}
+$$
+
+
+---
+
+## 4.3 基于Python的编程实例
+
+利用蒙特卡洛方法评估策略应该包括两个过程：模拟和平均。
+
+1. 随机策略的样本产生：模拟
+
+###### 蒙特卡洛样本采集
+
+```py
+def gen_randomi_sample(self, num):
+    state_sample = []
+    action_sample = []
+    reward_sample = []
+    for i in range(num):
+        s_tmp = []
+        a_tmp = []
+        r_tmp = []
+        s = self.states[int(random.random() * len(self.states))] #随机初始化每回合的初始状态
+        t = False
+        while False == t: #产生一个状态序列
+            a = self.actions[int(random.random() * len(self.actions))]
+            t, s1, r= self.transform(s, a)
+            s_tmp.append(s)
+            a_tmp.append(a)
+            r_tmp.append(r)
+            s = s1
+        state_sample.append(s_tmp)
+        action_sample.append(a_tmp)
+        reward_sample.append(r_tmp)
+    return state_sample, action_sample, reward_sample
+```
+
+  2. 得到值函数：平均
+
+###### 蒙特卡洛评估
+
+```py
+def mc(gamma, state_sample, action_sample, reward_sample):
+    vfunc = dict()
+    nfunc = dict()
+    for s in states
+        vfunc[s] = 0.0
+        nfunc[s] = 0.0
+    for iter1 in range(len(state_sample)):
+        G = 0.0
+        for step in range(len(state_sample[iter1])-1, -1, -1):
+            G *= gamma
+            G += reward_sample[iter1][step]
+        for step in range(len(state_sample[iter1])
+            s = state_sample[iter1][step]
+            vfunc[s] += G
+            nfunc[s] += 1.0
+            G -= reward_sample[iter1][step]
+            G /= gamma
+    for s in states:
+        if nfunc[s] > 0.000001:
+        vfunc[s] /= [s]
+    return vfunc
+```
+
+
 
