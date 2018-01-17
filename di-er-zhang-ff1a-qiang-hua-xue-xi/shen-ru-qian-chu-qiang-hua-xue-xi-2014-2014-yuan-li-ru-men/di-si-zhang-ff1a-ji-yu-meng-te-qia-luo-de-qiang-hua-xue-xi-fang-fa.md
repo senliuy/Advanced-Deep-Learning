@@ -246,7 +246,7 @@ def gen_randomi_sample(self, num):
     return state_sample, action_sample, reward_sample
 ```
 
-  2. 得到值函数：平均
+1. 得到值函数：平均
 
 ###### 蒙特卡洛评估
 
@@ -273,6 +273,8 @@ def mc(gamma, state_sample, action_sample, reward_sample):
         vfunc[s] /= [s]
     return vfunc
 ```
+
+
 
 
 
