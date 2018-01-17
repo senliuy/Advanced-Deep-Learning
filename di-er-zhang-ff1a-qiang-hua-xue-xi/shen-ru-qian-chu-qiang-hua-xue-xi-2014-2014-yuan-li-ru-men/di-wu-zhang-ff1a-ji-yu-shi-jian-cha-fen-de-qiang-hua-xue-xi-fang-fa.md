@@ -18,9 +18,9 @@ V(S_t) \leftarrow V(S_t) + \alpha (G_t - V(S_t))
 V(S_t) \leftarrow V(S_t) + \alpha(R_{t+1} + \gamma V(S_{t+1}) - V(S_t))
 ```
 
-其中 R{t+1} + \gamma V\(S{t+1}\) 成为TD目标，与蒙特卡洛方法的G_t对应，不同之处在于TD目标使用了bootstrapping方法估计值函数。\delta\__t = R\_{t+1} + \gamma V\(S\_{t+1}\) - V\(S\_t\) 成为TD偏差。
+其中 R{t+1} + \gamma V\(S{t+1}\) 成为TD目标，与蒙特卡洛方法的G_t对应，不同之处在于TD目标使用了bootstrapping方法估计值函数。\delta\_\_t = R\_{t+1} + \gamma V\(S\_{t+1}\) - V\(S\_t\) 成为TD偏差。
 
-蒙特卡罗方法中的G_t = R_{t+1} + \gamma R_{t+2}+ ... + \gamma^{T-1}R_T，由于每次都模拟到结尾，所以蒙特卡洛方法是无偏估计。但模拟的随机性很大，因此导致蒙特卡罗方法的方差很大。时间差分方法中用到的V\(S\__{t+1}_\)使用的是估计值，因为时间差分方法是**有偏的**。但是时间差分方法只用到了一次模拟，所以随机性很小，相应的**方差也要比蒙特卡罗方法的方差小**。
+蒙特卡罗方法中的G_t = R_{t+1} + \gamma R_{t+2}+ ... + \gamma^{T-1}RT，由于每次都模拟到结尾，所以蒙特卡洛方法是无偏估计。但模拟的随机性很大，因此导致蒙特卡罗方法的方差很大。时间差分方法中用到的V\(S\_{t+1}_\)使用的是估计值，因为时间差分方法是**有偏的**。但是时间差分方法只用到了一次模拟，所以随机性很小，相应的**方差也要比蒙特卡罗方法的方差小**。
 
 时间差分方法包括同策略的Sarsa强化学习方法和Qlearning方法，与蒙特卡罗方法不同之处是他们的值函数更新方法不同。
 
@@ -32,7 +32,7 @@ V(S_t) \leftarrow V(S_t) + \alpha(R_{t+1} + \gamma V(S_{t+1}) - V(S_t))
         针对初始状态s,并根据 epsilon-贪婪策略在状态s选择动作a
         Repeat (对于每一幕的每一步)
             (a) 根据epsilon-贪婪策略在状态s选择动作a，得到回报r和下一个状态s'，在状态s'根据epsilon贪婪策略得到动作a'
-            (b) Q(s,a)←Q(s,a) + α[r + γQ(s',a')-Q(s,a)]
+            (b) Q(s,a)←Q(s,a) + α[r + γ*Q(s',a')-Q(s,a)]
             (c) s=s', a=a'
         Until s是中止状态
     Until 所有的Q(s,a)收敛
@@ -42,7 +42,16 @@ V(S_t) \leftarrow V(S_t) + \alpha(R_{t+1} + \gamma V(S_{t+1}) - V(S_t))
 异策略Qlearning
 
 ```
-
+[1] 初始化Q(s,a), all s∈S, a∈A, 给定参数α，γ
+[2] Repeat:
+        针对初始状态s,并根据 epsilon-贪婪策略在状态s选择动作a
+        Repeat (对于每一幕的每一步)
+            (a) 根据epsilon-贪婪策略在状态s[t]选择动作a[t]，得到回报r[t]和下一个状态s[t+1]
+            (b) Q(s[t],a[t])←Q(s[t],a[t]) + α[r[t] + γ*max_a Q(s[t+1],a[t+1])-Q(s[t],a[t])]
+            (c) s=s', a=a'
+        Until s是中止状态
+    Until 所有的Q(s,a)收敛
+[3] 输出最终策略：π(s) = argmax_a Q(s,a)
 ```
 
 
