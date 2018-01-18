@@ -4,13 +4,4 @@
 * [第一章：物体检测](chapter1.md)
   * [Rich feature hierarchies for accurate object detection and semantic segmentation](chapter1/rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.md)
   * [Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition](chapter1/spatial-pyramid-pooling-in-deep-convolutional-networks-for-visual-recognition.md)
-* [第二章：强化学习](di-er-zhang-ff1a-qiang-hua-xue-xi.md)
-  * [深入浅出强化学习——原理入门](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men.md)
-    * [推荐序](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/tui-jian-xu.md)
-    * [第一章：绪论](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-yi-zhang-ff1a-xu-lun.md)
-    * [第二章：马尔科夫决策过程](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-er-zhang-ff1a-ma-er-ke-fu-jue-ce-guo-cheng.md)
-    * [第三章：基于模型的动态规划方法](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-san-zhang-ff1a-ji-yu-mo-xing-de-dong-tai-gui-hua-fang-fa.md)
-    * [第四章：基于蒙特卡洛的强化学习方法](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-si-zhang-ff1a-ji-yu-meng-te-qia-luo-de-qiang-hua-xue-xi-fang-fa.md)
-    * [第五章：基于时间差分的强化学习方法](di-er-zhang-ff1a-qiang-hua-xue-xi/shen-ru-qian-chu-qiang-hua-xue-xi-2014-2014-yuan-li-ru-men/di-wu-zhang-ff1a-ji-yu-shi-jian-cha-fen-de-qiang-hua-xue-xi-fang-fa.md)
-    * 第六章：基于值函数逼近的强化学习方法
 
