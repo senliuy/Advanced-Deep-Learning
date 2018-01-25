@@ -58,13 +58,13 @@ $$
 
 ![](/assets/SPP-NET_4.png)
 
-1. conv5: $$fsize = (1 - 1) * \times 1 + 3 = 3$$
-2. conv4: $$fsize = (3 - 1) * \times 1 + 3 = 5$$
-3. conv3: $$fsize = (5 - 1) * \times 1 + 3 = 7$$
-4. conv2\(LRN\): $$fsize = (7 - 1) * \times 2 + 3 = 15$$
-5. conv2: $$fsize = (15 - 1) * \times 2 + 5 = 33$$
-6. conv1\(LRN\): $$fsize = (33 - 1) * \times 2 + 5 = 67$$
-7. conv1: $$fsize = (67 - 1) * \times 2 + 7 = 139$$
+1. conv5: $$fsize = (1 - 1) \times 1 + 3 = 3$$
+2. conv4: $$fsize = (3 - 1) \times 1 + 3 = 5$$
+3. conv3: $$fsize = (5 - 1) \times 1 + 3 = 7$$
+4. conv2\(LRN\): $$fsize = (7 - 1) \times 2 + 3 = 15$$
+5. conv2: $$fsize = (15 - 1) \times 2 + 5 = 33$$
+6. conv1\(LRN\): $$fsize = (33 - 1) \times 2 + 5 = 67$$
+7. conv1: $$fsize = (67 - 1) \times 2 + 7 = 139$$
 
 每经过一次stride=2的操作，相当于进行一次降采样，共四次stride，也就是特征层的一个像素相当于原图的16的步长。剩下的部分没有太搞懂，如果看明白的希望在附录中给出，万分感谢。
 
