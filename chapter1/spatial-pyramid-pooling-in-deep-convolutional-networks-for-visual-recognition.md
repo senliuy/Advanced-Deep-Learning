@@ -66,7 +66,7 @@ $$
 6. conv1\(LRN\): $$fsize = (33 - 1) \times 2 + 5 = 67$$
 7. conv1: $$fsize = (67 - 1) \times 2 + 7 = 139$$
 
-每经过一次stride=2的操作，相当于进行一次降采样，共四次stride，也就是特征层的一个像素相当于原图的16的步长。剩下的部分没有太搞懂，如果看明白的希望在附录中给出，万分感谢。
+每经过一次stride=2的操作，相当于进行一次降采样，共四次stride，也就是特征层的一个像素相当于原图的16的步长。根据论文\[4\], 可以得到类似的结果，后面有时间的话，会给出这篇论文的总结。
 
 同时，作者指出，SPP-NET的卷积网络是可以使用候选区域进行微调的。针对候选区域的类别特征（N+1）作者在全连接的最后一层又接了一个n+1类的全连接，在实验中，作者通过conv5层提取的特征层没有经过微调，只是微调了一下全连接层。使用的数据是25%的正样本（和ground truth的重合度大于50%）。
 
@@ -79,6 +79,8 @@ $$
 \[2\] K. Grauman and T. Darrell, “The pyramid match kernel: Discriminative classification with sets of image features,” in ICCV, 2005
 
 \[3\] S. Lazebnik, C. Schmid, and J. Ponce, “Beyond bags of features: Spatial pyramid matching for recognizing natural scene categories,” in CVPR, 2006.
+
+\[4\]. K. Lenc and A. Vedaldi, “R-cnn minus r,” arXiv:1506.06981, 2015
 
 [^1]: 256 \* \(16+4+1\) = 2576
 
