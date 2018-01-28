@@ -19,7 +19,7 @@
 
 #### 1.1 候选区域选择
 
-数据准备工作集中在` /lib/datasets` 目录下面，下面会着重介绍几个重要部分
+数据准备工作集中在`/lib/datasets` 目录下面，下面会着重介绍几个重要部分
 
 通过Selective Search[^1]选取候选区域，在5.5中论文指出，随着候选区域的增多，mAP呈先上升后下降的趋势。在fast-rcnn的源码中，作者选取了2000个候选区域。
 
@@ -77,32 +77,101 @@ if cfg.TRAIN.USE_FLIPPED:
 
 Fast-RCNN选择了VGG-16的卷积网络结构，并将最后一层的max pooling换成了roi pooling。经过两层全连接和Dropout后，接了一个双任务的loss，分别用于分类和位置精校。
 
-图2
+![](/assets/Fast-RCNN_2.png)
 
 #### 2.2 ROI pooling 层
 
-ROI Pooling是一层的SPP-net。有\(r,c,w,h\)定义，\(r,c\)表示候选区域的左上角，\(w,h\)表示候选区域的高和宽。假设我们要将特征层映射到H\*W的矩阵。ROI pooling通过将特征层分成h/H \* w/W的窗格，每个窗格进行max pooling得到，在作者的实验中W=H=7。ROI pooling layer是在caffe源码中`src/caffe/layers/roi_pooling_layer.cpp`通过C++语言实现的。
+ROI Pooling是一层的SPP-net。由$$(r,c,w,h)$$定义，$$(r,c)$$表示候选区域的左上角，$$(w,h)$$表示候选区域的高和宽。假设我们要将特征层映射到$$H*W$$的矩阵。ROI pooling通过将特征层分成h/H \* w/W的窗格，每个窗格进行max pooling得到，在作者的实验中$$W=H=7$$。ROI pooling layer是在caffe源码中`src/caffe/layers/roi_pooling_layer.cpp`通过C++语言实现的。
 
 既然ROI pooling层是自己定义的，当然我们也应向caffe中定义其它层一样，给出ROI pooling层的反向的计算过程。在Fast-RCNN中，ROI 使用的是固定grid数量的max pooling，在调参时，只对grid中选为最大值的像素点更新参数。可以表示为
 
-```
+
+$$
 \frac{\partial L}{\partial x_i} = \sum_r \sum_j [i = i^*(r,j)]\frac{\partial L}{\partial y_{r,j}}
-```
+$$
+
 
 #### 2.3 多任务
 
 Fast-RCNN最重要的贡献是多任务模型的提出，多任务将原来物体检测的多阶段训练简化成一个端到端（end-to-end）的模型。Fast-RCNN有两个任务组成，一个任务是用来对候选区域进行分类，另外一个回归器是用来矫正候选区域的位置。
 
-2.3.1 分类任务L\_{cls}
+##### 2.3.1 分类任务$$L_{cls}$$
 
-设p=\{p_0, p_1, ..., p\_n\}是候选区域集合，则L\_{cls}是一个K+1类的分类任务，其中输入数据是经过卷积和全连接之后提取的特征向量，输出数据是候选区域的类别（u），包括K类物体\(u&gt;=1\)和1类背景\(u=0\)。分类任务的损失函数是softmax损失。
+设$$p=\{p_0, p_1, ..., p_n\}$$_是候选区域集合，则_$$L_{cls}$$是一个K+1类的分类任务，其中输入数据是经过卷积和全连接之后提取的特征向量，输出数据是候选区域的类别（$$u$$），包括K类物体\($$u\geq 1$$\)和1类背景\($$u=0$$\)。分类任务的损失函数是softmax损失。
 
-2.3.2 位置精校任务L\_{loc}
+##### 2.3.2 位置精校任务L\_{loc}
 
-对于候选区域所属的类别u，v={v_x, v_y, vw, vh}表示候选区域的ground-truth, tu = \(tux, tuy, tuw, tuh\)表示对候选区域的类别u（u&gt;=1）预测的位置。损失函数是smooth L1损失，表示为
+对于候选区域所属的类别u，$$v=\{v_x, v_y, v_w, v_h\}$$表示候选区域的ground-truth, $$t^u = (t^u_x, t^u_y, t^u_w, t^u_h)$$表示对候选区域的类别u（$$u\geq1$$）预测的位置。损失函数是smooth L1损失，表示为
 
-$$smooth_{L_1}(x) = \begin{case}
-\end{case}$$
+
+$$
+L_{loc}(t^u, v) = \sum_{i \in {x,y,w,h}}smooth_{L_1}(t^u_i, v_i)
+$$
+
+
+其中
+$$
+s
+mooth_{L_1}(x) = \begin{cases}
+0.5 x^2 & if |x|<1 \\
+|x| - 0.5 & otherwise
+\end{cases}
+$$
+
+
+smooth L1的形状类似于二次曲线。
+
+smooth L1同样以layer的形式定义在了caffe的源码中 `/src/caffe/layers/smooth_L1_loss_layer.cpp`
+
+![](/assets/Fast-RCNN_3.png)
+
+##### 2.3.3 多任务
+
+多任务学习是由两个损失函数和权重$$\lambda$$组成，表示为
+
+
+$$
+L(p,u,t^u,v) = L_{cls}(p,u) + \lambda [u\leq 1]L_{loc}(t^u, v)
+$$
+
+
+在实验中，作者将$$\lambda$$统一设成了1。在模型文件中，定义了这两个损失
+
+```
+layer {
+  name: "loss_cls"
+  type: "SoftmaxWithLoss"
+  bottom: "cls_score"
+  bottom: "labels"
+  top: "loss_cls"
+  loss_weight: 1
+}
+layer {
+  name: "loss_bbox"
+  type: "SmoothL1Loss"
+  bottom: "bbox_pred"
+  bottom: "bbox_targets"
+  bottom: "bbox_loss_weights"
+  top: "loss_bbox"
+  loss_weight: 1
+}
+```
+
+**根据笔者的经验，训练Fast-RCNN时根据两个损失函数的收敛情况适当的调整权值能得到更好的结果。调整的经验是给收敛更慢的那个任务更大的比重。**
+
+#### 2.4 SGD训练详解
+
+2.4.1 迁移学习
+
+同Fast-RCNN一样，作者同样使用ImageNet的数据对模型进行了预训练。详细的讲，首先使用1000类的ImageNet训练一个1000类的分类器，如图2的虚线部分。然后提取模型中的特征层以及其以前的所有网络，使用Fast-RCNN的多任务模型训练网络，即图2所有的实线部分。
+
+2.4.2 Minibatch training
+
+在Fast-RCNN中，设每个batch的大小是R。在抽样时，每次随机选择N个图片，每张图片中随机选择R/N个候选区域，在实验中N=2，R=128。对候选区域进行抽样时，选取25%的正样本（和ground truth的IoU大于0.5），75%的负样本。
+
+3. 物体检测
+
+使用selective search输入图像中提取2000个候选区域，按照同训练样本相同的resize方法调整候选区域的大小。将所有的候选区域输入到训练好的神经网络，得到每一类的后验概率p和相对偏移r。通过预测概率给每一类一个置信度，并使用NMS对每一类确定最终候选区域。Fast-RCNN使用了奇异值分解来提升矩阵乘法的运算速度。
 
 #### 参考文献
 
