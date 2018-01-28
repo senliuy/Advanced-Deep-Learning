@@ -125,7 +125,7 @@ smooth L1的形状类似于二次曲线。
 
 smooth L1同样以layer的形式定义在了caffe的源码中 `/src/caffe/layers/smooth_L1_loss_layer.cpp`
 
-###### smooth L1 曲线
+###### 图2：smooth L1 曲线
 
 ![](/assets/Fast-RCNN_3.png)
 
