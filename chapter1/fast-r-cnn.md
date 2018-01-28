@@ -77,7 +77,7 @@ if cfg.TRAIN.USE_FLIPPED:
 
 Fast-RCNN选择了VGG-16的卷积网络结构，并将最后一层的max pooling换成了roi pooling。经过两层全连接和Dropout后，接了一个双任务的loss，分别用于分类和位置精校。
 
-![](/assets/Fast-RCNN_2.png)
+###### 图1： Fast-RCNN算法流程![](/assets/Fast-RCNN_1.png)
 
 #### 2.2 ROI pooling 层
 
@@ -110,6 +110,8 @@ $$
 
 
 其中
+
+
 $$
 s
 mooth_{L_1}(x) = \begin{cases}
@@ -122,6 +124,8 @@ $$
 smooth L1的形状类似于二次曲线。
 
 smooth L1同样以layer的形式定义在了caffe的源码中 `/src/caffe/layers/smooth_L1_loss_layer.cpp`
+
+###### smooth L1 曲线
 
 ![](/assets/Fast-RCNN_3.png)
 
@@ -169,7 +173,7 @@ layer {
 
 在Fast-RCNN中，设每个batch的大小是R。在抽样时，每次随机选择N个图片，每张图片中随机选择R/N个候选区域，在实验中N=2，R=128。对候选区域进行抽样时，选取25%的正样本（和ground truth的IoU大于0.5），75%的负样本。
 
-3. 物体检测
+1. 物体检测
 
 使用selective search输入图像中提取2000个候选区域，按照同训练样本相同的resize方法调整候选区域的大小。将所有的候选区域输入到训练好的神经网络，得到每一类的后验概率p和相对偏移r。通过预测概率给每一类一个置信度，并使用NMS对每一类确定最终候选区域。Fast-RCNN使用了奇异值分解来提升矩阵乘法的运算速度。
 
