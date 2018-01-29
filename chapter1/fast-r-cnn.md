@@ -99,9 +99,9 @@ Fast-RCNN最重要的贡献是多任务模型的提出，多任务将原来物�
 
 设$$p=\{p_0, p_1, ..., p_n\}$$_是候选区域集合，则_$$L_{cls}$$是一个K+1类的分类任务，其中输入数据是经过卷积和全连接之后提取的特征向量，输出数据是候选区域的类别（$$u$$），包括K类物体\($$u\geq 1$$\)和1类背景\($$u=0$$\)。分类任务的损失函数是softmax损失。
 
-##### 2.3.2 位置精校任务L\_{loc}
+2.3.2 位置精校任务L\_{loc}
 
-对于候选区域所属的类别u，$$v=\{v_x, v_y, v_w, v_h\}$$表示候选区域的ground-truth, $$t^u = (t^u_x, t^u_y, t^u_w, t^u_h)$$表示对候选区域的类别u（$$u\geq1$$）预测的位置。损失函数是smooth L1损失，表示为
+##### 对于候选区域所属的类别u，$$v=\{v_x, v_y, v_w, v_h\}$$表示候选区域的ground-truth, $$t^u = (t^u_x, t^u_y, t^u_w, t^u_h)$$表示对候选区域的类别u（$$u\geq1$$）预测的位置。损失函数是smooth L1损失，表示为
 
 
 $$
@@ -165,19 +165,19 @@ layer {
 
 #### 2.4 SGD训练详解
 
-2.4.1 迁移学习
+##### 2.4.1 迁移学习
 
 同Fast-RCNN一样，作者同样使用ImageNet的数据对模型进行了预训练。详细的讲，首先使用1000类的ImageNet训练一个1000类的分类器，如图2的虚线部分。然后提取模型中的特征层以及其以前的所有网络，使用Fast-RCNN的多任务模型训练网络，即图2所有的实线部分。
 
-2.4.2 Minibatch training
+##### 2.4.2 Minibatch training
 
 在Fast-RCNN中，设每个batch的大小是R。在抽样时，每次随机选择N个图片，每张图片中随机选择R/N个候选区域，在实验中N=2，R=128。对候选区域进行抽样时，选取25%的正样本（和ground truth的IoU大于0.5），75%的负样本。
 
-1. 物体检测
+### 3. 物体检测
 
 使用selective search输入图像中提取2000个候选区域，按照同训练样本相同的resize方法调整候选区域的大小。将所有的候选区域输入到训练好的神经网络，得到每一类的后验概率p和相对偏移r。通过预测概率给每一类一个置信度，并使用NMS对每一类确定最终候选区域。Fast-RCNN使用了奇异值分解来提升矩阵乘法的运算速度。
 
-#### 参考文献
+## 参考文献
 
 \[1\] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in CVPR, 2014
 
