@@ -114,13 +114,13 @@ layer {
 
 原图的候选区域$$(x_1,y_1,x_2,x_2)$$对应的特征图的区域$$(x_1', y_1', x_2', y_2')$$是:
 
-$$x_1’ = round(x_1 \times  spatial\_scale)$$
+$$x_1' = round(x_1 \times  spatial\_scale)$$
 
-$$y_1’ = round(y_1 \times  spatial\_scale)$$
+$$y_1' = round(y_1 \times  spatial\_scale)$$
 
-$$x_2’ = round(x_2 \times  spatial\_scale)$$
+$$x_2' = round(x_2 \times  spatial\_scale)$$
 
-$$y_2’ = round(y_2 \times spatial\_scale)$$
+$$y_2' = round(y_2 \times spatial\_scale)$$
 
 #### 2.3 多任务
 
