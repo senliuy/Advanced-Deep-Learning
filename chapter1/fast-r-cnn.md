@@ -91,6 +91,37 @@ $$
 $$
 
 
+selective search是在输入图像上完成的，由于所有的候选区域会共享计算，即对整张图进行卷积操作，然后将SS选择的候选区域映射到conv5特征层，最后在每一个候选区域上做ROI Pooling，如下图。
+
+![](/assets/Fast-RCNN_2.png)
+
+所以存在一个图像到conv5候选区域的映射过程，在Fast R-CNN源码中通过**卷积后，图像的相对位置不变这一特征**完成的。在Fast R-CNN使用的VGG网络中，通过max pooling做了4次stride=2的降采样，而VGG的卷积都是same卷积（卷积后图像的尺寸不变），所以特征图的尺寸变成了原来的1/16=0.625，在ROI pooling层中，spatial\_ratio便是记录的这个数据。
+
+```
+layer {
+  name: "roi_pool5"
+  type: "ROIPooling"
+  bottom: "conv5_3"
+  bottom: "rois"
+  top: "pool5"
+  roi_pooling_param {
+    pooled_w: 7
+    pooled_h: 7
+    spatial_scale: 0.0625 # 1/16
+  }
+}
+```
+
+原图的候选区域$$(x_1,y_1,x_2,x_2)$$对应的特征图的区域$$(x_1', y_1', x_2', y_2')$$是:
+
+$$x_1’ = round(x_1 \times  spatial\_scale)$$
+
+$$y_1’ = round(y_1 \times  spatial\_scale)$$
+
+$$x_2’ = round(x_2 \times  spatial\_scale)$$
+
+$$y_2’ = round(y_2 \times spatial\_scale)$$
+
 #### 2.3 多任务
 
 Fast-RCNN最重要的贡献是多任务模型的提出，多任务将原来物体检测的多阶段训练简化成一个端到端（end-to-end）的模型。Fast-RCNN有两个任务组成，一个任务是用来对候选区域进行分类，另外一个回归器是用来矫正候选区域的位置。
@@ -99,7 +130,7 @@ Fast-RCNN最重要的贡献是多任务模型的提出，多任务将原来物�
 
 设$$p=\{p_0, p_1, ..., p_n\}$$_是候选区域集合，则_$$L_{cls}$$是一个K+1类的分类任务，其中输入数据是经过卷积和全连接之后提取的特征向量，输出数据是候选区域的类别（$$u$$），包括K类物体\($$u\geq 1$$\)和1类背景\($$u=0$$\)。分类任务的损失函数是softmax损失。
 
-2.3.2 位置精校任务L\_{loc}
+2.3.2 位置精校任务$$L_{loc}$$
 
 ##### 对于候选区域所属的类别u，$$v=\{v_x, v_y, v_w, v_h\}$$表示候选区域的ground-truth, $$t^u = (t^u_x, t^u_y, t^u_w, t^u_h)$$表示对候选区域的类别u（$$u\geq1$$）预测的位置。损失函数是smooth L1损失，表示为
 
