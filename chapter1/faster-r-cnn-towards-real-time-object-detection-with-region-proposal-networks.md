@@ -165,6 +165,10 @@ shift_y = np.arange(0, height) * self._feat_stride
 
 能这样做的原因是因为1\*1卷积替代了全连接，这种只有卷积的网络结构叫做全卷积。
 
+1.4 RPN的训练
+
+RPN使用的是"Image-centric"的采样方法，即每次采样少量的图片，然后从图片中随机采样正负锚点样本。具体的，RPN每次随机采样一张图片，然后再每张图片中采样256个锚点，并尽量保证正负样本的比例是1：1。
+
 ## 参考文献
 
 \[1\] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in CVPR, 2014
