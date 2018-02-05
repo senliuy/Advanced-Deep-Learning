@@ -10,13 +10,9 @@ CTPN和Faster-RCNN \[1\] 出自同系，根据文本区域的特点做了专门�
 2. 场景文字检测有明显的序列特征，而物体检测没有这些特征；
 3. 和物体检测相比，场景文字检测含有更多的小尺寸的物体。
 
-
-
 参考文献
 
 \[1\] Ren, S., He, K., Girshick, R., Sun, J.: Faster R-CNN: Towards real-time object detection with region proposal networks \(2015\), in Neural Information Processing Systems \(NIPS\)
 
-\[2\] Wolf, C., Jolion, J.: Object count / area graphs for the evaluation of object detec- tion and segmentation algorithms. International Journal of Document Analysis 8, 280–296 \(2006\) 
-
-
+\[2\] Wolf, C., Jolion, J.: Object count / area graphs for the evaluation of object detection and segmentation algorithms. International Journal of Document Analysis 8, 280–296 \(2006\)
 
