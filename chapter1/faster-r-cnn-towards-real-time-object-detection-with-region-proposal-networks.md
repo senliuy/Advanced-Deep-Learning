@@ -188,7 +188,7 @@ RPN使用的是"Image-centric"的采样方法，即每次采样少量的图片�
 
 一些超参数设置如下，使用Image-Net的结果初始化网络，前6k代，学习率是0.001，后20k代，学习率0.0001。遗忘因子momentum是0.9，权值衰减系数是0.0006。
 
-## 2. RPN和Fast R-CNN的Alternating Training
+## 2. RPN和Fast R-CNN的训练
 
 由于RPN使用Fast R-CNN的网络模型可以更好的提取候选区域，而Fast R-CNN可以使用RPN的产生的候选区域进行物体检测，两者相辅相成，作者尝试了多种模型训练策略，并最终采用了Alternating Training.
 
@@ -202,7 +202,13 @@ Alternating Training 可以分成4个步骤
 第2条中我们讲到了使用RPN产生候选区域，下面介绍这一过程。在第一部分我们指出RPN的输出是锚点的正负评分以及预测坐标，在计算候选区域时
 
 1. 所有的在图像内部的锚点均输入训练好的网络模型，得到样本评分和预测坐标；
-2. 使用NMS根据评分过滤锚点，NMS的IoU阈值固定为0.7，之后产生的便是候选区域
+2. 使用NMS根据评分过滤锚点，NMS的IoU阈值固定为0.7，之后产生的便是候选区域。
+
+在作者开源的代码中，作者使用的是近似联合训练（Approximate joint training），即将RPN和Fast R-CNN的损失函数简单的加在一起，作为一个多任务的损失函数进行学习。作者也指出，这种方法忽略了Fast R-CNN将RPN的输出作为其输入的这一事实。实际上，Faster R-CNN的RPN和Fast R-CNN并不是一个并行的多任务的关系，而是一个串行级联的关系，图6说明了并行多任务和串行级联的区别，在何凯明的另外一篇论文中专门介绍了该如何处理这种多任务的问题。
+
+![](/assets/Fast R-CNN_6.png)
+
+###### 图6：并行多任务和串行多任务的区别
 
 ## 3. Faster R-CNN的检测
 
@@ -221,4 +227,6 @@ Alternating Training 可以分成4个步骤
 \[5\] K. He, X. Zhang, S. Ren, and J. Sun, “Spatial pyramid pooling in deep convolutional networks for visual recognition,” in European Conference on Computer Vision \(ECCV\), 2014.
 
 \[6\] J. Long, E. Shelhamer, and T. Darrell, “Fully convolutional networks for semantic segmentation,” in IEEE Conference on Computer Vision and Pattern Recognition \(CVPR\), 2015.
+
+\[7\] J. Dai, K. He, and J. Sun, “Instance-aware semantic segmentation via multi-task network cascades,” arXiv:1512.04412, 2015.
 
