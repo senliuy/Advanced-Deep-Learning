@@ -81,7 +81,7 @@ $$t_x^* = (x^*-x_a)/w_a, t_y^* = (y^*-y_a)/h_a$$
 
 $$t_w^* = log(w^*/w_a), t_h^* = (h^*/h_a)$$
 
-loss $$L_{reg}(t_i, t_i^*)$$使用的是Fast R-CNN中定义的smooth L1 loss。上面的参数化可以理解为预测ground truth和锚点位置的相对尺寸和位置。
+损失函数 $$L_{reg}(t_i, t_i^*)$$使用的是Fast R-CNN中定义的smooth L1 loss。上面的参数化可以理解为预测ground truth和锚点位置的相对尺寸和位置。
 
 ##### 1.2.3 损失函数
 
