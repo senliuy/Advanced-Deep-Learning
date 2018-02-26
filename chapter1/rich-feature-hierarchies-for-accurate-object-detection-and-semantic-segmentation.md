@@ -107,7 +107,7 @@ Selective Search 伪代码 区域的合并规则是：
 
 #### 标签
 
-回归器使用的是相对位置，$$G=\{G_x, G_y, G_w, G_h\}$$ 表示Ground Truth的坐标和长宽，$$P = \{P_x, P_y, P_w, P_h\}$$表示候选区域的大小和长宽。相对的回归目标T={}的计算方式如下：
+回归器使用的是相对位置，$$G=\{G_x, G_y, G_w, G_h\}$$ 表示Ground Truth的坐标和长宽，$$P = \{P_x, P_y, P_w, P_h\}$$表示候选区域的大小和长宽。相对的回归目标$$T=\{t_x, t_y, t_w, t_h\}$$的计算方式如下：
 
 $$t_x = (G_x-P_x)/P_w$$
 
@@ -131,7 +131,7 @@ $$t_h = log(G_y/P_h)$$
 
 ### 4.2 SVM训练
 
-SVM的训练使用了Hard Negative Mining, 对于目标检测中我们会事先标记处ground truth，然后再算法中会生成一系列proposal，这些proposal有跟标记的ground truth重合的也有没重合的，那么重合度（IOU）超过一定阈值（通常0.5）的则认定为是正样本，以下的则是负样本。然后扔进网络中训练。However，这也许会出现一个问题那就是正样本的数量远远小于负样本，这样训练出来的分类器的效果总是有限的，会出现许多false positive，把其中得分较高的这些false positive当做所谓的Hard negative，既然mining出了这些Hard negative，就把这些扔进网络再训练一次，从而加强分类器判别假阳性的能力。
+SVM的训练使用了Hard Negative Mining, 对于目标检测中我们会事先标记处ground truth，然后在算法中会生成一系列proposal，这些proposal有跟标记的ground truth重合的也有没重合的，那么重合度（IOU）超过一定阈值（通常0.5）的则认定为是正样本，以下的则是负样本。然后扔进网络中训练。然而，这也许会出现一个问题那就是正样本的数量远远小于负样本，这样训练出来的分类器的效果总是有限的，会出现许多false positive，把其中得分较高的这些false positive当做所谓的Hard negative，既然mining出了这些Hard negative，就把这些扔进网络再训练一次，从而加强分类器判别假阳性的能力。
 
 ### 4.3 岭回归训练
 
@@ -141,7 +141,7 @@ SVM的训练使用了Hard Negative Mining, 对于目标检测中我们会事先�
 $$
 w_{\star} = argmin_{\hat{w}_{\star}}\sum_{i}^{N}(t_{\star}^i - \hat{w}^T_{\star}\phi_{5}(P^i))^2 + \lambda ||\hat{w}_{\star}||^2
 $$
-
+其中$$\phi_5(P^i)$$表示候选区域$$P^i$$对应的Pool5层特特征向量。
 
 # 参考文献
 
