@@ -1,6 +1,6 @@
 # Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Networks
 
-本文主要参考自Hannun等人在distill.pub发表的文章（https://distill.pub/2017/ctc/），感谢Hunnun等人对CTC的梳理。
+本文主要参考自Hannun等人在distill.pub发表的文章（[https://distill.pub/2017/ctc/](https://distill.pub/2017/ctc/)），感谢Hunnun等人对CTC的梳理。
 
 ## 简介
 
