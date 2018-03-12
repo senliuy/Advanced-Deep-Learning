@@ -7,7 +7,7 @@
 1. 保存中间变量需要使用大量的硬盘存储空间
 2. 不能根据分类和矫正结果调整卷积网络权值，会一定程度的限制网络精度。
 
-作者通过多任务的方式将R-CNN和SPP-net整合成一个流程。这样避免和中间存储空间的使用，同时也带来分类和检测精度的提升。Fast R-CNN的代码也是非常优秀的一份代码，强烈推荐参考学习：[https://github.com/rbgirshick/fast-rcnn。](https://github.com/rbgirshick/fast-rcnn。)
+作者通过多任务的方式将R-CNN和SPP-net整合成一个流程，同时也带来分类和检测精度的提升吗，通过Softmax替代SVM的分类任务省去了中间变量的使用。Fast R-CNN的代码也是非常优秀的一份代码，强烈推荐参考学习：[https://github.com/rbgirshick/fast-rcnn。](https://github.com/rbgirshick/fast-rcnn。)
 
 同SPP-net一样，Fast R-CNN将整张图像输入到卷积网络用语提取特征，将Selective Search选定的候选区域坐标映射到卷积层。使用ROI 池化层 \(单尺度的SPP层\)将不同尺寸的候选区域特征窗口映射成相同尺寸的特征向量。经过两层全连接后将得到的特征分支成两个输出层，一个N+1类的softmax用于分类，一个bbox 回归器用于位置精校。这两个任务的损失共同用于调整网络的参数。
 

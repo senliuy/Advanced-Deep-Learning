@@ -7,4 +7,6 @@
   * [Fast R-CNN](chapter1/fast-r-cnn.md)
   * [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.md)
   * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
+* [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
+  * [Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Networks ](di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.md)
 

@@ -25,7 +25,7 @@ Fast R-CNN已经在上一篇文章分析过，下面我们结合论文和源码�
 
 ### 1. Region Proposal Networks
 
-首先我们要确定RPN网络输入与输出，RPN网络输入是任意尺寸的图像和，输出是候选区域和它们的评分（可以理解为置信度），当然，由于RPN是一个多任务的监督学习，所以我们也需要图片的Ground Truth。谈到RPN的多任务，RPN的任务有两个，任务一是用来判断当前锚点是前景的概率和是背景的概率，所以是**两**个二分类问题[^1]；任务二用来预测锚点中前景区域的坐标$$(x,y,w,h)$$，所以是一个回归任务，该回归任务预测四个值。RPN对每一组不同尺度的锚点区域，都会单独的训练一组多损失任务，且这些任务参数不共享。这么做的原因我们会在锚点的生成部分进行讲解。所以，假设有k个锚点，RPN网络是一个有6\*k个输出的模型。反映到下面源码中
+首先我们要确定RPN网络输入与输出，RPN网络输入是任意尺寸的图像，输出是候选区域和它们的评分（可以理解为置信度），当然，由于RPN是一个多任务的监督学习，所以我们也需要图片的Ground Truth。谈到RPN的多任务，RPN的任务有两个，任务一是用来判断当前锚点是前景的概率和是背景的概率，所以是**两**个二分类问题[^1]；任务二用来预测锚点中前景区域的坐标$$(x,y,w,h)$$，所以是一个回归任务，该回归任务预测四个值。RPN对每一组不同尺度的锚点区域，都会单独的训练一组多损失任务，且这些任务参数不共享。这么做的原因我们会在锚点的生成部分进行讲解。所以，假设有k个锚点，RPN网络是一个有6\*k个输出的模型。反映到下面源码中
 
 ```
 layer {
@@ -99,7 +99,7 @@ $$
 
 如何生成锚点是Faster R-CNN最重要也是最难理解的部分，网上很多博客的理解并不正确或者讲解的不够透彻，下面我们来开始详细分析这一部分。
 
-首先，RPN的滑窗（步长是1）是在特征层即conv5层进行的，然后通过3\*3\*256的卷积核将该窗口内容映射为特征向量（下图中的256-d即为特征向量）。
+首先，RPN的滑窗（步长是1）是在特征层即conv5层进行的，然后通过3\*3\*256\(ZF-Net是256，VGG-16是512\)的卷积核将该窗口内容映射为特征向量（下图中的256-d即为特征向量）。
 
 ![](/assets/Faster R-CNN_2.png)
 
@@ -178,7 +178,23 @@ shift_y = np.arange(0, height) * self._feat_stride
 
 ###### 图5： RPN的输出层
 
-一个重要的问题是同一个中心点产生9个不同尺度的锚点，每个锚点对应一个多任务的分支，那么怎么做到不同尺寸的锚点训练不同的分支的呢？在损失函数的计算中，负样本不参与模型的训练（乘以了$$p_i^*$$ = 0），而样本的正负是由锚点决定的。久而久之，当我们能够比较正确的判断预测候选区域的坐标时，也就决定了该训练哪个分支。
+一个重要的问题是同一个中心点产生9个不同尺度的锚点，每个锚点对应一个多任务的分支，那么怎么做到不同尺寸的锚点训练不同的分支的呢？在损失函数的计算中，所有锚点的特征向量均参与计算概率和位移， 只是根据采样的样本来调整一部分分支的权值。
+
+```
+    def train_model(self, sess, max_iters):
+        """Network training loop."""
+
+        data_layer = get_data_layer(self.roidb, self.imdb.num_classes)
+
+        # RPN
+        # classification loss
+        rpn_cls_score = tf.reshape(self.net.get_output('rpn_cls_score_reshape'),[-1,2])
+        rpn_label = tf.reshape(self.net.get_output('rpn-data')[0],[-1])
+        # 提取采样的样本
+        rpn_cls_score = tf.reshape(tf.gather(rpn_cls_score,tf.where(tf.not_equal(rpn_label,-1))),[-1,2])
+        rpn_label = tf.reshape(tf.gather(rpn_label,tf.where(tf.not_equal(rpn_label,-1))),[-1])
+        rpn_cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=rpn_cls_score, labels=rpn_label))
+```
 
 能这样做的原因是因为1\*1卷积替代了全连接，这种只有卷积的网络结构叫做全卷积（PS: 先挖一坑）。
 
