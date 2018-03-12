@@ -79,5 +79,13 @@ Z = \{\epsilon, B, \epsilon, E, \epsilon, L, \epsilon}
 
 \[CTC\_7.png\]
 
+上图分成两种情况
 
+Case 1：
+
+如果\alpha\_{s,t} = \epsilon， 则\alpha\_{s,t}只能由前一个空格\alpha\_{s,t-1}或者其本身\alpha\_{s,t-1}得到，如果\alpha\_{s,t}不等于\epsilon，但是\alpha\_{s,t}为连续字符的第二个，即\alpha\_{s} = \alpha\_{s-2}，则\alpha\_{s,t}只能由前一个空格\alpha\_{s,t-1}或者其本身\alpha\_{s,t-1}得到，而不能由前一个字符得到，因为这样做会将连续两个相同的字符合并成一个。
+
+\alpha\(t,s\) = 
+
+Case 2:
 
