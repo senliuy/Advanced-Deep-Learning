@@ -121,5 +121,9 @@ Beam Search是寻找全局最优值和Greedy Search在查找时间和模型精�
 2. 单调对齐：CTC的另外一个约束是输入$$X$$与输出$$Y$$之间的单调对齐，在OCR和语音识别中，这种约束是成立的。但是在一些场景中例如机器翻译，这个约束便无效了。
 3. 多对一映射：CTC的又一个约束是输入序列$$X$$的长度大于标签数据$$Y$$的长度，但是对于$$Y$$的长度大于$$X$$的长度的场景，CTC便失效了。
 
+## 参考文献
 
+\[1\] Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Networks. Graves, A., Fernandez, S., Gomez, F. and Schmidhuber, J., 2006. Proceedings of the 23rd international conference on Machine Learning, pp. 369--376. DOI: 10.1145/1143844.1143891
+
+\[2\] Sequence Modeling with CTC. Hunnun, Awni, Distill, 2017
 
