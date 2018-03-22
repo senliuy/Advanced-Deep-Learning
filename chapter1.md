@@ -1,3 +1,12 @@
-# First Chapter
+# 第一章：物体检测
 
-GitBook allows you to organize your book into chapters, each chapter is stored in a separate file like this one.
+物体检测是计算机视觉一个非常重要的应用方向，从物体分类竞赛中的物体定位，到自动驾驶的行人检测，再到OCR应用中的场景文字检测等等，物体检测均发挥了非常重要的作用。
+
+通过分析从R-CNN到Faster R-CNN的算法升级流程，我们学到的不仅仅是从精度和速度方向优化算法的技巧。更重要的，我们要从中学习到作者分析问题，解决问题的思路。例如为了提升精度，引入了迁移学习，多尺度的金字塔池化，端到端的训练模型方案；为了提升速度，提出了卷积元素的共享，提出了RPN用于后续区域的提取。
+
+除了优化思路，深度学习的重要思想均在这一系列的算法中得到应用，例如迁移学习（在ILSVRC数据集上的无监督预训练），Attention（RPN产生候选区域），RNN（用于捕捉文本的序列特征）。
+
+在这章的前四篇论文中，我们会结合论文和源码介绍在物体检测中R-CNN到Faster R-CNN的算法流程。而第五篇CTPN是Faster R-CNN在场景文字检测的一个典型应用。
+
+
+
