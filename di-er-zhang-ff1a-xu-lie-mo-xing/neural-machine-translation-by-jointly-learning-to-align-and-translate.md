@@ -14,19 +14,19 @@
 
 ### 1.1 Encoder
 
-双向RNN含有正向和反向两个方向，对于含有$$T$$个时间片的源句子$$X^T = \{x_1, x_2, ..., x_T\}$$，正向的输入数据是$$x_1 \rightarrow x_1 \rightarrow ... \rightarrow x_T$$，第$$t$$个时间片的隐节点$$\overrightarrow{h}_t$$表示为
+双向RNN含有正向和反向两个方向，对于含有$$T$$个时间片的源句子$$X^T = \{x_1, x_2, ..., x_T\}$$，正向的输入数据是$$x_1 \rightarrow x_1 \rightarrow ... \rightarrow x_T$$，第$$t$$个时间片的隐节点$$\vec{h}_t$$表示为
 
 
 $$
-\overrightarrow{h}_{<t>} = f(\overrightarrow{h}_{<t-1>}, x_{<t>})
+\vec{h}_{<t>} = f(\vec{h}_{<t-1>}, x_{<t>})
 $$
 
 
-反向数据的输入序列是$$x_T \rightarrow x_{T-1} \rightarrow ... \rightarrow x_1$$，第$$t$$个时间片的隐节点$$\overleftarrow{h}_t$$表示为
+反向数据的输入序列是$$x_T \rightarrow x_{T-1} \rightarrow ... \rightarrow x_1$$，第$$t$$个时间片的隐节点$$\vec{h}'_t$$表示为
 
 
 $$
-\overleftarrow{h}_{<t>} = f(\overleftarrow{h}_{<t+1>}, x_{<t>})
+\vec{h}'_{<t>} = f(\vec{h}'_{<t+1>}, x_{<t>})
 $$
 
 
@@ -34,7 +34,7 @@ $$
 
 
 $$
-h_{<t>} = [\overrightarrow{h}_t; \overleftarrow{h}_t]^T
+h_{<t>} = [\vec{h}_t; \vec{h}'_t]^T
 $$
 
 
