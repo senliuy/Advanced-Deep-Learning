@@ -36,7 +36,7 @@ h_{<t>} = f(h_{<t-1>}, x_{<t>})
 $$
 
 
-经过$$T$$个时间片后，得到一个$$h\times1$$的特征向量$$\mathbf{c}$$，其中$$h$$是隐层节点的节点数。
+经过$$T$$个时间片后，得到一个$$h\times1$$的特征向量$$\mathbf{c}$$，其中$$h$$是隐层节点的节点数。$$f(.)$$是一个RNN单元，在这篇论文中，使用的是GRU，GRU的详细内容会在下面详细讲解。
 
 #### 1.2 解码
 
@@ -114,5 +114,5 @@ GRU的两个门机制是可以通过SGD和整个网络的参数共同调整的�
 
 \[1\] Cho K, Van Merriënboer B, Gulcehre C, et al. Learning phrase representations using RNN encoder-decoder for statistical machine translation\[J\]. arXiv preprint arXiv:1406.1078, 2014.
 
-\[2\] https://zhuanlan.zhihu.com/p/28297161
+\[2\] [https://zhuanlan.zhihu.com/p/28297161](https://zhuanlan.zhihu.com/p/28297161)
 
