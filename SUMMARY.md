@@ -12,4 +12,6 @@
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
   * [Neural Machine Translation by Jointly Learning to Align and Translate ](di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.md)
   * [Sequence to Sequence Learning with Neural Networks](di-er-zhang-ff1a-xu-lie-mo-xing/sequence-to-sequence-learning-with-neural-networks.md)
+* [第三章：语音识别](di-san-zhang-ff1a-yu-yin-shi-bie.md)
+  * [Speech Recognition with Deep Recurrent Neural Network](di-san-zhang-ff1a-yu-yin-shi-bie/speech-recognition-with-deep-recurrent-neural-network.md)
 
