@@ -1,2 +1,34 @@
-About Long Short Term Memory
+# About Long Short Term Memory
+
+## 1. 背景
+
+### Recurrent Neural Networks \(RNN\)
+
+在使用深度学习处理时序问题时，RNN是最常使用的模型之一。RNN之所以在时序数据上有着优异的表现是因为RNN在t时间片时会将t-1时间片的隐节点作为当前时间片的输出，也就是RNN具有图1的结构。这样有效的原因是之前时间片的信息也用于计算当前时间片的内容，而传统模型的隐节点的输出只取决于当前时间片的输入特征。
+
+\[LSTM\_1.png\]
+
+RNN的数学表达式可以表示为
+
+```
+h_t = \sigma(x_t*w_{xt} + h_{t-1} * w_{ht} + b)
+```
+
+而传统的DNN的隐节点表示为
+
+```
+h_t = \sigma(x_t*w_{xt} + b)
+```
+
+RNN的该特性也使RNN在很多学术和工业前景，例如OCR，语音识别，股票预测等领域上有了十足的进展。
+
+### 长期依赖
+
+在深度学习领域中（尤其是RNN），“长期依赖“问题是普遍存在的
+
+reference
+
+
+
+
 
