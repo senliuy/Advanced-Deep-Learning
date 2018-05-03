@@ -39,7 +39,7 @@ eg2: The cats, which already ate a bunch of food, were full.
 
 LSTM的全称是Long Short Term Memory，顾名思义，它具有记忆长短期信息的能力的神经网络。LSTM首先在1997年由Hochreiter & Schmidhuber \[1\] 提出，由于深度学习在2012年的兴起，LSTM又经过了若干代大牛[^1]的发展，由此便形成了比较系统且完整的LSTM框架，并且在很多领域得到了广泛的应用。本文着重介绍深度学习时代的LSTM。
 
-
+LSTM提出的动机是为了解决上面我们提到的长期依赖问题。传统的RNN节点输出仅由权值，偏置以及激活函数决定（图3）
 
 # reference
 
