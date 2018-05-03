@@ -28,7 +28,11 @@ RNN的该特性也使RNN在很多学术和工业前景，例如OCR，语音识�
 
 ```
 eg1: The cat, which already ate a bunch of food, was full.
+      |   |     |      |     |  |   |   |   |     |   |
+     t0  t1    t2      t3    t4 t5  t6  t7  t8    t9 t10
 eg2: The cats, which already ate a bunch of food, were full.
+      |   |      |      |     |  |   |   |   |     |    |
+     t0  t1     t2     t3    t4 t5  t6  t7  t8    t9   t10
 ```
 
 我们想预测'full'之前系动词的单复数情况，显然full是取决于第二个单词’cat‘的单复数情况，而非其前面的单词food。根据图1展示的RNN的结构，随着数据时间片的增加，RNN丧失了学习连接如此远的信息的能力（图2）。
@@ -40,6 +44,10 @@ eg2: The cats, which already ate a bunch of food, were full.
 LSTM的全称是Long Short Term Memory，顾名思义，它具有记忆长短期信息的能力的神经网络。LSTM首先在1997年由Hochreiter & Schmidhuber \[1\] 提出，由于深度学习在2012年的兴起，LSTM又经过了若干代大牛[^1]的发展，由此便形成了比较系统且完整的LSTM框架，并且在很多领域得到了广泛的应用。本文着重介绍深度学习时代的LSTM。
 
 LSTM提出的动机是为了解决上面我们提到的长期依赖问题。传统的RNN节点输出仅由权值，偏置以及激活函数决定（图3）
+
+\[LSTM3\]
+
+而LSTM之所以能够解决RNN的长期依赖问题，是因为LSTM引入了门（gate）机制用于控制特征的流通和损失。对于上面的例子，LSTM可以做到
 
 # reference
 
