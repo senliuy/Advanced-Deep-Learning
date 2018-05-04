@@ -20,6 +20,12 @@ h_t = \sigma(x_t*w_{xt} + h_{t-1} * w_{ht} + b)
 h_t = \sigma(x_t*w_{xt} + b)
 ```
 
+RNN和DNN在该时刻的预测值由h\_t经由一个神经网络层计算得到
+
+```
+\hat{y}_t = \sigma(h_t * w + b)
+```
+
 RNN的该特性也使RNN在很多学术和工业前景，例如OCR，语音识别，股票预测等领域上有了十足的进展。
 
 ### 长期依赖\(Long Term Dependencies\)
@@ -73,9 +79,11 @@ C_t = f_t * C_{t-1} + i_t * \tilde{C}_t
 
 \[LSTM\_8\]
 
+i\_t用于控制\tilde{C}\_t的哪些特征用于更新C\_t，使用方式和f\_t相同（图9）。
 
+\[LSTM\_9\]
 
-i\_t用于控制\tilde{C}\_t的哪些特征用于更新C\_t。
+最后，我们计算
 
 # reference
 
