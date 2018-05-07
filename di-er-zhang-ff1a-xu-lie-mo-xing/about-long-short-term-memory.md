@@ -61,9 +61,7 @@ eg2: The cats, which already ate a bunch of food, were full.
 
 ### 梯度消失/爆炸
 
-梯度消失和梯度爆炸是困扰RNN模型训练的关键原因之一，产生梯度消失和梯度爆炸是由于RNN的权值矩阵迭代相乘导致的，相同函数的多次组合会导致极端的非线性行为。
-
-
+梯度消失和梯度爆炸是困扰RNN模型训练的关键原因之一，产生梯度消失和梯度爆炸是由于RNN的权值矩阵循环相乘导致的，相同函数的多次组合会导致极端的非线性行为。梯度消失和梯度爆炸主要存在RNN中，因为RNN中每个时间片使用相同的权值矩阵。对于一个DNN，虽然也涉及多个矩阵的相乘，但是通过精心设计权值的比例可以避免梯度消失和梯度爆炸的问题 \[2\]。
 
 处理梯度爆炸可以采用梯度截断的方法。所谓梯度截断是指将梯度值超过阈值$$\theta$$的梯度手动降到$$\theta$$。虽然梯度截断会一定程度上改变梯度的方向，但梯度截断的方向依旧是朝向损失函数减小的方向。
 
@@ -122,6 +120,8 @@ $$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算�
 # reference
 
 \[1\] Hochreiter, S, and J. Schmidhuber. “Long short-term memory.” Neural Computation 9.8\(1997\):1735-1780.
+
+\[2\] Sussillo, D. \(2014\). Random walks: Training very deep nonlinear feed-forward networks with smart initialization.CoRR,abs/1412.6558. 248, 259, 260, 344
 
 [^1]: Felix Gers, Fred Cummins, Santiago Fernandez, Justin Bayer, Daan Wierstra, Julian Togelius, Faustino Gomez, Matteo Gagliolo, and Alex Gloves
 
