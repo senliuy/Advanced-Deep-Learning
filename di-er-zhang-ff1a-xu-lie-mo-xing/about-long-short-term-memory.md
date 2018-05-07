@@ -117,13 +117,15 @@ $$i_t$$用于控制$$\tilde{C}_t$$的哪些特征用于更新$$C_t$$，使用方
 
 ![](/assets/LSTM_10.png)
 
-$$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算方式和$$f_t$$以及$$i_t$$相同。
+$$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算方式和$$f_t$$以及$$i_t$$相同。在\[3\]的论文中指出，通过将$$b_o$$的均值初始化为1，可以使LSTM达到同GRU近似的效果。
 
 # reference
 
 \[1\] Hochreiter, S, and J. Schmidhuber. “Long short-term memory.” Neural Computation 9.8\(1997\):1735-1780.
 
 \[2\] Sussillo, D. \(2014\). Random walks: Training very deep nonlinear feed-forward networks with smart initialization.CoRR,abs/1412.6558. 248, 259, 260, 344
+
+\[3\] Gers F A, Schmidhuber J, Cummins F. Learning to forget: Continual prediction with LSTM\[J\]. 1999.
 
 [^1]: Felix Gers, Fred Cummins, Santiago Fernandez, Justin Bayer, Daan Wierstra, Julian Togelius, Faustino Gomez, Matteo Gagliolo, and Alex Gloves
 
