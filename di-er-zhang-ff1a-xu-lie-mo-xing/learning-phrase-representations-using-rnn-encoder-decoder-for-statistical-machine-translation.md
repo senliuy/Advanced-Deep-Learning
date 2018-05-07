@@ -114,5 +114,7 @@ GRU的两个门机制是可以通过SGD和整个网络的参数共同调整的�
 
 \[1\] Cho K, Van Merriënboer B, Gulcehre C, et al. Learning phrase representations using RNN encoder-decoder for statistical machine translation\[J\]. arXiv preprint arXiv:1406.1078, 2014.
 
-\[2\] [https://zhuanlan.zhihu.com/p/28297161](https://zhuanlan.zhihu.com/p/28297161)
+\[2\] Sutskever I, Vinyals O, Le Q V. Sequence to sequence learning with neural networks\[C\]//Advances in neural information processing systems. 2014: 3104-3112.
+
+\[3\] [https://zhuanlan.zhihu.com/p/28297161](https://zhuanlan.zhihu.com/p/28297161)
 
