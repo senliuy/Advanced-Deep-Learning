@@ -119,6 +119,10 @@ $$i_t$$用于控制$$\tilde{C}_t$$的哪些特征用于更新$$C_t$$，使用方
 
 $$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算方式和$$f_t$$以及$$i_t$$相同。在\[3\]的论文中指出，通过将$$b_o$$的均值初始化为1，可以使LSTM达到同GRU近似的效果。
 
+## 3. 其他LSTM
+
+联想之前介绍的GRU \[4\]，LSTM的隐层节点的门的数量和工作方式貌似是非常灵活的，那么是否存在一个最好的结构模型或者比LSTM和GRU性能更好的模型呢？Rafal\[5\] 等人采集了能采集到的100个最好模型并通过变异的形式
+
 # reference
 
 \[1\] Hochreiter, S, and J. Schmidhuber. “Long short-term memory.” Neural Computation 9.8\(1997\):1735-1780.
@@ -126,6 +130,10 @@ $$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算�
 \[2\] Sussillo, D. \(2014\). Random walks: Training very deep nonlinear feed-forward networks with smart initialization.CoRR,abs/1412.6558. 248, 259, 260, 344
 
 \[3\] Gers F A, Schmidhuber J, Cummins F. Learning to forget: Continual prediction with LSTM\[J\]. 1999.
+
+\[4\] Cho K, Van Merriënboer B, Gulcehre C, et al. Learning phrase representations using RNN encoder-decoder for statistical machine translation\[J\]. arXiv preprint arXiv:1406.1078, 2014.
+
+\[5\] Jozefowicz R, Zaremba W, Sutskever I. An empirical exploration of recurrent network architectures\[C\]//International Conference on Machine Learning. 2015: 2342-2350.
 
 [^1]: Felix Gers, Fred Cummins, Santiago Fernandez, Justin Bayer, Daan Wierstra, Julian Togelius, Faustino Gomez, Matteo Gagliolo, and Alex Gloves
 
