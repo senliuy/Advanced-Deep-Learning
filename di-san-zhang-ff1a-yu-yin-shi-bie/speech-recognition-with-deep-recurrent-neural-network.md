@@ -10,7 +10,11 @@
 
 ## 算法细节
 
+在这篇论文涉及的实验里，使用了MFCC提取音频特征，多层双向RNN \[2\] 编码特征（节点使用LSTM），CTC构建声学模型。
+
 ## Reference
 
 \[1\] Graves A, Mohamed A, Hinton G. Speech recognition with deep recurrent neural networks\[C\]//Acoustics, speech and signal processing \(icassp\), 2013 ieee international conference on. IEEE, 2013: 6645-6649.
+
+\[2\] 
 
