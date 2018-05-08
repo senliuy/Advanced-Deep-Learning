@@ -1,4 +1,4 @@
 # 前言
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.
+本书是作者在学习和使用深度学习过程中总结的博客性质的文章。
 
