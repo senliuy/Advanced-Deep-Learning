@@ -10,11 +10,11 @@
 
 ## 算法细节
 
-在这篇论文涉及的实验里，使用了MFCC提取音频特征，多层双向RNN \[2\] 编码特征（节点使用LSTM），CTC构建声学模型。
+在这篇论文涉及的实验里，使用了MFCC提取音频特征，多层双向RNN \[2\] 编码特征（节点使用LSTM），CTC构建声学模型。由于CTC没有构建语音模型的能力，论文使用了RNN Transducer联合训练声学模型和语言模型。
 
 ## Reference
 
 \[1\] Graves A, Mohamed A, Hinton G. Speech recognition with deep recurrent neural networks\[C\]//Acoustics, speech and signal processing \(icassp\), 2013 ieee international conference on. IEEE, 2013: 6645-6649.
 
-\[2\] 
+\[2\] M. Schuster and K. K. Paliwal, “Bidirectional Recurrent Neural Networks,” IEEE Transactions on Signal Processing, vol. 45, pp. 2673–2681, 1997.
 
