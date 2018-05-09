@@ -16,7 +16,13 @@
 
 
 
-## Reference
+### 特征层
+
+首先，作者使用MFCC将音波的每个时间片转换成一个39维的特征向量。MFCC（Mel-Frequency Cepstral Coefficients）的全称是梅尔频率倒谱系数，是一种基于傅里叶变换的提取音频特征的方法。之后也有使用一维卷积提取特征的方法，由于MFCC和深度学习关系不大，需要详细了解的可以自行查阅相关文档，在这里可以简单理解为一种对音频的特征提取的方法。
+
+
+
+Reference
 
 \[1\] Graves A, Mohamed A, Hinton G. Speech recognition with deep recurrent neural networks\[C\]//Acoustics, speech and signal processing \(icassp\), 2013 ieee international conference on. IEEE, 2013: 6645-6649.
 
