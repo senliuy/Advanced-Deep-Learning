@@ -14,11 +14,11 @@
 
 ###### 图2：基于深度学习的语音识别架构
 
-### 特征层
+###  MFCC
 
 首先，作者使用MFCC将音波的每个时间片转换成一个39维的特征向量。MFCC（Mel-Frequency Cepstral Coefficients）的全称是梅尔频率倒谱系数，是一种基于傅里叶变换的提取音频特征的方法。之后也有使用一维卷积提取特征的方法，由于MFCC和深度学习关系不大，需要详细了解的可以自行查阅相关文档，在这里可以简单理解为一种对音频的特征提取的方法。
 
-### 时序特征
+### 多层双向LSTM
 
 在这篇实验中，作者使用多层双向LSTM提取音频的时序特征，关于LSTM能解决RNN的梯度消失/爆炸以及长期依赖的问题已在本书[2.4](https://senliuy.gitbooks.io/computer-vision/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)节分析过，此处不再赘述。双向LSTM（BLSTM）和双向RNN（BRNN）的不同之处仅在于BLSTM的隐节点使用和LSTM带有三个门机制的节点。所以我们首先讲解一下BRNN。
 
@@ -47,6 +47,10 @@ h_t^n = \sigma(W_{h^{n-1}h^n}h_t^{n-1} + W_{h^{n}h^{n}}h_{t-1}^{n} + b_h^n)
 ```
 y_t = W_{h^Ny}h^N_t + b_y
 ```
+
+### RNN Transducer
+
+CTC使用RNN得到的特征向量作为输入，所以CTC建模的是声学模型，但是很多时候我们也需要在模型中加入语言模型。
 
 ## Reference
 
