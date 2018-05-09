@@ -20,7 +20,9 @@
 
 ### 时序特征
 
-在
+在这篇实验中，作者使用双向LSTM（BLSTM）提取音频的时序特征，关于LSTM能解决RNN的梯度消失/爆炸以及长期依赖的问题已在本书[2.4](https://senliuy.gitbooks.io/computer-vision/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)节分析过，此处不再赘述。BLSTM和双向RNN（BRNN）的不同之处仅在于BLSTM的隐节点使用和LSTM带有三个门机制的节点。所以我们首先讲解一下BRNN。
+
+
 
 Reference
 
