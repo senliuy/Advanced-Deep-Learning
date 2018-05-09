@@ -76,6 +76,10 @@ Pr(k|t,u) = \frac{exp(y_{t,u}[k])}{\sum_{k'=1}^{K}exp(y_{t,u}[k']}
 
 RNN Transducer的解码依然可以使用beam search，CTC和beam search的讲解在[2.3节](https://senliuy.gitbooks.io/computer-vision/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)已详细分析。
 
+## 总结
+
+作为深度学习进行语音识别的开山之作，这篇文章提供了MFCC+LSTM+CTC的框架流程。后面几年的深度学习相关论文均是在其基础上的扩展，虽然内容很简单，但是熟悉这一套流程框架还是有必要的。
+
 ## Reference
 
 \[1\] Graves A, Mohamed A, Hinton G. Speech recognition with deep recurrent neural networks\[C\]//Acoustics, speech and signal processing \(icassp\), 2013 ieee international conference on. IEEE, 2013: 6645-6649.
