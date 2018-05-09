@@ -14,7 +14,7 @@
 
 ###### 图2：基于深度学习的语音识别架构
 
-###  MFCC
+### MFCC
 
 首先，作者使用MFCC将音波的每个时间片转换成一个39维的特征向量。MFCC（Mel-Frequency Cepstral Coefficients）的全称是梅尔频率倒谱系数，是一种基于傅里叶变换的提取音频特征的方法。之后也有使用一维卷积提取特征的方法，由于MFCC和深度学习关系不大，需要详细了解的可以自行查阅相关文档，在这里可以简单理解为一种对音频的特征提取的方法。
 
@@ -50,7 +50,31 @@ y_t = W_{h^Ny}h^N_t + b_y
 
 ### RNN Transducer
 
-CTC使用RNN得到的特征向量作为输入，所以CTC建模的是声学模型，但是很多时候我们也需要在模型中加入语言模型。
+CTC使用RNN得到的特征向量作为输入，所以CTC建模的是声学模型，但是很多时候我们也需要在模型中加入语言模型。RNN Transducer便是一种联合建立声学模型和语言模型的一种方法。更具体的讲，CTC建模的是每个时间片y\_t的概率分布
+
+```
+Pr(k|t) = \frac{exp(y_t[k])}{\sum_{k'=1}^{K}exp(y_t[k'])
+```
+
+而RNN Transducer建模的是当前时间片y\_t和上个时间片输出的概率分布p\_u的联合概率
+
+```
+l_t = W_{\vec{h}N_l}\vec{h}_t + W_{\overleftarrow{h}N_l}\overleftarrow{h}_t + b_l
+```
+
+```
+h_{t,u} = tanh(W_{lh}l_{t,u} + W_{pb}p_u + b_h)
+```
+
+```
+y_{t,u}=W_{hy}h_{t,u} + b_y
+```
+
+```
+Pr(k|t,u) = \frac{exp(y_{t,u}[k])}{\sum_{k'=1}^{K}exp(y_{t,u}[k']}
+```
+
+
 
 ## Reference
 
