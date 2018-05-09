@@ -74,7 +74,7 @@ y_{t,u}=W_{hy}h_{t,u} + b_y
 Pr(k|t,u) = \frac{exp(y_{t,u}[k])}{\sum_{k'=1}^{K}exp(y_{t,u}[k']}
 ```
 
-
+RNN Transducer的解码依然可以使用beam search，CTC和beam search的讲解在[2.3节](https://senliuy.gitbooks.io/computer-vision/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)已详细分析。
 
 ## Reference
 
