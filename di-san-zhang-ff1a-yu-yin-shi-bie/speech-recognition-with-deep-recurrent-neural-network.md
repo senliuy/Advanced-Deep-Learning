@@ -22,6 +22,16 @@
 
 在这篇实验中，作者使用双向LSTM（BLSTM）提取音频的时序特征，关于LSTM能解决RNN的梯度消失/爆炸以及长期依赖的问题已在本书[2.4](https://senliuy.gitbooks.io/computer-vision/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)节分析过，此处不再赘述。BLSTM和双向RNN（BRNN）的不同之处仅在于BLSTM的隐节点使用和LSTM带有三个门机制的节点。所以我们首先讲解一下BRNN。
 
+BRNN添加了一个沿时间片反向传播的节点，计算方式和RNN隐节点相同，但是第t个时间片的计算需要使用第t+1个时间片的隐节点
+
+正向： $$\vec{h}_t = \sigma(W_{x\vec{h}}x_t + W_{\vec{h}\vec{h}}\vec{h}_{t-1} + b_{\vec{h}})$$
+
+反向：$$\overleftarrow{h}_t = \sigma(W_{x\overleftarrow{h}}x_t + W_{\overleftarrow{h}\overleftarrow{h}}\overleftarrow{h}_{t+1} + b_{\overleftarrow{h}})$$
+
+```
+y_t = W_{\vec{h}y}\vec{h}_t + W_{\overleftarrow{h}y}\overleftarrow{h}_t + b_y
+```
+
 
 
 Reference
