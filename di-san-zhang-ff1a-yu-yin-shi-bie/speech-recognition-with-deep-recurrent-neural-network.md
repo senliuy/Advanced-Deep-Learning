@@ -8,11 +8,15 @@
 
 ###### 图1: 语音识别传统模型
 
+![](/assets/ASR_RNN_1.png)
+
 ## 算法细节
 
 在这篇论文涉及的实验里，使用了MFCC提取音频特征，多层双向RNN \[2\] 编码特征（节点使用LSTM），CTC构建声学模型。由于CTC没有构建语音模型的能力，论文使用了RNN Transducer \[3\]联合训练声学模型和语言模型。结构如图2。
 
 ###### 图2：基于深度学习的语音识别架构
+
+![](/assets/ASR_RNN_2.jpeg)
 
 ### MFCC
 
@@ -30,8 +34,6 @@ BRNN添加了一个沿时间片反向传播的节点，计算方式和RNN隐节�
 
 $$y_t = W_{\vec{h}y}\vec{h}_t + W_{\overleftarrow{h}y}\overleftarrow{h}_t + b_y$$
 
-
-
 其中，\vec{h}\_t和\overleftarrow{h}\_t分别表示正向和反向传输的隐层节点的输出。多层RNN的实现是通过stacking的形式完成的，即第n层，第t个时间片的节点使用第n-1层和第t-1个时间片的隐层节点的输出作为输入，
 
 $$h_t^n = \sigma(W_{h^{n-1}h^n}h_t^{n-1} + W_{h^{n}h^{n}}h_{t-1}^{n} + b_h^n)$$
@@ -48,21 +50,13 @@ $$Pr(k|t) = \frac{exp(y_t[k])}{\sum_{k'=1}^{K}exp(y_t[k'])}$$
 
 而RNN Transducer建模的是当前时间片y\_t和上个时间片输出的概率分布p\_u的联合概率
 
-```
-l_t = W_{\vec{h}N_l}\vec{h}_t + W_{\overleftarrow{h}N_l}\overleftarrow{h}_t + b_l
-```
+$$l_t = W_{\vec{h}N_l}\vec{h}_t + W_{\overleftarrow{h}N_l}\overleftarrow{h}_t + b_l$$
 
-```
-h_{t,u} = tanh(W_{lh}l_{t,u} + W_{pb}p_u + b_h)
-```
+$$h_{t,u} = tanh(W_{lh}l_{t,u} + W_{pb}p_u + b_h)$$
 
-```
-y_{t,u}=W_{hy}h_{t,u} + b_y
-```
+$$y_{t,u}=W_{hy}h_{t,u} + b_y$$
 
-```
-Pr(k|t,u) = \frac{exp(y_{t,u}[k])}{\sum_{k'=1}^{K}exp(y_{t,u}[k']}
-```
+$$Pr(k|t,u) = \frac{exp(y_{t,u}[k])}{\sum_{k'=1}^{K}exp(y_{t,u}[k']}$$
 
 RNN Transducer的解码依然可以使用beam search，CTC和beam search的讲解在[2.3节](https://senliuy.gitbooks.io/computer-vision/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)已详细分析。
 
