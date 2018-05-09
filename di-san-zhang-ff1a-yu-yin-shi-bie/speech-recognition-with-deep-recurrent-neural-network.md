@@ -36,7 +36,17 @@ BRNN添加了一个沿时间片反向传播的节点，计算方式和RNN隐节�
 y_t = W_{\vec{h}y}\vec{h}_t + W_{\overleftarrow{h}y}\overleftarrow{h}_t + b_y
 ```
 
-多层RNN的实现
+其中，\vec{h}\_t和\overleftarrow{h}\_t分别表示正向和反向传输的隐层节点的输出。多层RNN的实现是通过stacking的形式完成的，即第n层，第t个时间片的节点使用第n-1层和第t-1个时间片的隐层节点的输出作为输入，
+
+```
+h_t^n = \sigma(W_{h^{n-1}h^n}h_t^{n-1} + W_{h^{n}h^{n}}h_{t-1}^{n} + b_h^n)
+```
+
+对于一个N层的RNN，第t个时间片的输出是
+
+```
+y_t = W_{h^Ny}h^N_t + b_y
+```
 
 ## Reference
 
