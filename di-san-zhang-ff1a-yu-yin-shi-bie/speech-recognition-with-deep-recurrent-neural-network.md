@@ -34,7 +34,7 @@ BRNN添加了一个沿时间片反向传播的节点，计算方式和RNN隐节�
 
 $$y_t = W_{\vec{h}y}\vec{h}_t + W_{\overleftarrow{h}y}\overleftarrow{h}_t + b_y$$
 
-其中，\vec{h}\_t和\overleftarrow{h}\_t分别表示正向和反向传输的隐层节点的输出。多层RNN的实现是通过stacking的形式完成的，即第n层，第t个时间片的节点使用第n-1层和第t-1个时间片的隐层节点的输出作为输入，
+其中，$$\vec{h}_t$$和$$\overleftarrow{h}_t$$分别表示正向和反向传输的隐层节点的输出。多层RNN的实现是通过stacking的形式完成的，即第n层，第t个时间片的节点使用第n-1层和第t-1个时间片的隐层节点的输出作为输入，
 
 $$h_t^n = \sigma(W_{h^{n-1}h^n}h_t^{n-1} + W_{h^{n}h^{n}}h_{t-1}^{n} + b_h^n)$$
 
@@ -44,11 +44,11 @@ $$y_t = W_{h^Ny}h^N_t + b_y$$
 
 ### RNN Transducer
 
-CTC使用RNN得到的特征向量作为输入，所以CTC建模的是声学模型，但是很多时候我们也需要在模型中加入语言模型。RNN Transducer便是一种联合建立声学模型和语言模型的一种方法。更具体的讲，CTC建模的是每个时间片y\_t的概率分布
+CTC使用RNN得到的特征向量作为输入，所以CTC建模的是声学模型，但是很多时候我们也需要在模型中加入语言模型。RNN Transducer便是一种联合建立声学模型和语言模型的一种方法。更具体的讲，CTC建模的是每个时间片$$y_t$$的概率分布
 
 $$Pr(k|t) = \frac{exp(y_t[k])}{\sum_{k'=1}^{K}exp(y_t[k'])}$$
 
-而RNN Transducer建模的是当前时间片y\_t和上个时间片输出的概率分布p\_u的联合概率
+而RNN Transducer建模的是当前时间片$$y_t$$和上个时间片输出的概率分布$$p_u$$的联合概率
 
 $$l_t = W_{\vec{h}N_l}\vec{h}_t + W_{\overleftarrow{h}N_l}\overleftarrow{h}_t + b_l$$
 
