@@ -6,5 +6,11 @@
 
 ## Deep Speech结构
 
+Deep Speech的结构如图1
+
+图1
+
+\[Deep\_Speech1\_1.png\]
+
 
 
