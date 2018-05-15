@@ -8,9 +8,7 @@
 
 Deep Speech的结构如图1
 
-图1
+###### 图1：Deep Speech网络结构
 
 \[Deep\_Speech1\_1.png\]
-
-
 
