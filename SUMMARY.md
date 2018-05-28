@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
 * [第一章：经典网络](di-yi-zhang-ff1a-jing-dian-wang-luo.md)
+  * [ImageNet Classification with Deep Convolutional Neural Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.md)
   * [Densely Connected Convolutional Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.md)
 * [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
