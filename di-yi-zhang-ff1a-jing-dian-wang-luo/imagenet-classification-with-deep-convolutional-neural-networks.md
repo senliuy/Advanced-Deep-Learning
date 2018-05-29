@@ -120,7 +120,17 @@ ReLU的函数曲线如下图
 
 ### 2.3 LRN
 
-局部响应归一化是一个已近被淘汰的算法，有VGG\[3\]的论文中已经指出，LRN并没有什么效果[^1]。在现在的网络中，LRN已经被其它归一化方法所替代，例如我在上面代码中给出的Batch Normalization。
+局部响应归一化是一个已近被淘汰的算法，有VGG\[3\]的论文中已经指出，LRN并没有什么效果[^1]。在现在的网络中，LRN已经被其它归一化方法所替代，例如我在上面代码中给出的Batch Normalization。LRN是使用同一位置临近的feature map来归一化当前feature map的值的一种方法，其表达式为
+
+```
+b_{x,y}^i = \frac{a^i_{x,y}}{(k+\alpha\sum^{min(N-1,i+n/2}_{j=max(0,i-n/2)}(a^j_{x,y})^2)^\beta}
+```
+
+其中N表示feature map的数量，n=5, k=2, \alpha=0.5, \beta=0.75，这些值均由验证集得出。
+
+### 2.4 Overlap pooling
+
+当进行pooling的时候，如果步长stride小于pooling核的尺寸，相邻之间的pooling核会有相互覆盖的地方，这种方式便叫做overlap pooling。论文中指出这种方式可以减轻过拟合，至今未想通原因。
 
 Reference
 
