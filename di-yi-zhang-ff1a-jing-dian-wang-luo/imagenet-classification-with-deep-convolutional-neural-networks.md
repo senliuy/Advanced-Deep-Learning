@@ -112,11 +112,23 @@ ReLU的函数曲线如下图
 
 \[AlexNet\_6.jpg\]
 
-在ReLU中，无论x的取值是多大，f\(x\)导数都是1，也就不存在导数过小导致的饱和的发生了。
+在ReLU中，无论x的取值是多大，f\(x\)导数都是1，也就不存在导数过小导致的饱和的发生了。图7是我在MNIST数据集，根据LeNet
+
+5使用不同的激活函数中得到的不同模型的收敛速度。
+
+\[AlexNet\_7.jpg\]
+
+### 2.3 LRN
+
+局部响应归一化是一个已近被淘汰的算法，有VGG\[3\]的论文中已经指出，LRN并没有什么效果[^1]。在现在的网络中，LRN已经被其它归一化方法所替代，例如我在上面代码中给出的Batch Normalization。
 
 Reference
 
 \[1\] LeCun Y, Bottou L, Bengio Y, et al. Gradient-based learning applied to document recognition\[J\]. Proceedings of the IEEE, 1998, 86\(11\): 2278-2324.
 
 \[2\] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
+
+\[3\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
+
+[^1]: Such normalisation does not improve the performance on the ILSVRC dataset, but leads to increased memory con- sumption and computation time. Where applicable, the parameters for the LRN layer are those of \(Krizhevsky et al., 2012\).
 
