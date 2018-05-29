@@ -49,7 +49,48 @@ model.add(Dense(10, activation='softmax'))
 
 LeNet之后，卷积网络沉寂了14年。直到2012年，AlexNet\[2\]在ILSVRC2010一举夺魁，直接把ImageNet的精度提升了10个百分点，它将卷积网络的深度和宽度都提升到了新的高度。从此开始，深度学习开始再计算机视觉的各个领域开始披荆斩棘，至今深度学习仍是最热的话题。AlexNet作为教科书式的网络，值得每个学习深度学习的人深入研究。
 
-AlexNet名字取自该论文的第一作者Alex Krizhevsky。
+AlexNet名字取自该论文的第一作者Alex Krizhevsky。在120万张图片的1000类分类任务上的top-1精度是37.5%，top-5则是15.3%，直接比第二的26.2%高出了近10个百分点。AlexNet取得如此成功的原因是其使网络的宽度和深度达到了前所有为的高度，而该模型也使网络的可学参数达到了58,322,314个。为了学习该网络，AlexNet并行使用了两块GTX 580，大幅提升了训练速度。这些共同促成了AlexNet的形成。
+
+下面，我们来详细分析一下AlexNet，AlexNet的结构如下图
+
+\[AlexNet\_3.png\]
+
+keras实现的AlexNet代码如下
+
+```
+# 构建AlexNet-5网络
+model = Sequential()
+model.add(Conv2D(input_shape = (227,227,3), strides = 4, filters=96, kernel_size=(11,11), padding='valid', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPool2D(pool_size=(3,3), strides=2))
+model.add(Conv2D(filters=256, kernel_size=(5,5), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPool2D(pool_size=(3,3), strides=2))
+model.add(Conv2D(filters=384, kernel_size=(3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(filters=384, kernel_size=(3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(filters=256, kernel_size=(3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPool2D(pool_size=(2,2), strides=2))
+model.add(Flatten())
+model.add(Dense(4096, activation='tanh'))
+model.add(Dropout(0.5))
+model.add(Dense(4096, activation='tanh'))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax'))
+model.summary()
+```
+
+根据keras提供的summary\(\)工具，可以得到图4的AlexNet统计图
+
+
+
+### 2.1 多GPU训练
+
+首先对比图1和图3，我们发现AlexNet将网络分成了两个部分，这幅图这么画的原因是为了提升训练速度，作者使用了两块GPU\(叫做GPU1和GPU2\)并行训练模型，例如第二个卷积每个GPU只使用自身显存中的feature map，而第三个卷积是需要使用另外一个GPU显存中的feature map。不过得益于TensorFlow等开源框架对多机多卡的支持和显卡显存的提升，我们已经不太关心网络的底层实现了，所以这一部分就不再赘述。
+
+
 
 ## Reference
 
