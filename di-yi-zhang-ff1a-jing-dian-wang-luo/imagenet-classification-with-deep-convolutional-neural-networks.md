@@ -55,6 +55,13 @@ LeNet之后，卷积网络沉寂了14年。直到2012年，AlexNet\[2\]在ILSVRC
 
 AlexNet名字取自该论文的第一作者Alex Krizhevsky。在120万张图片的1000类分类任务上的top-1精度是37.5%，top-5则是15.3%，直接比第二的26.2%高出了近10个百分点。AlexNet取得如此成功的原因是其使网络的宽度和深度达到了前所有为的高度，而该模型也使网络的可学参数达到了58,322,314个。为了学习该网络，AlexNet并行使用了两块GTX 580，大幅提升了训练速度。这些共同促成了AlexNet的形成。
 
+我们知道，当我们想要使用机器学习解决非常复杂的问题时，我们必须使用容量足够大的模型。在深度学习中，增加网络的宽度和网络的深度是提升网络的容量，但是提升容量的同时也会带来两个问题
+
+1. 计算资源的消耗
+2. 模型容易过拟合
+
+计算资源是当时限制深度学习发展的最关键的瓶颈，随着Nvidia的GeForce系列显卡对并行化计算的支持，深度学习有了解决其计算瓶颈的硬件支持。
+
 下面，我们来详细分析一下AlexNet，AlexNet的结构如下图
 
 \[AlexNet\_3.png\]
@@ -134,15 +141,19 @@ b_{x,y}^i = \frac{a^i_{x,y}}{(k+\alpha\sum^{min(N-1,i+n/2}_{j=max(0,i-n/2)}(a^j_
 
 ### 2.5 Dropout
 
+在AlexNet的前两层，作者使用了Dropout\[4\] 来减轻容量高的模型容易发生过拟合的现象。Dropout的使用方法是在训练过程中随机将一定比例的隐层节点置0，Dropout能够缓解过拟合的原因是每次训练都会采样出一个不同的网络架构，但是这些结构是共享权值的。这种技术减轻了节点之间的耦合性，因为一个节点不能依赖网络的其它节点。因此，节点能够学习到更健壮的特征，因为只有这样，节点才能适应每次采样得到的不同的网络结构。在测试时，我们是不对节点进行Drop的。
 
+显然Dropout会减慢收敛速度，但其对减轻过拟合的优异表现仍旧使其在当前的网络中得到广泛的使用。
 
-Reference
+## Reference
 
 \[1\] LeCun Y, Bottou L, Bengio Y, et al. Gradient-based learning applied to document recognition\[J\]. Proceedings of the IEEE, 1998, 86\(11\): 2278-2324.
 
 \[2\] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
 
 \[3\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
+
+\[4\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
 
 [^1]: Such normalisation does not improve the performance on the ILSVRC dataset, but leads to increased memory con- sumption and computation time. Where applicable, the parameters for the LRN layer are those of \(Krizhevsky et al., 2012\).
 
