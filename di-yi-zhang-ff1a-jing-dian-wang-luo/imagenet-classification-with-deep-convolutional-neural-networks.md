@@ -132,7 +132,9 @@ b_{x,y}^i = \frac{a^i_{x,y}}{(k+\alpha\sum^{min(N-1,i+n/2}_{j=max(0,i-n/2)}(a^j_
 
 当进行pooling的时候，如果步长stride小于pooling核的尺寸，相邻之间的pooling核会有相互覆盖的地方，这种方式便叫做overlap pooling。论文中指出这种方式可以减轻过拟合，至今未想通原因。
 
-2.5 Dropout
+### 2.5 Dropout
+
+
 
 Reference
 
