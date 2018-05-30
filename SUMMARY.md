@@ -1,6 +1,7 @@
 # Summary
 
-* [Introduction](README.md)
+[Introduction](README.md)
+
 * [第一章：经典网络](di-yi-zhang-ff1a-jing-dian-wang-luo.md)
   * [ImageNet Classification with Deep Convolutional Neural Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.md)
   * [Densely Connected Convolutional Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.md)
@@ -18,4 +19,6 @@
   * [Fast R-CNN](chapter1/fast-r-cnn.md)
   * [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.md)
   * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
+
+
 
