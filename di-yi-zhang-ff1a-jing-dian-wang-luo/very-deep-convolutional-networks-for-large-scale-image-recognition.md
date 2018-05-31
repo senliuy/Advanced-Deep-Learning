@@ -22,35 +22,35 @@ VGG关于网络结构的探索可以总结为图1，图1包含了大量信息，
 
 ###### 图1：VGG家族
 
-\[VGG\_1\]
+![](/assets/VGG_1.png)
 
 图2反应了VGG家族的各个模型的性能
 
 图2：VGG家族的性能表现
 
-\[VGG\_2\]
+![](/assets/VGG_2.png)
 
-关于VGG家族的keras实现和参数统计见链接（[https://github.com/senliuy/CNN-Structures/blob/master/VGG.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/VGG.ipynb)）。
+关于VGG家族的keras实现和参数统计见附件A。
 
 ### 2.1 家族的特征
 
 我们来看看VGG家族的共同特征
 
-* 输入图像的尺寸均是224\*224；
-* 均为5层Max Pooling，表示最终均会产生大小为7\*7的Feature Map，这是一个大小比较合适的尺寸；
+* 输入图像的尺寸均是$$224\times224$$；
+* 均为5层Max Pooling，表示最终均会产生大小为$$7\times7$$的Feature Map，这是一个大小比较合适的尺寸；
 * 卷积部分之后（特征层）跟的是两个隐层节点数目为4096的全连接，最后接一个1000类softmax分类器。
 
-VGG在卷积核方向的最大改进是将卷积核全部换成更小的3\*3或者1\*1的卷积核，而性能最好的VGG-16和VGG-19由且仅有3\*3卷积构成。原因有如下两点：
+VGG在卷积核方向的最大改进是将卷积核全部换成更小的$$3\times3$$或者$$1\times1$$的卷积核，而性能最好的VGG-16和VGG-19由且仅由$$3\times3$$卷积构成。原因有如下两点：
 
-1. 一个7\*7的卷积核和3层3\*3的卷积核具有相同的感受野，但是由于3层感受野具有更深的深度，由此可以构建更具判别性的决策函数；
-2. 假设Feature Map的数量都是C，3层3\*3卷积核的参数个数是3\*\(3\*3+1\)\*C = 30C，1层7\*7卷积核的参数个数是1\*\(7\*7+1\)\*C=50C, 3层3\*3卷积核具有更少的参数。
+1. 根据感受野的计算公式$$rfsize = (out-1) \times stride + ksize$$，我们知道一个$$7\times7$$的卷积核和3层$$3\times3$$的卷积核具有相同的感受野，但是由于3层感受野具有更深的深度，由此可以构建更具判别性的决策函数；
+2. 假设Feature Map的数量都是C，3层$$3\times3$$卷积核的参数个数是$$3\times(3\times3+1)\times C^2 = 30C^2$$，1层$$7\times7$$卷积核的参数个数是$$1\times(7\times7+1)\times C^2=50C^2$$, 3层$$3\times3$$卷积核具有更少的参数。
 3. 但由于神经元数量和层数的增多，训练速度会变得更慢
 
-下图是把LeNet-5的5\*5卷积换成了两层3\*3卷积在MNIST上的收敛表现，实验表明两层3\*3的网络确实比单层5\*5的网络表现好，但是训练速度也慢了一倍。
+下图是把LeNet-5的$$5\times5$$卷积换成了两层$$3\times3$$卷积在MNIST上的收敛表现，实验表明两层$$3\times3$$的网络确实比单层$$5\times5$$的网络表现好，但是训练速度也慢了一倍。
 
-###### 图3：3\*3 LeNet vs 5\*5 LeNet
+###### 图3：$$3\times3$$ LeNet vs $$5\times5$$ LeNet
 
-\[VGG\_3\]
+![](/assets/VGG_3.png)
 
 另外，作者在前两层的全连接出使用drop rate = 0.5的Dropout，然而并没有在图1中反应出来。
 
@@ -64,15 +64,33 @@ VGG A-LRN 比 VGG A多了一个AlexNet介绍的LRN层，但是实验数据表明
 
 ### 2.4 VGG-B vs VGG-C
 
-VGG-C在VGG-B的基础上添加了3个1\*1的卷积层，1\*1的卷积是在NIN\[3\]中率先使用的，由于1\*1卷积在不影响感受野的前提提升了决策函数的非线性性，由此带来了错误率的下降。
+VGG-C在VGG-B的基础上添加了3个$$1\times1$$的卷积层，$$1\times1$$的卷积是在NIN\[3\]中率先使用的，由于$$1\times1$$卷积在不影响感受野的前提提升了决策函数的非线性性，由此带来了错误率的下降。
 
 ### 2.5 VGG-C vs VGG-D
 
-VGG-D将VGG-C中的1\*1卷积换成了3\*3卷积，该组对比表明3\*3卷积的提升效果要大于1\*1卷积
+VGG-D将VGG-C中的$$1\times1$$卷积换成了$$3\times3$$ 卷积，该组对比表明$$3\times3$$ 卷积的提升效果要大于$$1\times1$$卷积
 
 ### 2.6 VGG-D vs VGG-E
 
 当网络层数增加到16层时，网络的精度趋近于饱和。当网络提升到19层时，虽然精度有了些许的提升，但需要的训练时间也大幅增加。
+
+## 3. VGG的训练和测试
+
+### 3.1 训练
+
+VGG的训练分为单尺度训练（single-scale training）和多尺度训练（multi-scale training）。在单尺度训练中，原图的短边被固定为一个固定值S（实验中S被固定为了256和384），然后等比例缩放图片。再从缩放的图片中裁剪$$224\times224$$的子图用于训练模型。在多尺度训练中，每张图的短边随机为256到512之间的一个随机值，然后再从缩放的图片中裁剪$$224\times224$$的子图。
+
+### 3.2 测试
+
+测试时可以使用和训练相同的图片裁剪方法，然后通过若干不同裁剪的图片的投票的方式选择最后的分类。
+
+但测试的时候图片是单张输入的，使用裁剪的方式可能会漏掉图片的重要信息，在OverFeat \[4\]的论文中，提出了将整幅图做为输入的方式，过程如下：
+
+1. 将测试图片的短边固定为Q，Q可以不等于S；
+2. 将Q输入VGG，在conv5层，得到$$W\times H\times512$$的特征向量，W和H一般不等于7；
+3. 将第一层全连接层看成$$7\times7\times512\times4096$$ 的卷积层（原本需要先进行flattern操作，再进行FC操作）,对比附件中的vgg-e和使用全卷积的vgg-e-test，可以发现两者具有相同的参数数量。
+4. 将第二、三全连接层看成$$1\times1\times4096\times4096$$与$$1\times1\times4096\times numClasses$$的卷积层
+5. 如果输入图片大小为 $$224\times224$$，则输出为$$1\times1\times numClasses$$，因为图片大小可以不一致，可以看作某张图片多个切片[^1]的预测结果。最终经过sum-pool，每个通道求和，得到$$1\times1\times numClasses$$的结果。作为最终输出，即取所有平均数作为最终输出。
 
 ## Reference
 
@@ -81,4 +99,14 @@ VGG-D将VGG-C中的1\*1卷积换成了3\*3卷积，该组对比表明3\*3卷积�
 \[2\] Szegedy C, Liu W, Jia Y, et al. Going deeper with convolutions\[C\]. Cvpr, 2015.
 
 \[3\] Lin, M., Chen, Q., and Yan, S. Network in network. InProc. ICLR, 2014.
+
+\[4\] Sermanet P, Eigen D, Zhang X, et al. Overfeat: Integrated recognition, localization and detection using convolutional networks\[J\]. arXiv preprint arXiv:1312.6229, 2013.
+
+## 附件A
+
+VGG模型的keras代码和参数统计：[https://github.com/senliuy/CNN-Structures/blob/master/VGG.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/VGG.ipynb)
+
+
+
+[^1]: $$(W-6)\times(H-6)$$
 
