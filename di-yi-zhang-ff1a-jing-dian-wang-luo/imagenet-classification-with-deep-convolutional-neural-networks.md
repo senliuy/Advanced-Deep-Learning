@@ -66,7 +66,7 @@ AlexNet名字取自该论文的第一作者Alex Krizhevsky。在120万张图片�
 1. 计算资源的消耗
 2. 模型容易过拟合
 
-计算资源是当时限制深度学习发展的最关键的瓶颈，随着Nvidia的GeForce系列显卡对并行化计算的支持，深度学习有了解决其计算瓶颈的硬件支持。
+计算资源是当时限制深度学习发展的最关键的瓶颈，2011年Ciresan\[5\]等人提出了使用GPU部署CNN的技术框架，由此深度学习有了解决其计算瓶颈的硬件支持。
 
 下面，我们来详细分析一下AlexNet，AlexNet的结构如下图
 
@@ -170,6 +170,8 @@ $$
 \[3\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
 
 \[4\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
+
+\[5\] Ciresan D C, Meier U, Masci J, et al. Flexible, high performance convolutional neural networks for image classification\[C\]//IJCAI Proceedings-International Joint Conference on Artificial Intelligence. 2011, 22\(1\): 1237.
 
 [^1]: Such normalisation does not improve the performance on the ILSVRC dataset, but leads to increased memory con- sumption and computation time. Where applicable, the parameters for the LRN layer are those of \(Krizhevsky et al., 2012\).
 
