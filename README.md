@@ -21,6 +21,7 @@
 * 2018-05-07：About Long Short Term Memory
 * 2018-05-09：Speech Recognition with Deep Recurrent Neural Network
 * 2018-05-30：ImageNet Classification with Deep Convolutional Neural Network
+* 2018-05-31：Very Deep Convolutional NetWorks for Large-Scale Image Recognition
 
 
 
