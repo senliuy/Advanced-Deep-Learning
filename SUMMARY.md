@@ -3,6 +3,7 @@
 * [Introduction](README.md)
 * [第一章：经典网络](di-yi-zhang-ff1a-jing-dian-wang-luo.md)
   * [ImageNet Classification with Deep Convolutional Neural Network](di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.md)
+  * [Maxout Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/maxout-networks.md)
   * [Network in Network](di-yi-zhang-ff1a-jing-dian-wang-luo/network-in-network.md)
   * [Very Deep Convolutional Networks for Large-Scale Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.md)
   * [Densely Connected Convolutional Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.md)
