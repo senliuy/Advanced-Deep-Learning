@@ -161,6 +161,12 @@ $$
 
 显然Dropout会减慢收敛速度，但其对减轻过拟合的优异表现仍旧使其在当前的网络中得到广泛的使用。
 
+下图是LeNet-5中加入Dropout之后模型的训练loss曲线图，从图中我们可以看出，加入Dropout之后，训练速度放缓了一些，20个epoch之后，训练集的损失函数也高于没有Dropout的，但是加入Dropout之后，虽然loss=0.0726远高于没有Dropout的0.0243，但是测试集的准确率从0.9773上升到0.9814，可见Dropout对于缓解过拟合还是非常有帮助的。
+
+###### 图8：Dropout vs None Dropout
+
+![](/assets/AlexNet_8.png)
+
 ## Reference
 
 \[1\] LeCun Y, Bottou L, Bengio Y, et al. Gradient-based learning applied to document recognition\[J\]. Proceedings of the IEEE, 1998, 86\(11\): 2278-2324.
