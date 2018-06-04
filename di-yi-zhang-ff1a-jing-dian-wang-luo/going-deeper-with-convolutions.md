@@ -27,7 +27,7 @@ h_{i}= Wx_{i}+b_i
 h_i = max_{j\in[1,k]}z_{i,j}
 ```
 
-其中z\__{i, j}=x^TW\__{...i,j}+b\_{i,j}。
+其中z\__{i, j}=x^TW\_\_{...i,j}+b\_{i,j}。
 
 下面我们通过一个简单的例子来说明Maxout网络的工作方式。对于一个传统的网络，假设第i层有两个节点，第i+1层有1个节点，那么MLP的计算公式就是：
 
@@ -45,15 +45,33 @@ out = g(W*X+b)
 
 其中z=max\(z1, z3, z3, z4, z5\)。
 
-其中z1-z5为线性函数，所以z可以看做是分段线性的激活函数。理论上，当k足够大时，Maxout单元有拟合任何凸函数的能力，如图3。
+其中z1-z5为线性函数，所以z可以看做是分段线性的激活函数。Maxout Network的论文中给出了证明，当k足够大时，Maxout单元可以以任意小的精度逼近任何凸函数，如图3。
 
 \[maxout\_3.png\]
+
+在keras2.0之前的版本中，我们可以找到Maxout网络的实现，其核心代码只有一行。
+
+```
+output = K.max(K.dot(X, self.W) + self.b, axis=1)
+```
 
 Maxout网络存在的最大的一个问题是，网络的参数是传统网络的k倍，k倍的参数数量并没有带来其等价的精度提升，现基本已被工业界淘汰。
 
 ### 1.2 Network in Network
 
+Maxout节点可以逼近任何凸函数，而NIN的节点理论上可以逼近任何函数。在NIN中，作者也是采用整图滑窗的形式，只是将卷积网络的卷积核替换成了一个小型的MLP网络，如图4所示：
 
+\[NIN\_1.png\]
+
+在卷积操作中，一次卷积操作仅相当于卷积核和滑窗的一次矩阵乘法，其拟合能力有限。而MLP替代卷积操作则增加了每次滑窗的拟合能力，下图是将LeNet5改造成NIN在MNIST上的训练过程收敛曲线，通过实验结果我们可以得到三个重要信息：
+
+1. NIN的参数数量远大于同类型的卷积网络；
+2. NIN的收敛速度快于经典网络；
+3. NIN的训练速度慢于经典网络。
+
+\[NIN\_2.png\]
+
+实验内容及代码见链接：[https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb)
 
 ## Reference
 
