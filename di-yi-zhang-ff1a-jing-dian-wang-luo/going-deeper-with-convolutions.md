@@ -8,7 +8,14 @@
 
 ### 1.1 Maxout Networks
 
-在之前介绍的AlexNet中，引入了Dropout \[6\]来减轻模型的过拟合的问题。Dropout可以看做是一种集成模型的思想，在模型训练的每个step，Dropout都会以概率p将某些
+在之前介绍的AlexNet中，引入了Dropout \[6\]来减轻模型的过拟合的问题。Dropout可以看做是一种集成模型的思想，在每个step中，会将网络的隐层节点以概率p置0。Dropout和传统的bagging方法主要有以下两个方面不同：
+
+1. Dropout的每个子模型的权值是共享的；
+2. 在训练的每个step中，Dropout每次会使用不同的样本子集训练不同的子网络。
+
+这样在每个step中都会有不同的节点参与训练，减轻了节点之间的耦合性。在测试时，使用的是整个网络的所有节点，只是节点的输出值要乘以Dropout的概率p。
+
+作者认为，与其像Dropout这种毫无选择的平均，我们不如有条件的选择更合适的节点来生成网络。
 
 ## Reference
 
@@ -22,5 +29,5 @@
 
 \[5\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
-\[6\] 
+\[6\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
 

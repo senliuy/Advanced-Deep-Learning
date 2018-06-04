@@ -161,7 +161,7 @@ $$
 
 显然Dropout会减慢收敛速度，但其对减轻过拟合的优异表现仍旧使其在当前的网络中得到广泛的使用。
 
-下图是LeNet-5中加入Dropout之后模型的训练loss曲线图，从图中我们可以看出，加入Dropout之后，训练速度放缓了一些，20个epoch之后，训练集的损失函数也高于没有Dropout的，但是加入Dropout之后，虽然loss=0.0726远高于没有Dropout的0.0243，但是测试集的准确率从0.9773上升到0.9814，可见Dropout对于缓解过拟合还是非常有帮助的。
+下图是LeNet-5中加入Dropout之后模型的训练loss曲线图，从图中我们可以看出，加入Dropout之后，训练速度放缓了一些，20个epoch之后，训练集的损失函数也高于没有Dropout的，但是加入Dropout之后，虽然loss=0.0735远高于没有Dropout的0.0155，但是测试集的准确率从0.9826上升到0.9841，可见Dropout对于缓解过拟合还是非常有帮助的。实验代码见：[https://github.com/senliuy/CNN-Structures/blob/master/LeNet\_Dropout.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/LeNet_Dropout.ipynb)
 
 ###### 图8：Dropout vs None Dropout
 
