@@ -2,7 +2,7 @@
 
 ## 前言
 
-2012年之后，卷积网络的研究分成了两大流派，并且两个流派都在2014年有重要的研究成果发表。第一个流派是增加卷积网络的深度，经典的网络有ImageNet 2013年冠军ZF-net\[1\]以及我们在上篇文章中介绍的VGG系列\[2\]。另外一个流派是增加网络的宽度，或者说是增加网络的复杂度，典型的网络有可以拟合任意凸函数的Maxout Networks \[3\]，可以拟合任意函数的Network in Network \(NIN\)\[4\]，以及本文要解析的基于Inception的GoogLeNet\[5\]。为了能更透彻的了解GoogLeNet的思想，我们首先需要了解Maxout和NIN两种结构。
+2012年之后，卷积网络的研究分成了两大流派，并且两个流派都在2014年有重要的研究成果发表。第一个流派是增加卷积网络的深度和宽度，经典的网络有ImageNet 2013年冠军ZF-net\[1\]以及我们在上篇文章中介绍的VGG系列\[2\]。另外一个流派是增加卷积核的拟合能力，或者说是增加网络的复杂度，典型的网络有可以拟合任意凸函数的Maxout Networks \[3\]，可以拟合任意函数的Network in Network \(NIN\)\[4\]，以及本文要解析的基于Inception的GoogLeNet\[5\]。为了能更透彻的了解GoogLeNet的思想，我们首先需要了解Maxout和NIN两种结构。
 
 ## 1. 背景知识
 
@@ -71,7 +71,31 @@ Maxout节点可以逼近任何凸函数，而NIN的节点理论上可以逼近�
 
 \[NIN\_2.png\]
 
-实验内容及代码见链接：[https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb)
+```py
+NIN = Sequential()
+NIN.add(Conv2D(input_shape=(28,28,1), filters= 8, kernel_size = (5,5),padding = 'same',activation = 'relu'))
+NIN.add(Conv2D(input_shape=(28,28,1), filters= 8, kernel_size = (1,1),padding = 'same',activation = 'relu'))
+NIN.add(Flatten())
+NIN.add(Dense(196,activation = 'relu'))
+NIN.add(Reshape((14,14,1),input_shape = (196,1)))
+NIN.add(Conv2D(16,(5,5),padding = 'same',activation = 'relu'))
+NIN.add(Conv2D(16,(1,1),padding = 'same',activation = 'relu'))
+NIN.add(Flatten())
+NIN.add(Dense(120,activation = 'relu'))
+NIN.add(Dense(84,activation = 'relu'))
+NIN.add(Dense(10))
+NIN.add(Activation('softmax'))
+NIN.summary()
+```
+
+实验内容见链接：[https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb)
+
+处对比全连接，NIN中的1\*1卷积操作保存了网络隐层节点和输入图像的位置关系，NIN的思想反而在物体定位和语义分割上得到了更广泛的应用。除了保存Feature Map的图像位置关系，1\*1卷积还有两个用途：
+
+1. 实现Feature Map的升维和降维；
+2. 实现跨Feature Map的交互。
+
+另外，NIN提出了使用Global Average Pooling来减轻全连接层的过拟合问题，即在卷积的最后一层，直接将每个Feature Map求均值，然后再接softmax。
 
 ## Reference
 
