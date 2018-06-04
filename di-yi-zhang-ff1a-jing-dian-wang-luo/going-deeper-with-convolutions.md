@@ -97,6 +97,10 @@ NIN.summary()
 
 另外，NIN提出了使用Global Average Pooling来减轻全连接层的过拟合问题，即在卷积的最后一层，直接将每个Feature Map求均值，然后再接softmax。
 
+### 1.3 Inception
+
+
+
 ## Reference
 
 \[1\] M. D. Zeiler and R. Fergus. Visualizing and understanding convolutional neural networks. In ECCV, 2014
