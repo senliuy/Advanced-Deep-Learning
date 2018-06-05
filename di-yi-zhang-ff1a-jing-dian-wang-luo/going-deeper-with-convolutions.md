@@ -8,46 +8,46 @@
 
 ### 1.1 Maxout Networks
 
-在之前介绍的AlexNet中，引入了Dropout \[6\]来减轻模型的过拟合的问题。Dropout可以看做是一种集成模型的思想，在每个step中，会将网络的隐层节点以概率p置0。Dropout和传统的bagging方法主要有以下两个方面不同：
+在之前介绍的AlexNet中，引入了Dropout \[6\]来减轻模型的过拟合的问题。Dropout可以看做是一种集成模型的思想，在每个step中，会将网络的隐层节点以概率$$p$$置0。Dropout和传统的bagging方法主要有以下两个方面不同：
 
 1. Dropout的每个子模型的权值是共享的；
 2. 在训练的每个step中，Dropout每次会使用不同的样本子集训练不同的子网络。
 
-这样在每个step中都会有不同的节点参与训练，减轻了节点之间的耦合性。在测试时，使用的是整个网络的所有节点，只是节点的输出值要乘以Dropout的概率p。
+这样在每个step中都会有不同的节点参与训练，减轻了节点之间的耦合性。在测试时，使用的是整个网络的所有节点，只是节点的输出值要乘以Dropout的概率$$p$$。
 
 作者认为，与其像Dropout这种毫无选择的平均，我们不如有条件的选择节点来生成网络。在传统的神经网络中，第i层的隐层的计算方式如下（暂时不考虑激活函数）：
 
-```
-h_{i}= Wx_{i}+b_i
-```
+$$h_{i}= Wx_{i}+b_i$$
 
-假设第i-1层和第i层的节点数分别是d和m，那么W则是一个d\*m的二维矩阵。而在Maxout网络中，W是一个**三维**矩阵，矩阵的维度是d\*m\*k，其中k表示Maxout网络的通道数，是Maxout网络唯一的参数。Maxout网络的数学表达式为：
+假设第i-1层和第i层的节点数分别是d和m，那么W则是一个$$d\times m$$的二维矩阵。而在Maxout网络中，W是一个**三维**矩阵，矩阵的维度是$$d\times m\times k$$，其中$$k$$表示Maxout网络的通道数，是Maxout网络唯一的参数。Maxout网络的数学表达式为：
 
-```
-h_i = max_{j\in[1,k]}z_{i,j}
-```
+$$h_i = max_{j\in[1,k]}z_{i,j}$$
 
-其中z\__{i, j}=x^TW\_\_{...i,j}+b\_{i,j}。
+其中$$z_{i, j}=x^TW_{...i,j}+b_{i,j}$$。
 
-下面我们通过一个简单的例子来说明Maxout网络的工作方式。对于一个传统的网络，假设第i层有两个节点，第i+1层有1个节点，那么MLP的计算公式就是：
+下面我们通过一个简单的例子来说明Maxout网络的工作方式。对于一个传统的网络，假设第$$i$$层有两个节点，第$$i+1$$层有1个节点，那么MLP的计算公式就是：
 
-```
-out = g(W*X+b)
-```
+$$out = g(W*X+b)$$
 
-其中g\(\cdot\)是激活函数，如tanh，relu等，如图1。
+其中$$g(\cdot)$$是激活函数，如$$tanh$$，$$relu$$等，如图1。
 
-\[maxout\_1.png\]
+###### 图1：传统神经网络
+
+![](/assets/Maxout_1.png)
 
 如果我们将Maxout的参数k设置为5，Maxout网络可以展开成图2的形式：
 
-\[maxout\_2.png\]
+###### 图2：Maxout网络
 
-其中z=max\(z1, z3, z3, z4, z5\)。
+![](/assets/Maxout_2.png)
 
-其中z1-z5为线性函数，所以z可以看做是分段线性的激活函数。Maxout Network的论文中给出了证明，当k足够大时，Maxout单元可以以任意小的精度逼近任何凸函数，如图3。
+其中$$z=max(z1, z3, z3, z4, z5)$$。
 
-\[maxout\_3.png\]
+其中$$z1$$-$$z5$$为线性函数，所以$$z$$可以看做是分段线性的激活函数。Maxout Network的论文中给出了证明，当k足够大时，Maxout单元可以以任意小的精度逼近任何凸函数，如图3。
+
+###### 图3：Maxout的凸函数无线逼近性
+
+![](/assets/Maxout_3.png)
 
 在keras2.0之前的版本中，我们可以找到Maxout网络的实现，其核心代码只有一行。
 
@@ -61,7 +61,7 @@ Maxout网络存在的最大的一个问题是，网络的参数是传统网络�
 
 Maxout节点可以逼近任何凸函数，而NIN的节点理论上可以逼近任何函数。在NIN中，作者也是采用整图滑窗的形式，只是将卷积网络的卷积核替换成了一个小型的MLP网络，如图4所示：
 
-\[NIN\_1.png\]
+###### 图4：Network in Network网络结构![](/assets/NIN_1.png)
 
 在卷积操作中，一次卷积操作仅相当于卷积核和滑窗的一次矩阵乘法，其拟合能力有限。而MLP替代卷积操作则增加了每次滑窗的拟合能力，下图是将LeNet5改造成NIN在MNIST上的训练过程收敛曲线，通过实验结果我们可以得到三个重要信息：
 
@@ -69,7 +69,9 @@ Maxout节点可以逼近任何凸函数，而NIN的节点理论上可以逼近�
 2. NIN的收敛速度快于经典网络；
 3. NIN的训练速度慢于经典网络。
 
-\[NIN\_2.png\]
+###### 图5：NIN vs LeNet5
+
+![](/assets/NIN_2.png)
 
 ```py
 NIN = Sequential()
@@ -90,16 +92,122 @@ NIN.summary()
 
 实验内容见链接：[https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/NIN.ipynb)
 
-处对比全连接，NIN中的1\*1卷积操作保存了网络隐层节点和输入图像的位置关系，NIN的思想反而在物体定位和语义分割上得到了更广泛的应用。除了保存Feature Map的图像位置关系，1\*1卷积还有两个用途：
+处对比全连接，NIN中的$$1\times1$$卷积操作保存了网络隐层节点和输入图像的位置关系，NIN的思想反而在物体定位和语义分割上得到了更广泛的应用。除了保存Feature Map的图像位置关系，$$x = y$$卷积还有两个用途：
 
 1. 实现Feature Map的升维和降维；
 2. 实现跨Feature Map的交互。
 
 另外，NIN提出了使用Global Average Pooling来减轻全连接层的过拟合问题，即在卷积的最后一层，直接将每个Feature Map求均值，然后再接softmax。
 
-### 1.3 Inception
+### 1.3 Inception v1
 
+GoogLeNet的核心部件叫做Inception。根据感受野的递推公式，不同大小的卷积核对应着不同大小的感受野。例如在VGG的最后一层，$$1\times1$$，$$3\times3$$和$$5\times5$$卷积的感受野分别是196，228，260。我们根据感受野的计算公式也可以知道，网络的层数越深，不同大小的卷积对应在原图的感受野的大小差距越大，这也就是为什么Inception通常在越深的层次中效果越明显。在每个Inception模块中，作者并行使用了$$1\times1$$，$$3\times3$$和$$5\times5$$三个不同大小的卷积核。同时，考虑到池化一直在卷积网络中扮演着积极的作用，所以作者建议Inception中也要加入一个并行的max pooling。至此，一个naive版本的Inception便诞生了，见图6
 
+###### 图6：Naive Inception
+
+![](/assets/Inception_1.png)
+
+但是这个naive版本的Inception会使网络的Feature Map的数量乘以4，随着Inception数量的增多，Feature Map的数量会呈指数形式的增长，这对应着大量计算资源的消耗。为了提升运算速度，Inception使用了NIN中介绍的$$1\times1$$卷积在卷机操作之前进行降采样，由此便诞生了Inception v1，见图7。
+
+###### 图7：Inception结构
+
+![](/assets/Inception_2.png)
+
+Inception的代码也比较容易实现，建立4个并行的分支并在最后merge到一起即可。
+
+```py
+def inception(x):
+    inception_1x1 = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_3x3_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_3x3 = Conv2D(4,(3,3), padding='same', activation='relu')(inception_3x3_reduce)
+    inception_5x5_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_5x5 = Conv2D(4,(5,5), padding='same', activation='relu')(inception_5x5_reduce)
+    inception_pool = MaxPool2D(pool_size=(3,3), strides=(1,1), padding='same')(x)
+    inception_pool_proj = Conv2D(4,(1,1), padding='same', activation='relu')(inception_pool)
+    inception_output = merge([inception_1x1, inception_3x3, inception_5x5, inception_pool_proj], 
+                                mode='concat', concat_axis=3)
+    return inception_output
+```
+
+图8是使用相同Feature Map总量的Inception替代卷积网络的一层卷积的在MNIST数据集上的收敛速度对比，从实验结果可以看出，对于比较小的数据集，Inception的提升非常有限。对比两个网络的容量，我们发现Inception和相同Feature Map的3\*3卷积拥有相同数量的参数个数，实验内容见链接：[https://github.com/senliuy/CNN-Structures/blob/master/Inception.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/Inception.ipynb)。
+
+###### 图8：Inception vs 卷积网络
+
+![](/assets/Inception_3.png)
+
+### 1.4 GoogLeNet
+
+GoogLeNet取名是为了致敬第一代深度卷积网络LeNet5，作者通过堆叠Inception的形式构造了一个由9个Inception模块共22层的网络，并一举拿下了ILSVRC2014图像分类任务的冠军。GoogLeNet的网络结构如图9 \(高清图片参考论文\)。
+
+###### 图9：GoogLeNet
+
+![](/assets/GoogLeNet_1.png)
+
+对比其他网络，GoogLeNet的一个最大的不同是在中间多了两个softmax分支作为辅助分类器。在训练时，这两个分类器的损失会以0.3的比例添加到损失函数上。根据论文的解释，该分支有两个作用：
+
+1. 保证较低层提取的特征也有分类物体的能力；
+2. 具有提供正则化并克服梯度消失问题的能力；
+
+需要注意的是，在测试的时候，这两个softmax分支会被移除。
+
+### 1.5 Inception V2
+
+在VGG中，我们讲解过，一个5\*5的卷积核与两个3\*3的卷积核拥有相同大小的感受野，但是两个3\*3的卷积核拥有更强的拟合能力，所以在Inception V2 \[7\]的版本中，作者将5\*5的卷积替换为两个3\*3的卷积。其实本文的最大贡献是Batch normalization的提出，关于BN，我们会另开一个版块单独讲解。
+
+```py
+def inception_v2(x):
+    inception_1x1 = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_3x3_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_3x3 = Conv2D(4,(3,3), padding='same', activation='relu')(inception_3x3_reduce)
+    inception_5x5_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_5x5_1 = Conv2D(4,(3,3), padding='same', activation='relu')(inception_5x5_reduce)
+    inception_5x5_2 = Conv2D(4,(3,3), padding='same', activation='relu')(inception_5x5_1)
+    inception_pool = MaxPool2D(pool_size=(3,3), strides=(1,1), padding='same')(x)
+    inception_pool_proj = Conv2D(4,(1,1), padding='same', activation='relu')(inception_pool)
+    inception_output = merge([inception_1x1, inception_3x3, inception_5x5_2, inception_pool_proj], 
+                                mode='concat', concat_axis=3)
+    return inception_output
+```
+
+###### 图10：Inception v2
+
+![](/assets/Inception_V2.png)
+
+### 1.6 Inception V3
+
+Inception V3\[8\]是将Inception V1和V2中的$$x = y$$卷积换成一个$$n\times1$$和一个$$1\times n$$
+
+---
+
+的卷积，这样做带来的好处有以下几点：
+
+1. 节约了大量参数，提升了训练速度，减轻了过拟合的问题；
+2. 多层卷积增加了模型的拟合能力；
+3. 非对称卷积核的使用增加了特征的多样性。
+
+```py
+def inception_v3(x):
+    inception_1x1 = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_3x3_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_3x1 = Conv2D(4,(3,1), padding='same', activation='relu')(inception_3x3_reduce)
+    inception_1x3 = Conv2D(4,(1,3), padding='same', activation='relu')(inception_3x1)
+    inception_5x5_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
+    inception_5x1 = Conv2D(4,(5,1), padding='same', activation='relu')(inception_5x5_reduce)
+    inception_1x5 = Conv2D(4,(1,5), padding='same', activation='relu')(inception_5x1)
+    inception_pool = MaxPool2D(pool_size=(3,3), strides=(1,1), padding='same')(x)
+    inception_pool_proj = Conv2D(4,(1,1), padding='same', activation='relu')(inception_pool)
+    inception_output = merge([inception_1x1, inception_1x3, inception_1x5, inception_pool_proj], 
+                                mode='concat', concat_axis=3)
+    return inception_output
+```
+
+###### 图11：Inception v3
+
+![](/assets/Inception_V3.png)
+
+### 1.7 Inception V4
+
+Inception V4 \[9\]将残差网络\[10\]融合到了Inception模型中，即相当于在Inception中加入了一条输入到输出的short cut。
 
 ## Reference
 
@@ -114,4 +222,12 @@ NIN.summary()
 \[5\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
 \[6\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
+
+\[7\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
+
+\[8\] Szegedy C, Vanhoucke V, Ioffe S, et al. Rethinking the inception architecture for computer vision\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2818-2826.
+
+\[9\] Szegedy C, Ioffe S, Vanhoucke V, et al. Inception-v4, inception-resnet and the impact of residual connections on learning\[C\]//AAAI. 2017, 4: 12.
+
+\[10\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
 
