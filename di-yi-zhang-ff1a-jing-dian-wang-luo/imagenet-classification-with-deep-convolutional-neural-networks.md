@@ -74,7 +74,7 @@ AlexNet名字取自该论文的第一作者Alex Krizhevsky。在120万张图片�
 
 keras实现的AlexNet代码如下
 
-```
+```py
 # 构建AlexNet-5网络
 model = Sequential()
 model.add(Conv2D(input_shape = (227,227,3), strides = 4, filters=96, kernel_size=(11,11), padding='valid', activation='relu'))
