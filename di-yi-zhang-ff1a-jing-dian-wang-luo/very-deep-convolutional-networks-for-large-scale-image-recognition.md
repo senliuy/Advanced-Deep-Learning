@@ -39,6 +39,7 @@ VGG关于网络结构的探索可以总结为图1，图1包含了大量信息，
 * 输入图像的尺寸均是$$224\times224$$；
 * 均为5层Max Pooling，表示最终均会产生大小为$$7\times7$$的Feature Map，这是一个大小比较合适的尺寸；
 * 卷积部分之后（特征层）跟的是两个隐层节点数目为4096的全连接，最后接一个1000类softmax分类器。
+* 所有VGG模型均可以表示为:$$m\times(n\times(conv\_33)+max\_pooling)$$
 
 VGG在卷积核方向的最大改进是将卷积核全部换成更小的$$3\times3$$或者$$1\times1$$的卷积核，而性能最好的VGG-16和VGG-19由且仅由$$3\times3$$卷积构成。原因有如下两点：
 
@@ -105,8 +106,4 @@ VGG的训练分为单尺度训练（single-scale training）和多尺度训练�
 ## 附件A
 
 VGG模型的keras代码和参数统计：[https://github.com/senliuy/CNN-Structures/blob/master/VGG.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/VGG.ipynb)
-
-
-
-[^1]: $$(W-6)\times(H-6)$$
 

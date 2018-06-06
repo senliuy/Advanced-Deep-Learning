@@ -48,6 +48,93 @@ x_{l+1}= h(x_l)+\mathcal{F}(x_l, {W_l})
 
 ### 1.2 残差网络
 
+残差网络的搭建分为两步：
+
+1. 使用VGG公式搭建Plain VGG网络
+2. 在Plain VGG的卷积网络之间插入Identity Mapping，注意需要升维或者降维的时候加入1\*1卷积。
+
+在实现过程中，一般是直接stack残差块的方式。
+
+## 2. 残差网络的背后原理
+
+残差块一个更通用的表示方式是
+
+```
+y_l= h(x_l)+\mathcal{F}(x_l, {W_l})
+```
+
+```
+x_{l+1} = f(y_l)
+```
+
+现在我们先不考虑升维或者降维的情况，那么在\[1\]中，h\(\cdot\)是直接映射，f\(\cdot\)是激活函数，一般使用ReLU。我们首先给出两个假设：
+
+* 假设1：h\(\cdot\)是直接映射；
+* 假设2：f\(\cdot\)是直接映射。
+
+那么这时候残差块可以表示为：
+
+```
+x_{l+1} = x_l + \mathcal{F}(x_l, {W_l})
+```
+
+对于一个更深的层L，其与l层的关系可以表示为
+
+```
+x_L = x_l + \sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})
+```
+
+这个公式反应了残差网络的两个属性：
+
+1. L层可以表示为任意一个比它浅的l层和他们之间的残差部分之和；
+2. x\_L= x\_0 + \sum\_{i=0}^{L-1}\mathcal{F}\(x\_i, {W\_i}\)，L是各个残差块特征的单位累和，而MLP是特征矩阵的累积。
+
+根据BP中使用的导数的链式法则，损失函数\varepsilon关于x\_l的梯度可以表示为
+
+```
+\frac{\partial \varepsilon}{\partial x_l} = \frac{\partial \varepsilon}{\partial x_L}\frac{\partial x_L}{\partial x_l} = \frac{\partial \varepsilon}{\partial x_L}(1+\frac{\partial }{\partial x_l}\sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})) = \frac{\partial \varepsilon}{\partial x_L}+\frac{\partial \varepsilon}{\partial x_L} \frac{\partial }{\partial x_l}\sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})
+```
+
+上面公式反映了残差网络的两个属性：
+
+1. 在整个训练过程中，\frac{\partial }{\partial x\_l}\sum\_{i=1}^{L-1}\mathcal{F}\(x\_i, {W\_i}\) 不可能一直为-1，也就是说在残差网络中不会出现梯度消失的问题。
+2. \frac{\partial \varepsilon}{\partial x\_L}表示L层的梯度可以直接传递到任何一个比它浅的l层。
+
+通过分析残差网络的正向和反向两个过程，我们发现，当残差块满足上面两个假设时，信息可以非常畅通的在高层和低层之间相互传导，说明这两个假设是让残差网络可以训练深度模型的充分条件。那么这两个假设是必要条件吗？
+
+### 2.1 直接映射是最好的选择
+
+对于假设1，我们采用反证法，假设h\(x\_l\) = \lambda\_l x\_l，那么这时候，残差块（图3.b）表示为
+
+```
+x_{l+1} = \lambda_lx_l + \mathcal{F}(x_l, {W_l})
+```
+
+对于更深的L层
+
+```
+x_{L} = (\prod_{i=l}^{L-1}\lambda_l)x_l + \sum_{i=l}^{L-1}((\prod_{i=l}^{L-1})\mathcal{F}(x_l, {W_l})
+```
+
+为了简化问题，我们只考虑公式的左半部分x'\_{L} = \(\prod\_{i=l}^{L-1}\lambda\_l\)x\_l，\varepsilon对x\_l求偏微分得
+
+```
+\frac{\partial\varepsilon}{\partial x_l} = \frac{\partial\varepsilon}{\partial x_L} (\prod_{i=l}^{L-1}\lambda_i)
+```
+
+上面公式反映了两个属性：
+
+1. 当\lambda&gt;1时，很有可能发生梯度爆炸；
+2. 当\lambda&lt;1时，梯度变成0，会阻碍残差网络信息的反向传递，从而影响残差网络的训练。
+
+所以\lambda必须等1。同理，其他常见的激活函数都会产生和上面的例子类似的阻碍信息反向传播的问题。
+
+对于其它不影响梯度的h\(\cdot\)，例如LSTM中的门机制（图3.c，图3.d）或者Dropout（图3.f）以及\[1\]中用于降维的1\*1卷积（图3.e）也许会有效果，作者采用了实验的方法进行验证，实验结果见图4
+
+###### 图3：直接映射的变异模型
+
+###### 图4：变异模型在Cifar10数据集上的表现
+
 
 
 ## Reference
