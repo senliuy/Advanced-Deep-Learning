@@ -96,6 +96,8 @@ $$
 y_l= h(x_l)+\mathcal{F}(x_l, {W_l})
 $$
 
+
+
 $$
 x_{l+1} = f(y_l)
 $$
@@ -179,11 +181,11 @@ $$
 
 ###### 图3：直接映射的变异模型
 
-\[ResNet\_3\]
+![](/assets/ResNet_3.png)
 
 ###### 图4：变异模型（均为110层）在Cifar10数据集上的表现
 
-\[ResNet\_4\]
+![](/assets/ResNet_4.png)
 
 从图4的实验结果中我们可以看出，在所有的变异模型中，依旧是直接映射的效果最好。下面我们对图3中的各种变异模型的分析
 
@@ -199,6 +201,8 @@ $$
 y_l = x_l + \mathcal{F}(x_l, w_l)
 $$
 
+
+
 $$
 y_{l+1} = x_{l+1} + \mathcal{F}(x_{l+1}, w_{l+1}) = f(y_l) + \mathcal{F}(f(y_l), w_{l+1})
 $$
@@ -210,9 +214,9 @@ $$
 
 ###### 图5：激活函数在残差网络中的使用
 
-\[ResNet\_5\]
+![](/assets/ResNet_5.png)
 
-在2.1节中，我们得出假设‘直接映射是最好的选择’，所以我们希望构造一种结构能够满足直接映射，即定义一个新的残差结构$$\hat{f}(\cdot)$$：
+在2.1节中，我们得出假设“直接映射是最好的选择”，所以我们希望构造一种结构能够满足直接映射，即定义一个新的残差结构$$\hat{f}(\cdot)$$：
 
 
 $$
@@ -224,7 +228,7 @@ $$
 
 ###### 图6：基于激活函数位置的变异模型在Cifar10上的实验结果
 
-\[ResNet\_6.png\]
+![](/assets/ResNet_6.png)
 
 而实验结果也表明将激活函数移动到残差部分可以提高模型的精度。
 
@@ -244,7 +248,7 @@ def res_block_v2(x, input_filter, output_filter):
         identity = Conv2D(kernel_size=(1,1), filters=output_filter, strides=1, padding='same')(x)
     output= keras.layers.add([identity, res_x])
     return output
-    
+
 def resnet_v2(x):
     x = Conv2D(kernel_size=(3,3), filters=16 , strides=1, padding='same', activation='relu')(x)
     x = res_block_v2(x, 16, 16)
@@ -253,8 +257,6 @@ def resnet_v2(x):
     outputs = Dense(10, activation='softmax', kernel_initializer='he_normal')(y)
     return outputs
 ```
-
-
 
 ## Reference
 
