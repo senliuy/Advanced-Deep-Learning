@@ -253,6 +253,7 @@ def resnet_v2(x):
     x = Conv2D(kernel_size=(3,3), filters=16 , strides=1, padding='same', activation='relu')(x)
     x = res_block_v2(x, 16, 16)
     x = res_block_v2(x, 16, 32)
+    x = BatchNormalization()(x)
     y = Flatten()(x)
     outputs = Dense(10, activation='softmax', kernel_initializer='he_normal')(y)
     return outputs

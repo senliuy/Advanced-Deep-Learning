@@ -23,6 +23,7 @@
 * 2018-05-30：ImageNet Classification with Deep Convolutional Neural Network
 * 2018-05-31：Very Deep Convolutional NetWorks for Large-Scale Image Recognition
 * 2018-06-05：Going Deeper with Convolutions
+* 2018-06-05：Deep Residual Learning for Image Recognition
 
 
 
