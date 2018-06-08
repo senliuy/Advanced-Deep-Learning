@@ -33,18 +33,38 @@ y_l = H_l(x_l)
 其中，中括号\[y\_0, y\_1, ..., y\_{l-1}\]表示拼接操作，即按照Feature Map将l-1个输入拼接成一个Tensor。H\_l\(\cdot\)表示合成函数（Composite function）。在实现时，我使用了stored\_features存储每个合成函数的输出。
 
 ```py
-def dense_block(x, depth=5, nb_filters = 2, growth_rate = 3):
+def dense_block(x, depth=5, growth_rate = 3):
+    nb_input_feature_map = x.shape[3].value
     stored_features = x
     for i in range(depth):
-        feature = composite_function(stored_features, nb_filters = growth_rate * i + nb_filters)
-        if i > 0:
-            stored_features = concatenate([stored_features, feature], axis=3)
-        else:
-            store_features = feature
+        feature = composite_function(stored_features, growth_rate = growth_rate)
+        stored_features = concatenate([stored_features, feature], axis=3)
     return stored_features
 ```
 
-1.2 合成函数（Composite function）
+### 1.2 合成函数（Composite function）
+
+合成函数位于Dense Block的每一个节点中，其输入是拼接在一起的Feature Map, 输出则是这些特征经过BN-&gt;ReLU-&gt;3\*3卷积的三步得到的结果，其中卷积的Feature Map的数量是成长率（Growth Rate）。在DenseNet中，成长率k一般是个比较小的整数，在论文中，k=12。但是拼接在一起的Feature Map的数量一般比较大，为了提高网络的计算性能，DenseNet先使用了1\*1卷积将输入数据降维到4k，再使用3\*3卷积提取特征，作者将这一过程标准化为`BN->ReLU->1*1卷积->BN->ReLU->3*3卷积`，这种结构定义为DenseNetB。
+
+```py
+ def composite_function(x, growth_rate):
+    if DenseNetB: #Add 1*1 convolution when using DenseNet B
+        x = BatchNormalization()(x)
+        x = Activation('relu')(x)
+        x = Conv2D(kernel_size=(1,1), strides=1, filters = 4 * growth_rate, padding='same')(x)
+    x = BatchNormalization()(x)
+    x = Activation('relu')(x)
+    output = Conv2D(kernel_size=(3,3), strides=1, filters = growth_rate, padding='same')(x)
+    return output
+```
+
+### 1.3 成长率（Growth Rate）
+
+成长率k是DenseNet的一个超参数，反应的是Dense Block中每个节点的输入数据的增长速度。在Dense Block中，每个节点的输出均是一个k维的特征向量。假设整个Dense Block的输入数据是k\_0维的，那么第l个节点的输入便是k\_0 + k\times\(l-1\)。作者通过实验验证，k一般取一个比较小的值，作者通过实验将k设置为12。
+
+### 1.4 Compression
+
+至此，DenseNet的Dense Block已经介绍完毕，在图2中，Dense Block之间的结构叫做压缩层（Compression Layer）。压缩层有降维和降采样两个作用。假设Dense Block的输出是m维的特征向量，那么下一个Dense Block的输入是\lfloor \theta m \rfloor，其中\theta是压缩因子（Compression Factor），用户自行设置的超参数。当\theta等于1时，Dense Block的输入和输出的维度相同，当\theta&lt;1时，网络叫做DenseNet-C，在论文中，\theata=0.5。包含瓶颈层和压缩层的DenseNet叫做DenseNet-BC。
 
 
 
