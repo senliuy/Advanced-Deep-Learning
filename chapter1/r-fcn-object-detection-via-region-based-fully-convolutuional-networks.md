@@ -22,6 +22,21 @@ Faster R-CNN之所以这样做主要是因为其使用了VGG \[4\]作为特征�
 
 在Faster R-CNN中，为了保证特征的“位移敏感性”，作者根据RPN提取了约2000个候选区域，然后使用全连接层计算损失函数，然而候选区域有大量的特征冗余，造成了一部分计算资源的浪费。
 
+R-FCN采用了和Faster R-CNN相同的过程，在R-FCN中做了如下改进
+
+1. 模仿FCN，R-FCN采用了全卷积的结构；
+2. R-FCN的两个阶段的网络参数全部共享；
+3. 使用positive-sensitive ROI pooling代替传统的ROI pooling;
+4. 池化后使用positive-sensitive score map产生检测区域。
+
+R-FCN的结构如图1
+
+\[R-FCN\_1.png\]
+
+## 2. R-FCN详解
+
+
+
 ## Reference
 
 \[1\] Dai J, Li Y, He K, et al. R-fcn: Object detection via region-based fully convolutional networks\[C\]//Advances in neural information processing systems. 2016: 379-387.
@@ -32,7 +47,7 @@ Faster R-CNN之所以这样做主要是因为其使用了VGG \[4\]作为特征�
 
 \[4\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
 
-\[5\]
+\[5\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
 \[6\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
 
