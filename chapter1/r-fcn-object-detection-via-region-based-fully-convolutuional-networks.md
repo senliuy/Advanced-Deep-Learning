@@ -27,13 +27,31 @@ R-FCN采用了和Faster R-CNN相同的过程，在R-FCN中做了如下改进
 1. 模仿FCN，R-FCN采用了全卷积的结构；
 2. R-FCN的两个阶段的网络参数全部共享；
 3. 使用positive-sensitive ROI pooling代替传统的ROI pooling;
-4. 池化后使用positive-sensitive score map产生检测区域。
+4. 使用positive-sensitive score map产生检测区域。
 
 R-FCN的结构如图1
 
+###### 图1：R-FCN核心思想
+
 \[R-FCN\_1.png\]
 
+
+
+在图1中，C表示物体检测中物体的类别数目。在R-FCN中，一个ROI会被分成k\*k个bin。下面我们来详细解析R-FCN。
+
 ## 2. R-FCN详解
+
+R-FCN采用了和Faster R-CNN相同的框架（图2），关于Faster R-CNN的解释，可以参考论文或者我的[解析](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html)。
+
+图2：R-FCN流程图
+
+\[R-FCN\_2.png\]
+
+### 2.1 backbone architecture
+
+R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是100层卷积+Global Averaging Pooling（GAP）+fc分类器的结构，ResNet101卷积的最后一层的Feature Map的个数是2048。在R-FCN中，去掉了ResNet的GAP层和fc层，并在最后一个卷积层之后使用1\*1卷积降维到1024-d，然后再使用1\*1卷积生成k^2\*\(C+1\)-d的positive-sensitive score map。其中ResNet部分使用在ImageNet上训练好的模型作为初始化参数。
+
+
 
 
 
