@@ -2,7 +2,7 @@
 
 ## 简介：
 
-位移不变性是卷积网络一个重要的特征，该特征使得卷积网格在图像分类任务上取得了非常好的效果。但是在物体检测的场景中，我们需要知道检测物体的具体位置，这时候我们需要网络对物体的位置非常敏感，即我们需要网络具有“位移可变性”。R-FCN \[1\]的提出便是解决分类任务中位移不变性和检测任务中位移可变性直接的矛盾的。
+位移不变性是卷积网络一个重要的特征，该特征使得卷积网格在图像分类任务上取得了非常好的效果，所谓唯一不变性，是指图片中物体的位置对图片的分类没有影响。但是在物体检测的场景中，我们需要知道检测物体的具体位置，这时候我们需要网络对物体的位置非常敏感，即我们需要网络具有“位移可变性”。R-FCN \[1\]的提出便是解决分类任务中位移不变性和检测任务中位移可变性直接的矛盾的。
 
 同时，作者分析了Faster R-CNN \[2\]存在的性能瓶颈，即ROI之后使用Fast R-CNN \[3\]对RPN提取的候选区域进行分类和位置精校。在R-FCN中，ROI之后便不存在可学习的参数，从而将Faster-RCNN的速度提高了2.5-20倍。
 
@@ -26,16 +26,14 @@ R-FCN采用了和Faster R-CNN相同的过程，在R-FCN中做了如下改进
 
 1. 模仿FCN，R-FCN采用了全卷积的结构；
 2. R-FCN的两个阶段的网络参数全部共享；
-3. 使用positive-sensitive ROI pooling代替传统的ROI pooling;
-4. 使用positive-sensitive score map产生检测区域。
+3. 使用位置敏感网络产生检测框；
+4. 位置敏感网络无任何可学习的参数。
 
 R-FCN的结构如图1
 
 ###### 图1：R-FCN核心思想
 
 \[R-FCN\_1.png\]
-
-
 
 在图1中，C表示物体检测中物体的类别数目。在R-FCN中，一个ROI会被分成k\*k个bin。下面我们来详细解析R-FCN。
 
@@ -47,13 +45,27 @@ R-FCN采用了和Faster R-CNN相同的框架（图2），关于Faster R-CNN的�
 
 \[R-FCN\_2.png\]
 
-### 2.1 backbone architecture
+### 2.1 骨干架构（backbone architecture）
 
-R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是100层卷积+Global Averaging Pooling（GAP）+fc分类器的结构，ResNet101卷积的最后一层的Feature Map的个数是2048。在R-FCN中，去掉了ResNet的GAP层和fc层，并在最后一个卷积层之后使用1\*1卷积降维到1024-d，然后再使用1\*1卷积生成k^2\*\(C+1\)-d的positive-sensitive score map。其中ResNet部分使用在ImageNet上训练好的模型作为初始化参数。
+R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是100层卷积+Global Averaging Pooling（GAP）+fc分类器的结构，ResNet101卷积的最后一层的Feature Map的个数是2048。在R-FCN中，去掉了ResNet的GAP层和fc层，并在最后一个卷积层之后使用1024个1\*1\*2048卷积降维到1024-d，然后再使用k^2\*\(C+1\)个1\*1\*1024-d的卷积生成k^2\*\(C+1\)-d的位置敏感卷积层。其中ResNet部分使用在ImageNet上训练好的模型作为初始化参数。
 
+### 2.2 位置敏感网络
 
+图1和图2中ResNet之后接的便是位置敏感网络。该层的大小和ResNet-101最后一层的大小相同，维度是k^2\*\(C+1\)。C+1为类别数，表示C类物体加上1类背景。k是一个超参数，表示把ROI划分grid的单位，一般情况下，k=3。在R-FCN中，一个ROI区域会被等比例划分成一个k\*k的grid，每个位置为一个bin，分别表示该grid对应的物体的部分（左上，正上，右上，正左，正中，正右，左下，正下，右下）编码（图3）。
 
+图3：位置敏感分值图的bins
 
+\[R-FCN\_3.png\]
+
+对于一个尺寸为w\*h的ROI区域，每个bin的大小约为\frac{w}{k} \* \frac{h}{k}。在第\(i,j\)-th bin中\(0&lt;=i,j&lt;k\)中，定义了一个只作用于该bin的位置敏感ROI池化（position-sensitive ROI pooling）,即求位置敏感分值图（position-sensitive score mpas）中每个bin的均值
+
+```
+r_c(i,j|\theta) = \frac{\sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta)}{n}
+```
+
+在上式中，\theta表示整个网络所有需要学习的参数，r\_c\(i,j\|\theta\)表示第c类物体在第\(i,j\)个bin处的响应值，z\_{i,j,c}\(x+x\_0, y+y\_0 \| \theta\)表示在位置敏感分值图中每个bin对应的横跨特征图中\lfloor i\frac{w}{k}\rfloor \leq x &lt; \ceil \(i+1\)\frac{w}{k}\rceil和\lfloor i\frac{h}{k}\rfloor \leq y &lt; \ceil \(i+1\)\frac{h}{k}\rceil的部分特征值。
+
+上式可能不好理解，我对论文中的插图做了些修改，如图3。
 
 ## Reference
 
