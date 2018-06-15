@@ -41,7 +41,7 @@ R-FCN的结构如图1
 
 R-FCN采用了和Faster R-CNN相同的框架（图2），关于Faster R-CNN的解释，可以参考论文或者我的[解析](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html)。
 
-###### 图2：R-FCN流程图
+###### 图2：R-FCN流程图$$x = y$$
 
 ![](/assets/R-FCN_2.png)
 
@@ -57,27 +57,31 @@ R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是10
 
 ![](/assets/R-FCN_3.png)
 
-
-
 对于一个尺寸为$$w\times h$$的ROI区域，每个bin的大小约为$$\frac{w}{k} \times \frac{h}{k}$$。在第$$(i,j)^{th}$$ bin中$$(0<=i,j<k)$$中，定义了一个只作用于该bin的位置敏感ROI池化（position-sensitive ROI pooling）,即求位置敏感分值图（position-sensitive score mpas）中每个bin的均值
 
 $$x = y$$
+$$
+r_c(i,j|\theta) = \frac{1}{n} \sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta)
+$$
 
-在上式中，\theta表示整个网络所有需要学习的参数，r\_c\(i,j\|\theta\)表示第c类物体在第\(i,j\)个bin处的响应值，z\_{i,j,c}\(x+x\_0, y+y\_0 \| \theta\)表示在位置敏感分值图中每个bin对应的横跨特征图中\lfloor i\frac{w}{k}\rfloor \leq x &lt; \ceil \(i+1\)\frac{w}{k}\rceil和\lfloor i\frac{h}{k}\rfloor \leq y &lt; \ceil \(i+1\)\frac{h}{k}\rceil的部分特征值。
 
-如图3所示，一个维度为w\*h\*\[k^2\*\(C+1\)的\]ROI区域可以展开成k^2个w\*h\*\(C+1\)个ROI区域，每个ROI区域的第\(i,j\)个grid对应物体的一个不同的敏感位置，这样我们可以提取k^2个维度为\(w/k\)\*\(h/k\)\*\(C+1\)的分值图，每个分值图求均值[^1]之后再整合到一起便得到了一个k^k\*\(C+1\)的位置敏感分值。对该位置敏感分值的k^2个区域求均值得到一个1\*1\*\(C+1\)的向量，使用softmax函数（注意不是softmax分类器）便可以得到每个类别的概率值。至此，R-FCN的分类任务介绍完毕。
+在上式中，$$\theta$$表示整个网络所有需要学习的参数，$$r_c(i,j|\theta)$$表示第$$c$$类物体在第$$(i,j)$$个bin处的响应值，$$z_{i,j,c}(x+x_0, y+y_0 | \theta)$$表示在位置敏感分值图中每个bin对应的横跨特征图中$$\lfloor i\frac{w}{k}\rfloor \leq x < \lceil (i+1)\frac{w}{k}\rceil$$和$$\lfloor i\frac{h}{k}\rfloor \leq y < \lceil (i+1)\frac{h}{k}\rceil$$的部分特征值。
 
-现在开始介绍分类任务，在ResNet101之后，使用4个1\*1\*1024卷积得到一个维度维4的卷积。该卷积层对应的ROI区域根据物体的位置分成k\*k个bin，这样便得到了一个4\*k^2的特征向量，物体的位置信息\(x,y,w,h\)通过平均或者投票的方式可以得到。注意R-FCN得到的位置信息和物体的类别没有关系，这一点和Faster R-CNN是不同的。
+如图3所示，一个维度为$$w\times h\times[k^2\times(C+1)]$$的ROI区域可以展开成$$k^2$$个$$w\times h\times(C+1)$$个ROI区域，每个ROI区域的第$$(i,j)$$个grid对应物体的一个不同的敏感位置，这样我们可以提取$$k^2$$个维度为$$\frac{w}{k}\times \frac{h}{k} \times (C+1)$$的分值图，每个分值图求均值[^1]之后再整合到一起便得到了一个$$k^2\times(C+1)$$的位置敏感分值。对该位置敏感分值的$$k^2$$个区域求均值得到一个$$1\times1\times(C+1)$$的向量，使用softmax函数（注意不是softmax分类器）便可以得到每个类别的概率值。至此，R-FCN的分类任务介绍完毕。
+
+现在开始介绍分类任务，在ResNet101之后，使用4个$$1\times1\times1024$$卷积得到一个维度维4的卷积。该卷积层对应的ROI区域根据物体的位置分成$$k^2$$个bin，这样便得到了一个$$4\times k^2$$的特征向量，物体的位置信息$$(x,y,w,h)$$通过平均或者投票的方式可以得到。注意R-FCN得到的位置信息和物体的类别没有关系，这一点和Faster R-CNN是不同的。
 
 ### 2.3 R-FCN的训练
 
 R-FCN也是采用了分类和回归的多任务损失函数：
 
-```
-L(s,t_{x,y,w,h}) = L_{cls} + \lambda[c^*>0]L_{reg}(t,t*)
-```
 
-其中c^\*表示分类得到的ROI区域的类别；\[c^\*&gt;0\]表示如果括号内的判断满足，结果为1，否则结构为1；\lambda为多任务的比重，是一个需要根据模型的收敛效果调整的超参数；L\_{cls}为softmax分类损失函数，L\_{reg}为bounding box回归损失函数。
+$$
+L(s,t_{x,y,w,h}) = L_{cls} + \lambda[c^*>0]L_{reg}(t,t*)
+$$
+
+
+其中$$c^*$$表示分类得到的ROI区域的类别；$$[c^*>0]$$表示如果括号内的判断满足，结果为1，否则结构为1；$$\lambda$$为多任务的比重，是一个需要根据模型的收敛效果调整的超参数；$$L_{cls}$$为softmax分类损失函数，$$L_{reg}$$为bounding box回归损失函数。
 
 ### 2.4 R-FCN结果可视化
 
