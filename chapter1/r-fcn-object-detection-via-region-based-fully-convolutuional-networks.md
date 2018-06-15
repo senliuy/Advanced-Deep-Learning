@@ -60,6 +60,8 @@ R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是10
 对于一个尺寸为$$w\times h$$的ROI区域，每个bin的大小约为$$\frac{w}{k} \times \frac{h}{k}$$。在第$$(i,j)^{th}$$ bin中$$(0<=i,j<k)$$中，定义了一个只作用于该bin的位置敏感ROI池化（position-sensitive ROI pooling）,即求位置敏感分值图（position-sensitive score mpas）中每个bin的均值
 
 $$x = y$$
+
+
 $$
 r_c(i,j|\theta) = \frac{1}{n} \sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta)
 $$
