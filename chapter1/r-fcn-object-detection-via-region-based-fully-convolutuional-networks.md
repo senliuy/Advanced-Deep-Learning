@@ -41,7 +41,7 @@ R-FCN的结构如图1
 
 R-FCN采用了和Faster R-CNN相同的框架（图2），关于Faster R-CNN的解释，可以参考论文或者我的[解析](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html)。
 
-图2：R-FCN流程图
+###### 图2：R-FCN流程图
 
 \[R-FCN\_2.png\]
 
@@ -51,9 +51,9 @@ R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是10
 
 ### 2.2 位置敏感网络
 
-图1和图2中ResNet之后接的便是位置敏感网络。该层的大小和ResNet-101最后一层的大小相同，维度是k^2\*\(C+1\)。C+1为类别数，表示C类物体加上1类背景。k是一个超参数，表示把ROI划分grid的单位，一般情况下，k=3。在R-FCN中，一个ROI区域会被等比例划分成一个k\*k的grid，每个位置为一个bin，分别表示该grid对应的物体的部分（左上，正上，右上，正左，正中，正右，左下，正下，右下）编码（图3）。
+图1和图2中ResNet之后接的便是位置敏感网络。该层的大小和ResNet-101最后一层的大小相同，维度是k^2\*\(C+1\)。C+1为类别数，表示C类物体加上1类背景。k是一个超参数，表示把ROI划分grid的单位，一般情况下，k=3。在R-FCN中，一个ROI区域会被等比例划分成一个k\*k的grid，每个位置为一个bin，分别表示该grid对应的物体的敏感位置（左上，正上，右上，正左，正中，正右，左下，正下，右下）编码（图3）。
 
-图3：位置敏感分值图的bins
+###### 图3：图解位置敏感ROI Pooling过程\(k=3\)
 
 \[R-FCN\_3.png\]
 
@@ -65,7 +65,11 @@ r_c(i,j|\theta) = \frac{\sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta
 
 在上式中，\theta表示整个网络所有需要学习的参数，r\_c\(i,j\|\theta\)表示第c类物体在第\(i,j\)个bin处的响应值，z\_{i,j,c}\(x+x\_0, y+y\_0 \| \theta\)表示在位置敏感分值图中每个bin对应的横跨特征图中\lfloor i\frac{w}{k}\rfloor \leq x &lt; \ceil \(i+1\)\frac{w}{k}\rceil和\lfloor i\frac{h}{k}\rfloor \leq y &lt; \ceil \(i+1\)\frac{h}{k}\rceil的部分特征值。
 
-上式可能不好理解，我对论文中的插图做了些修改，如图3。
+如图3所示，一个维度为w\*h\*\[k^2\*\(C+1\)的\]ROI区域可以展开成k^2个w\*h\*\(C+1\)个ROI区域，每个ROI区域的第\(i,j\)个grid对应物体的一个不同的敏感位置，这样我们可以提取k^2个维度为\(w/k\)\*\(h/k\)\*\(C+1\)的分值图，每个分值图求均值[^1]之后再整合到一起便得到了一个k^k\*\(C+1\)的位置敏感分值。对该位置敏感分值的k^2个区域求均值得到一个1\*1\*\(C+1\)的向量，使用softmax函数（注意不是softmax分类器）便可以得到每个类别的概率值。
+
+
+
+
 
 ## Reference
 
@@ -80,4 +84,6 @@ r_c(i,j|\theta) = \frac{\sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta
 \[5\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
 \[6\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
+
+[^1]: 求最大值可以得到和均值类似的效果。
 
