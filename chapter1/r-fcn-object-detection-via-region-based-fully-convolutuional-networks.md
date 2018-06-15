@@ -18,7 +18,7 @@
 1. softmax的分类任务；
 2. 用于位置精校的回归任务
 
-Faster R-CNN之所以这样做主要是因为其使用了VGG \[4\]作为特征提取器。在第一章中，我们了解到VGG之后的GoogLeNet \[5\]和ResNet \[6\]均是使用了全卷积的结构，即使用1\*1卷积代替全连接。1\*1卷积具备全连接层增加非线性性的作用，同时还保证了特征点的位置敏感性。可见在物体检测任务中引入1\*1卷积会非常有帮助的。
+Faster R-CNN之所以这样做主要是因为其使用了VGG \[4\]作为特征提取器。在第一章中，我们了解到VGG之后的GoogLeNet \[5\]和ResNet \[6\]均是使用了全卷积的结构，即使用$$1\times1$$卷积代替全连接。$$1\times1$$卷积具备全连接层增加非线性性的作用，同时还保证了特征点的位置敏感性。可见在物体检测任务中引入$$1\times1$$卷积会非常有帮助的。
 
 在Faster R-CNN中，为了保证特征的“位移敏感性”，作者根据RPN提取了约2000个候选区域，然后使用全连接层计算损失函数，然而候选区域有大量的特征冗余，造成了一部分计算资源的浪费。
 
@@ -33,9 +33,9 @@ R-FCN的结构如图1
 
 ###### 图1：R-FCN核心思想
 
-\[R-FCN\_1.png\]
+![](/assets/R-FCN_1.png)
 
-在图1中，C表示物体检测中物体的类别数目。在R-FCN中，一个ROI会被分成k\*k个bin。下面我们来详细解析R-FCN。
+在图1中，$$C$$表示物体检测中物体的类别数目。在R-FCN中，一个ROI会被分成$$k\times k$$个bin。下面我们来详细解析R-FCN。
 
 ## 2. R-FCN详解
 
@@ -43,33 +43,51 @@ R-FCN采用了和Faster R-CNN相同的框架（图2），关于Faster R-CNN的�
 
 ###### 图2：R-FCN流程图
 
-\[R-FCN\_2.png\]
+![](/assets/R-FCN_2.png)
 
 ### 2.1 骨干架构（backbone architecture）
 
-R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是100层卷积+Global Averaging Pooling（GAP）+fc分类器的结构，ResNet101卷积的最后一层的Feature Map的个数是2048。在R-FCN中，去掉了ResNet的GAP层和fc层，并在最后一个卷积层之后使用1024个1\*1\*2048卷积降维到1024-d，然后再使用k^2\*\(C+1\)个1\*1\*1024-d的卷积生成k^2\*\(C+1\)-d的位置敏感卷积层。其中ResNet部分使用在ImageNet上训练好的模型作为初始化参数。
+R-FCN使用的是残差网络的ResNet-101\[6\]结构，ResNet-101采用的是100层卷积+Global Averaging Pooling（GAP）+fc分类器的结构，ResNet101卷积的最后一层的Feature Map的个数是2048。在R-FCN中，去掉了ResNet的GAP层和fc层，并在最后一个卷积层之后使用1024个$$1\times1\times2048$$卷积降维到1024-d，然后再使用$$k^2\times(C+1)$$个$$1\times1\times1024-d$$的卷积生成$$k^2\times(C+1)-d$$的位置敏感卷积层。其中ResNet部分使用在ImageNet上训练好的模型作为初始化参数。
 
 ### 2.2 位置敏感网络
 
-图1和图2中ResNet之后接的便是位置敏感网络。该层的大小和ResNet-101最后一层的大小相同，维度是k^2\*\(C+1\)。C+1为类别数，表示C类物体加上1类背景。k是一个超参数，表示把ROI划分grid的单位，一般情况下，k=3。在R-FCN中，一个ROI区域会被等比例划分成一个k\*k的grid，每个位置为一个bin，分别表示该grid对应的物体的敏感位置（左上，正上，右上，正左，正中，正右，左下，正下，右下）编码（图3）。
+图1和图2中ResNet之后接的便是位置敏感网络。该层的大小和ResNet-101最后一层的大小相同，维度是$$k^2\times(C+1)$$。$$C+1$$为类别数，表示$$C$$类物体加上1类背景。k是一个超参数，表示把ROI划分grid的单位，一般情况下，$$k=3$$。在R-FCN中，一个ROI区域会被等比例划分成一个$$k\times k$$的grid，每个位置为一个bin，分别表示该grid对应的物体的敏感位置（左上，正上，右上，正左，正中，正右，左下，正下，右下）编码（图3）。
 
 ###### 图3：图解位置敏感ROI Pooling过程\(k=3\)
 
-\[R-FCN\_3.png\]
+![](/assets/R-FCN_3.png)
 
-对于一个尺寸为w\*h的ROI区域，每个bin的大小约为\frac{w}{k} \* \frac{h}{k}。在第\(i,j\)-th bin中\(0&lt;=i,j&lt;k\)中，定义了一个只作用于该bin的位置敏感ROI池化（position-sensitive ROI pooling）,即求位置敏感分值图（position-sensitive score mpas）中每个bin的均值
 
-```
-r_c(i,j|\theta) = \frac{\sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta)}{n}
-```
+
+对于一个尺寸为$$w\times h$$的ROI区域，每个bin的大小约为$$\frac{w}{k} \times \frac{h}{k}$$。在第$$(i,j)^{th}$$ bin中$$(0<=i,j<k)$$中，定义了一个只作用于该bin的位置敏感ROI池化（position-sensitive ROI pooling）,即求位置敏感分值图（position-sensitive score mpas）中每个bin的均值
+
+$$x = y$$
 
 在上式中，\theta表示整个网络所有需要学习的参数，r\_c\(i,j\|\theta\)表示第c类物体在第\(i,j\)个bin处的响应值，z\_{i,j,c}\(x+x\_0, y+y\_0 \| \theta\)表示在位置敏感分值图中每个bin对应的横跨特征图中\lfloor i\frac{w}{k}\rfloor \leq x &lt; \ceil \(i+1\)\frac{w}{k}\rceil和\lfloor i\frac{h}{k}\rfloor \leq y &lt; \ceil \(i+1\)\frac{h}{k}\rceil的部分特征值。
 
-如图3所示，一个维度为w\*h\*\[k^2\*\(C+1\)的\]ROI区域可以展开成k^2个w\*h\*\(C+1\)个ROI区域，每个ROI区域的第\(i,j\)个grid对应物体的一个不同的敏感位置，这样我们可以提取k^2个维度为\(w/k\)\*\(h/k\)\*\(C+1\)的分值图，每个分值图求均值[^1]之后再整合到一起便得到了一个k^k\*\(C+1\)的位置敏感分值。对该位置敏感分值的k^2个区域求均值得到一个1\*1\*\(C+1\)的向量，使用softmax函数（注意不是softmax分类器）便可以得到每个类别的概率值。
+如图3所示，一个维度为w\*h\*\[k^2\*\(C+1\)的\]ROI区域可以展开成k^2个w\*h\*\(C+1\)个ROI区域，每个ROI区域的第\(i,j\)个grid对应物体的一个不同的敏感位置，这样我们可以提取k^2个维度为\(w/k\)\*\(h/k\)\*\(C+1\)的分值图，每个分值图求均值[^1]之后再整合到一起便得到了一个k^k\*\(C+1\)的位置敏感分值。对该位置敏感分值的k^2个区域求均值得到一个1\*1\*\(C+1\)的向量，使用softmax函数（注意不是softmax分类器）便可以得到每个类别的概率值。至此，R-FCN的分类任务介绍完毕。
 
+现在开始介绍分类任务，在ResNet101之后，使用4个1\*1\*1024卷积得到一个维度维4的卷积。该卷积层对应的ROI区域根据物体的位置分成k\*k个bin，这样便得到了一个4\*k^2的特征向量，物体的位置信息\(x,y,w,h\)通过平均或者投票的方式可以得到。注意R-FCN得到的位置信息和物体的类别没有关系，这一点和Faster R-CNN是不同的。
 
+### 2.3 R-FCN的训练
 
+R-FCN也是采用了分类和回归的多任务损失函数：
 
+```
+L(s,t_{x,y,w,h}) = L_{cls} + \lambda[c^*>0]L_{reg}(t,t*)
+```
+
+其中c^\*表示分类得到的ROI区域的类别；\[c^\*&gt;0\]表示如果括号内的判断满足，结果为1，否则结构为1；\lambda为多任务的比重，是一个需要根据模型的收敛效果调整的超参数；L\_{cls}为softmax分类损失函数，L\_{reg}为bounding box回归损失函数。
+
+### 2.4 R-FCN结果可视化
+
+图4中的可视化展示了R-FCN的bin的工作原理，如果ROI区域能够比较精确的框柱物体的位置（图4.a），那么每个bin对应的Feature Map都应该能得到非常高的响应；如果ROI区域（图4.b）的定位的不是非常准确，那么部分bin的响应就不是非常明显，那么通过投票或者求均值的方法就能筛选出更精确的检测框。
+
+图4：R-FCN可视化
+
+\(a\)![](/assets/R-FCN_4.a.png)
+
+\(b\)![](/assets/R-FCN_4.b.png)
 
 ## Reference
 
@@ -84,6 +102,4 @@ r_c(i,j|\theta) = \frac{\sum_{(x,y)\in bin(i,j)} z_{i,j,c}(x+x_0, y+y_0 | \theta
 \[5\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
 \[6\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
-
-[^1]: 求最大值可以得到和均值类似的效果。
 
