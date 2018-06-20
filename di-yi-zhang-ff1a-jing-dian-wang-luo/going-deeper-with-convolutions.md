@@ -175,11 +175,7 @@ def inception_v2(x):
 
 ### 1.6 Inception V3
 
-Inception V3\[8\]是将Inception V1和V2中的$$x = y$$卷积换成一个$$n\times1$$和一个$$1\times n$$
-
----
-
-的卷积，这样做带来的好处有以下几点：
+Inception V3\[8\]是将Inception V1和V2中的$$n\times n$$卷积换成一个$$n\times1$$和一个$$1\times n$$的卷积，这样做带来的好处有以下几点：
 
 1. 节约了大量参数，提升了训练速度，减轻了过拟合的问题；
 2. 多层卷积增加了模型的拟合能力；
