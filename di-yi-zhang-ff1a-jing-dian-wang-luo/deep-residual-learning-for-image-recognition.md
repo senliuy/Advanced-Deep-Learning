@@ -91,8 +91,6 @@ def resnet_v1(x):
 
 在统计学中，残差和误差是非常容易混淆的两个概念。误差是衡量观测值和真实值之间的差距，残差是指预测值和观测值之间的差距。对于残差网络的命名原因，作者给出的解释是，网络的一层通常可以看做$$y=H(x)$$, 而残差网络的一个残差块可以表示为$$H(x)=F(x)+x$$，也就是$$F(x) = H(x)-x$$，在单位映射中，$$y=x$$便是观测值，而$$H(x)$$是预测值，所以$$F(x)$$便对应着残差，因此叫做残差网络。
 
-
-
 ## 2. 残差网络的背后原理
 
 残差块一个更通用的表示方式是
@@ -264,10 +262,14 @@ def resnet_v2(x):
     outputs = Dense(10, activation='softmax', kernel_initializer='he_normal')(y)
     return outputs
 ```
+
 # 残差网络是一种模型集成
+
 ## Reference
 
 \[1\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
 
 \[2\] He K, Zhang X, Ren S, et al. Identity mappings in deep residual networks\[C\]//European Conference on Computer Vision. Springer, Cham, 2016: 630-645.
+
+\[3\] Veit A, Wilber M J, Belongie S. Residual networks behave like ensembles of relatively shallow networks\[C\]//Advances in Neural Information Processing Systems. 2016: 550-558.
 
