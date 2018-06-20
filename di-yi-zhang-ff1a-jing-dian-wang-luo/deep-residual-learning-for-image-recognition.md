@@ -264,7 +264,7 @@ def resnet_v2(x):
     outputs = Dense(10, activation='softmax', kernel_initializer='he_normal')(y)
     return outputs
 ```
-
+# 残差网络是一种模型集成
 ## Reference
 
 \[1\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
