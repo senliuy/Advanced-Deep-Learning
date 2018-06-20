@@ -263,7 +263,8 @@ def resnet_v2(x):
     return outputs
 ```
 
-# 残差网络是一种模型集成
+## 3.残差网络是一种模型集成
+在Veit
 
 ## Reference
 
