@@ -113,17 +113,17 @@ GoogLeNet的核心部件叫做Inception。根据感受野的递推公式，不�
 
 ![](/assets/Inception_2.png)
 
-Inception的代码也比较容易实现，建立4个并行的分支并在最后merge到一起即可。
+Inception的代码也比较容易实现，建立4个并行的分支并在最后merge到一起即可。为了运行MNIST数据集，我使用了更窄的网络（Feature Map数量均为4），论文中feature map的数量已注释在代码中。
 
 ```py
 def inception(x):
-    inception_1x1 = Conv2D(4,(1,1), padding='same', activation='relu')(x)
-    inception_3x3_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
-    inception_3x3 = Conv2D(4,(3,3), padding='same', activation='relu')(inception_3x3_reduce)
-    inception_5x5_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x)
-    inception_5x5 = Conv2D(4,(5,5), padding='same', activation='relu')(inception_5x5_reduce)
-    inception_pool = MaxPool2D(pool_size=(3,3), strides=(1,1), padding='same')(x)
-    inception_pool_proj = Conv2D(4,(1,1), padding='same', activation='relu')(inception_pool)
+    inception_1x1 = Conv2D(4,(1,1), padding='same', activation='relu')(x) #64
+    inception_3x3_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x) #96
+    inception_3x3 = Conv2D(4,(3,3), padding='same', activation='relu')(inception_3x3_reduce) #128
+    inception_5x5_reduce = Conv2D(4,(1,1), padding='same', activation='relu')(x) #16
+    inception_5x5 = Conv2D(4,(5,5), padding='same', activation='relu')(inception_5x5_reduce) #32
+    inception_pool = MaxPool2D(pool_size=(3,3), strides=(1,1), padding='same')(x) #192
+    inception_pool_proj = Conv2D(4,(1,1), padding='same', activation='relu')(inception_pool) #32
     inception_output = merge([inception_1x1, inception_3x3, inception_5x5, inception_pool_proj], 
                                 mode='concat', concat_axis=3)
     return inception_output
