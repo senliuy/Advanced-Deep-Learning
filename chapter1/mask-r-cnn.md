@@ -139,7 +139,13 @@ FPN使用单位加的操作来更新特征，这种单位加操作叫做横向�
 
 ### 2. 两步走策略
 
-Mask R-CNN采用了和Faster R-CNN相同的两步走策略，即先使用RPN提取候选区域，不同于Faster R-CNN
+Mask R-CNN采用了和Faster R-CNN相同的两步走策略，即先使用RPN提取候选区域，不同于Faster R-CNN中使用分类和回归的多任务回归，Mask R-CNN在其基础上并行添加了一个用于语义分割的Mask损失函数，所以Mask R-CNN的损失函数可以表示为下式。
+
+```
+L= L_{cls} + L_{box} + L_{mask}
+```
+
+
 
 ## Reference
 
