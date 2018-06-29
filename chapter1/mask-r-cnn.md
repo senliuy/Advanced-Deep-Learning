@@ -23,6 +23,10 @@
 
 ## Mask R-CNN详解
 
+### 1. Backbone Structure
+
+
+
 ## Reference
 
 \[1\] He K, Gkioxari G, Dollár P, et al. Mask r-cnn\[C\]//Computer Vision \(ICCV\), 2017 IEEE International Conference on. IEEE, 2017: 2980-2988.
@@ -32,4 +36,12 @@
 \[3\] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015. 1, 2, 3, 4, 7
 
 \[4\] M. Jaderberg, K. Simonyan, A. Zisserman, and K. Kavukcuoglu. Spatial transformer networks. In NIPS, 2015. 4
+
+\[5\] 
+
+### 附录A: 双线性插值
+
+
+
+
 
