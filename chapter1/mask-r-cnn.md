@@ -194,8 +194,6 @@ RoI Pooling的下一步是对Feature Map分bin，加入我们需要一个7\*7的
 
 图7：RoIAlign可视化
 
-
-
 RoIAlign操作通过`tf.image.crop_and_resize`一个函数便可以实现，在./mrcnn/model.py的第421-423行。由于Mask R-CNN使用了FPN作为骨干架构，所以使用了循环保存每次Pooling之后的Feature Map。
 
 代码片段4：RoIAlign
@@ -213,7 +211,10 @@ Mask R-CNN是一个很多state-of-the-art算法的合成体，并非常巧妙的
 3. 使用Faster R-CNN的物体检测流程：RPN+Fast R-CNN；
 4. 增加FCN用于语义分割。
 
-Mask R-CNNd
+Mask R-CNN设计的主要接口有：
+
+1. 将FCN和Faster R-CNN合并，通过构建一个三任务的损失函数来优化模型；
+2. 使用RoIAlign优化了RoI Pooling，解决了Faster R-CNN在语义分割中的区域不匹配问题。
 
 ## Reference
 
@@ -230,6 +231,42 @@ Mask R-CNNd
 \[6\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
 
 ### 附录A: 双线性插值
+
+双线性插值即在二维空间上按维度分别进行线性插值。
+
+**线性插值**：已知在直线上两点\(x\_0, y\_0\)，\(x\_1, y\_1\)，则在\[x\_0, x\_1\]区间内任意一点\[x,y\]满足等式
+
+```
+\frac{y-y_0}{x-x_0} = \frac{y_1 - y_0}{x_1 - x_0}
+```
+
+即已知x的情况下，y的计算方式为：
+
+```
+y = \frac{x_1 - x}{x_1 - x_0}y_0 + \frac{x_x_0}{x_1-x_0}y_1
+```
+
+**双线性插值**：双线性插值即在二维空间的每个维度分别进行线性插值，如图8
+
+###### 图8：双线性插值
+
+已知二维空间中4点Q\_{11}=\(x\_1, y\_1\)，Q\_{12}=\(x\_1, y\_2\)，Q\_{21}=\(x\_2, y\_1\)，Q\_{22}=\(x\_2, y\_2\)，我们要求的是空间中一点中P=\(x,y\)的值f\(P\)。
+
+首先在y轴上进行线性插值
+
+```
+f(x,y_1)=\frac{x_2-x}{x_2-x_1}f(Q_{11}) = \frac{x-x_1}{x_2-x_1}f(Q_{21})
+```
+
+```
+f(x,y_2)=\frac{x_2-x}{x_2-x_1}f(Q_{12}) = \frac{x-x_1}{x_2-x_1}f(Q_{22})
+```
+
+在根据R\_1和R\_2在x轴上进行线性插值
+
+```
+f(P) = \frac{y_2-y}{y_2-y_1}f(x,y_1) = \frac{y-y_1}{y_2-y_1}f(x, y_2)
+```
 
 
 
