@@ -179,8 +179,6 @@ ROI Pooling的下一步是对Feature Map分bin，加入我们需要一个7\*7的
 
 ###### 图6：ROI Pooling的区域不匹配问题
 
-
-
 ## Reference
 
 \[1\] He K, Gkioxari G, Dollár P, et al. Mask r-cnn\[C\]//Computer Vision \(ICCV\), 2017 IEEE International Conference on. IEEE, 2017: 2980-2988.
