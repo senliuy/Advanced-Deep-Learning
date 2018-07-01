@@ -10,7 +10,7 @@
 
 ###### 图1：Mask R-CNN框架图
 
-\[Mask\_R-CNN1\]
+![](/assets/Mask_R-CNN_1.png)
 
 如图1所示，Mask R-CNN分成两步：
 
@@ -33,7 +33,7 @@ Mask R-CNN的骨干框架使用的是该团队在CVPR2017的另外一篇文章FP
 
 图2：金字塔特征的几种形式。
 
-\[Mask\_R-CNN2\]
+![](/assets/Mask_R-CNN_2.png)
 
 FPN的代码出现在`./mrcnn/model.py`中，核心代码如下：
 
@@ -127,7 +127,7 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
 
 图3：FPN的自顶向上路径和横向连接
 
-\[Mask\_R-CNN3\]
+![](/assets/Mask_R-CNN_3.png)
 
 残差网络得到的C1-C5由于经历了不同的降采样次数，所以得到的Feature Map的尺寸也不同。为了提升计算效率，首先FPN使用1\*1进行了降维，得到P5，然后使用双线性插值进行上采样，将P5上采样到和C4相同的尺寸。
 
@@ -141,25 +141,23 @@ FPN使用单位加的操作来更新特征，这种单位加操作叫做横向�
 
 Mask R-CNN采用了和Faster R-CNN相同的两步走策略，即先使用RPN提取候选区域，关于RPN的详细介绍，可以参考Faster R-CNN一文。不同于Faster R-CNN中使用分类和回归的多任务回归，Mask R-CNN在其基础上并行添加了一个用于语义分割的Mask损失函数，所以Mask R-CNN的损失函数可以表示为下式。
 
-```
-L= L_{cls} + L_{box} + L_{mask}
-```
+$$L= L_{cls} + L_{box} + L_{mask}$$
 
-上式中，L\_{cls}表示bounding box的分类损失值，L\_{box}表示bounding box的回归损失值，L\_{mask}表示mask部分的损失值，图4。在这份源码中，作者使用了近似联合训练（Approximate Joint Training），所以损失函数会由也会加上RPN的分类和回归loss。这一部分代码在`./mrcnn/model.py`的2004-2025行。L\_{cls}和L\_{box}的计算方式与Faster R-CNN相同，下面我们重点讨论L\_{mask}。
+上式中，$$L_{cls}$$表示bounding box的分类损失值，$$L_{box}$$表示bounding box的回归损失值，$$L_{mask}$$表示mask部分的损失值，图4。在这份源码中，作者使用了近似联合训练（Approximate Joint Training），所以损失函数会由也会加上RPN的分类和回归loss。这一部分代码在`./mrcnn/model.py`的2004-2025行。$$L_{cls}$$和$$L_{box}$$的计算方式与Faster R-CNN相同，下面我们重点讨论$$L_{mask}$$。
 
 ###### 图4：Mask R-CNN的损失函数
 
-\[mRCNN\_4\]
+![](/assets/Mask_R-CNN_4.png)
 
 在进行掩码预测时，FCN的分割和预测是同时进行的，即要预测每个像素属于哪一类。而Mask R-CNN将分类和语义分割任务进行了解耦，即每个类单独的预测一个而知掩码，这种解耦提升了语义分割的效果，从图5上来看，提升效果还是很明显的。
 
-图5：Mask R-CNN解耦分类和分割的精度提升
+###### 图5：Mask R-CNN解耦分类和分割的精度提升
 
-\[mRCNN\_5\]
+![](/assets/Mask_R-CNN_5.png)
 
-所以Mask R-CNN基于FCN将ROI区域映射成为一个m\*m\*nb\_class（FCN是m\*m）的特征层，例如他图4中的28\*28\*80。由于每个候选区域的分割是一个二分类任务，所以L\_{mask}使用的是二值交叉熵（`binary_crossentropy`）损失函数，对应的代码为（1182-1184行）
+所以Mask R-CNN基于FCN将ROI区域映射成为一个$$m\times m\times nb\_class$$（FCN是$$m\times m$$）的特征层，例如他图4中的$$28\times28\times80$$。由于每个候选区域的分割是一个二分类任务，所以$$L_{mask}$$使用的是二值交叉熵（`binary_crossentropy`）损失函数，对应的代码为（1182-1184行）
 
-###### 代码片段3：L\_{mask}
+###### 代码片段3：$$L_{mask}$$
 
 ```py
 loss = K.switch(tf.size(y_true) > 0,
@@ -173,26 +171,28 @@ loss = K.switch(tf.size(y_true) > 0,
 
 ROIAlign的提出是为了解决Faster R-CNN中RoI Pooling的区域不匹配的问题，下面我们来举例说明什么是区域不匹配。ROI Pooling的区域不匹配问题是由于ROI Pooling过程中的取整操作产生的（图6），我们知道ROI Pooling是Faster R-CNN中必不可少的一步，因为其会产生长度固定的特征向量，有了长度固定的特征向量才能进行softmax计算分类损失。
 
-如下图，输入是一张800\*800的图片，经过一个有5次降采样的卷机网络，得到大小为25\*25的Feature Map。图中的ROI区域大小是600\*500，经过网络之后对应的区域为\(600/32\) \* \(500/32\) = 18.75 \* 15.625 ，由于无法整除，ROI Pooling采用向下取整的方式，进而得到ROI区域的Feature Map的大小为18\*15，这就造成了第一次区域不匹配。
+如下图，输入是一张$$800\times800$$的图片，经过一个有5次降采样的卷机网络，得到大小为$$25\times25$$的Feature Map。图中的ROI区域大小是$$600\times500$$，经过网络之后对应的区域为$$\frac{600}{32} \times \frac{500}{32} = 18.75 \times 15.625$$ ，由于无法整除，ROI Pooling采用向下取整的方式，进而得到ROI区域的Feature Map的大小为$$18\times15$$，这就造成了第一次区域不匹配。
 
-RoI Pooling的下一步是对Feature Map分bin，加入我们需要一个7\*7的bin，每个bin的大小为\(18/7\) \* \(15/7\)，由于不能整除，ROI同样采用了向下取整的方式，从而每个bin的大小为2\*2，即整个RoI区域的Feature Map的尺寸为14\*14。第二次区域不匹配问题因此产生。
+RoI Pooling的下一步是对Feature Map分bin，加入我们需要一个$$7\times7$$的bin，每个bin的大小为$$\frac{18}{7} \times \frac{15}{7}$$，由于不能整除，ROI同样采用了向下取整的方式，从而每个bin的大小为$$2\times2$$，即整个RoI区域的Feature Map的尺寸为$$14\times14$$。第二次区域不匹配问题因此产生。
 
 对比ROI Pooling之前的Feature Map，ROI Pooling分别在横向和纵向产生了4.75和1.625的误差，对于物体分类或者物体检测场景来说，这几个像素的位移或许对结果影响不大，但是语义分割任务通常要精确到每个像素点，因此ROI Pooling是不能应用到Mask R-CNN中的。
 
 ###### 图6：ROI Pooling的区域不匹配问题
 
-\[Maskrcnn6\]
+![](/assets/Mask_R-CNN_6.png)
 
 为了解决这个问题，作者提出了RoIAlign。RoIAlign并没有取整的过程，可以全程使用浮点数操作，步骤如下：
 
 1. 计算RoI区域的边长，边长不取整；
-2. 将ROI区域均匀分成k\*k个bin，每个bin的大小不取整；
+2. 将ROI区域均匀分成$$k\times k$$个bin，每个bin的大小不取整；
 3. 每个bin的值为其最邻近的Feature Map的四个值通过双线性插值得到；
 4. 使用Max Pooling或者Average Pooling得到长度固定的特征向量。
 
 上面步骤如图7所示。
 
-图7：RoIAlign可视化
+###### 图7：RoIAlign可视化
+
+![](/assets/Mask_R-CNN_7.png)
 
 RoIAlign操作通过`tf.image.crop_and_resize`一个函数便可以实现，在./mrcnn/model.py的第421-423行。由于Mask R-CNN使用了FPN作为骨干架构，所以使用了循环保存每次Pooling之后的Feature Map。
 
@@ -234,39 +234,51 @@ Mask R-CNN设计的主要接口有：
 
 双线性插值即在二维空间上按维度分别进行线性插值。
 
-**线性插值**：已知在直线上两点\(x\_0, y\_0\)，\(x\_1, y\_1\)，则在\[x\_0, x\_1\]区间内任意一点\[x,y\]满足等式
+**线性插值**：已知在直线上两点$$(x_0, y_0)$$，$$(x_1, y_1)$$，则在$$[x_0, x_1]$$区间内任意一点$$[x,y]$$满足等式
 
-```
+
+$$
 \frac{y-y_0}{x-x_0} = \frac{y_1 - y_0}{x_1 - x_0}
-```
+$$
 
-即已知x的情况下，y的计算方式为：
 
-```
-y = \frac{x_1 - x}{x_1 - x_0}y_0 + \frac{x_x_0}{x_1-x_0}y_1
-```
+即已知$$x$$的情况下，$$y$$的计算方式为：
+
+
+$$
+y = \frac{x_1 - x}{x_1 - x_0} y_0 + \frac{x-x_0}{x_1-x_0} y_1
+$$
+
 
 **双线性插值**：双线性插值即在二维空间的每个维度分别进行线性插值，如图8
 
 ###### 图8：双线性插值
 
-已知二维空间中4点Q\_{11}=\(x\_1, y\_1\)，Q\_{12}=\(x\_1, y\_2\)，Q\_{21}=\(x\_2, y\_1\)，Q\_{22}=\(x\_2, y\_2\)，我们要求的是空间中一点中P=\(x,y\)的值f\(P\)。
+![](/assets/Mask_R-CNN_A1.png)
 
-首先在y轴上进行线性插值
+已知二维空间中4点$$Q_{11}=(x_1, y_1)$$，$$Q_{12}=(x_1, y_2)$$，$$Q_{21}=(x_2, y_1)$$，$$Q_{22}=(x_2, y_2)$$，我们要求的是空间中一点中$$P=(x,y)$$的值$$f(P)$$。
 
-```
-f(x,y_1)=\frac{x_2-x}{x_2-x_1}f(Q_{11}) = \frac{x-x_1}{x_2-x_1}f(Q_{21})
-```
+首先在$$y$$轴上进行线性插值据得到$$R_1$$和$$R_2$$：
 
-```
-f(x,y_2)=\frac{x_2-x}{x_2-x_1}f(Q_{12}) = \frac{x-x_1}{x_2-x_1}f(Q_{22})
-```
 
-在根据R\_1和R\_2在x轴上进行线性插值
+$$
+f(R_1) = f(x,y_1)=\frac{x_2-x}{x_2-x_1}f(Q_{11}) = \frac{x-x_1}{x_2-x_1}f(Q_{21})
+$$
 
-```
+
+
+$$
+f(R_2) = f(x,y_2)=\frac{x_2-x}{x_2-x_1}f(Q_{12}) = \frac{x-x_1}{x_2-x_1}f(Q_{22})
+$$
+
+
+在根据$$R_1$$和$$R_2$$在$$x$$轴上进行线性插值
+
+
+$$
 f(P) = \frac{y_2-y}{y_2-y_1}f(x,y_1) = \frac{y-y_1}{y_2-y_1}f(x, y_2)
-```
+$$
+
 
 
 
