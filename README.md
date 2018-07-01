@@ -26,6 +26,7 @@
 * 2018-06-05：Deep Residual Learning for Image Recognition
 * 2018-06-08：Densely Connected Convolutional Networks
 * 2018-06-15：R-FCN: Object Detection via Region-based Fully Convolutuional Networks
+* 2018-07-01：Mask R-CNN
 
 
 
