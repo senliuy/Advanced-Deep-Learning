@@ -169,6 +169,18 @@ loss = K.switch(tf.size(y_true) > 0,
 
 顾名思义，二值交叉熵即用于二分类的交叉熵损失函数，该损失一般配合sigmoid激活函数使用（第1006行）。
 
+### 3. RoIAlign
+
+ROIAlign的提出是为了解决Fast R-CNN中ROI Pooling的区域不匹配的问题，下面我们来举例说明什么是区域不匹配。ROI Pooling的区域不匹配问题是由于ROI Pooling过程中的取整操作产生的（图6）。
+
+如下图，输入是一张800\*800的图片，经过一个有5次降采样的卷机网络，得到大小为25\*25的Feature Map。图中的ROI区域大小是600\*500，经过网络之后对应的区域为\(600/32\) \* \(500/32\) = 18.75 \* 15.625 ，由于无法整除，ROI Pooling采用向下取整的方式，进而得到ROI区域的Feature Map的大小为18\*15，这就造成了第一次区域不匹配。
+
+ROI Pooling的下一步是对Feature Map分bin，加入我们需要一个7\*7的bin，每个bin的大小为\(18/7\) \* \(15/7\)，由于不能整除，ROI
+
+###### 图6：ROI Pooling的区域不匹配问题
+
+
+
 ## Reference
 
 \[1\] He K, Gkioxari G, Dollár P, et al. Mask r-cnn\[C\]//Computer Vision \(ICCV\), 2017 IEEE International Conference on. IEEE, 2017: 2980-2988.
