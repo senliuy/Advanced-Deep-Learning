@@ -171,13 +171,49 @@ loss = K.switch(tf.size(y_true) > 0,
 
 ### 3. RoIAlign
 
-ROIAlign的提出是为了解决Fast R-CNN中ROI Pooling的区域不匹配的问题，下面我们来举例说明什么是区域不匹配。ROI Pooling的区域不匹配问题是由于ROI Pooling过程中的取整操作产生的（图6）。
+ROIAlign的提出是为了解决Faster R-CNN中RoI Pooling的区域不匹配的问题，下面我们来举例说明什么是区域不匹配。ROI Pooling的区域不匹配问题是由于ROI Pooling过程中的取整操作产生的（图6），我们知道ROI Pooling是Faster R-CNN中必不可少的一步，因为其会产生长度固定的特征向量，有了长度固定的特征向量才能进行softmax计算分类损失。
 
 如下图，输入是一张800\*800的图片，经过一个有5次降采样的卷机网络，得到大小为25\*25的Feature Map。图中的ROI区域大小是600\*500，经过网络之后对应的区域为\(600/32\) \* \(500/32\) = 18.75 \* 15.625 ，由于无法整除，ROI Pooling采用向下取整的方式，进而得到ROI区域的Feature Map的大小为18\*15，这就造成了第一次区域不匹配。
 
-ROI Pooling的下一步是对Feature Map分bin，加入我们需要一个7\*7的bin，每个bin的大小为\(18/7\) \* \(15/7\)，由于不能整除，ROI
+RoI Pooling的下一步是对Feature Map分bin，加入我们需要一个7\*7的bin，每个bin的大小为\(18/7\) \* \(15/7\)，由于不能整除，ROI同样采用了向下取整的方式，从而每个bin的大小为2\*2，即整个RoI区域的Feature Map的尺寸为14\*14。第二次区域不匹配问题因此产生。
+
+对比ROI Pooling之前的Feature Map，ROI Pooling分别在横向和纵向产生了4.75和1.625的误差，对于物体分类或者物体检测场景来说，这几个像素的位移或许对结果影响不大，但是语义分割任务通常要精确到每个像素点，因此ROI Pooling是不能应用到Mask R-CNN中的。
 
 ###### 图6：ROI Pooling的区域不匹配问题
+
+\[Maskrcnn6\]
+
+为了解决这个问题，作者提出了RoIAlign。RoIAlign并没有取整的过程，可以全程使用浮点数操作，步骤如下：
+
+1. 计算RoI区域的边长，边长不取整；
+2. 将ROI区域均匀分成k\*k个bin，每个bin的大小不取整；
+3. 每个bin的值为其最邻近的Feature Map的四个值通过双线性插值得到；
+4. 使用Max Pooling或者Average Pooling得到长度固定的特征向量。
+
+上面步骤如图7所示。
+
+图7：RoIAlign可视化
+
+
+
+RoIAlign操作通过`tf.image.crop_and_resize`一个函数便可以实现，在./mrcnn/model.py的第421-423行。由于Mask R-CNN使用了FPN作为骨干架构，所以使用了循环保存每次Pooling之后的Feature Map。
+
+代码片段4：RoIAlign
+
+```py
+tf.image.crop_and_resize(feature_maps[i], level_boxes, box_indices, self.pool_shape, method="bilinear")
+```
+
+## 总结
+
+Mask R-CNN是一个很多state-of-the-art算法的合成体，并非常巧妙的设计了这些模块的合成接口：
+
+1. 使用残差网络作为卷积结构；
+2. 使用FPN作为骨干架构；
+3. 使用Faster R-CNN的物体检测流程：RPN+Fast R-CNN；
+4. 增加FCN用于语义分割。
+
+Mask R-CNNd
 
 ## Reference
 
