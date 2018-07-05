@@ -123,13 +123,11 @@ model = Model(input=[input_tensor, labels, input_length, label_length], output=[
 
 ![](/assets/CAPTCHA_1.png)   ![](/assets/CAPTCHA_2.png)
 
-
-
 #### 1.3.2 正向合成
 
 此处为代码量最大的一部分，即自己制作和训练样本尽可能相似的样本，常用的python包有OpenCV和Pillow，一般的变化通过随机数便可以解决，在我接触的验证码中，有两类变化比较难模拟——扭曲的文字和光滑的干扰线。对于扭曲的文字，我们可以使用对文字区域施加波形变化得到，对于光滑曲线，这类曲线叫做贝泽尔曲线，关于波形变化和贝泽尔曲线我会在附录A中给出代码片段。
 
-###### 图2：某网站验证码及逆向合成验证码
+###### 图2：某网站验证码及合成的验证码
 
 ![](/assets/CAPTCHA_3.png)    ![](/assets/CAPTCHA_4.png)
 
@@ -211,7 +209,7 @@ def gene_wave(img, row, col):
 
 代码片段3：贝泽尔曲线
 
-```
+```py
 # bazier 曲线
 def make_bezier(xys):
     # xys should be a sequence of 2-tuples (Bezier control points)
