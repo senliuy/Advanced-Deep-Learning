@@ -123,7 +123,7 @@ model = Model(input=[input_tensor, labels, input_length, label_length], output=[
 
 ![](/assets/CAPTCHA_1.png)   ![](/assets/CAPTCHA_2.png)
 
-       \(a\)                        \(b\)
+
 
 #### 1.3.2 正向合成
 
@@ -132,8 +132,6 @@ model = Model(input=[input_tensor, labels, input_length, label_length], output=[
 ###### 图2：某网站验证码及逆向合成验证码
 
 ![](/assets/CAPTCHA_3.png)    ![](/assets/CAPTCHA_4.png)
-
-                            （a）                                                           \(b\)
 
 #### 1.3.3 迁移学习
 
