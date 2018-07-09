@@ -18,6 +18,10 @@ YOLO是可以用在Fast R-CNN中的，结合YOLO和Fast R-CNN两个算法，得�
 
 ### 1. 统一检测
 
+YOLO检测速度远远超过R-CNN系列的重要原因是YOLO将整个物体检测统一成了一个回归问题。YOLO的输入是整张待检测图片，输出则是得到的检测结果，整个过程只经过一次卷积网络。Faster R-CNN虽然使用全卷积的思想实现了候选区域的权值共享，但是每个候选区域的特征向量任然要单独的计算分类概率和bounding box。
+
+YOLO实现统一检测的方法是增加网络的输出节点数量，其实也算是空间换时间的一种策略。在Faster R-CNN的Fast R-CNN部分，网络有分类和回归两个任务，
+
 ## Reference
 
 \[1\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
