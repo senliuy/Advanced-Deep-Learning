@@ -174,8 +174,7 @@ YOLO的输出层包含标签种类决定了YOLO的损失函数必须是一个多
 
 
 $$
-L
-oss = \\ \lambda_{coord}\sum_{i=0}^{S^2}\sum_{j=0}^{B} I_{i,j}^{obj}[(x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2] \\
+Loss = \lambda_{coord}\sum_{i=0}^{S^2}\sum_{j=0}^{B} I_{i,j}^{obj}[(x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2] \\
 + \lambda_{coord}\sum_{i=0}^{S^2} I_{i,j}^{obj}\sum_{j=0}^{B}[(\sqrt{w_i}-\sqrt{\hat{w}_i})^2+(\sqrt{h_i}-\sqrt{\hat{h}_i})^2] \\
 + \sum_{i=0}^{S^2}\sum_{j=0}^{B} I_{i,j} ^{obj}(C_i - \hat{C}_i)^2 \\
 + \lambda_{noobj}\sum_{i=0}^{S^2} \sum_{j=0}^{B}I_{i,j} ^{noobj}(C_i - \hat{C}_i)^2 \\
