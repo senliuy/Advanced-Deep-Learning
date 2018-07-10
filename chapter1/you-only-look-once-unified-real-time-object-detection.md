@@ -172,15 +172,7 @@ def leaky_relu(alpha):
 
 YOLO的输出层包含标签种类决定了YOLO的损失函数必须是一个多任务的损失函数。根据1.2节的介绍我们已知YOLO的输出层包含分类信息，置信度$$P$$和bounding box的坐标信息$$(x,y,w,h)$$。我们先给出YOLO的损失函数的表达式再逐步解析损失函数这样设计的动机。
 
-
-$$
-Loss = \lambda_{coord}\sum_{i=0}^{S^2}\sum_{j=0}^{B} I_{i,j}^{obj}[(x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2] \\
-+ \lambda_{coord}\sum_{i=0}^{S^2} I_{i,j}^{obj}\sum_{j=0}^{B}[(\sqrt{w_i}-\sqrt{\hat{w}_i})^2+(\sqrt{h_i}-\sqrt{\hat{h}_i})^2] \\
-+ \sum_{i=0}^{S^2}\sum_{j=0}^{B} I_{i,j} ^{obj}(C_i - \hat{C}_i)^2 \\
-+ \lambda_{noobj}\sum_{i=0}^{S^2} \sum_{j=0}^{B}I_{i,j} ^{noobj}(C_i - \hat{C}_i)^2 \\
-+ \sum_{i=0}^{S^2}I_i^{obj}\sum_{c\in classes}(p_i(c) - \hat{p}_i(c))^2
-$$
-
+![](/assets/YOLOv1_6.png)
 
 #### 4.1 noobj
 
