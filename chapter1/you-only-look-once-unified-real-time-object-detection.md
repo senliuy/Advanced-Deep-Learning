@@ -34,27 +34,73 @@ YOLO将输入图像分成S\*S的窗格（Grid），如果Ground Truth的中心�
 
 \[YOLOv1\_2\]
 
-什么是某个单元负责落在该单元内的物体检测呢？举例说明一下，首先我们将输出层O\_{S\times S\ times \(C+B\*5\)}看做一个三维矩阵，如果物体的中心落在第\(i,j\)个单元内，那么网络只优化一个C+B\*5维的向量，即向量O\[i,j,:\]。S是一个超参数，在源码中，S=7，即配置文件`./yolo/config.py`的CELL\_SIZE变量。
+什么是某个单元负责落在该单元内的物体检测呢？举例说明一下，首先我们将输出层O\_{S\times S times \(C+B\*5\)}看做一个三维矩阵，如果物体的中心落在第\(i,j\)个单元内，那么网络只优化一个C+B\*5维的向量，即向量O\[i,j,:\]。S是一个超参数，在源码中，S=7，即配置文件`./yolo/config.py`的CELL\_SIZE变量。
 
-```
+```py
 CELL_SIZE = 7
 ```
 
 #### 1.2 Bounding Box
 
-B是每个单元预测的Bounding box的数量，B的个数同样是一个超参数。在`./yolo/config.py`文件中B=2，YOLO使用多个Bounding box是为了每个cell计算top-B个可能的预测结果，这样做虽然牺牲了一些时间，但却提升了模型的检测精度。
+B是每个单元预测的bounding box的数量，B的个数同样是一个超参数。在`./yolo/config.py`文件中B=2，YOLO使用多个bounding box是为了每个cell计算top-B个可能的预测结果，这样做虽然牺牲了一些时间，但却提升了模型的检测精度。
 
-```
+```py
 BOXES_PER_CELL = 2
 ```
 
-注意不管YOLO使用了多少个Bounding box，每个cell的Bounding box均有相同的优化目标值。在`./yolo/yolo_net.py`中，Ground Truth的label值被复制了B次。
+注意不管YOLO使用了多少个Bounding box，每个cell的Bounding box均有相同的优化目标值。在`./yolo/yolo_net.py`中，Ground Truth的label值被复制了B次。每个Bounding box要预测5个值：bounding box \(x,y,w,h\)以及置信度P。其中\(x,y\)是bounding box相对于每个ceil中心的相对位置，\(w,h\)是物体相对于整幅图的尺寸。
 
-```
+```py
+boxes = tf.reshape(labels[..., 1:5], [self.batch_size, self.cell_size, self.cell_size, 1, 4])
 boxes = tf.tile(boxes, [1, 1, 1, self.boxes_per_cell, 1]) / self.image_size
+classes = labels[..., 5:]
+offset = tf.reshape(
+    tf.constant(self.offset, dtype=tf.float32),
+    [1, self.cell_size, self.cell_size, self.boxes_per_cell])
+offset = tf.tile(offset, [self.batch_size, 1, 1, 1])
+offset_tran = tf.transpose(offset, (0, 2, 1, 3))
+...
+boxes_tran = tf.stack(
+    [boxes[..., 0] * self.cell_size - offset,
+    boxes[..., 1] * self.cell_size - offset_tran,
+    tf.sqrt(boxes[..., 2]),
+    tf.sqrt(boxes[..., 3])], axis=-1)
 ```
 
-每个Bounding box要预测5个值：x,y,w,h以及置信度。其中\(x,y\)是box
+labels需要往前追溯到Pascal voc文件的解析代码中，位于文件`./utils/pascal_voc.py`的139和145行
+
+```py
+boxes = [(x2 + x1) / 2.0, (y2 + y1) / 2.0, x2 - x1, y2 - y1]
+...
+label[y_ind, x_ind, 1:5] = boxes
+```
+
+置信度P表示bounding box中物体为待检测物体的概率以及bounding box对该物体的覆盖程度。所以P = Pr\(Object\) \* IOU\_{pred}^{truth}。如果bounding box没有覆盖物体P=0，否则P=IOU\_{pred}^{truth}
+
+```py
+predict_scales = tf.reshape(
+    predicts[:, self.boundary1:self.boundary2],
+    [self.batch_size, self.cell_size, self.cell_size, self.boxes_per_cell])
+predict_boxes = tf.reshape(
+    predicts[:, self.boundary2:],
+    [self.batch_size, self.cell_size, self.cell_size, self.boxes_per_cell, 4])
+
+response = tf.reshape(labels[..., 0],[self.batch_size, self.cell_size, self.cell_size, 1])
+...
+predict_boxes_tran = tf.stack(
+    [(predict_boxes[..., 0] + offset) / self.cell_size,
+    (predict_boxes[..., 1] + offset_tran) / self.cell_size,
+    tf.square(predict_boxes[..., 2]),
+    tf.square(predict_boxes[..., 3])], axis=-1)
+
+iou_predict_truth = self.calc_iou(predict_boxes_tran, boxes)
+
+# calculate I tensor [BATCH_SIZE, CELL_SIZE, CELL_SIZE, BOXES_PER_CELL]
+object_mask = tf.reduce_max(iou_predict_truth, 3, keep_dims=True)
+object_mask = tf.cast((iou_predict_truth >= object_mask), tf.float32) * response
+```
+
+
 
 ## Reference
 
