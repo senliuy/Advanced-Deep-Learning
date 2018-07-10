@@ -28,6 +28,7 @@
 * 2018-06-15：R-FCN: Object Detection via Region-based Fully Convolutuional Networks
 * 2018-07-01：Mask R-CNN
 * 2018-07-04：字符验证码破解
+* 2018-07-10：You Only Look Once: Unified, Real-Time Object Detection
 
 
 
