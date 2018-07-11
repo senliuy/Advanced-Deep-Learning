@@ -23,9 +23,8 @@
   * [R-FCN: Object Detection via Region-based Fully Convolutuional Networks](chapter1/r-fcn-object-detection-via-region-based-fully-convolutuional-networks.md)
   * [Mask R-CNN](chapter1/mask-r-cnn.md)
   * [You Only Look Once: Unified, Real-Time Object Detection ](chapter1/you-only-look-once-unified-real-time-object-detection.md)
+  * [SSD: Single Shot MultiBox Detector](chapter1/ssd-single-shot-multibox-detector.md)
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
   * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
-
-
 
