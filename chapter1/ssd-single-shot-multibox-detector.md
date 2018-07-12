@@ -25,6 +25,12 @@
 
 ## SSD详解
 
+### 1. 算法流程
+
+SSD的流程和YOLO是一样的，输入一张图片得到一系列候选区域，使用NMS得到最终的检测框。与YOLO不同的是，SSD使用了不同阶段的Feature Map用于检测，如图1所示
+
+
+
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
