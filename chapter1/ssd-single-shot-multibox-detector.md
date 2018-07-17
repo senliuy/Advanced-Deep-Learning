@@ -160,9 +160,9 @@ with tf.variable_scope(scope, 'ssd_300_vgg', [inputs], reuse=reuse):
 
 从图1中我们可以看出，SSD输入图片的尺寸是300\*300，另外SSD也由一个输入图片尺寸是512\*512的版本，这个版本的SSD虽然慢一些，但是是检测精度达到了76.9%。
 
-SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very Deep Convolutional NetWorks for Large-Scale Image Recognition](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)。
+SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very Deep Convolutional NetWorks for Large-Scale Image Recognition](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)。使用标准网络的目的是为了使用训练好的模型进行迁移学习，SSD使用的是在ILSVRC CLS-LOC数据集上得到的模型进行的初始化。目的是在更高的采样率上计算Feature Map。
 
-第一点不同的是在block5中，max\_pool2d的步长stride=1，
+第一点不同的是在block5中，max\_pool2d的步长stride=1，此时图像将不会进行降采样，也就是说输入到block6的Feature Map的尺寸任然是38\*38。
 
 在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）\[3\]，在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
 
@@ -172,6 +172,8 @@ SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very
 
 \[SSD\_3.png\]
 
+SSD的3\*3的conv6和1\*1的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov \[4\]的方法。
+
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
@@ -179,4 +181,6 @@ SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very
 \[2\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
 
 \[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Lookingwidertoseebetter.In:ILCR.\(2016\)Yu, Fisher, and Vladlen Koltun. "Multi-scale context aggregation by dilated convolutions." arXiv preprint arXiv:1511.07122
+
+\[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
 
