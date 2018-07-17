@@ -194,9 +194,9 @@ s_k = s_{min} + \frac{s_{max} - s_{min}}{m-1}(k-1)，k\in[1,m]
 
 s\_{min}和s\_{max}是两个超参数，需要根据不同的数据集自行调整。论文中给出的例子是s\_{min}=0.2，s\_{max}=0.9，m=6。s\_k表示的是锚点大小相对于Feature Map的比例，通过上式得出的值依次是\[0.2, 0.34, 0.48, 0.62, 0.76, 0.9\]。
 
-对于6组Feature Map，SSD分别产生\[4,6,6,6,4,4\]个不同比例的锚点。锚点的比例是超参数aspect\_ratios\_per\_layer中给出的值加上一组比例为s'\_k=\sqrt{s\_k s\_{k+1}}的框，其中s\_{k+1} = s\_k + \(s\_k - s\_{k-1}\)。根据s\_k和长宽比a\_r我们便可以得到不同样式的锚点，其中锚点的宽w^a\_k = s\_k\sqrt{a\_r}，高h^a\_k = s\_k/\sqrt{a\_r}。a\_r \in {1,2,3,\frac{1}{2},\frac{1}{3}}。
+对于6组Feature Map，SSD分别产生\[4,6,6,6,4,4\]个不同比例的锚点。锚点的比例是超参数`aspect_ratios_per_layer`中给出的值加上一组比例为s'\_k=\sqrt{s\_k s\_{k+1}}的框，其中s\_{k+1} = s\_k + \(s\_k - s\_{k-1}\)。根据s\_k和长宽比a\_r我们便可以得到不同样式的锚点，其中锚点的宽w^a\_k = s\_k\sqrt{a\_r}，高h^a\_k = s\_k/\sqrt{a\_r}。a\_r \in {1,2,3,\frac{1}{2},\frac{1}{3}}。
 
-a\_r的取值也是一个超参数，在源码中，定义在aspect\_ratios\_per\_layer中。根据a`spect_ratios_per_layer`的变量个数，我们便可以得到n\_boxes的值。
+a\_r的取值也是一个超参数，在源码中，定义在`aspect_ratios_per_layer`中。根据a`spect_ratios_per_layer`的变量个数，我们便可以得到n\_boxes的值。
 
 举个例子，在conv4\_3中，要产生38\*38\*4个锚点，其中有三个锚点的尺度分别是（1, 2.0, 0.5），再加上一组1:1的尺度为s'\_k=\sqrt{0.2\*0.34} = 0.2608的锚点，得到四组锚点分别是\[\(0.2,0.2\), \(0.2608, 0.2608\), \(0.2828, 0.1414\), \(0.1414, 0.2828\)\]。等比例换算到原图中得到的锚点的大小（取整）为\[\(60, 60\), \(78, 78\), \(85, 42\), \(42, 85\)\]。
 
@@ -206,7 +206,7 @@ a\_r的取值也是一个超参数，在源码中，定义在aspect\_ratios\_per
 (x,y) = (\frac{i+0.5}{|f_k|}, \frac{j+0.5}{|f_k|}), i,j\in [0, |f_k|]
 ```
 
-i,j即Feature Map像素点的坐标。图4便是在8\*8和4\*4的Feature Map上得到不同尺度的锚点的示例。
+i,j即Feature Map像素点的坐标，f\_k是Feature Map的尺寸。图4便是在8\*8和4\*4的Feature Map上得到不同尺度的锚点的示例。
 
 ###### 图4：锚点示例，改图也展示了锚点对Ground Truth的响应。
 
@@ -220,6 +220,39 @@ scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scalin
 ```
 
 除了锚点的尺度以外，源码中锚点的中心点的实现也和论文不同。源码使用预先计算好的步长加上位移进行预测的，即超参数中的变量`steps=[8, 16, 32, 64, 100, 300]`。conv4\_3经过了3次降采样，即Feature Map的一步相当于原图的8步。但是对于这种方案存在一个问题，即75降采样到38时是不能整除的，也就是最后一列并没有参加降采样，这样步长非精确的计算经过多次累积会被放大到很大。例如经过源码中步长为64的conv9\_2层的最后一行和最后一列的锚点的中心点将会取到图像之外，有兴趣的读者可以打印一下。
+
+知道锚点的四要素（x,y,w,h）之后，我们需要确定锚点的分类标签。
+
+源码中，锚点是在keras\_layers/keras\_layer\_AnchorBoxes中实现的，通过AnchorBoxes函数调用。网络中的6个Feature Map会产生6组共8732个先验box，如代码片段4所示。
+
+代码片段4：计算先验box
+
+```py
+# Output shape of anchors: `(batch, height, width, n_boxes, 8)`
+conv4_3_norm_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[0], next_scale=scales[1], aspect_ratios=aspect_ratios[0],
+                                         two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[0], this_offsets=offsets[0], clip_boxes=clip_boxes,
+                                         variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv4_3_norm_mbox_priorbox')(conv4_3_norm_mbox_loc)
+fc7_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[1], next_scale=scales[2], aspect_ratios=aspect_ratios[1],
+                                two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[1], this_offsets=offsets[1], clip_boxes=clip_boxes,
+                                variances=variances, coords=coords, normalize_coords=normalize_coords, name='fc7_mbox_priorbox')(fc7_mbox_loc)
+conv6_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[2], next_scale=scales[3], aspect_ratios=aspect_ratios[2],
+                                    two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[2], this_offsets=offsets[2], clip_boxes=clip_boxes,
+                                    variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv6_2_mbox_priorbox')(conv6_2_mbox_loc)
+conv7_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[3], next_scale=scales[4], aspect_ratios=aspect_ratios[3],
+                                    two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[3], this_offsets=offsets[3], clip_boxes=clip_boxes,
+                                    variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv7_2_mbox_priorbox')(conv7_2_mbox_loc)
+conv8_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[4], next_scale=scales[5], aspect_ratios=aspect_ratios[4],
+                                    two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[4], this_offsets=offsets[4], clip_boxes=clip_boxes,
+                                    variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv8_2_mbox_priorbox')(conv8_2_mbox_loc)
+conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5], next_scale=scales[6], aspect_ratios=aspect_ratios[5],
+                                    two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[5], this_offsets=offsets[5], clip_boxes=clip_boxes,
+                                    variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv9_2_mbox_priorbox')(conv9_2_mbox_loc)
+
+```
+
+#### 1.4 SSD的损失函数
+
+
 
 ## Reference
 
