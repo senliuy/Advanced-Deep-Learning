@@ -174,9 +174,7 @@ conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initia
 
 其中第二行的L2Normalization使用的是ParseNet \[5\]中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
 
-SSD对Feature Map的每个像素点都会产生k个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,6,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD的分类有C+1个值包括C类前景和1类背景，回归包括物体位置的四要素\(y,x,h,w\)。对于20类的Pascal VOC来说，SSD相当于预测M个bounding box，其中：
-
-M = 38\*38\*\(4+21\) + 19\*19\(6+21\) + 
+SSD对Feature Map的每个像素点都会产生k个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,4,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD的分类有C+1个值包括C类前景和1类背景，回归包括物体位置的四要素\(y,x,h,w\)。对于20类的Pascal VOC来说，SSD相当于预测M个bounding box，其中：
 
 ## Reference
 
