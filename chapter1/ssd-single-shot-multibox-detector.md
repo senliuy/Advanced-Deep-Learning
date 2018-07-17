@@ -27,7 +27,7 @@ SSD的算法如图1。
 1. RPN只使用卷积网络的顶层特征，不过在FPN和Mask R-CNN中已经对这点进行了改进；
 2. RPN是一个二分类任务（前/背景），而SSD是一个包含了物体类别的多分类任务。
 
-在论文中作者说SSD的精度超过了Faster R-CNN，速度超过了YOLO。下面我们将结合基于Keras的[源码](https://github.com/pierluigiferrari/ssd_keras)和论文对SSD进行详细剖析。这里说明一下，这份源码使用了slim库，slim库是TensorFLow的一个高层封装，和keras的功能类似。
+在论文中作者说SSD的精度超过了Faster R-CNN，速度超过了YOLO。下面我们将结合基于Keras的[源码](https://github.com/pierluigiferrari/ssd_keras)和论文对SSD进行详细剖析。
 
 ## SSD详解
 
@@ -39,9 +39,9 @@ SSD的流程和YOLO是一样的，输入一张图片得到一系列候选区域�
 
 \[SSD\_2.png\]
 
-在详解SSD之前，我现在代码片段1中列出SSD的超参数，随后我们会在下面的章节中介绍这些超参数是如何使用的
+在详解SSD之前，我先在代码片段1中列出SSD的超参数（`./models/keras_ssd300.py`），随后我们会在下面的章节中介绍这些超参数是如何使用的。
 
-代码片段1：SSD的超参数
+###### 代码片段1：SSD的超参数
 
 ```py
 def ssd_300(image_size,
@@ -75,11 +75,11 @@ def ssd_300(image_size,
             return_predictor_sizes=False)
 ```
 
-#### 1.1 SSD的骨干架构
+#### 1.1 SSD的骨干网络
 
-首先我们先看一下SSD的骨干网络的源码，再结合源码和图2我们来剖析SSD的算法细节。
+首先我们先看一下SSD的骨干网络的源码（`./models/keras_ssd300.py`），再结合源码和图2我们来剖析SSD的算法细节。
 
-###### 代码片段2：SSD骨干网络源码。
+###### 代码片段2：SSD骨干网络源码。注意源码中的变量名称和图2不一样，我在代码中进行了更正。
 
 ```py
 conv1_1 = Conv2D(64, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv1_1')(x1)
@@ -109,19 +109,19 @@ fc6 = Conv2D(1024, (3, 3), dilation_rate=(6, 6), activation='relu', padding='sam
 
 fc7 = Conv2D(1024, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='fc7')(fc6)
 
-conv6_1 = Conv2D(256, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv6_1')(fc7)
-conv6_1 = ZeroPadding2D(padding=((1, 1), (1, 1)), name='conv6_padding')(conv6_1)
-conv6_2 = Conv2D(512, (3, 3), strides=(2, 2), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv6_2')(conv6_1)
+conv8_1 = Conv2D(256, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv6_1')(fc7)
+conv8_1 = ZeroPadding2D(padding=((1, 1), (1, 1)), name='conv6_padding')(conv8_1)
+conv8_2 = Conv2D(512, (3, 3), strides=(2, 2), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv6_2')(conv8_1)
 
-conv7_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv7_1')(conv6_2)
-conv7_1 = ZeroPadding2D(padding=((1, 1), (1, 1)), name='conv7_padding')(conv7_1)
-conv7_2 = Conv2D(256, (3, 3), strides=(2, 2), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv7_2')(conv7_1)
+conv9_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv7_1')(conv8_2)
+conv9_1 = ZeroPadding2D(padding=((1, 1), (1, 1)), name='conv7_padding')(conv9_1)
+conv9_2 = Conv2D(256, (3, 3), strides=(2, 2), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv7_2')(conv9_1)
 
-conv8_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv8_1')(conv7_2)
-conv8_2 = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv8_2')(conv8_1)
+conv10_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv8_1')(conv9_2)
+conv10_2 = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv8_2')(conv10_1)
 
-conv9_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_1')(conv8_2)
-conv9_2 = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_2')(conv9_1)
+conv11_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_1')(conv10_2)
+conv11_2 = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_2')(conv11_1)
 ```
 
 从图1中我们可以看出，SSD输入图片的尺寸是300\*300，另外SSD也由一个输入图片尺寸是512\*512的版本，这个版本的SSD虽然慢一些，但是是检测精度达到了76.9%。
@@ -144,7 +144,39 @@ fc7之后输出的Feature Map的大小是19\*19，经过block8的一次padding�
 
 #### 1.2 多尺度预测
 
+在卷积网络中，不同深度的Feature Map趋向于响应不同程度的特征，SDD使用了骨干网络中的多个Feature Map用于预测检测框。通过图1和图2我们可以发现，SSD使用的是（conv4\_3, fc7, conv8\_2, conv9\_2, conv10\_2, conv11\_2）,如代码片段3 （`./models/keras_ssd300.py`）。
 
+###### 代码片段3：SSD使用的Feature Map
+
+```py
+# Feed conv4_3 into the L2 normalization layer
+conv4_3_norm = L2Normalization(gamma_init=20, name='conv4_3_norm')(conv4_3)
+
+### Build the convolutional predictor layers on top of the base network
+
+# We precidt `n_classes` confidence values for each box, hence the confidence predictors have depth `n_boxes * n_classes`
+# Output shape of the confidence layers: `(batch, height, width, n_boxes * n_classes)`
+conv4_3_norm_mbox_conf = Conv2D(n_boxes[0] * n_classes, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv4_3_norm_mbox_conf')(conv4_3_norm)
+fc7_mbox_conf = Conv2D(n_boxes[1] * n_classes, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='fc7_mbox_conf')(fc7)
+conv8_2_mbox_conf = Conv2D(n_boxes[2] * n_classes, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv8_2_mbox_conf')(conv8_2)
+conv9_2_mbox_conf = Conv2D(n_boxes[3] * n_classes, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_2_mbox_conf')(conv9_2)
+conv10_2_mbox_conf = Conv2D(n_boxes[4] * n_classes, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv10_2_mbox_conf')(conv10_2)
+conv11_2_mbox_conf = Conv2D(n_boxes[5] * n_classes, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv11_2_mbox_conf')(conv11_2)
+# We predict 4 box coordinates for each box, hence the localization predictors have depth `n_boxes * 4`
+# Output shape of the localization layers: `(batch, height, width, n_boxes * 4)`
+conv4_3_norm_mbox_loc = Conv2D(n_boxes[0] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv4_3_norm_mbox_loc')(conv4_3_norm)
+fc7_mbox_loc = Conv2D(n_boxes[1] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='fc7_mbox_loc')(fc7)
+conv8_2_mbox_loc = Conv2D(n_boxes[2] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv8_2_mbox_loc')(conv8_2)
+conv9_2_mbox_loc = Conv2D(n_boxes[3] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_2_mbox_loc')(conv9_2)
+conv10_2_mbox_loc = Conv2D(n_boxes[4] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv10_2_mbox_loc')(conv10_2)
+conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv11_2_mbox_loc')(conv11_2)
+```
+
+其中第二行的L2Normalization使用的是ParseNet \[5\]中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
+
+SSD对Feature Map的每个像素点都会产生k个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,6,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD的分类有C+1个值包括C类前景和1类背景，回归包括物体位置的四要素\(y,x,h,w\)。对于20类的Pascal VOC来说，SSD相当于预测M个bounding box，其中：
+
+M = 38\*38\*\(4+21\) + 19\*19\(6+21\) + 
 
 ## Reference
 
@@ -155,4 +187,6 @@ fc7之后输出的Feature Map的大小是19\*19，经过block8的一次padding�
 \[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Lookingwidertoseebetter.In:ILCR.\(2016\)Yu, Fisher, and Vladlen Koltun. "Multi-scale context aggregation by dilated convolutions." arXiv preprint arXiv:1511.07122
 
 \[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
+
+\[5\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Lookingwidertoseebetter.In:ILCR.\(2016\)
 
