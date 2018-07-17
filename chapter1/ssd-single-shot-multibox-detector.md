@@ -160,7 +160,9 @@ with tf.variable_scope(scope, 'ssd_300_vgg', [inputs], reuse=reuse):
 
 从图1中我们可以看出，SSD输入图片的尺寸是300\*300，另外SSD也由一个输入图片尺寸是512\*512的版本，这个版本的SSD虽然慢一些，但是是检测精度达到了76.9%。
 
-SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very Deep Convolutional NetWorks for Large-Scale Image Recognition](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)。在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）\[3\]。
+SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very Deep Convolutional NetWorks for Large-Scale Image Recognition](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)。在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）\[3\]，在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
+
+空洞卷积可以在不增加模型复杂度的同时扩大卷积操作的视野，通过在卷积核中插值0的形式完成的。如图3所示，\(a\)是膨胀率为1的卷积，也就是标准的卷积，其感受野的大小是3\*3。\(b\)的膨胀率为2，卷积核变成了7\*7的卷积核，其中只有9个红点处的值不为0，在不增加复杂度的同时感受野变成了7\*7。\(c\)的膨胀率是4，感受野的大小变成了15\*15。在设置感受野的膨胀率时要谨慎设计，否则如果卷积核大于Feature Map的尺寸之后程序会报错。
 
 ## Reference
 
@@ -168,5 +170,5 @@ SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very
 
 \[2\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
 
-\[3\] Holschneider,M.,Kronland-Martinet,R.,Morlet,J.,Tchamitchian,P.:Areal-timealgorithm for signal analysis with the help of the wavelet transform. In: Wavelets. Springer \(1990\) 286–297
+\[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Lookingwidertoseebetter.In:ILCR.\(2016\)Yu, Fisher, and Vladlen Koltun. "Multi-scale context aggregation by dilated convolutions." arXiv preprint arXiv:1511.07122
 
