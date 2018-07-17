@@ -146,7 +146,7 @@ fc7之后输出的Feature Map的大小是19\*19，经过block8的一次padding�
 
 在卷积网络中，不同深度的Feature Map趋向于响应不同程度的特征，SDD使用了骨干网络中的多个Feature Map用于预测检测框。通过图1和图2我们可以发现，SSD使用的是conv4\_3, fc7, conv8\_2, conv9\_2, conv10\_2, conv11\_2分别用于检测尺寸从小到大的物体,如代码片段3 （`./models/keras_ssd300.py`）。
 
-###### 代码片段3：SSD使用的Feature Map
+###### 代码片段3：SSD使用全卷积预测检测框
 
 ```py
 # Feed conv4_3 into the L2 normalization layer
@@ -221,11 +221,11 @@ scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scalin
 
 除了锚点的尺度以外，源码中锚点的中心点的实现也和论文不同。源码使用预先计算好的步长加上位移进行预测的，即超参数中的变量`steps=[8, 16, 32, 64, 100, 300]`。conv4\_3经过了3次降采样，即Feature Map的一步相当于原图的8步。但是对于这种方案存在一个问题，即75降采样到38时是不能整除的，也就是最后一列并没有参加降采样，这样步长非精确的计算经过多次累积会被放大到很大。例如经过源码中步长为64的conv9\_2层的最后一行和最后一列的锚点的中心点将会取到图像之外，有兴趣的读者可以打印一下。
 
-知道锚点的四要素（x,y,w,h）之后，我们需要确定锚点的分类标签。
+知道锚点的四要素（x,y,w,h）之后，我们需要确定锚点的分类标签。SSD与RPN相比，正锚点的选取规则则要简单很多，只要锚点和Ground Truth的IoU（即论文中的jaccard overlap）大于某个阈值时，该锚点便被视为正锚点。
 
 源码中，锚点是在keras\_layers/keras\_layer\_AnchorBoxes中实现的，通过AnchorBoxes函数调用。网络中的6个Feature Map会产生6组共8732个先验box，如代码片段4所示。
 
-代码片段4：计算先验box
+###### 代码片段4：计算先验box
 
 ```py
 # Output shape of anchors: `(batch, height, width, n_boxes, 8)`
@@ -247,12 +247,11 @@ conv8_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[4],
 conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5], next_scale=scales[6], aspect_ratios=aspect_ratios[5],
                                     two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[5], this_offsets=offsets[5], clip_boxes=clip_boxes,
                                     variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv9_2_mbox_priorbox')(conv9_2_mbox_loc)
-
 ```
 
 #### 1.4 SSD的损失函数
 
-
+在1.2节中，根据Feature Map得到了
 
 ## Reference
 

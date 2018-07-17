@@ -27,5 +27,4 @@
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
   * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
-* [tmp](tmp.md)
 
