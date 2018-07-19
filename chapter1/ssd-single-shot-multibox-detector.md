@@ -334,18 +334,10 @@ $$
 
 
 对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中l和g包含物体位置的四要素$$(x,y,w,h)$$。
-$$
-\hat{g}^{cx}_{j} = (g^{cx}_j - d^{cx}_i)/d^w_i
-$$
-$$
-\hat{g}^{cy}_{j} = (g^{cy}_j - d^{cy}_i)/d^h_i
-$$
-$$
-\hat{g}^w_j = log(\frac{g^w_j}{d^w_i})
-$$
-$$
-\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})
-$$
+$$\hat{g}^{cx}_{j} = (g^{cx}_j - d^{cx}_i)/d^w_i$$
+$$\hat{g}^{cy}_{j} = (g^{cy}_j - d^{cy}_i)/d^h_i$$
+$$\hat{g}^w_j = log(\frac{g^w_j}{d^w_i})$$
+$$\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})$$
 
 ## Reference
 
