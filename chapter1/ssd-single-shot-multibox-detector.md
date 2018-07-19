@@ -176,9 +176,11 @@ conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initia
 
 SSD对于第$$i$$个Feature Map的每个像素点都会产生n\_boxes\[i\]个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,4,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD相当于预测M个bounding box，其中：
 
+
 $$
 M = 38\times 38\times 4 + 19\times 19\times 6 + 10\times 10\times 6 + 5\times 5\times 6+ 3\times 3\times 4 +1\times 1\times 4=8732
 $$
+
 
 上式便是图2中最右侧8732的计算方式。也就是对于一张300\*300的输入图片，SSD要预测8732个检测框，所以SSD本质上可以看做是密集采样。SSD的分类有C+1个值包括C类前景和1类背景，回归包括物体位置的四要素\(y,x,h,w\)。对于20类的Pascal VOC来说SSD是一个含有8732\*\(21+4\)的多任务模型。
 
@@ -190,9 +192,11 @@ $$
 
 SSD使用多尺度的Feature Map的原因是使用不同层次的Feature Map检测不同尺寸的物体，所以onv4\_3, fc7, conv8\_2, conv9\_2, conv10\_2, conv11\_2的锚点的尺寸也是从小到大。论文中给出的值是从0.2到0.9间一个线性变化的值：
 
+
 $$
-s_k = s_{min} + \frac{s_{max} - s_{min}}{m-1}(k-1)，k\in[1,m]
+s_k = s_{min} + \frac{s_{max} - s_{min}}{m-1}(k-1), k\in[1,m]
 $$
+
 
 $$s\_{min}$$和$$s\_{max}$$是两个超参数，需要根据不同的数据集自行调整。论文中给出的例子是$$s\_{min}=0.2$$，$$s\_{max}=0.9$$，$$m=6$$。$$s\_k$$表示的是锚点大小相对于Feature Map的比例，通过上式得出的值依次是\[0.2, 0.34, 0.48, 0.62, 0.76, 0.9\]。
 
@@ -204,9 +208,11 @@ $$a\_r$$的取值也是一个超参数，在源码中，定义在`aspect_ratios_
 
 通过上面的介绍，我们得到了锚点四要素中的$$w$$和$$h$$，锚点的$$x$$, $$y$$通过下式得到
 
+
 $$
 (x,y) = (\frac{i+0.5}{|f_k|}, \frac{j+0.5}{|f_k|}), i,j\in [0, |f_k|]
 $$
+
 
 $$i,j$$即Feature Map像素点的坐标，$$f\_k$$是Feature Map的尺寸。图4便是在$$8\times 8$$和$$4\times 4$$的Feature Map上得到不同尺度的锚点的示例。
 
@@ -222,7 +228,6 @@ scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scalin
 ```
 
 除了锚点的尺度以外，源码中锚点的中心点的实现也和论文不同。源码使用预先计算好的步长加上位移进行预测的，即超参数中的变量`steps=[8, 16, 32, 64, 100, 300]`。conv4\_3经过了3次降采样，即Feature Map的一步相当于原图的8步。但是对于这种方案存在一个问题，即75降采样到38时是不能整除的，也就是最后一列并没有参加降采样，这样步长非精确的计算经过多次累积会被放大到很大。例如经过源码中步长为64的conv9\_2层的最后一行和最后一列的锚点的中心点将会取到图像之外，有兴趣的读者可以打印一下。
-
 
 源码中，锚点是在`keras\_layers/keras\_layer\_AnchorBoxes`中实现的，通过AnchorBoxes函数调用。网络中的6个Feature Map会产生6组共8732个先验box，如代码片段4所示。
 
@@ -252,10 +257,11 @@ conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5],
 
 #### 1.4 SSD的匹配准则
 
-从Feature Map得到锚点之后，我们要确定Ground Truth和哪个锚点匹配，与之匹配的锚点将负责该Ground Truth的预测。在YOLO中，Ground Truth的中心点落在哪个单元内，则该单元的bounding box负责预测其准确的边界。SSD的锚点匹配采用了‘bipartite’和‘multi’两种策略，匹配源码位于`./ssd_encoder_decoder/`目录下面。
+从Feature Map得到锚点之后，我们要确定Ground Truth和哪个锚点匹配，与之匹配的锚点将负责该Ground Truth的预测。在YOLO中，Ground Truth的中心点落在哪个单元内，则该单元的bounding box负责预测其准确的边界。SSD的锚点匹配采用了‘bipartite’和‘multi’两种策略，匹配源码位于`./ssd_encoder_decoder/`目录下面。  
 在bipartite模式中，每个Ground Truth选择与其IoU（论文用的是Jaccard Overlap）最大的锚点进行匹配.如果一个锚点被多个Ground Truth匹配，那么该锚点只匹配与其IoU最大的Ground Truth，其它Ground Truth从剩下的锚点中选择Iou最大的那个进行匹配。bipartite可以保证每个Ground Truth都会有唯一的一个锚点进行匹配。bipartite的源码见代码片段5。
 
 ###### 代码片段5：bipartite匹配
+
 ```py
 def match_bipartite_greedy(weight_matrix):
     '''
@@ -292,9 +298,11 @@ def match_bipartite_greedy(weight_matrix):
 
     return matches
 ```
+
 在bipartite策略中被匹配的锚点数量是非常少的，这就造成了训练时的正负样本的不平衡。所以需要multi策略进行纠正，源码中也是使用的multi策略。mutli在bipartite策略的基础上增加了所有与Ground Truth的IoU大于阈值$$\theta$$（源码中$$\theta=0.5$$）的锚点作为匹配锚点。SSD中一个Ground Truth是可以有多个锚点与其匹配的，但是反过来是不行的，一个锚点只能与和它IoU最大的Ground Truth进行匹配。mutli策略的源码见代码片段6
 
 ###### 代码片段6：multi匹配
+
 ```py
 def match_multi(weight_matrix, threshold):
     '''
@@ -328,25 +336,30 @@ $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
 对于分类任务，SSD使用的是softmax多类别的损失函数，上式中的$$c$$表示分类置信度：
 
+
 $$
 L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}^0_i), \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
 $$
 
-对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中l和g包含物体位置的四要素$$(\hat{g}^{cx}_j, \hat{g}^{cy}_j, \hat{g}^w_j, \hat{g}^h_j)$$。
-$$\hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i$$
-$$\hat{g}^{cy}_j = (g^{cy}_j - d^{cy}_i)/d^h_i$$
-$$\hat{g}^w_j = log(\frac{g^w_j}{d^w_i})$$
+
+对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中l和g包含物体位置的四要素$$(\hat{g}^{cx}_j, \hat{g}^{cy}_j, \hat{g}^w_j, \hat{g}^h_j)$$。  
+$$\hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i$$  
+$$\hat{g}^{cy}_j = (g^{cy}_j - d^{cy}_i)/d^h_i$$  
+$$\hat{g}^w_j = log(\frac{g^w_j}{d^w_i})$$  
 $$\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})$$
 
 损失函数表示为实际偏移和预测偏移的Smooth L1损失：
+
 
 $$
 L_{loc}(x,l,g) = - \sum^{N}_{i\in Pos} \sum_{m \in {cx,cy,w,h}} x^k_{i,j} smooth_{L1} (l^m_i - \hat{g}^m_j)
 $$
 
-与Faster R-CNN的(x,y)表示左上角不同，SDD的(cx,cy)表示的是锚点的中心点。
+
+与Faster R-CNN的\(x,y\)表示左上角不同，SDD的\(cx,cy\)表示的是锚点的中心点。
 
 #### 1.6 SSD的检测过程
+
 1. 根据预测类别过滤掉背景类别的候选框；
 2. 根据置信度过滤掉置信度低于阈值的候选框；
 3. 置信度降序排列，保留top-k的候选框；
@@ -354,8 +367,9 @@ $$
 5. 使用NMS得到最终的候选区域。
 
 ## 小结
-SSD算法的核心点在于
-1. 使用多尺度的Feature Map提取特征；
+
+SSD算法的核心点在于  
+1. 使用多尺度的Feature Map提取特征；  
 2. 利用Faster R-CNN的锚点机制改进候选框。
 
 ## Reference
