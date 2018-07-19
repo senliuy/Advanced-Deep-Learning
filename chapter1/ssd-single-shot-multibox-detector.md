@@ -327,17 +327,21 @@ $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
 对于分类任务，SSD使用的是softmax多类别的损失函数，上式中的$$c$$表示分类置信度：
 
-
 $$
 L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}^0_i), \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
 $$
 
-
-对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中l和g包含物体位置的四要素$$(x,y,w,h)$$。
-$$\hat{g}^{cx}_{j} = (g^{cx}_j - d^{cx}_i)/d^w_i$$
-$$\hat{g}^{cy}_{j} = (g^{cy}_j - d^{cy}_i)/d^h_i$$
+对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中l和g包含物体位置的四要素$$(\hat{g}^{cx}_j, \hat{g}^{cy}_j, \hat{g}^w_j, \hat{g}^h_j)$$。
+$$\hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i$$
+$$\hat{g}^{cy}_j = (g^{cy}_j - d^{cy}_i)/d^h_i$$
 $$\hat{g}^w_j = log(\frac{g^w_j}{d^w_i})$$
 $$\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})$$
+
+损失函数表示为实际偏移和预测偏移的Smooth L1损失：
+
+$$
+L_{loc}(x,l,g) = - \sum^{N}_{i\in Pos} \sum_{m \in {cx,cy,w,h}} x^k_{i,j} smooth_{L1} (l^m_i - \hat{g}^m_j)
+$$
 
 ## Reference
 
