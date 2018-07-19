@@ -251,7 +251,7 @@ conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5],
 
 #### 1.4 SSD的匹配准则
 
-从Feature Map得到
+从Feature Map得到锚点之后，我们要确定Ground Truth和哪个锚点匹配，与之匹配的锚点将负责该Ground Truth的预测。在YOLO中，Ground Truth的中心点落在哪个单元内，则该单元的bounding box负责预测其准确的边界。SSD的锚点匹配采用了‘bipartite’和‘multi’两种策略，匹配源码位于`./`
 
 
 ## Reference
