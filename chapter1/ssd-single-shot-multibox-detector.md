@@ -177,7 +177,7 @@ conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initia
 SSD对于第$$i$$个Feature Map的每个像素点都会产生n\_boxes\[i\]个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,4,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD相当于预测M个bounding box，其中：
 
 $$
-M = 38\times 38\times 4 + 19\times 19\times 6 + 10\times 10\times 6 + 5\times 5\times 6+ 3\times 3\times 4 +1\times 1\times 4=8732。
+M = 38\times 38\times 4 + 19\times 19\times 6 + 10\times 10\times 6 + 5\times 5\times 6+ 3\times 3\times 4 +1\times 1\times 4=8732
 $$
 
 上式便是图2中最右侧8732的计算方式。也就是对于一张300\*300的输入图片，SSD要预测8732个检测框，所以SSD本质上可以看做是密集采样。SSD的分类有C+1个值包括C类前景和1类背景，回归包括物体位置的四要素\(y,x,h,w\)。对于20类的Pascal VOC来说SSD是一个含有8732\*\(21+4\)的多任务模型。
