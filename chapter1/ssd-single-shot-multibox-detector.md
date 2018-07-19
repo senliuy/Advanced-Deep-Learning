@@ -37,7 +37,7 @@ SSD的流程和YOLO是一样的，输入一张图片得到一系列候选区域�
 
 ###### 图1：SSD vs YOLO
 
-\[SSD\_2.png\]
+![](/assets/SSD_2.png)
 
 在详解SSD之前，我先在代码片段1中列出SSD的超参数（`./models/keras_ssd300.py`），随后我们会在下面的章节中介绍这些超参数是如何使用的。
 
@@ -124,21 +124,21 @@ conv11_1 = Conv2D(128, (1, 1), activation='relu', padding='same', kernel_initial
 conv11_2 = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding='valid', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv9_2')(conv11_1)
 ```
 
-从图1中我们可以看出，SSD输入图片的尺寸是300\*300，另外SSD也由一个输入图片尺寸是512\*512的版本，这个版本的SSD虽然慢一些，但是是检测精度达到了76.9%。
+从图1中我们可以看出，SSD输入图片的尺寸是$$300\times 300$$，另外SSD也由一个输入图片尺寸是$$512\times 512$$的版本，这个版本的SSD虽然慢一些，但是是检测精度达到了76.9%。
 
 SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very Deep Convolutional NetWorks for Large-Scale Image Recognition](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)。使用标准网络的目的是为了使用训练好的模型进行迁移学习，SSD使用的是在ILSVRC CLS-LOC数据集上得到的模型进行的初始化。目的是在更高的采样率上计算Feature Map。
 
-第一点不同的是在block5中，max\_pool2d的步长stride=1，此时图像将不会进行降采样，也就是说输入到block6的Feature Map的尺寸任然是38\*38。
+第一点不同的是在block5中，max\_pool2d的步长$$stride=1$$，此时图像将不会进行降采样，也就是说输入到block6的Feature Map的尺寸任然是$$38\times 38$$。
 
-SSD的3\*3的conv6和1\*1的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov \[4\]的方法。具体细节在DeepLab-LargeFov的论文中进行分析。
+SSD的$$3\times 3$$的conv6和$$1\times 1$$的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov \[4\]的方法。具体细节在DeepLab-LargeFov的论文中进行分析。
 
 在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）\[3\]，在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
 
-空洞卷积可以在不增加模型复杂度的同时扩大卷积操作的视野，通过在卷积核中插值0的形式完成的。如图3所示，\(a\)是膨胀率为1的卷积，也就是标准的卷积，其感受野的大小是3\*3。\(b\)的膨胀率为2，卷积核变成了7\*7的卷积核，其中只有9个红点处的值不为0，在不增加复杂度的同时感受野变成了7\*7。\(c\)的膨胀率是4，感受野的大小变成了15\*15。在设置感受野的膨胀率时要谨慎设计，否则如果卷积核大于Feature Map的尺寸之后程序会报错。
+空洞卷积可以在不增加模型复杂度的同时扩大卷积操作的视野，通过在卷积核中插值0的形式完成的。如图3所示，\(a\)是膨胀率为1的卷积，也就是标准的卷积，其感受野的大小是$$3\times 3$$。\(b\)的膨胀率为2，卷积核变成了$$7\times 7$$的卷积核，其中只有9个红点处的值不为0，在不增加复杂度的同时感受野变成了$$7\times 7$$。\(c\)的膨胀率是4，感受野的大小变成了$$15\times 15$$。在设置感受野的膨胀率时要谨慎设计，否则如果卷积核大于Feature Map的尺寸之后程序会报错。
 
 ###### 图3：空洞卷积示例图
 
-\[SSD\_3.png\]
+![](/assets/SSD_3.png)
 
 fc7之后输出的Feature Map的大小是19\*19，经过block8的一次padding和一次valid卷积之后（即相当于一次same卷积），再经过一次步长为2的降采样，输入到block 9的Feature Map的尺寸是10\*10。block 9的操作和block 8相同，即输入到block 8的Feature Map的尺寸是5\*5。block 10和block 11使用的是valid卷积，所以图像的尺寸分别是3和1。这样我们便得到了图2中Feature Map尺寸的变化过程。
 
