@@ -315,7 +315,15 @@ def match_multi(weight_matrix, threshold):
     return gt_indices_thresh_met, anchor_indices_thresh_met
 ```
 
+尽管通过multi匹配策略增加了正样本的数量，但是在8732个锚点中，正负样本的比例还是非常不均衡的。所以SSD使用了难分样本挖掘（Hard Negative Mining）的策略对负样本进行采样。即对负样本的置信度进行排序，在保证正负样本$1:3$的的前提下抽取top-k个负样本。
 
+#### SSD的损失函数
+
+由于SSD也是一个由分类任务和检测任务多任务模型，所以SSD的损失函数将由置信度误差$L_{conf}$和位置误差$L_{loc}$组成:
+
+$$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alphaL_{conf}(x,l,g))$$
+
+其中$N$是正锚点的数量
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
