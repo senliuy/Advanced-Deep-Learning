@@ -291,7 +291,7 @@ def match_bipartite_greedy(weight_matrix):
 
     return matches
 ```
-在bipartite策略中被匹配的锚点数量是非常少的，这就造成了训练时的正负样本的不平衡。所以需要multi策略进行纠正，源码中也是使用的multi策略。mutli在bipartite策略的基础上增加了所有与Ground Truth的IoU大于阈值$\theta$（源码中$\theta=0.5$）的锚点作为匹配锚点。SSD中一个Ground Truth是可以有多个锚点与其匹配的，但是反过来是不行的，一个锚点只能与和它IoU最大的Ground Truth进行匹配。mutli策略的源码见代码片段6
+在bipartite策略中被匹配的锚点数量是非常少的，这就造成了训练时的正负样本的不平衡。所以需要multi策略进行纠正，源码中也是使用的multi策略。mutli在bipartite策略的基础上增加了所有与Ground Truth的IoU大于阈值$$\theta$$（源码中$$\theta=0.5$$）的锚点作为匹配锚点。SSD中一个Ground Truth是可以有多个锚点与其匹配的，但是反过来是不行的，一个锚点只能与和它IoU最大的Ground Truth进行匹配。mutli策略的源码见代码片段6
 
 ###### 代码片段6：multi匹配
 ```py
@@ -315,7 +315,7 @@ def match_multi(weight_matrix, threshold):
     return gt_indices_thresh_met, anchor_indices_thresh_met
 ```
 
-尽管通过multi匹配策略增加了正样本的数量，但是在8732个锚点中，正负样本的比例还是非常不均衡的。所以SSD使用了难分样本挖掘（Hard Negative Mining）的策略对负样本进行采样。即对负样本的置信度进行排序，在保证正负样本$1:3$的的前提下抽取top-k个负样本。
+尽管通过multi匹配策略增加了正样本的数量，但是在8732个锚点中，正负样本的比例还是非常不均衡的。所以SSD使用了难分样本挖掘（Hard Negative Mining）的策略对负样本进行采样。即对负样本的置信度进行排序，在保证正负样本$$1:3$$的的前提下抽取top-k个负样本。
 
 #### SSD的损失函数
 
@@ -323,7 +323,7 @@ def match_multi(weight_matrix, threshold):
 
 $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
-其中 $N$ 是正锚点的数量，x
+其中$$N$$是正锚点的数量，x
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
