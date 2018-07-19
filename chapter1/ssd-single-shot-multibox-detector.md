@@ -323,7 +323,7 @@ def match_multi(weight_matrix, threshold):
 
 $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
-其中$$N$$是正锚点的数量，x
+其中$$N$$是正锚点的数量，$$x_{i,j}^p \leq 1$$
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
