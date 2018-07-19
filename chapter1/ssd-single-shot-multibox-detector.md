@@ -323,14 +323,17 @@ def match_multi(weight_matrix, threshold):
 
 $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
-其中$$N$$是正锚点的数量，$$x_{i,j}^p =\{0,1\}\in x$$用于指示该锚点是否和Ground Truth进行了匹配，$$c$$表示分类置信度，$$l$$和$$g$$分别表示预测和Ground Truth的位置四要素。
+其中$$N$$是正锚点的数量，\alpha是两个任务的侧重比重，经过交叉验证之后\alpha被设置成了1。$$x_{i,j}^p =\{0,1\}\in x$$用于指示该锚点是否和Ground Truth进行了匹配。
 
-对于分类任务，SSD使用的是softmax多类别的损失函数：
+对于分类任务，SSD使用的是softmax多类别的损失函数，上式中的$$c$$表示分类置信度：
 
 
 $$
-L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}_i^0), where \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
+L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}_i^0), \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
 $$
+
+
+对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中l和g包含物体位置的四要素$$(x,y,w,h)$$。
 
 
 ## Reference
