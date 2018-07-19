@@ -291,6 +291,29 @@ def match_bipartite_greedy(weight_matrix):
 
     return matches
 ```
+在bipartite策略中被匹配的锚点数量是非常少的，这就造成了训练时的正负样本的不平衡。所以需要multi策略进行纠正，源码中也是使用的multi策略。mutli在bipartite策略的基础上增加了所有与Ground Truth的IoU大于阈值$\theta$（源码中$\theta=0.5$）的锚点作为匹配锚点。SSD中一个Ground Truth是可以有多个锚点与其匹配的，但是反过来是不行的，一个锚点只能与和它IoU最大的Ground Truth进行匹配。mutli策略的源码见代码片段6
+
+###### 代码片段6：multi匹配
+```py
+def match_multi(weight_matrix, threshold):
+    '''
+    Returns:
+        Two 1D Numpy arrays of equal length that represent the matched indices. The first
+        array contains the indices along the first axis of `weight_matrix`, the second array
+        contains the indices along the second axis.
+    '''
+    num_anchor_boxes = weight_matrix.shape[1]
+    all_anchor_indices = list(range(num_anchor_boxes)) # Only relevant for fancy-indexing below.
+    # Find the best ground truth match for every anchor box.
+    ground_truth_indices = np.argmax(weight_matrix, axis=0) # Array of shape (weight_matrix.shape[1],)
+    overlaps = weight_matrix[ground_truth_indices, all_anchor_indices] # Array of shape (weight_matrix.shape[1],)
+
+    # Filter out the matches with a weight below the threshold.
+    anchor_indices_thresh_met = np.nonzero(overlaps >= threshold)[0]
+    gt_indices_thresh_met = ground_truth_indices[anchor_indices_thresh_met]
+
+    return gt_indices_thresh_met, anchor_indices_thresh_met
+```
 
 
 ## Reference
