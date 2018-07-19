@@ -329,7 +329,7 @@ $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
 
 $$
-L_{conf}(x,c) = - \sun^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}_i^0), where \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
+L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}_i^0), where \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
 $$
 
 
