@@ -320,7 +320,7 @@ def match_multi(weight_matrix, threshold):
 
 #### 1.5 SSD的损失函数
 
-由于SSD也是一个由分类任务和检测任务多任务模型，所以SSD的损失函数将由置信度误差$L_{conf}$和位置误差$L_{loc}$组成:
+由于SSD也是一个由分类任务和检测任务多任务模型，所以SSD的损失函数将由置信度误差$$L_{conf}$$和位置误差$$L_{loc}$$组成:
 
 $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
