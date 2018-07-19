@@ -318,7 +318,7 @@ def match_multi(weight_matrix, threshold):
 
 尽管通过multi匹配策略增加了正样本的数量，但是在8732个锚点中，正负样本的比例还是非常不均衡的。所以SSD使用了难分样本挖掘（Hard Negative Mining）的策略对负样本进行采样。即对负样本的置信度进行排序，在保证正负样本$$1:3$$的的前提下抽取top-k个负样本。
 
-#### SSD的损失函数
+#### 1.5 SSD的损失函数
 
 由于SSD也是一个由分类任务和检测任务多任务模型，所以SSD的损失函数将由置信度误差$L_{conf}$和位置误差$L_{loc}$组成:
 
@@ -343,6 +343,20 @@ $$\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})$$
 $$
 L_{loc}(x,l,g) = - \sum^{N}_{i\in Pos} \sum_{m \in {cx,cy,w,h}} x^k_{i,j} smooth_{L1} (l^m_i - \hat{g}^m_j)
 $$
+
+与Faster R-CNN的(x,y)表示左上角不同，SDD的(cx,cy)表示的是锚点的中心点。
+
+#### 1.6 SSD的检测过程
+1. 根据预测类别过滤掉背景类别的候选框；
+2. 根据置信度过滤掉置信度低于阈值的候选框；
+3. 置信度降序排列，保留top-k的候选框；
+4. 解码相对位移，得出预测框四要素；
+5. 使用NMS得到最终的候选区域。
+
+## 小结
+SSD算法的核心点在于
+1. 使用多尺度的Feature Map提取特征；
+2. 利用Faster R-CNN的锚点机制改进候选框。
 
 ## Reference
 
