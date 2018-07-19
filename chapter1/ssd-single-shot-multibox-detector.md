@@ -249,9 +249,10 @@ conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5],
                                     variances=variances, coords=coords, normalize_coords=normalize_coords, name='conv9_2_mbox_priorbox')(conv9_2_mbox_loc)
 ```
 
-#### 1.4 SSD的损失函数
+#### 1.4 SSD的匹配准则
 
-在1.2节中，根据Feature Map得到了
+从Feature Map得到
+
 
 ## Reference
 
