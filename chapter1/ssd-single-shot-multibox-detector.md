@@ -337,18 +337,16 @@ $$
 $$
 \hat{g}^{cx}_{j} = (g^{cx}_j - d^{cx}_i)/d^w_i
 $$
-
 $$
 \hat{g}^{cy}_{j} = (g^{cy}_j - d^{cy}_i)/d^h_i
 $$
-
 $$
 \hat{g}^w_j = log(\frac{g^w_j}{d^w_i})
 $$
-
 $$
 \hat{g}^h_j = log(\frac{g^h_j}{d^h_i})
 $$
+
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
