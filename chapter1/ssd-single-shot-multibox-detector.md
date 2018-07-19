@@ -303,10 +303,10 @@ def match_multi(weight_matrix, threshold):
         contains the indices along the second axis.
     '''
     num_anchor_boxes = weight_matrix.shape[1]
-    all_anchor_indices = list(range(num_anchor_boxes)) # Only relevant for fancy-indexing below.
+    all_anchor_indices = list(range(num_anchor_boxes))
     # Find the best ground truth match for every anchor box.
-    ground_truth_indices = np.argmax(weight_matrix, axis=0) # Array of shape (weight_matrix.shape[1],)
-    overlaps = weight_matrix[ground_truth_indices, all_anchor_indices] # Array of shape (weight_matrix.shape[1],)
+    ground_truth_indices = np.argmax(weight_matrix, axis=0)
+    overlaps = weight_matrix[ground_truth_indices, all_anchor_indices]
 
     # Filter out the matches with a weight below the threshold.
     anchor_indices_thresh_met = np.nonzero(overlaps >= threshold)[0]
