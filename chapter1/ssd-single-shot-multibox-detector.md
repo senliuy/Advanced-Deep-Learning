@@ -251,7 +251,46 @@ conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5],
 
 #### 1.4 SSD的匹配准则
 
-从Feature Map得到锚点之后，我们要确定Ground Truth和哪个锚点匹配，与之匹配的锚点将负责该Ground Truth的预测。在YOLO中，Ground Truth的中心点落在哪个单元内，则该单元的bounding box负责预测其准确的边界。SSD的锚点匹配采用了‘bipartite’和‘multi’两种策略，匹配源码位于`./`
+从Feature Map得到锚点之后，我们要确定Ground Truth和哪个锚点匹配，与之匹配的锚点将负责该Ground Truth的预测。在YOLO中，Ground Truth的中心点落在哪个单元内，则该单元的bounding box负责预测其准确的边界。SSD的锚点匹配采用了‘bipartite’和‘multi’两种策略，匹配源码位于`./ssd_encoder_decoder/`目录下面。
+在bipartite模式中，每个Ground Truth选择与其IoU（论文用的是Jaccard Overlap）最大的锚点进行匹配.如果一个锚点被多个Ground Truth匹配，那么该锚点只匹配与其IoU最大的Ground Truth，其它Ground Truth从剩下的锚点中选择Iou最大的那个进行匹配。bipartite可以保证每个Ground Truth都会有唯一的一个锚点进行匹配。bipartite的源码见代码片段5。
+
+###### 代码片段5：bipartite匹配
+```py
+def match_bipartite_greedy(weight_matrix):
+    '''
+    Parameters:
+        weight_matrix (array): A 2D Numpy array that represents the weight matrix
+            for the matching process. If `(m,n)` is the shape of the weight matrix,
+            it must be `m <= n`. The weights can be integers or floating point
+            numbers. The matching process will maximize, i.e. larger weights are
+            preferred over smaller weights.
+
+    Returns:
+        A 1D Numpy array of length `weight_matrix.shape[0]` that represents
+        the matched index along the second axis of `weight_matrix` for each index
+        along the first axis.
+    '''
+    weight_matrix = np.copy(weight_matrix)
+    num_ground_truth_boxes = weight_matrix.shape[0]
+    all_gt_indices = list(range(num_ground_truth_boxes)) 
+    matches = np.zeros(num_ground_truth_boxes, dtype=np.int)
+    for _ in range(num_ground_truth_boxes):
+        # Find the maximal anchor-ground truth pair in two steps: First, reduce
+        # over the anchor boxes and then reduce over the ground truth boxes.
+        anchor_indices = np.argmax(weight_matrix, axis=1) # Reduce along the anchor box axis.
+        overlaps = weight_matrix[all_gt_indices, anchor_indices]
+        ground_truth_index = np.argmax(overlaps) # Reduce along the ground truth box axis.
+        anchor_index = anchor_indices[ground_truth_index]
+        matches[ground_truth_index] = anchor_index # Set the match.
+
+        # Set the row of the matched ground truth box and the column of the matched
+        # anchor box to all zeros. This ensures that those boxes will not be matched again,
+        # because they will never be the best matches for any other boxes.
+        weight_matrix[ground_truth_index] = 0
+        weight_matrix[:,anchor_index] = 0
+
+    return matches
+```
 
 
 ## Reference
