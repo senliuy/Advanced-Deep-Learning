@@ -323,7 +323,16 @@ def match_multi(weight_matrix, threshold):
 
 $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
-其中$$N$$是正锚点的数量，$$x_{i,j}^p \leq 1$$
+其中$$N$$是正锚点的数量，$$x_{i,j}^p =\{0,1\}\in x$$用于指示该锚点是否和Ground Truth进行了匹配，$$c$$表示分类置信度，$$l$$和$$g$$分别表示预测和Ground Truth的位置四要素。
+
+对于分类任务，SSD使用的是softmax多类别的损失函数：
+
+
+$$
+L_{conf}(x,c) = - \sun^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}_i^0), where \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
+$$
+
+
 ## Reference
 
 \[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
