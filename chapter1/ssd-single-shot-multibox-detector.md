@@ -342,7 +342,7 @@ L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg
 $$
 
 
-对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中$$l$$和$$g$$包含物体位置的四要素$$(\hat{g}^{cx}_j, \hat{g}^{cy}_j, \hat{g}^w_j, \hat{g}^h_j)$$。  
+对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中$$l$$和$$g$$包含物体位置的四要素$$(\hat{g}^{cx}_j, \hat{g}^{cy}_j, \hat{g}^w_j, \hat{g}^h_j)$$。
 
 $$\hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i$$  
 $$\hat{g}^{cy}_j = (g^{cy}_j - d^{cy}_i)/d^h_i$$  
@@ -351,9 +351,11 @@ $$\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})$$
 
 损失函数表示为实际偏移和预测偏移的Smooth L1损失：
 
+
 $$
 L_{loc}(x,l,g) = - \sum^{N}_{i\in Pos} \sum_{m \in {cx,cy,w,h}} x^k_{i,j} smooth_{L1} (l^m_i - \hat{g}^m_j)
 $$
+
 
 与Faster R-CNN的$$(x,y)$$表示左上角不同，SDD的$$(cx,cy)$$表示的是锚点的中心点。
 
@@ -379,5 +381,5 @@ SSD算法的核心点在于
 
 \[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Looking wider to see better.In:ILCR.\(2016\)
 
-\[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\) 
+\[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
 
