@@ -172,7 +172,7 @@ conv10_2_mbox_loc = Conv2D(n_boxes[4] * 4, (3, 3), padding='same', kernel_initia
 conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv11_2_mbox_loc')(conv11_2)
 ```
 
-其中第二行的L2Normalization使用的是ParseNet \[5\]中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
+其中第二行的L2Normalization使用的是ParseNet \[3\]中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
 
 SSD对于第$$i$$个Feature Map的每个像素点都会产生n\_boxes\[i\]个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,4,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD相当于预测M个bounding box，其中：
 
@@ -378,9 +378,7 @@ SSD算法的核心点在于
 
 \[2\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
 
-\[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Lookingwidertoseebetter.In:ILCR.\(2016\)Yu, Fisher, and Vladlen Koltun. "Multi-scale context aggregation by dilated convolutions." arXiv preprint arXiv:1511.07122
+\[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Looking wider to see better.In:ILCR.\(2016\)
 
-\[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
-
-\[5\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Looking wider to see better.In:ILCR.\(2016\)
+\[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\) 
 
