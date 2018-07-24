@@ -88,6 +88,18 @@ $$
 
 ###### ![](/assets/YOLOv2_3.png)
 
+遗憾的是我并没有在源码中找到k-means的实现，只是给出了两组值：
+
+```
+# coco
+anchors =  0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828  
+# voc
+
+
+```
+
+于是用python实现了一份，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。
+
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
