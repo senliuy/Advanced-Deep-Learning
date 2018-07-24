@@ -42,7 +42,7 @@ Batch Normalization和Dropout均有正则化的作用。但是Batch Normalizatio
 
 为了提升模型对高分辨率图像的响应能力，作者先使用尺寸为$$448\times448$$的ImageNet图片训练了10个Epoch（并没有训练到收敛，可能考虑$$448\times448$$的图片的一个Epoch时间要远长于$$224\times224$$的图片），然后再在检测数据集上进行模型微调。图1显示该技巧带来了3.7%的性能提升
 
-#### 1.1.3 Convolution With Anchor Boxes
+#### 1.1.3。 Convolution With Anchor Boxes
 
 YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注意两点：
 
@@ -61,7 +61,9 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 
 最后，关于全卷积的作用，$$1\times1$$卷积带来的非线性变化我们已经在之前的文章中多次提及，这里便不再说明。
 
-#### 
+#### 1.1.4. Dimension Clusters
+
+
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
