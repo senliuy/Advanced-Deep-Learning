@@ -63,7 +63,7 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 
 #### 1.1.4. Dimension Clusters
 
-za
+在1.1.3节中我们介绍到YOLOv2使用的
 
 ### 1.2. Stronger
 
