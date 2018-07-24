@@ -18,6 +18,8 @@
 
 ## 1. YOLOv2: Better, Faster
 
+YOLOv2使用的是和YOLOv1相同的思路，算法流程参考[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的介绍，但看这篇文章肯定会感到一头雾水，因为论文并没有详细介绍YOLOv2的详细流程。而且我也不打算介绍，因为这只是对YOLOv1无畏的重复，强烈推荐读者能搞懂YOLOv1之后再来读这篇文章。
+
 ### 1.1. Better
 
 YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习在各个领域的泛化能力。作者总结了可能在物体检测中有用的方法和技巧（图1）并将它们结合成了我们要介绍的YOLOv2。所以YOLOv2并没有像SSD或者Faster R-CNN具有很大的难度，更多的是在YOLOv1基础上的技巧方向的提升。在下面的篇幅中，我们将采用和论文相同的结构并结合基于Keras的[源码](https://github.com/yhcc/yolo2)对YOLOv2中涉及的技巧进行讲解。
@@ -52,6 +54,7 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 ###### 图2：Darknet网络结构
 
 ![](/assets/YOLOv2_2.png)
+
 
 首先，YOLOv2使用的是$$416\times416$$的输入图像，考虑到很多情况下待检测物体的中心点容易出现在图像的中央，所以使用$$416\times416$$经过5次降采样之后生成的Feature Map的尺寸是$$13\times13$$，这种奇数尺寸的Feature Map获得的中心点的特征向量更准确。
 
