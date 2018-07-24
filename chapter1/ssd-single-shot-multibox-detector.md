@@ -356,7 +356,7 @@ L_{loc}(x,l,g) = - \sum^{N}_{i\in Pos} \sum_{m \in {cx,cy,w,h}} x^k_{i,j} smooth
 $$
 
 
-与Faster R-CNN的\(x,y\)表示左上角不同，SDD的\(cx,cy\)表示的是锚点的中心点。
+与Faster R-CNN的$$(x,y)$$表示左上角不同，SDD的$$(cx,cy)$$表示的是锚点的中心点。
 
 #### 1.6 SSD的检测过程
 

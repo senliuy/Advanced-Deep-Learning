@@ -158,7 +158,11 @@ Ratios:
 
 虽然和源码提供的值不完全一样，但是取得的先验框和源码的差距很小，而且IoU也基本符合图3给出的实验结果。
 
-#### Direct location prediction
+#### 1.1.5. Direct location prediction
+
+在这里我们讨论一下YOLOv2的损失函数，由于YOLOv1使用了YOLO的单次检测的方式，同时也使用了Faster R-CNN的锚点机制。这里就存在一个cell与锚点的匹配模式，因为cell的中心决定了用于分类和位置精校的特征向量。
+
+为什么我们不能直接使用Faster R-CNN中采用的预测便宜的方式呢？
 
 ### 1.2. Stronger
 
