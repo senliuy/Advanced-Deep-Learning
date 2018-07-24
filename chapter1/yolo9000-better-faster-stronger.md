@@ -100,7 +100,6 @@ anchors =  1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053
 
 上面的值应该是锚点在$$13\times13$$的Feature Map上的尺寸，可以等比例换算到原图中（图3右侧部分）。从上面的两组值我们也可以看出coco数据集的物体尺寸更偏小一些。
 
-
 为了验证上面总结的思想，我用python实现了一份用于锚点聚类的k-means，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。核心算法见代码片段1：
 
 ###### 代码片段1：用于锚点聚类的k-means
@@ -125,9 +124,37 @@ def kmeans(boxes, k, dist=np.median):
             clusters[cluster] = dist(boxes[nearest_clusters == cluster], axis=0)
         last_clusters = nearest_clusters
     return clusters
+```
+
+跑了一下在pascal voc上的聚类，得到的$$k=5$$和$$k=9$$的实验结果如下:
 
 ```
-跑了一下在pascal voc上的聚类，得到的$$k=5$$和$$k=9$$的实验结果如下:
+# k=5
+Accuracy: 60.07%
+Boxes:
+ [[4.446      6.48266667]
+ [2.106      3.95502646]
+ [1.17       1.8744186 ]
+ [9.81066667 9.91591592]
+ [0.494      0.90133333]]
+Ratios:
+ [0.53, 0.55, 0.62, 0.69, 0.99]
+ 
+ # k=9
+ Accuracy: 66.66%
+Boxes:
+ [[10.738      10.192     ]
+ [ 1.56        1.456     ]
+ [ 0.884       2.704     ]
+ [ 3.562       3.12      ]
+ [ 5.75612121  7.67      ]
+ [ 0.494       0.69333333]
+ [ 2.938       6.526     ]
+ [ 0.572       1.42133333]
+ [ 1.638       3.98666667]]
+Ratios:
+ [0.33, 0.4, 0.41, 0.45, 0.71, 0.75, 1.05, 1.07, 1.14]
+```
 
 ### 1.2. Stronger
 
