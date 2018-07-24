@@ -12,7 +12,12 @@
 
 除了以上三点，YOLO还使用了残差网络的直接映射的思想，R-CNN系列的预测相对位移的思想，Batch Normalization，全卷积等思想。YOLOv2将算法的速度和精度均提升到了一个新的高度。正是所谓的速度更快（Faster），精度更高（Better/Higher）
 
-论文中提出的另外一个模型YOLO9000使用了WordNet[5]的方式将
+论文中提出的另外一个模型YOLO9000非常巧妙的使用了WordNet[5]的方式将检测数据集COCO和分类数据集ImageNet整理成一个多叉树，再通过提出的联合训练方法高效的训练多叉树对应的损失函数。YOLO9000是一个非常强大（Stronger）且有趣的模型，非常具有研究前景。
+
+在下面的章节中，我们将论文分成YOLOv2和YOLO9000两个部分并结合论文和源码对算法进行详细解析。
+
+## YOLOv2: Better, Faster
+
 
 ## Reference
 
