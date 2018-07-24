@@ -90,15 +90,15 @@ $$
 
 遗憾的是我并没有在源码中找到k-means的实现，只是给出了两组值：
 
-```
+于是用python实现了一份，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。
+
+```py
 # coco
 anchors =  0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828  
+
 # voc
-
-
+anchors =  1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053, 11.2364, 10.0071
 ```
-
-于是用python实现了一份，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。
 
 ### 1.2. Stronger
 
