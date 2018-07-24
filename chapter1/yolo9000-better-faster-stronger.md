@@ -53,6 +53,8 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 
 ![](/assets/YOLOv2_2.png)
 
+首先，YOLOv2使用的是$$416\times416$$的输入图像，考虑到很多情况下待检测物体的中心点容易出现在图像的中央，所以使用$$416\times416$$经过5次降采样之后生成的Feature Map的尺寸是$$13\times13$$，这种奇数尺寸的Feature Map获得的中心点的特征向量更准确。
+
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
