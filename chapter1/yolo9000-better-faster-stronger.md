@@ -166,6 +166,20 @@ YOLOv2使用了和YOLOv1类似的损失函数，不同的是YOLOv2将分类任�
 
 直接将锚点机制添加到YOLO中（也就是SSD）会产生模型不稳定的问题，尤其在早期迭代的时候，这些不稳定大部分是发生在预测$$(x,y)$$的时候。
 
+回顾一下[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html)的损失函数，相对位移$$(x,y)$$的计算方式为：
+
+$$\hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i$$  
+$$\hat{g}^{cy}_j = (g^{cy}_j - d^{cy}_i)/d^h_i$$
+
+即
+
+$$g^{cx}_j = \hat{g}^{cx}_j * d^w_i + d^{cx}_i$$  
+$$g^{cy}_j = \hat{g}^{cy}_j * d^h_i + d^{cy}_i$$
+
+注意论文在这个地方是减号，应该是一个错误。
+
+其中$$\hat{g}^{cx}_j$$和$$\hat{g}^{cy}_j$$是预测值，在模型训练初期，由于使用的是迁移学习和随机初始化得到的网络，此时网络必然收敛的不是特别好，这就造成了$$\hat{g}^{cx}_j$$和$$\hat{g}^{cy}_j$$的随机性。当$$\hat{g}^{cx}_j$$被预测为1时，$$g^{cx}_j=d^w_i + d^{cx}_i$$，也就是
+
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
