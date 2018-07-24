@@ -98,8 +98,31 @@ anchors =  0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.527
 anchors =  1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053, 11.2364, 10.0071
 ```
 
-于是用python实现了一份，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。
+于是用python实现了一份，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。核心算法见代码片段1：
 
+###### 代码片段1：用于锚点聚类的k-means
+
+```py
+def kmeans(boxes, k, dist=np.median):
+    """
+    Calculates k-means clustering with the Intersection over Union (IoU) metric.
+    """
+    rows = boxes.shape[0]
+    distances = np.empty((rows, k))
+    last_clusters = np.zeros((rows,))
+    # initiate centroids
+    clusters = boxes[np.random.choice(rows, k, replace=False)]
+    while True:
+        for row in range(rows):
+            distances[row] = 1 - iou(boxes[row], clusters)
+        nearest_clusters = np.argmin(distances, axis=1)
+        if (last_clusters == nearest_clusters).all():
+            break
+        for cluster in range(k):
+            clusters[cluster] = dist(boxes[nearest_clusters == cluster], axis=0)
+        last_clusters = nearest_clusters
+    return clusters
+```
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
