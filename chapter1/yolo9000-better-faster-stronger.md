@@ -18,11 +18,24 @@
 
 ## YOLOv2: Better, Faster
 
+### 1. Better
+
 YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习在各个领域的泛化能力。作者总结了可能在物体检测中有用的方法和技巧（图1）并将它们结合成了我们要介绍的YOLOv2。所以YOLOv2并没有像SSD或者Faster R-CNN具有很大的难度，更多的是技巧方向的提升。在下面的篇幅中，我们将采用和论文相同的结构并结合基于Keras的[源码](https://github.com/yhcc/yolo2)对YOLOv2中涉及的技巧进行讲解。
 
 ###### 图1：YOLOv2中使用的技巧及带来的性能提升
 
 ![](/assets/YOLOv2_1.png)
+
+#### Batch Normalization
+
+YOLOv2中作者舍弃了Dropout而使用Batch Normalization（BN）来减轻模型的过拟合问题，从图1中我们可以看出BN带来了2.4%的mAP的性能提升。
+
+Batch Normalization和Dropout均有正则化的作用。但是Batch Normalization具有提升模型优化的作用，这点是Dropout不具备的。所以BN更适合用于数据量比较大的场景。
+
+关于BN和Dropout的异同，可以参考Ian Goodfellow在Quora上的[讨论](https://www.quora.com/What-is-the-difference-between-dropout-and-batch-normalization#)。
+
+#### High Resolution Classifier
+
 
 ## Reference
 
