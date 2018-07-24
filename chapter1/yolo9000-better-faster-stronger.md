@@ -20,7 +20,7 @@
 
 YOLOv2使用的是和YOLOv1相同的思路，算法流程参考[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的介绍，但看这篇文章肯定会感到一头雾水，因为论文并没有详细介绍YOLOv2的详细流程。而且我也不打算介绍，因为这只是对YOLOv1无畏的重复，强烈推荐读者能搞懂YOLOv1之后再来读这篇文章。
 
-### 1.1. Better
+### 1.1. 更好（Better）
 
 YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习在各个领域的泛化能力。作者总结了可能在物体检测中有用的方法和技巧（图1）并将它们结合成了我们要介绍的YOLOv2。所以YOLOv2并没有像SSD或者Faster R-CNN具有很大的难度，更多的是在YOLOv1基础上的技巧方向的提升。在下面的篇幅中，我们将采用和论文相同的结构并结合基于Keras的[源码](https://github.com/yhcc/yolo2)对YOLOv2中涉及的技巧进行讲解。
 
@@ -28,7 +28,7 @@ YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习�
 
 ![](/assets/YOLOv2_1.png)
 
-#### 1.1.1. Batch Normalization
+#### 1.1.1. BN替代Dropout
 
 YOLOv2中作者舍弃了Dropout而使用Batch Normalization（BN）来减轻模型的过拟合问题，从图1中我们可以看出BN带来了2.4%的mAP的性能提升。
 
@@ -36,13 +36,13 @@ Batch Normalization和Dropout均有正则化的作用。但是Batch Normalizatio
 
 关于BN和Dropout的异同，可以参考Ian Goodfellow在Quora上的[讨论](https://www.quora.com/What-is-the-difference-between-dropout-and-batch-normalization#)。
 
-#### 1.1.2. High Resolution Classifier
+#### 1.1.2. 高分辨率的迁移学习
 
 之前的深度学习模型很多均是生搬在ImageNet上训练好的模型做迁移学习。由于迁移学习的模型是在尺寸为$$224\times224$$的输入图像上进行训练的，进而限制了检测图像的尺寸也是$$224\times224$$。在ImageNet上图像的尺寸一般在500左右，降采样到224的方案对检测任务的负面影响要远远大于分类任务。
 
 为了提升模型对高分辨率图像的响应能力，作者先使用尺寸为$$448\times448$$的ImageNet图片训练了10个Epoch（并没有训练到收敛，可能考虑$$448\times448$$的图片的一个Epoch时间要远长于$$224\times224$$的图片），然后再在检测数据集上进行模型微调。图1显示该技巧带来了3.7%的性能提升
 
-#### 1.1.3。 Convolution With Anchor Boxes
+#### 1.1.3.  骨干网络Darknet-19
 
 YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注意两点：
 
@@ -61,7 +61,7 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 
 最后，关于全卷积的作用，$$1\times1$$ 卷积带来的非线性变化我们已经在之前的文章中多次提及，这里便不再说明。
 
-#### 1.1.4. Dimension Clusters
+#### 1.1.4. 锚点聚类
 
 在1.1.3节中我们介绍到YOLOv2使用的k-means聚类产生的锚点，该方法提出的动机是考虑到人工设计的锚点具有太强的主观性，与其主管设计，不如根据训练集学习一组更具有代表性的锚点。
 
@@ -139,7 +139,7 @@ Boxes:
  [0.494      0.90133333]]
 Ratios:
  [0.53, 0.55, 0.62, 0.69, 0.99]
- 
+
 # k=9
 Accuracy: 66.66%
 Boxes:
@@ -158,7 +158,7 @@ Ratios:
 
 虽然和源码提供的值不完全一样，但是取得的先验框和源码的差距很小，而且IoU也基本符合图3给出的实验结果。
 
-#### 1.1.5. Direct location prediction
+#### 1.1.5. 位置直接预测
 
 YOLOv2使用了和YOLOv1类似的损失函数，不同的是YOLOv2将分类任务从cell中解耦。因为在YOLOv1中，cell负责预测与之匹配的类别，bounding box负责位置精校，也就是预测位置。YOLOv1的输出层我们在[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的图3中进行了描述。但是在YOLOv2中使用了锚点机制，物体的类别和位置均是由锚点对应的特征向量决定的，如图4。
 
@@ -178,7 +178,25 @@ $$g^{cy}_j = \hat{g}^{cy}_j * d^h_i + d^{cy}_i$$
 
 注意论文在这个地方是减号，应该是一个错误。
 
-其中$$\hat{g}^{cx}_j$$和$$\hat{g}^{cy}_j$$是预测值，在模型训练初期，由于使用的是迁移学习和随机初始化得到的网络，此时网络必然收敛的不是特别好，这就造成了$$\hat{g}^{cx}_j$$和$$\hat{g}^{cy}_j$$的随机性。当$$\hat{g}^{cx}_j$$被预测为1时，$$g^{cx}_j=d^w_i + d^{cx}_i$$，也就是说预测的检测框讲出现在
+其中$$\hat{g}^{cx}_j$$和$$\hat{g}^{cy}_j$$是预测值，在模型训练初期，由于使用的是迁移学习和随机初始化得到的网络，此时网络必然收敛的不是特别好，这就造成了$$\hat{g}^{cx}_j$$和$$\hat{g}^{cy}_j$$的随机性。再加上并没有对$$\hat{g}$$的值加以限制，使得预测的检测卡可能出现在网络中的任何位置而且这些事和锚点如何初始化无关的。正确的做法应该是预测的检测框应该也是由该锚点负责的，也就预测的检测框的中心点应该落到该锚点的内部。
+
+为了解决这个问题，YOLOv2采用了YOLOv1中使用的相对一个cell的位移，同时使用了logistic函数将预测值限制在了$$[0,1]$$ 的范围内。YOLOv2的输出层会产生5个值，$$(t_x, t_y, t_w, t_j, t_o)$$，该输出层对应cell的左上角为$$(c_x, c_y)$$, 宽和高分别为$$(p_w, p_h)$$, 那么对应的预测的相对位移为：
+
+$$b_x = \sigma(t_x) + c_x$$  
+$$b_x = \sigma(t_y) + c_y$$  
+$$b_w = p_w e^{t_w}$$  
+$$b_h = p_h e^{t_h}$$  
+$$Pr(object)\times IoU(b, object) = \sigma(t_o)$$
+
+上式表示的几何关系见图5。
+
+###### 图5：YOLOv2的预测值和匹配cell的几何关系
+
+![](/assets/YOLOv2_5.png)
+
+YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5个任务组成的多任务损失函数。源码中各个模型的权重也和YOLOv1中提到的权重一致。
+
+从图1中我们可以看出，1.1.4节的Dimension Clusters加上1.1.5节的Direct Location Prediction非常有效的将mAP提高了4.8%。
 
 ### 1.2. Stronger
 
