@@ -86,7 +86,7 @@ $$
 
 ###### 图3：k-means的$$k$$和IoU均值的实验对比
 
-###### ![](/assets/YOLOv2_3.png)
+![](/assets/YOLOv2_3.png)
 
 遗憾的是我并没有在源码中找到k-means的实现，在darknet源码中找到了两组值：
 
@@ -160,7 +160,11 @@ Ratios:
 
 #### 1.1.5. Direct location prediction
 
-YOLOv2使用了和YOLOv1类似的损失函数
+YOLOv2使用了和YOLOv1类似的损失函数，不同的是YOLOv2将分类任务从cell中解耦。因为在YOLOv1中，cell负责预测与之匹配的类别，bounding box负责位置精校，也就是预测位置。YOLOv1的输出层我们在[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的图3中进行了描述。但是在YOLOv2中使用了锚点机制，物体的类别和位置均是由锚点对应的特征向量决定的，如图4。
+
+###### 图4：YOLOv2的输出层
+![](/assets/YOLOv2_2.png)
+
 
 ### 1.2. Stronger
 
