@@ -160,7 +160,7 @@ Ratios:
 
 #### 1.1.5. Direct location prediction
 
-在Faster R-CNN和SSD中，锚点的精校均是使用的是检测框的中心点和Feature Map的相对位移作为约束对象，其中
+YOLOv2使用了和YOLOv1类似的损失函数
 
 ### 1.2. Stronger
 
