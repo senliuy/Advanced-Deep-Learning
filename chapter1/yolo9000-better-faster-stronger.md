@@ -122,7 +122,9 @@ def kmeans(boxes, k, dist=np.median):
             clusters[cluster] = dist(boxes[nearest_clusters == cluster], axis=0)
         last_clusters = nearest_clusters
     return clusters
+
 ```
+
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
