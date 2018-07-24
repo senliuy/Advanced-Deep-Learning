@@ -16,17 +16,17 @@
 
 在下面的章节中，我们将论文分成YOLOv2和YOLO9000两个部分并结合论文和源码对算法进行详细解析。
 
-## YOLOv2: Better, Faster
+## 1. YOLOv2: Better, Faster
 
-### 1. Better
+### 1.1. Better
 
-YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习在各个领域的泛化能力。作者总结了可能在物体检测中有用的方法和技巧（图1）并将它们结合成了我们要介绍的YOLOv2。所以YOLOv2并没有像SSD或者Faster R-CNN具有很大的难度，更多的是技巧方向的提升。在下面的篇幅中，我们将采用和论文相同的结构并结合基于Keras的[源码](https://github.com/yhcc/yolo2)对YOLOv2中涉及的技巧进行讲解。
+YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习在各个领域的泛化能力。作者总结了可能在物体检测中有用的方法和技巧（图1）并将它们结合成了我们要介绍的YOLOv2。所以YOLOv2并没有像SSD或者Faster R-CNN具有很大的难度，更多的是在YOLOv1基础上的技巧方向的提升。在下面的篇幅中，我们将采用和论文相同的结构并结合基于Keras的[源码](https://github.com/yhcc/yolo2)对YOLOv2中涉及的技巧进行讲解。
 
 ###### 图1：YOLOv2中使用的技巧及带来的性能提升
 
 ![](/assets/YOLOv2_1.png)
 
-#### Batch Normalization
+#### 1.1.1. Batch Normalization
 
 YOLOv2中作者舍弃了Dropout而使用Batch Normalization（BN）来减轻模型的过拟合问题，从图1中我们可以看出BN带来了2.4%的mAP的性能提升。
 
@@ -34,8 +34,24 @@ Batch Normalization和Dropout均有正则化的作用。但是Batch Normalizatio
 
 关于BN和Dropout的异同，可以参考Ian Goodfellow在Quora上的[讨论](https://www.quora.com/What-is-the-difference-between-dropout-and-batch-normalization#)。
 
-#### High Resolution Classifier
+#### 1.1.2. High Resolution Classifier
 
+之前的深度学习模型很多均是生搬在ImageNet上训练好的模型做迁移学习。由于迁移学习的模型是在尺寸为$$224\times224$$的输入图像上进行训练的，进而限制了检测图像的尺寸也是$$224\times224$$。在ImageNet上图像的尺寸一般在500左右，降采样到224的方案对检测任务的负面影响要远远大于分类任务。
+
+为了提升模型对高分辨率图像的响应能力，作者先使用尺寸为$$448\times448$$的ImageNet图片训练了10个Epoch（并没有训练到收敛，可能考虑$$448\times448$$的图片的一个Epoch时间要远长于$$224\times224$$的图片），然后再在检测数据集上进行模型微调。图1显示该技巧带来了3.7%的性能提升
+
+#### 1.1.3 Convolution With Anchor Boxes
+
+YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注意两点：
+
+1. YOLOv2输入网络的图像尺寸并不是图2画的$$224\times224$$, 而是使用了$$416\times416$$的输入图像，原因我们随后会介绍；
+2. 在$$3\times3$$卷积中间添加了$$1\times1$$卷积，Feature Map之间的一层非线性变化提升了模型的表现能力；
+3. Darknet-19进行了5次降采样，但是在最后一层卷积并没有添加池化层，目的是为了获得更高分辨率的Feature Map；
+4. Darknet-19中并不含有全连接，使用的是全局平均池化的方式产生长度固定的特征向量。
+
+### 1.2. Stronger
+
+## YOLO9000: Stronger
 
 ## Reference
 
