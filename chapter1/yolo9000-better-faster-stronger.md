@@ -200,6 +200,8 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 ### 1.2. Stronger
 
+test
+
 ## YOLO9000: Stronger
 
 ## Reference
