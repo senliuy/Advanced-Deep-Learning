@@ -51,7 +51,7 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 
 ###### 图2：Darknet网络结构
 
-
+![](/assets/YOLOv2_2.png)
 
 ### 1.2. Stronger
 
