@@ -88,7 +88,7 @@ $$
 
 ###### ![](/assets/YOLOv2_3.png)
 
-遗憾的是我并没有在源码中找到k-means的实现，只是给出了两组值：
+遗憾的是我并没有在源码中找到k-means的实现，在darknet源码中找到了两组值：
 
 ```py
 # coco
@@ -98,7 +98,10 @@ anchors =  0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.527
 anchors =  1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053, 11.2364, 10.0071
 ```
 
-于是用python实现了一份，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。核心算法见代码片段1：
+上面的值应该是锚点在$$13\times13$$的Feature Map上的尺寸，可以等比例换算到原图中（图3右侧部分）。从上面的两组值我们也可以看出coco数据集的物体尺寸更偏小一些。
+
+
+为了验证上面总结的思想，我用python实现了一份用于锚点聚类的k-means，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。核心算法见代码片段1：
 
 ###### 代码片段1：用于锚点聚类的k-means
 
@@ -124,6 +127,7 @@ def kmeans(boxes, k, dist=np.median):
     return clusters
 
 ```
+跑了一下在pascal voc上的聚类，得到的$$k=5$$和$$k=9$$的实验结果如下:
 
 ### 1.2. Stronger
 
