@@ -158,6 +158,8 @@ Ratios:
 
 虽然和源码提供的值不完全一样，但是取得的先验框和源码的差距很小，而且IoU也基本符合图3给出的实验结果。
 
+#### Direct location prediction
+
 ### 1.2. Stronger
 
 ## YOLO9000: Stronger
