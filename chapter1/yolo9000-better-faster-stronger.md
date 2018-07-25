@@ -204,6 +204,8 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 #### 1.1.6. 细粒度特征
 
+历史研究表明，使用多尺度的特征在物体检测和语义分割中是非常有效的
+
 ![](/assets/YOLOv2_6.png)
 
 ### 1.2. Stronger
