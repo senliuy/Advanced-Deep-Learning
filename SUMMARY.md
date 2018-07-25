@@ -25,6 +25,7 @@
   * [You Only Look Once: Unified, Real-Time Object Detection ](chapter1/you-only-look-once-unified-real-time-object-detection.md)
   * [SSD: Single Shot MultiBox Detector](chapter1/ssd-single-shot-multibox-detector.md)
   * [YOLO9000: Better, Faster, Stronger](chapter1/yolo9000-better-faster-stronger.md)
+  * [YOLOv3: An Incremental Improvement](chapter1/yolov3-an-incremental-improvement.md)
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
   * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
