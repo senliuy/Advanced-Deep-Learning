@@ -264,9 +264,14 @@ $$...$$
 
 当我们要预测一只狗是不是柯基时，$$Pr(Corgi)$$是一系列条件概率的乘积：
 
-$$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times ... Pr(living thing|whole) \times Pr(whole|object) \times Pr(object)$$
+$$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times Pr(living thing|whole) \times Pr(whole|object) \times Pr(object)$$
 
-其中$$Pr(object) = 1$$。
+其中$$Pr(object) = 1$$。Pr(Corgi|dog)则是在‘dog’的所有下义词中为‘Corgi’的概率，由softmax激活函数求得，其它情况依次类推（图8）。
+
+###### 图8：在ImageNet和在WordTree下的预测。
+
+![](/assets/YOLOv2_8.png)
+
 
 
 ## Reference
