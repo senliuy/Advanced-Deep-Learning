@@ -211,6 +211,10 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 1. $$26\times26\times512$$的Feature Map首先通过TensorFlow的space_to_depth()函数转换成$$13\times13\times2048$$的Feature Map（图6）然后再和后面的Feature Map进行映射的；
 2. 论文中采用的是类似残差网络的映射方式，也就是将Feature Map执行单位加操作，但是源码中使用的是DenseNet的方式，也就是Merge成$$13\times13\times(2048+1024)$$的 Feature Map。
 
+###### 图6：tf.space_to_depth()
+
+![](/assets/YOLOv2_6.png)
+
 图1显示该方法带来了1%的性能提升。
 
 #### 1.1.7. 多尺度训练
@@ -219,15 +223,19 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 在YOLOv2z中，每隔10个batch便随机从$${320, 352, 384, ..., 608}$$选择一个新的尺度作为输入图像的尺寸，多尺度训练将mAP提高了1.4%。
 
-###### 图6：tf.space_to_depth()
+### 1.2. Faster
 
-![](/assets/YOLOv2_6.png)
+YOLOv2用于提速的技术我们已经在1.1节中介绍过，这里仅列出技术和提速的关系：
 
-### 1.2. Stronger
+1. 使用全卷积网络代替全连接，网络具有更少的参数，速度更快；
+2. 使用Batch Normalization代替Dropout的正则化的功能，使用BN训练的模型更稳定；
+3. DarkNet-19将VGG-16运算数量从306.9亿降低到55.8亿。
 
-test
+文至此处，一个更快，更好的YOLOv2已介绍完毕，虽然不像SSD对YOLOv1的提升在技术上那么惊艳，但其使用的若干技术确实是非常有效。在下一部分我们将开始介绍YOLO9000，一个无论在技术，还是再创新点上都非常惊艳的模型。
 
 ## YOLO9000: Stronger
+
+
 
 ## Reference
 
