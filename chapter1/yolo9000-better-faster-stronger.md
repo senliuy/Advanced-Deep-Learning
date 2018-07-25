@@ -251,7 +251,7 @@ ImageNet的数据集的标签是通过WordNet\[5\]的方式组织的，WordNet�
 
 例如从8888(military officer)行开始向上回溯到根节点，走过的路径依次是:
 
-8888(military officer) -> 8868(service man) -> 8826(skilled worker) -> 8547(workder) -> 5177(person) -> 5170(worsted) -> 1042(living thing) -> 865(whole) -> 2(object)-> -1
+6920(corgi) -> 6912(dog) -> 6856(canine) -> 6781(carnivore) -> 6767(placenal) -> 6522(mammal) -> 6519(vertebrate) -> 6468(chordate) -> 5174(animal) -> 5170(worsted) -> 1042(living thing) -> 865(whole) -> 2(object)-> -1
 
 貌似问题不大。
 
@@ -261,6 +261,12 @@ $$Pr(poodle | dog)$$
 $$Pr(Corgi | dog)$$
 $$Pr(griffon | dog)$$
 $$...$$
+
+当我们要预测一只狗是不是柯基时，$$Pr(Corgi)$$是一系列条件概率的乘积：
+
+$$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times ... Pr(living thing|whole) \times Pr(whole|object) \times Pr(object)$$
+
+其中$$Pr(object) = 1$$。
 
 
 ## Reference
