@@ -30,6 +30,7 @@
 * 2018-07-04：字符验证码破解
 * 2018-07-10：You Only Look Once: Unified, Real-Time Object Detection
 * 2018-07-19：SSD: Single Shot MultiBox Detector
+* 2018-07-25：YOLO9000：Better, Faster, Stronger
 
 
 
