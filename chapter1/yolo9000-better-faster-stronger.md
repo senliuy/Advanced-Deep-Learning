@@ -200,6 +200,9 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 从图1中我们可以看出，1.1.4节的Dimension Clusters加上1.1.5节的Direct Location Prediction非常有效的将mAP提高了4.8%。
 
+##### 1.1.6. 细粒度特征
+
+
 ### 1.2. Stronger
 
 test
