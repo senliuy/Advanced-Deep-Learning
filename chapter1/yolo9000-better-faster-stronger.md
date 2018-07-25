@@ -247,7 +247,7 @@ ImageNet的数据集的标签是通过WordNet\[5\]的方式组织的，WordNet�
 
 ###### 图7：YOLO9000的WordTree
 
-
+![](/assets/YOLOv2_7.png)
 
 ## Reference
 
