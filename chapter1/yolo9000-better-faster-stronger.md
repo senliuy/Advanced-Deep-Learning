@@ -166,6 +166,8 @@ YOLOv2使用了和YOLOv1类似的损失函数，不同的是YOLOv2将分类任�
 
 ![](/assets/YOLOv2_4.png)
 
+在Keras源码中使用的是80类的COCO数据集，锚点数$$k=5$$，所以YOLOv2的每个cell的输出层有$$(80+5)\times 5 = 425$$个节点。
+
 直接将锚点机制添加到YOLO中（也就是SSD）会产生模型不稳定的问题，尤其在早期迭代的时候，这些不稳定大部分是发生在预测$$(x,y)$$的时候。
 
 回顾一下[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html)的损失函数，相对位移$$(x,y)$$的计算方式为：
@@ -200,7 +202,9 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 从图1中我们可以看出，1.1.4节的Dimension Clusters加上1.1.5节的Direct Location Prediction非常有效的将mAP提高了4.8%。
 
-##### 1.1.6. 细粒度特征
+#### 1.1.6. 细粒度特征
+
+
 
 
 ### 1.2. Stronger
