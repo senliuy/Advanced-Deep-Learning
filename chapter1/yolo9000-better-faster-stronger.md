@@ -280,7 +280,7 @@ $$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times Pr(living th
 
 WordTree的类别数量非常大，基本可以囊括目前所有的检测数据集，只需要在WordTree中标明哪些节点是检测数据集上的即可，图7显示的是COCO数据集合并到WordTree的结果。其中蓝色节点表示COCO中可以检测的类别。
 
-### 2.3 检测和分类的联合训练
+### 2.3. 检测和分类的联合训练
 
 WordTree 1k的实验验证了作者的猜测，作者更大胆的将分类任务扩大到了整个ImageNet数据集。YOLO9000提取了ImageNet最常出现的top-9000个类别并在构建WordTree时将类别数扩大到了9418类。由于同时使用了ImageNet和COCO数据集进行训练，为了平衡分类和检测任务，YOLO9000将COCO上采样到和ImageNet的比例为$$1:4$$。
 
