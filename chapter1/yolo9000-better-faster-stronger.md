@@ -235,7 +235,7 @@ YOLOv2用于提速的技术我们已经在1.1节中介绍过，这里仅列出�
 
 ## 2. YOLO9000: 更强（Stronger）
 
-在80类的COCO数据集中，物体的[类别](https://github.com/yhcc/yolo2/blob/master/model_data/coco_classes.txt)都是比较抽象的，例如类别‘dog’并没有精确到具体狗的品种（哈士奇或者柯基等）。而ImageNet中包含的类别则更具体，不仅包含‘dog’类，还包括‘Siberian husky’和‘Corgi’类。我们将COCO数据集的狗的图片放到训练好的ImageNet模型中理论上是能判断出狗的品种的，同理我们将ImageNet中的狗的图片（不管是哈士奇，还是柯基）放任在COCO训练好的检测模型中，理论上是能够检测出来的。但是生硬的使用两个模型是非常愚蠢且低效的。YOLO9000的提出便是巧妙地利用了COCO数据集提供的检测标签和ImageNet强大的分类标签，使得训练出来的模型具有强大的检测和分类的能力。
+在80类的COCO数据集中，物体的[类别](https://github.com/yhcc/yolo2/blob/master/model_data/coco_classes.txt)都是比较抽象的，例如类别‘dog’并没有精确到具体狗的品种（哈士奇或者柯基等）。而ImageNet中包含的类别则更具体，不仅包含‘dog’类，还包括‘poodle’和‘Corgi’类。我们将COCO数据集的狗的图片放到训练好的ImageNet模型中理论上是能判断出狗的品种的，同理我们将ImageNet中的狗的图片（不管是贵宾犬，还是柯基犬）放任在COCO训练好的检测模型中，理论上是能够检测出来的。但是生硬的使用两个模型是非常愚蠢且低效的。YOLO9000的提出便是巧妙地利用了COCO数据集提供的检测标签和ImageNet强大的分类标签，使得训练出来的模型具有强大的检测和分类的能力。
 
 遗憾的是并没有找打YOLO9000的TensorFlow或是Keras源码，暂且用基于DarkNet的[源码](https://github.com/pjreddie/darknet)分析之：
 
@@ -245,15 +245,23 @@ ImageNet的数据集的标签是通过WordNet\[5\]的方式组织的，WordNet�
 
 在YOLOv2中，作者将WordNet简化成了一个分层的树结构，即WordTree。WordTree的生成方式也很简单，如果一个节点含有多个父节点，只需要保存到根节点路径最短的那条路径即可，生成的层次树模型见图7。在DarkNet的源码中，WordTree以二进制文件的形式保存在[./data/9k.tree](https://github.com/pjreddie/darknet/blob/master/data/9k.tree)文件中。在9k.tree中，第一列表示类别的标签，标签的类别可以在[./data/9k.names](https://github.com/pjreddie/darknet/blob/master/data/9k.names)通过行数（从0开始计数）对应上，9k.tree的第二列表示该节点的父节点，值为$$-1$$的话表示父节点为空。
 
+###### 图7：YOLO9000的WordTree
+
+![](/assets/YOLOv2_7.png)
+
 例如从8888(military officer)行开始向上回溯到根节点，走过的路径依次是:
 
 8888(military officer) -> 8868(service man) -> 8826(skilled worker) -> 8547(workder) -> 5177(person) -> 5170(worsted) -> 1042(living thing) -> 865(whole) -> 2(object)-> -1
 
 貌似问题不大。
 
-###### 图7：YOLO9000的WordTree
+现在问题是如果标签是以WordTree的形式组织的，我们如何确定检测的物体属于哪一类呢？在使用WordTree进行分类时，我们预测每个节点的条件概率，以得到同义词集合（synset）中每个同义词的下义词（hyponym）的概率，例如在‘dog’节点处我们要预测
 
-![](/assets/YOLOv2_7.png)
+$$Pr(poodle | dog)$$
+$$Pr(Corgi | dog)$$
+$$Pr(griffon | dog)$$
+$$...$$
+
 
 ## Reference
 
