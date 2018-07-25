@@ -164,6 +164,8 @@ YOLOv2使用了和YOLOv1类似的损失函数，不同的是YOLOv2将分类任�
 
 ###### 图4：YOLOv2的输出层
 
+![](/assets/YOLOv2_4.png)
+
 直接将锚点机制添加到YOLO中（也就是SSD）会产生模型不稳定的问题，尤其在早期迭代的时候，这些不稳定大部分是发生在预测$$(x,y)$$的时候。
 
 回顾一下[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html)的损失函数，相对位移$$(x,y)$$的计算方式为：
