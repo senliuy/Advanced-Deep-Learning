@@ -211,6 +211,14 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 1. $$26\times26\times512$$的Feature Map首先通过TensorFlow的space_to_depth()函数转换成$$13\times13\times2048$$的Feature Map（图6）然后再和后面的Feature Map进行映射的；
 2. 论文中采用的是类似残差网络的映射方式，也就是将Feature Map执行单位加操作，但是源码中使用的是DenseNet的方式，也就是Merge成$$13\times13\times(2048+1024)$$的 Feature Map。
 
+图1显示该方法带来了1%的性能提升。
+
+#### 1.1.7. 多尺度训练
+
+全卷积的使用是网络在单词测试环境中每张输入图像的尺寸可以不同。但是当使用mini-batch方式训练的时候，图像的尺寸要是相同的，因为TensorFLow等框架要求输入网络的是一个维度为$$N\times W\times H\times C$$ 的矩阵。其中$$N$$是批（batch）的大小，$$W$$, $$H$$, $$C$$分别是图片的宽，高和通道数。所以虽然每个batch之内图像的尺寸必须是相同的，但是不同的batch之间图像的尺寸是不受限于框架的。YOLOv2便是基于这点实现了其训练过程中的多尺度。
+
+在YOLOv2z中，每隔10个batch便随机从$${320, 352, 384, ..., 608}$$选择一个新的尺度作为输入图像的尺寸，多尺度训练将mAP提高了1.4%。
+
 ###### 图6：tf.space_to_depth()
 
 ![](/assets/YOLOv2_6.png)
