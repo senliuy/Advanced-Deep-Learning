@@ -208,10 +208,10 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 这里面有两个技术细节需要详细说明一下：
 
-1. $$26\times26\times512$$的Feature Map首先通过TensorFlow的space_to_depth()函数转换成$$13\times13\times2048$$的Feature Map（图6）然后再和后面的Feature Map进行映射的；
+1. $$26\times26\times512$$的Feature Map首先通过TensorFlow的`space_to_depth()`函数转换成$$13\times13\times2048$$的Feature Map（图6）然后再和后面的Feature Map进行映射的；
 2. 论文中采用的是类似残差网络的映射方式，也就是将Feature Map执行单位加操作，但是源码中使用的是DenseNet的方式，也就是Merge成$$13\times13\times(2048+1024)$$的 Feature Map。
 
-###### 图6：tf.space_to_depth()
+###### 图6：tf.space\_to\_depth\(\)
 
 ![](/assets/YOLOv2_6.png)
 
@@ -241,7 +241,7 @@ YOLOv2用于提速的技术我们已经在1.1节中介绍过，这里仅列出�
 
 ### 2.1. 分层分类
 
-ImageNet的数据集的标签是通过WordNet[5]的方式组织的，WordNet反应了物体类别之间的语义关系，例如‘dog’类既是‘canine’的子类，也是‘domestic animal’的子类，由于一个子节点有两个父节点，所以WordNet本质上是一个图模型。
+ImageNet的数据集的标签是通过WordNet\[5\]的方式组织的，WordNet反应了物体类别之间的语义关系，例如‘dog’类既是‘canine’的子类，也是‘domestic animal’的子类，由于一个子节点有两个父节点，所以WordNet本质上是一个图模型。
 
 在YOLOv2中，作者将WordNet简化成了一个分层的树结构，即WordTree。WordTree的生成方式也很简单，如果一个节点含有多个父节点，只需要保存到根节点路径最短的那条路径即可。在DarkNet的源码中，WordTree以二进制文件的形式保存在[./data/9k.tree](https://github.com/pjreddie/darknet/blob/master/data/9k.tree)文件中。在
 
