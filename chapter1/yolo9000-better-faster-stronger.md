@@ -249,30 +249,28 @@ ImageNet的数据集的标签是通过WordNet\[5\]的方式组织的，WordNet�
 
 ![](/assets/YOLOv2_7.png)
 
-例如从8888(military officer)行开始向上回溯到根节点，走过的路径依次是:
+例如从8888\(military officer\)行开始向上回溯到根节点，走过的路径依次是:
 
-6920(corgi) -> 6912(dog) -> 6856(canine) -> 6781(carnivore) -> 6767(placenal) -> 6522(mammal) -> 6519(vertebrate) -> 6468(chordate) -> 5174(animal) -> 5170(worsted) -> 1042(living thing) -> 865(whole) -> 2(object)-> -1
+6920\(corgi\) -&gt; 6912\(dog\) -&gt; 6856\(canine\) -&gt; 6781\(carnivore\) -&gt; 6767\(placenal\) -&gt; 6522\(mammal\) -&gt; 6519\(vertebrate\) -&gt; 6468\(chordate\) -&gt; 5174\(animal\) -&gt; 5170\(worsted\) -&gt; 1042\(living thing\) -&gt; 865\(whole\) -&gt; 2\(object\)-&gt; -1
 
 貌似问题不大。
 
 现在问题是如果标签是以WordTree的形式组织的，我们如何确定检测的物体属于哪一类呢？在使用WordTree进行分类时，我们预测每个节点的条件概率，以得到同义词集合（synset）中每个同义词的下义词（hyponym）的概率，例如在‘dog’节点处我们要预测
 
-$$Pr(poodle | dog)$$
-$$Pr(Corgi | dog)$$
-$$Pr(griffon | dog)$$
+$$Pr(poodle | dog)$$  
+$$Pr(Corgi | dog)$$  
+$$Pr(griffon | dog)$$  
 $$...$$
 
 当我们要预测一只狗是不是柯基时，$$Pr(Corgi)$$是一系列条件概率的乘积：
 
 $$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times Pr(living thing|whole) \times Pr(whole|object) \times Pr(object)$$
 
-其中$$Pr(object) = 1$$。Pr(Corgi|dog)则是在‘dog’的所有下义词中为‘Corgi’的概率，由softmax激活函数求得，其它情况依次类推（图8）。
+其中$$Pr(object) = 1$$。Pr\(Corgi\|dog\)则是在‘dog’的所有下义词中为‘Corgi’的概率，由softmax激活函数求得，其它情况依次类推（图8）。
 
 ###### 图8：在ImageNet和在WordTree下的预测。
 
 ![](/assets/YOLOv2_8.png)
-
-
 
 ## Reference
 
