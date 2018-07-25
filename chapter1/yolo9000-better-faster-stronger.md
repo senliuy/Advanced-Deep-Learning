@@ -223,7 +223,7 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 
 在YOLOv2z中，每隔10个batch便随机从$${320, 352, 384, ..., 608}$$选择一个新的尺度作为输入图像的尺寸，多尺度训练将mAP提高了1.4%。
 
-### 1.2. Faster
+### 1.2. 更快（Faster）
 
 YOLOv2用于提速的技术我们已经在1.1节中介绍过，这里仅列出技术和提速的关系：
 
@@ -233,7 +233,13 @@ YOLOv2用于提速的技术我们已经在1.1节中介绍过，这里仅列出�
 
 文至此处，一个更快，更好的YOLOv2已介绍完毕，虽然不像SSD对YOLOv1的提升在技术上那么惊艳，但其使用的若干技术确实是非常有效。在下一部分我们将开始介绍YOLO9000，一个无论在技术，还是再创新点上都非常惊艳的模型。
 
-## YOLO9000: Stronger
+## 2. YOLO9000: 更强（Stronger）
+
+在80类的COCO数据集中，物体的[类别](https://github.com/yhcc/yolo2/blob/master/model_data/coco_classes.txt)都是比较抽象的，例如类别‘dog’并没有精确到具体狗的品种（哈士奇或者柯基等）。而ImageNet中包含的类别则更具体，不仅包含‘dog’类，还包括‘Siberian husky’和‘Corgi’类。我们将COCO数据集的狗的图片放到训练好的ImageNet模型中理论上是能判断出狗的品种的，同理我们将ImageNet中的狗的图片（不管是哈士奇，还是柯基）放任在COCO训练好的检测模型中，理论上是能够检测出来的。但是生硬的使用两个模型是非常愚蠢且低效的。YOLO9000的提出便是巧妙地利用了COCO数据集提供的检测标签和ImageNet强大的分类标签，使得训练出来的模型具有强大的检测和分类的能力。
+
+遗憾的是并没有找打YOLO9000的TensorFlow或是Keras源码，暂且用基于DarkNet的[源码](https://github.com/pjreddie/darknet)分析之：
+
+### 2.1. 分层分类
 
 
 
