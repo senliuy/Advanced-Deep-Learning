@@ -272,6 +272,17 @@ $$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times Pr(living th
 
 ![](/assets/YOLOv2_8.png)
 
+图8是作者为了验证其想法建立的WordTree 1k模型，在构建WordTree时添加了369个中间节点以便构成一个完整的WordTree。根据上面的分析，YOLO9000是一个多标签分类的模型，例如‘Corgi’则是一个含有1369个标签的的数据，其one-hot编码的形式为在第（6920，6912，6856，6781，6767，6522，6519，6468，5174，5170，1042，865，2）共13个位置处为1，其余的位置均为0。
+
+在预测物体的类别时，我们遍历整个WordTree，在每个分割中采用最高的置信度路径，直到分类概率小于某个阈值（源码给的是0.6）时，然后预测结果。
+
+### 2.2. 使用WordTree合并数据集
+
+WordTree的类别数量非常大，基本可以囊括目前所有的检测数据集，只需要在WordTree中标明哪些节点是检测数据集上的即可，图7显示的是COCO数据集合并到WordTree的结果。其中蓝色节点表示COCO中可以检测的类别。
+
+### 2.3 检测和分类的联合训练
+
+
 ## Reference
 
 \[1\] Redmon J, Farhadi A. YOLO9000: better, faster, stronger\[J\]. arXiv preprint, 2017.
