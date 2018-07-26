@@ -21,9 +21,7 @@ YOLOv3多标签模型的提出，对于解决覆盖率高的图像的检测问�
 
 ###### 图1：YOLOv2 vs YOLOv3
 
-![](/assets/YOLOv2_1_1.png)
-
-![](/assets/YOLOv3_1_2.png)
+![](/assets/YOLOv3_1_1.png)![](/assets/YOLOv3_1_2.png)
 
 YOLOv3提供的解决方案是将一个$$N$$ 路softmax分类器替换成$$N$$ 个sigmoid分类器，这样每个类的输出仍是$$[0,1]$$ 之间的一个值，但是他们的和不再是1。
 
