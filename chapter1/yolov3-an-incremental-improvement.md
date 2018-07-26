@@ -21,12 +21,13 @@ YOLOv3多标签模型的提出，对于解决覆盖率高的图像的检测问�
 
 ###### 图1：YOLOv2 vs YOLOv3
 
+![](/assets/YOLOv2_1_1.png)
 
+![](/assets/YOLOv3_1_2.png)
 
 YOLOv3提供的解决方案是将一个$$N$$ 路softmax分类器替换成$$N$$ 个sigmoid分类器，这样每个类的输出仍是$$[0,1]$$ 之间的一个值，但是他们的和不再是1。
 
 虽然YOLOv3改变了输出层的激活函数，但是其锚点和Ground Truth的匹配方法仍旧采用的是YOLOv1的方法，即每个Ground Truth匹配且只匹配唯一一个与其IoU最大的锚点。但是在输出的时候由于各类的概率之和不再是1，只要置信度大于阈值，该锚点便被作为检测框输出。
-
 
 训练标签的制作和测试过程候选框的输出分别在`./yolo3/model.py`的`yolo_eval`和`preprocess_true_boxes`函数中实现的。
 
