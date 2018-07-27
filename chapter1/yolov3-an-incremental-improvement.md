@@ -33,11 +33,13 @@ YOLOv3使用了由残差块构成的全卷积网络作为骨干网络，网络�
 
 ###### 图2：Darknet-53
 
-![](/assets/YOLOv3_1.png)
+![](/assets/YOLOV3_2.png)
 
 ### 3. 多尺度特征
 
-YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)的思想，从不从尺度上提取了特征。对比YOLOv的只在最后两层提取特征，YOLOv3的尺度范围更大。
+YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)的思想，从不从尺度上提取了特征。对比YOLOv的只在最后两层提取特征，YOLOv3则将尺度扩大到了最后三层，图3是在图2的基础上加上特征提取部分的图示。
+
+###### 图3：Darknet-53 with FPN![](/assets/YOLOv3_3.png)
 
 ## Reference
 
