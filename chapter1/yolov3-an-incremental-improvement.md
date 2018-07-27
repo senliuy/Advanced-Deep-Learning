@@ -19,7 +19,7 @@ YOLOv3论文的干货并不多，用作者自己的话说是一篇“Tech Report
 
 YOLOv3多标签模型的提出，对于解决覆盖率高的图像的检测问题效果是十分显著的，图1是同一幅图在YOLOv2和YOLOv3下得到的检测结果。
 
-###### 图1：YOLOv2 vs YOLOv3
+###### 图1：YOLOv2 vs YOLOv3![](/assets/YOLOv3_1_1.jpg)![](/assets/YOLOv3_1_2.jpg)
 
 
 
