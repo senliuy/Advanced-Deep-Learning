@@ -2,11 +2,11 @@
 
 ## 前言
 
-YOLOv3论文的干货并不多，用作者自己的话说是一篇“Tech Report”。这篇主要是在[YOLOv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html) [2]的基础上的一些Trick尝试，有的Trick成功了，包括：
+YOLOv3论文的干货并不多，用作者自己的话说是一篇“Tech Report”。这篇主要是在[YOLOv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html) \[2\]的基础上的一些Trick尝试，有的Trick成功了，包括：
 
 1. 考虑到检测物体的重叠情况，用多标签的方式替代了之前softmax单标签方式；
 2. 骨干架构使用了更为有效的残差网络，网络深度也更深；
-3. 多尺度特征使用的是[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html) [3]的思想；
+3. 多尺度特征使用的是[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html) \[3\]的思想；
 4. 锚点聚类成了9类。
 
 也有一些尝试失败了，在介绍完YOLOv3的细节后我们在说明这些尝试会更好理解。在分析论文时，我们依然会使用一份Keras的[源码](https://github.com/qqwweee/keras-yolo3)辅助理解。
@@ -23,7 +23,7 @@ YOLOv3多标签模型的提出，对于解决覆盖率高的图像的检测问�
 
 YOLOv3提供的解决方案是将一个$$N$$ 路softmax分类器替换成$$N$$ 个sigmoid分类器，这样每个类的输出仍是$$[0,1]$$ 之间的一个值，但是他们的和不再是1。
 
-虽然YOLOv3改变了输出层的激活函数，但是其锚点和Ground Truth的匹配方法仍旧采用的是YOLOv1 [4]的方法，即每个Ground Truth匹配且只匹配唯一一个与其IoU最大的锚点。但是在输出的时候由于各类的概率之和不再是1，只要置信度大于阈值，该锚点便被作为检测框输出。
+虽然YOLOv3改变了输出层的激活函数，但是其锚点和Ground Truth的匹配方法仍旧采用的是YOLOv1 \[4\]的方法，即每个Ground Truth匹配且只匹配唯一一个与其IoU最大的锚点。但是在输出的时候由于各类的概率之和不再是1，只要置信度大于阈值，该锚点便被作为检测框输出。
 
 训练标签的制作和测试过程候选框的输出分别在`./yolo3/model.py`的`yolo_eval`和`preprocess_true_boxes`函数中实现的。
 
@@ -54,9 +54,10 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 其中$$13\times 13$$的卷积核分配的尺度是$$(116\times 90), (156\times 198), (373\times 326)$$, $$26\times 26$$的卷积核分配的尺度是$$(30\times 61), (62\times 45), (59\times 119)$$, $$52\times 52$$的卷积核分配的尺度是$$(10\times 13), (16\times 30), (33\times 23))$$。这么做的原因是深度学习中层数越深，Feature Map对小尺寸物体的响应能力越弱。
 
 ### 5. YOLOv3一些失败的尝试
+
 1. 尝试捕捉位移$$(x,y)$$ 和检测框边长$$(w, h)$$的线性关系，这时方式得到的效果并不好且模型不稳定；
 2. 使用线性激活函数代替sigmoid激活函数预测位移$$(x,y)$$，该方法导致模型的mAP下降；
-3. 使用focal loss[5], mAP也降了。
+3. 使用focal loss\[5\], mAP也降了。
 
 ## 总结
 
@@ -70,11 +71,11 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 
 ###### 图4：YOLOv3和state-of-the-art的时间和精度对比
 
-
+![](/assets/YOLOv3_4.png)
 
 ## Reference
 
 \[1\] Redmon J, Farhadi A. Yolov3: An incremental improvement\[J\]. arXiv preprint arXiv:1804.02767, 2018.
 
-[^1]: 在源码轻量级的模型中错误，有个掩码值[1,2,3]应该设计成[0,1,2], 以就这个问题在Github中向作者提问，目前尚未得到回复。
+[^1]: 在源码轻量级的模型中错误，有个掩码值\[1,2,3\]应该设计成\[0,1,2\], 以就这个问题在Github中向作者提问，目前尚未得到回复。
 
