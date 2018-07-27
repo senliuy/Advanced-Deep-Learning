@@ -39,3 +39,23 @@ YOLOv3使用了由残差块构成的全卷积网络作为骨干网络，网络�
 
 YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)的思想，从不从尺度上提取了特征。对比YOLOv的只在最后两层提取特征，YOLOv3则将尺度扩大到了最后三层，图3是在图2的基础上加上多尺度特征提取部分的图示。
 
+###### 图3：Darknet-53 with FPN
+
+![](/assets/YOLOv3_3.png)
+
+在多尺度特征部分强调几个关键点：
+1. YOLOv2采用的是降采样的形式进行Feature Map的拼接，YOLOv3则是采用同SSD相同的双线性插值的上采样方法拼接的Feature Map；
+2. 每个尺度的Feature Map负责对3个先验框（锚点）的预测，源码中的掩码（Mask）负责完成此任务。
+
+### 4. 锚点聚类
+
+在YOLOv2的文章中我们介绍了锚点是聚类的，作者尝试了折中考虑了速度和精度之后选择的类别数$$k=5$$。但是在YOLOv3中，$$k=9$$，得到的9组锚点是: $$(10\times 13), (16\times 30), (33\times 23), (30\times 61), (62\times 45), (59\times 119), (116\times 90), (156\times 198), (373\times 326)$$
+
+其中$$13\times 13$$的卷积核分配的尺度是$$(116\times 90), (156\times 198), (373\times 326)$$, $$26\times 26$$的卷积核分配的尺度是$$(30\times 61), (62\times 45), (59\times 119)$$, $$52\times 52$$的卷积核分配的尺度是$$(10\times 13), (16\times 30), (33\times 23))$$。这么做的原因是深度学习中层数越深，Feature Map对小尺寸物体的响应能力越弱。
+
+### 5. YOLOv3一些失败的尝试
+
+1. 尝试捕捉位移$$(x,y)$$ 和检测框边长$$(w, h)$$的线性关系，这时方式得到的效果并不好且模型不稳定；
+2. 使用线性激活函数代替sigmoid激活函数预测位移$$(x,y)$$，该方法导致模型的mAP下降；
+3. 使用focal loss\[5\], mAP也降了。
+
