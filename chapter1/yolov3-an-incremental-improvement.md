@@ -45,7 +45,7 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 
 在多尺度特征部分强调几个关键点：  
 1. YOLOv2采用的是降采样的形式进行Feature Map的拼接，YOLOv3则是采用同SSD相同的双线性插值的上采样方法拼接的Feature Map；  
-2. 每个尺度的Feature Map负责对3个先验框（锚点）的预测[^1]，源码中的掩码（Mask）负责完成此任务。
+2. 每个尺度的Feature Map负责对3个先验框（锚点）的预测，源码中的掩码（Mask）负责完成此任务。
 
 ### 4. 锚点聚类
 
@@ -88,6 +88,4 @@ YOLO9000是我认为在算法和应用上一个非常典型的结合体。在目
 \[4\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
 
 \[5\] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dolla ́r. Focal loss for dense object detection.arXiv preprint arXiv:1708.02002, 2017.1,3,4
-
-[^1]: 在源码轻量级的模型中错误，有个掩码值\[1,2,3\]应该设计成\[0,1,2\], 以就这个问题在Github中向作者提问，目前尚未得到回复。
 
