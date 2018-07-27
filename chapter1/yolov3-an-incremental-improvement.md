@@ -41,7 +41,7 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 
 ###### 图3：Darknet-53 with FPN
 
-![](/assets/YOLOv3_3.png)
+
 
 在多尺度特征部分强调几个关键点：  
 1. YOLOv2采用的是降采样的形式进行Feature Map的拼接，YOLOv3则是采用同SSD相同的双线性插值的上采样方法拼接的Feature Map；  
