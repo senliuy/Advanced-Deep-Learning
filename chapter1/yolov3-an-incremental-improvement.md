@@ -59,8 +59,6 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 2. 使用线性激活函数代替sigmoid激活函数预测位移$$(x,y)$$，该方法导致模型的mAP下降；
 3. 使用focal loss\[5\], mAP也降了。
 
-
-
 ## 总结
 
 至此，YOLO系列的算法整理完毕，作者的兴趣点也转向了GAN，感觉短期内不会有大的进展了。
