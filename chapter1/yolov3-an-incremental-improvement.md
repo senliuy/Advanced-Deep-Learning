@@ -71,7 +71,7 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 
 ###### 图4：YOLOv3和state-of-the-art的时间和精度对比
 
-![](/assets/YOLOv3_4.png)
+![](/assets/YOLOv3_3.png)
 
 YOLO9000是我认为在算法和应用上一个非常典型的结合体。在目前的市场上，高质量数据是深度学习领域最值钱的资源。YOLO9000采用半监督学习的方式高效的使用了目前质量最高的ImageNet数据集，设计了WordTree，从而实现了对未标注物体的高精度检测。半监督学习是未来市场上非常有前景的研究方向。
 
