@@ -69,6 +69,10 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 
 从应用的角度讲，R-CNN系列虽然效果更好，但是其速度制约了其应用场景，因为其在强大的GPU环境下才勉强的实现了实时检测，R-FCN作为R-CNN系列的速度最快的算法，YOLOv3讲其远远的甩在了第一象限（图4）。YOLO系列强大的性能优势使其在市场上尤其是计算资源受限的嵌入式等环境得到了广泛的应用，据我了解，一些安检系统就采用的是YOLO系列的算法。
 
+###### 图4：YOLOv3和state-of-the-art的时间和精度对比
+
+![](/assets/YOLOv3_4.png)
+
 YOLO9000是我认为在算法和应用上一个非常典型的结合体。在目前的市场上，高质量数据是深度学习领域最值钱的资源。YOLO9000采用半监督学习的方式高效的使用了目前质量最高的ImageNet数据集，设计了WordTree，从而实现了对未标注物体的高精度检测。半监督学习是未来市场上非常有前景的研究方向。
 
 最后扯一点有意思的题外话，作者作为一个有野心的技术大牛，性格反而有点可爱和萌，给开发的网络取名“Darknet”便透露着浓浓的中二风。在写YOLOv1和YOLOv2的论文时文风还比较正经，但是到了YOLOv3文风便奔放起来，还时不时的调戏一下读者和审稿人。这些事儿你可能想不到是一个满脸大胡子的光头大汉（仔细一看还挺帅的）做的，，感兴趣的话可以欣赏一下作者的[主页](https://pjreddie.com)和他在TED上的[演讲](https://www.ted.com/talks/joseph_redmon_how_a_computer_learns_to_recognize_objects_instantly)。
@@ -83,5 +87,5 @@ YOLO9000是我认为在算法和应用上一个非常典型的结合体。在目
 
 \[4\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
 
-\[5\] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dolla ?r. Focal loss for dense object detection.arXiv preprint arXiv:1708.02002, 2017.1,3,4
+\[5\] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollar. Focal loss for dense object detection.arXiv preprint arXiv:1708.02002, 2017.1,3,4
 
