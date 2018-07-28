@@ -19,7 +19,7 @@ YOLOv3论文的干货并不多，用作者自己的话说是一篇“Tech Report
 
 YOLOv3多标签模型的提出，对于解决覆盖率高的图像的检测问题效果是十分显著的，图1是同一幅图在YOLOv2和YOLOv3下得到的检测结果。可以明显的看出YOLOv3的效果好很多，不仅检测的更精确，最重要的是在后排被覆盖很多的物体（例如美队和冬兵）也能很好的在YOLOv3中检测出来。
 
-###### 图1：YOLOv2 vs YOLOv3![](/assets/YOLOv3_1_1.jpg)![](/assets/YOLOv3_1_2.jpg)
+**图1：YOLOv2 vs YOLOv3**![](/assets/YOLOv3_1_1.jpg)![](/assets/YOLOv3_1_2.jpg)
 
 YOLOv3提供的解决方案是将一个$$N$$ 路softmax分类器替换成$$N$$ 个sigmoid分类器，这样每个类的输出仍是$$[0,1]$$ 之间的一个值，但是他们的和不再是1。
 
@@ -31,7 +31,7 @@ YOLOv3提供的解决方案是将一个$$N$$ 路softmax分类器替换成$$N$$ �
 
 YOLOv3使用了由残差块构成的全卷积网络作为骨干网络，网络深度达到了53层，因此作者将其命名为Darknet-53。Darknet-53的详细结构见图2。
 
-###### 图2：Darknet-53
+**图2：Darknet-53**
 
 ![](/assets/YOLOV3_2.png)
 
@@ -39,7 +39,7 @@ YOLOv3使用了由残差块构成的全卷积网络作为骨干网络，网络�
 
 YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)的思想，从不从尺度上提取了特征。对比YOLOv的只在最后两层提取特征，YOLOv3则将尺度扩大到了最后三层，图3是在图2的基础上加上多尺度特征提取部分的图示。
 
-###### 图3：Darknet-53 with FPN
+**图3：Darknet-53 with FPN**
 
 ![](/assets/YOLOv3_3.png)
 
