@@ -59,6 +59,11 @@ YOLOv3汲取了[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/
 2. 使用线性激活函数代替sigmoid激活函数预测位移$$(x,y)$$，该方法导致模型的mAP下降；
 3. 使用focal loss\[5\], mAP也降了。
 
+## 总结
+
+至此，YOLO系列的算法整理完毕，作者的兴趣点也转向了GAN，感觉短期内不会有大的进展了。
+
+从算法的角度讲，当业界都沉迷于R-CNN系列的方法时，作者另辟蹊径引入了单次检测的YOLO，虽然效果略差，但是其速度优势也占据了很大市场。但是作者并就看不起R-CNN系列，在YOLOv2中引入了RPN的锚点机制，在YOLOv3中引入了FPN，正所谓师夷长技以制夷，一段时间内从精度和时间实现了对R-CNN系列的全面压制。
 
 
 
