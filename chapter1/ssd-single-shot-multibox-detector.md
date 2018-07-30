@@ -383,8 +383,9 @@ SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DS
 
 #### 2.2 反卷积
 
-反卷积[6]，又被叫做逆卷积，是在语义分割中应用中最常见的算法之一。下面通过一个例子来说明反卷积的工作原理：对于一个$$4\times4$$ 的输入$$x$$，经过$$3\times3$$ 卷积核的有效卷积，得到一个$$2\times2$$ 的特征向量$$y$$, 设卷积运算为$$y=Cx$$。$$C$$的本质上是一个稀疏矩阵(很多开源框架卷积操作的实现方式)：
+反卷积\[6\]，又被叫做逆卷积，是在语义分割中应用中最常见的算法之一。下面通过一个例子来说明反卷积的工作原理：对于一个$$4\times4$$ 的输入$$x$$，经过$$3\times3$$ 卷积核的有效卷积，得到一个$$2\times2$$ 的特征向量$$y$$, 设卷积运算为$$y=Cx$$。$$C$$的本质上是一个稀疏矩阵\(很多开源框架卷积操作的实现方式\)：
 
+![](/assets/SSD_6.png)
 
 ## 小结
 
@@ -404,6 +405,5 @@ SSD算法的核心点在于
 
 \[5\] Fu C Y, Liu W, Ranga A, et al. DSSD: Deconvolutional single shot detector\[J\]. arXiv preprint arXiv:1701.06659, 2017.
 
-\[6\] P. O. Pinheiro, T.-Y. Lin, R. Collobert, and P. Dollr. Learning to refine object segments. InECCV, 2016.4  
-
+\[6\] P. O. Pinheiro, T.-Y. Lin, R. Collobert, and P. Dollr. Learning to refine object segments. InECCV, 2016.4
 
