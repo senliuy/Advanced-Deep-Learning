@@ -373,11 +373,11 @@ SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DS
 
 #### 2.1 DSSD的骨干网络
 
-在骨干网络方面，DSSD使用了层数更深的Residual Net-101，检测模块的网络是从conv5_x之后开始的，用于进行检测的则包括conv3_x，conv5_x和添加的检测模块，如图5。
+在骨干网络方面，DSSD使用了层数更深的Residual Net-101，检测模块的网络是从conv5\_x之后开始的，用于进行检测的则包括conv3\_x，conv5\_x和添加的检测模块，如图5。
 
 ###### 图5：DSSD的骨干网络
 
-![](assets/SSD_5.png)
+![](/assets/SSD_5.png)
 
 ## 小结
 
@@ -396,4 +396,7 @@ SSD算法的核心点在于
 \[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
 
 \[5\] Fu C Y, Liu W, Ranga A, et al. DSSD: Deconvolutional single shot detector\[J\]. arXiv preprint arXiv:1701.06659, 2017.
+
+\[6\] P. O. Pinheiro, T.-Y. Lin, R. Collobert, and P. Dollr. Learning to refine object segments. InECCV, 2016.4  
+
 
