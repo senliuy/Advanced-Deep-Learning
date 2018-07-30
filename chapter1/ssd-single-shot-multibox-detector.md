@@ -402,7 +402,7 @@ DSSD并没有把反卷积部分构造的非常深，的原因有二：
 
 
 
-DSSD的反卷积模块分成两部分：图6的上半部分是反卷积Feature Map，其尺寸为$$H\timesW$$；图6的下半部分是SSD的Feature Map，其尺寸是反卷积Feature Map的二倍，即$$2H \times 2W$$，进行了两组卷积和BN操作，得到一组$$2H \times 2W$$的FeatureMap。在反卷积部分中，通过步长为2的反卷积操作和一组$$3\times3$$卷积得到$$2H\times 2W$$的Feature Map。最后通过点积操作和一个ReLU激活函数得到最终$$2W\times2H$$的Feature Map。
+DSSD的反卷积模块分成两部分：图6的上半部分是反卷积Feature Map，其尺寸为$$H\times W$$；图6的下半部分是SSD的Feature Map，其尺寸是反卷积Feature Map的二倍，即$$2H \times 2W$$，进行了两组卷积和BN操作，得到一组$$2H \times 2W$$的FeatureMap。在反卷积部分中，通过步长为2的反卷积操作和一组$$3\times3$$卷积得到$$2H\times 2W$$的Feature Map。最后通过点积操作和一个ReLU激活函数得到最终$$2W\times2H$$的Feature Map。
 
 ## 小结
 
