@@ -367,6 +367,10 @@ $$
 4. 解码相对位移，得出预测框四要素；
 5. 使用NMS得到最终的候选区域。
 
+### 2. DSSD
+
+SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DSSD \[6\]
+
 ## 小结
 
 SSD算法的核心点在于  
@@ -382,4 +386,6 @@ SSD算法的核心点在于
 \[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Looking wider to see better.In:ILCR.\(2016\)
 
 \[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
+
+\[5\] Fu C Y, Liu W, Ranga A, et al. DSSD: Deconvolutional single shot detector\[J\]. arXiv preprint arXiv:1701.06659, 2017.
 
