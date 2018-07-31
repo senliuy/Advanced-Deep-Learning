@@ -34,7 +34,8 @@ $$\mathbf{Mask}^X$$** R-CNN** 基于Mask R-CNN（图1）。Mask R-CNN通过向[F
 
 图2的整个框架是搭建在Mask R-CNN之上的，除了最重要的权值迁移函数之外，还有几点需要强调一下：
 
-1. 着重强调，
+1. 着重强调，$$\mathcal{T}$$ 的输入参数是权值，而非Feature Map；
+2. 
 
 ## Reference
 
