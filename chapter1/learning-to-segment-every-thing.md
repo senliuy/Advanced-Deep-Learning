@@ -2,7 +2,7 @@
 
 ## 前言
 
-首先回顾一下YOLO系列论文，[YOLO9000](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html)通过半监督学习的方式将模型可检测的类别从80类扩展到了9418类，YOLO9000能成功的原因之一是物体分类和物体检测使用了共享的特征，而这些特征是由分类和检测的损失函数共同训练得到的。之所以采用半监督学习的方式训练YOLO9000，一个重要原因就是检测数据的昂贵性。所以作者采用了数据量较小的COCO的检测标签，数据量很大的ImageNet的分类标签做半监督学习的样本，分别训练多任务模型的检测分支和分类分支，进而得到了可以同时进行分类和检测的特征。
+首先回顾一下YOLO系列论文，[YOLO9000](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html)\[2\]通过半监督学习的方式将模型可检测的类别从80类扩展到了9418类，YOLO9000能成功的原因之一是物体分类和物体检测使用了共享的特征，而这些特征是由分类和检测的损失函数共同训练得到的。之所以采用半监督学习的方式训练YOLO9000，一个重要原因就是检测数据的昂贵性。所以作者采用了数据量较小的COCO的检测标签，数据量很大的ImageNet的分类标签做半监督学习的样本，分别训练多任务模型的检测分支和分类分支，进而得到了可以同时进行分类和检测的特征。
 
 之所以在最开始回顾YOLO9000，是因为我们这里要分析的$$\mathbf{Mask}^X$$** R-CNN** 和YOLO9000的动机和设计是如此的相同：
 
@@ -39,13 +39,17 @@ $$\mathbf{Mask}^X$$** R-CNN** 基于Mask R-CNN（图1）。Mask R-CNN通过向[F
 
 对于一个类别$$c$$，$$w_{det}^c$$表示检测任务的权值，$$w_{seg}^c$$表示分割任务的权值。权值迁移函数将$$w_{det}^c$$看做自变量，$$w_{seg}^c$$看做因变量，学习两个权值的映射函数$$\mathcal{T}$$：
 
+
 $$
 W_{seg}^c = \mathcal{T}(w_{det}^c; \theta)
 $$
+
 
 其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c，w_{reg}^c]$$。
 
 ## Reference
 
 \[1\] Hu R, Dollár P, He K, et al. Learning to segment every thing\[J\]. Cornell University arXiv Institution: Ithaca, NY, USA, 2017.
+
+\[2\] Redmon J, Farhadi A. YOLO9000: better, faster, stronger\[J\]. arXiv preprint, 2017.
 
