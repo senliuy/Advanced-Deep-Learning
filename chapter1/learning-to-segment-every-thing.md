@@ -34,8 +34,16 @@ $$\mathbf{Mask}^X$$** R-CNN** 基于Mask R-CNN（图1）。Mask R-CNN通过向[F
 
 图2的整个框架是搭建在Mask R-CNN之上的，除了最重要的权值迁移函数之外，还有几点需要强调一下：
 
-1. 着重强调，$$\mathcal{T}$$ 的输入参数是**权值**，而非Feature Map；
-2. $$\mathbf{Mask}^X$$** R-CNN** 并没有将分类和其他任务解耦
+1. 着重强调，$$\mathcal{T}$$ 的输入参数是**权值**（图2中的两个六边形），而非Feature Map；
+2. 虽然Mask R-CNN中解耦了检测和分割任务，但是权值迁移函数$$\mathcal{T}$$是类别无关的；
+
+对于一个类别$$c$$，$$w_{det}^c$$表示检测任务的权值，$$w_{seg}^c$$表示分割任务的权值。权值迁移函数将$$w_{det}^c$$看做自变量，$$w_{seg}^c$$看做因变量，学习两个权值的映射函数$$\mathcal{T}$$：
+
+$$
+W_{seg}^c = \mathcal{T}(w_{det}^c; \theta)
+$$
+
+其中$$\theta$$的是类别无关的，可学习的参数。
 
 ## Reference
 
