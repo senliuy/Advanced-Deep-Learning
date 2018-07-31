@@ -16,8 +16,6 @@
 
 ### $$\mathbf{Mask}^X$$** R-CNN** 详解
 
-首先定义几个数据集，含有掩码标签和检测标签的COCO数据集定义为$$A$$，只含有检测标签的VG数据集定义为$$B$$，则所有的数据集$$C$$便是$$A$$和$$B$$的并集：$$C=A\cup B$$。
-
 #### 1. 权值迁移函数：$$\mathcal{T}$$
 
 $$\mathbf{Mask}^X$$** R-CNN** 基于Mask R-CNN（图1）。Mask R-CNN通过向[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html)\[4\]中添加了一路FPN的分支来达到同时进行语义分割和目标检测的目的。在RPN之后，FPN和[Fast R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/fast-r-cnn.html)\[5\]是完全独立的两个模块，此时若直接采用数据集C分别训练两个分支的话是行得通的，其实这也就是YOLO9000的训练方式。
@@ -46,6 +44,15 @@ $$
 
 
 其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c，w_{reg}^c]$$。
+
+#### 2. $$\mathbf{Mask}^X$$** R-CNN** 的训练
+
+含有掩码标签和检测标签的COCO数据集定义为$$A$$，只含有检测标签的VG数据集定义为$$B$$，则所有的数据集$$C$$便是$$A$$和$$B$$的并集：$$C=A\cup B$$。图2显示$$\mathbf{Mask}^X$$** R-CNN**的损失函数由Fast R-CNN的检测任务和RPN的分类任务组成。当训练检测任务时，使用数据集C；当训练分割任务时，仅使用包括分割标签的COCO数据集，即$$A$$。
+
+训练$$\mathbf{Mask}^X$$** R-CNN**时，有两种类型：
+
+1. 多阶段训练：
+
 
 ## Reference
 
