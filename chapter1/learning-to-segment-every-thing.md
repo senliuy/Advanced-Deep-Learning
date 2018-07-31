@@ -36,7 +36,6 @@ $$\mathbf{Mask}^X$$** R-CNN** 基于Mask R-CNN（图1）。Mask R-CNN通过向[F
 
 1. 着重强调，$$\mathcal{T}$$ 的输入参数是权值，而非Feature Map；
 2. 
-
 ## Reference
 
 \[1\] Hu R, Dollár P, He K, et al. Learning to segment every thing\[J\]. Cornell University arXiv Institution: Ithaca, NY, USA, 2017.
