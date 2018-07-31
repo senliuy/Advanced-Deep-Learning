@@ -43,7 +43,7 @@ W_{seg}^c = \mathcal{T}(w_{det}^c; \theta)
 $$
 
 
-其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c，w_{reg}^c]$$。
+其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c, w_{reg}^c]$$。
 
 #### 2. $$\mathbf{Mask}^X$$** R-CNN** 的训练
 
