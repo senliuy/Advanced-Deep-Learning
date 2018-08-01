@@ -29,4 +29,6 @@ Faster R-CNN系列虽然在实现上实现了端到端训练，但是其两步�
 
 ###### Joseph Redmon
 
+![](/assets/ObjectDetection_3.png)
+
 
