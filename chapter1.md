@@ -52,6 +52,8 @@ YOLOv2中采用的另外一个解决方案则是在训练过程中，不同批�
 
 如果您是一个有一定物体检测研究基础的读者，我从各个方向帮您分析了近年来物体检测的发展历程。如果您对上面所说的算法不知所云，不要着急，我会在后面的章节中详细的解析上面提到过的所有算法。了解完本章的所有内容之后，再来重读这一部分，你一定会构建更清晰的知识体系。
 
+读到这，你可能觉得有些枯燥和乏味。我在《复仇者联盟3》的预告片中运行了一下YOLOv3物体检测算法，也许能提高提高你继续读下去的兴趣，视频见百度云：https://pan.baidu.com/s/17zAcGtJhpKQ3S1vnyOhzwA。
+
 ## Reference
 
 \[1\] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in CVPR, 2014
