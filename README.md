@@ -32,6 +32,7 @@
 * 2018-07-19：SSD: Single Shot MultiBox Detector
 * 2018-07-25：YOLO9000：Better, Faster, Stronger
 * 2018-07-27：YOLOv3：An Incremental Improvement
+* 2018-08-01：Learning to Segment Every Thing
 
 
 
