@@ -43,7 +43,16 @@ W_{seg}^c = \mathcal{T}(w_{det}^c; \theta)
 $$
 
 
-其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c, w_{reg}^c]$$。
+其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP，源码中是两层全连接，见代码片段1。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c, w_{reg}^c]$$。
+
+代码片段1：weight transfer function
+
+```py
+self.transfer_function = nn.Sequential(nn.Linear(1024,1024),
+                                        nn.LeakyReLU(inplace=True),
+                                        nn.Linear(1024,256),
+                                        nn.LeakyReLU(inplace=True))
+```
 
 #### 2. $$\mathbf{Mask}^X$$** R-CNN** 的训练
 
@@ -53,7 +62,6 @@ $$
 
 1. 多阶段训练：首先使用数据集$$C$$训练Faster R-CNN，得到$$w_{det}^c$$；然后固定$$w_{det}^c$$和卷积部分，在使用$$A$$训练$$\mathcal{T}$$和分割任务的卷积部分。在这里$$w_{det}^c$$可以看做分割任务的特征向量。在Fast R-CNN中就指出多阶段训练的模型不如端到端训练的效果好；
 2. 端到端联合训练：当使用数据集$$C$$时，
-
 
 ## Reference
 
