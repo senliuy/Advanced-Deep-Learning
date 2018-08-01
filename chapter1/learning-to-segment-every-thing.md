@@ -43,16 +43,7 @@ W_{seg}^c = \mathcal{T}(w_{det}^c; \theta)
 $$
 
 
-其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP，源码中是两层全连接，见代码片段1。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c, w_{reg}^c]$$。
-
-代码片段1：weight transfer function
-
-```py
-self.transfer_function = nn.Sequential(nn.Linear(1024,1024),
-                                        nn.LeakyReLU(inplace=True),
-                                        nn.Linear(1024,256),
-                                        nn.LeakyReLU(inplace=True))
-```
+其中$$\theta$$的是类别无关的，可学习的参数。$$\mathcal{T}$$ 可以使用一个小型的MLP。$$w_{det}^c$$可以使分类的权值$$w_{cls}^c$$，bounding box的预测权值$$w_{reg}^c$$或是两者拼接到一起$$[w_{cls}^c, w_{reg}^c]$$。
 
 #### 2. $$\mathbf{Mask}^X$$** R-CNN** 的训练
 
@@ -61,7 +52,15 @@ self.transfer_function = nn.Sequential(nn.Linear(1024,1024),
 训练$$\mathbf{Mask}^X$$** R-CNN**时，有两种类型：
 
 1. 多阶段训练：首先使用数据集$$C$$训练Faster R-CNN，得到$$w_{det}^c$$；然后固定$$w_{det}^c$$和卷积部分，在使用$$A$$训练$$\mathcal{T}$$和分割任务的卷积部分。在这里$$w_{det}^c$$可以看做分割任务的特征向量。在Fast R-CNN中就指出多阶段训练的模型不如端到端训练的效果好；
-2. 端到端联合训练：当使用数据集$$C$$时，
+2. 端到端联合训练：理论上是可以直接在$$C$$上训练检测任务，在$$A$$上训练分割任务，但是这会使模型偏向于数据集$$A$$，这个问题在论文中叫做discrepency。为了解决这个问题，$$\mathbf{Mask}^X$$** R-CNN**在反向计算mask损失函数时停止$$w_{det}^c$$相关的梯度更新，只更新权值迁移函数中的$$\theta$$。
+
+## 总结
+
+截止到日前，尚无高质量的$$\mathbf{Mask}^X$$** R-CNN**源码公布，有很多论文中没有涉及的细节尚无处可考，等作者开源之后会继续补充该文章。
+
+仿照YOLO9000的思路，$$\mathbf{Mask}^X$$** R-CNN**使用半监督学习的方式将分割类别扩大到3000类。采用WordTree将分类数据添加到Mask R-CNN中，将分割类别扩大到ImageNet中的类别应该是未来一个不错的研究方向，推测应该很快就有相关进展发表。
+
+然后一个更精确，更快的的权值迁移函数也是一个非常有研究前景的一个方向，毕竟现在计算机视觉方向的趋势是去掉低效的全连接。
 
 ## Reference
 
