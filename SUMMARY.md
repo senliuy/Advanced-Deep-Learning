@@ -28,7 +28,7 @@
   * [YOLOv3: An Incremental Improvement](chapter1/yolov3-an-incremental-improvement.md)
   * [Learning to Segment Every Thing](chapter1/learning-to-segment-every-thing.md)
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
-  * Reading Text in the Wild with Convolutional Neural Networks
+  * [Reading Text in the Wild with Convolutional Neural Networks](chapter1/reading-text-in-the-wild-with-convolutional-neural-networks.md)
   * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
 
