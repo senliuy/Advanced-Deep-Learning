@@ -29,20 +29,22 @@ Edge boxes的计算步骤如下：
 2. 计算Edge Group：通过合并近似在一条直线上的边缘点得到的；
 3. 计算两个Edge Group之间的亲密度（affinity）：
 
+
    $$
    a(s_i, s_j) = |cos(\theta_i, \theta_{i,j})cos(\theta_j, \theta_{ij}))|^\gamma
    $$
 
+其中$$\gamma$$ 为超参数，一般设置为$$2$$。$$(\theta_i, \theta_j)$$ 是两组Edge Group的平均旋转角度，$$\theta_{ij}$$ 是两组edge boxes的平均位置$$x_i$$, $$x_j$$的夹角。
 
-   其中$$\gamma$$ 为超参数，一般设置为$$2$$。$$(\theta_i, \theta_j)$$ 是两组Edge Group的平均旋转角度，$$\theta_{ij}$$ 是两组edge boxes的平均位置$$x_i$$, $$x_j$$的夹角。
+1. 计算edge group的权值：
 
-4. 计算edge group的权值：
 
    $$
    w_b(s_i) = 1-\max\limits_{T} \prod ^{|T|-1}_j a(t_j, t_{j+1})
    $$
 
-5. 计算最终评分：
+2. 计算最终评分：
+
 
    $$
    h_b = \frac{\sum_i w_b(s_i)m_i}{2(b_w+b_h)^\kappa}
@@ -51,6 +53,11 @@ Edge boxes的计算步骤如下：
 其中 bounding box通过多尺寸，多比例的滑窗方式得到。
 
 #### 1.2 Aggregate Channel Feature Detector
+
+该方法的核心思想是通过Adaboost集成多尺度的ACF特征。ACF特征不具有尺度不变性，而使用多尺度输入图像计算特征的方法又过于耗时，[4]中只在每个octave重采样图像计算特征，每个octave之间的特征使用下式进行估计：
+$$
+C_s = R(C_{s'}, s/s')(s/s')^{-\lambda\Omega}
+$$
 
 ## Reference
 
