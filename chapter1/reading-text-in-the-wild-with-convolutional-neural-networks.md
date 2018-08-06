@@ -116,6 +116,8 @@ OCR中，有基于字符的时序序列分类器和基于单词的分类器。�
 
 ![](/assets/ReadingTextintheWild_1.png)
 
+图片resize作者使用了wrap的方式，添加padding通过实验得知效果并不如wrap。分类函数则使用了softmax损失函数。
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
