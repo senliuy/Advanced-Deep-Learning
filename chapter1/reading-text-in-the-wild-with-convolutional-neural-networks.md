@@ -28,25 +28,29 @@ Edge boxes的计算步骤如下：
 1. 边缘检测；
 2. 计算Edge Group：通过合并近似在一条直线上的边缘点得到的；
 3. 计算两个Edge Group之间的亲密度（affinity）：
-$$
-a(s_i, s_j) = |cos(\theta_i, \theta_{i,j})cos(\theta_j, \theta_{ij}))|^\gamma
-$$
-其中$$\gamma$$ 为超参数，一般设置为$$2$$。$$(\theta_i, \theta_j)$$ 是两组Edge Group的平均旋转角度，$$\theta_{ij}$$ 是两组edge boxes的平均位置$$x_i$$, $$x_j$$的夹角。
+
+   $$
+   a(s_i, s_j) = |cos(\theta_i, \theta_{i,j})cos(\theta_j, \theta_{ij}))|^\gamma
+   $$
+
+
+   其中$$\gamma$$ 为超参数，一般设置为$$2$$。$$(\theta_i, \theta_j)$$ 是两组Edge Group的平均旋转角度，$$\theta_{ij}$$ 是两组edge boxes的平均位置$$x_i$$, $$x_j$$的夹角。
+
 4. 计算edge group的权值：
-$$
-w_b(s_i) = 1-\max\limits_{T} \prod ^{|T|-1}_j a(t_j, t_{j+1})
-$$
+
+   $$
+   w_b(s_i) = 1-\max\limits_{T} \prod ^{|T|-1}_j a(t_j, t_{j+1})
+   $$
+
 5. 计算最终评分：
-$$
-h_b = \frac{\sum_i w_b(s_i)m_i}{2(b_w+b_h)^\kappa}
-$$
+
+   $$
+   h_b = \frac{\sum_i w_b(s_i)m_i}{2(b_w+b_h)^\kappa}
+   $$
 
 其中 bounding box通过多尺寸，多比例的滑窗方式得到。
 
 #### 1.2 Aggregate Channel Feature Detector
-
-
-
 
 ## Reference
 
@@ -54,5 +58,5 @@ $$
 
 \[2\] Zitnick, C. L., & Dollár, P. \(2014\). Edge boxes: Locating object propos- als from edges. In D. J. Fleet, T. Pajdla, B. Schiele, & T. Tuytelaars \(Eds.\),Computer vision ECCV 2014 13th European conference, Zurich, Switzerland, September 6–12, 2014, proceedings, part IV\(pp. 391–405\). New York City: Springer.
 
-\[3\] Dollár, P., & Zitnick, C. L. \(2014\). Fast edge detection using structured forests.arXiv:1406.5549.
+\[3\] Dollár, P., Appel, R., Belongie, S., & Perona, P. \(2014\). Fast feature pyramids for object detection.IEEE Transactions on Pattern Analysis and Machine Intelligence,36, 1532–1545.
 
