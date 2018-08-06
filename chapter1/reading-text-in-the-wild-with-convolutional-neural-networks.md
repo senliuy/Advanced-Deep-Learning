@@ -62,6 +62,18 @@ C_s = R(C_{s'}, s/s')(s/s')^{-\lambda\Omega}
 $$
 最后在通过AdaBoost集成由决策树构成的若分类器，通过计算阈值的方式得到最终的候选区域，$$B_d$$。
 
+### 2. 候选区域的精校
+
+通过第一节的方法得到候选区域后，作者对这些候选区域进行了进一步的精校，包括对候选区域是否包含文本的二分类和bounding box位置的调整。
+
+#### 2.1 word/no word分类
+
+作者通过从训练集上采样得到了一批候选区域，其中和Ground Truth的overlap大于0.5的设为正样本，小于0.5的设为负样本。提取了候选区域的HoG特征，并使用随机森林分类器训练了一个判断候选区域是否包含文本的二分类的分类器。
+
+#### 2.2 Bounding box回归
+
+
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
