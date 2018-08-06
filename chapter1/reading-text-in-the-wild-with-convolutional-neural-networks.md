@@ -118,6 +118,14 @@ OCR中，有基于字符的时序序列分类器和基于单词的分类器。�
 
 图片resize作者使用了wrap的方式，添加padding通过实验得知效果并不如wrap。分类函数则使用了softmax损失函数。
 
+## 总结
+
+从这篇算法使用的技术可以看出这篇论文作为早期的深度学习的文章，传统方法和深度学习方法都在扮演着非常重要的作用。
+
+文字检测部分依旧遵循R-CNN系列的two-stage思路，即基于Edge boxes和ACF的候选区域提取和基于随机森林和CNN的位置精校。
+
+而分类作者则是使用了最为传统的CNN分类模型，并没有添加RNN等擅长处理序列特征的结构。
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
