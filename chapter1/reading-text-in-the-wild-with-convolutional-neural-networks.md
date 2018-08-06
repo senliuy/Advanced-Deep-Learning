@@ -112,7 +112,7 @@ OCR中，有基于字符的时序序列分类器和基于单词的分类器。�
 
 作者使用了CNN训练识别模型，根据上面的描述。CNN是一个90k的多分类模型，网络具体参数见图1。
 
-###### 图1：Read Text in the Wild的识别网络
+图1：Read Text in the Wild的识别网络
 
 ![](/assets/ReadingTextintheWild_1.png)
 
