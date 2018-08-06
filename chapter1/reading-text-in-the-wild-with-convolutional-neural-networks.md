@@ -17,13 +17,13 @@
 
 ### 1. 候选区域生成
 
-算法中候选区域生成是采用的两种方案的并集，它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。 
+算法中候选区域生成是采用的两种方案的并集，它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。
 
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
 
-\[2\]
+\[2\] Zitnick, C. L., & Dollár, P. \(2014\). Edge boxes: Locating object propos- als from edges. In D. J. Fleet, T. Pajdla, B. Schiele, & T. Tuytelaars \(Eds.\),Computer vision ECCV 2014 13th European conference, Zurich, Switzerland, September 6–12, 2014, proceedings, part IV\(pp. 391–405\). New York City: Springer.
 
-\[3\]
+\[3\] Dollár, P., & Zitnick, C. L. \(2014\). Fast edge detection using structured forests.arXiv:1406.5549.
 
