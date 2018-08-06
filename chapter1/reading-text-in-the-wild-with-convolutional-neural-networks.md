@@ -19,6 +19,10 @@
 
 算法中候选区域生成是采用的两种方案的并集，它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。
 
+#### 1.1 Edge Boxes
+
+
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
