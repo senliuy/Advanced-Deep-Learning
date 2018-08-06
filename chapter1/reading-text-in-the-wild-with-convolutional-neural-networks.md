@@ -32,11 +32,14 @@ $$
 a(s_i, s_j) = |cos(\theta_i, \theta_{i,j})cos(\theta_j, \theta_{ij}))|^\gamma
 $$
 其中$$\gamma$$ 为超参数，一般设置为$$2$$。$$(\theta_i, \theta_j)$$ 是两组Edge Group的平均旋转角度，$$\theta_{ij}$$ 是两组edge boxes的平均位置$$x_i$$, $$x_j$$的夹角。
-4. 计算edge group的评分：
+4. 计算edge group的权值：
 $$
 w_b(s_i) = 1-\max\limits_{T} \prod ^{|T|-1}_j a(t_j, t_{j+1})
 $$
- 
+5. 计算最终评分：
+$$
+h_b = \frac{\sum_i w_b(s_i)m_i}{2(b_w+b_h)^\kappa}
+$$
 
 
 ## Reference
