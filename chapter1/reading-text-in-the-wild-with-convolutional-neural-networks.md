@@ -41,6 +41,10 @@ $$
 h_b = \frac{\sum_i w_b(s_i)m_i}{2(b_w+b_h)^\kappa}
 $$
 
+其中 bounding box通过多尺寸，多比例的滑窗方式得到。
+
+#### 1.2 Aggregate Channel Feature Detector
+
 
 ## Reference
 
