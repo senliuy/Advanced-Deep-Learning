@@ -17,12 +17,21 @@
 
 ### 1. 候选区域生成
 
-算法中候选区域生成是采用的两种方案的并集，它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。
+算法中候选区域生成是采用的两种方案的并集，它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。由于本书更偏重于深度学习领域的知识，对于上面两个算法只会粗略介绍方法，详细内容请自行查看参考文献中给出的论文。
 
 #### 1.1 Edge Boxes
 
+Edge boxes的提出动机是bounding box内完全包含的的轮廓越多（Contours），那么该bounding box为候选区域的概率越高，这种特征到文字检测方向尤为明显。
+
+Edge boxes的计算步骤如下：
+
+1. 边缘检测；
+2. 计算Edge Group：通过合并近似在一条直线上的边缘点得到的；
+3. 计算两个Edge Group之间的相似度：
 
 
+
+1. 
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
