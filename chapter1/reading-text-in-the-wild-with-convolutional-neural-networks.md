@@ -17,7 +17,7 @@
 
 ### 1. 候选区域生成
 
-算法中候选区域生成是采用的两种方案的并集，它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。由于本书更偏重于深度学习领域的知识，对于上面两个算法只会粗略介绍方法，详细内容请自行查看参考文献中给出的论文。
+算法中候选区域生成是采用的两种方案的并集，$$B=\{B_e \cup B_d\}$$它们分别是Edge Boxes \[2\]和Aggregate Channel Feature Detector \[2\]。由于本书更偏重于深度学习领域的知识，对于上面两个算法只会粗略介绍方法，详细内容请自行查看参考文献中给出的论文。
 
 #### 1.1 Edge Boxes
 
@@ -52,12 +52,15 @@ Edge boxes的计算步骤如下：
 
 其中 bounding box通过多尺寸，多比例的滑窗方式得到。
 
+计算完评分之后，通过NMS得到最终的候选区域，$$B_e$$。
+
 #### 1.2 Aggregate Channel Feature Detector
 
-该方法的核心思想是通过Adaboost集成多尺度的ACF特征。ACF特征不具有尺度不变性，而使用多尺度输入图像计算特征的方法又过于耗时，[4]中只在每个octave重采样图像计算特征，每个octave之间的特征使用下式进行估计：
+该方法的核心思想是通过Adaboost集成多尺度的ACF特征。ACF特征不具有尺度不变性，而使用多尺度输入图像计算特征的方法又过于耗时，[4]中只在每个octave重采样图像计算特征，每个octave之间的特征使用其它尺度进行估计：
 $$
 C_s = R(C_{s'}, s/s')(s/s')^{-\lambda\Omega}
 $$
+最后在通过AdaBoost集成由决策树构成的若分类器，通过计算阈值的方式得到最终的候选区域，$$B_d$$。
 
 ## Reference
 
