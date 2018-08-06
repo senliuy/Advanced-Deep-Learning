@@ -46,6 +46,8 @@ $$
 #### 1.2 Aggregate Channel Feature Detector
 
 
+
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Vedaldi A, et al. Reading text in the wild with convolutional neural networks\[J\]. International Journal of Computer Vision, 2016, 116\(1\): 1-20.
