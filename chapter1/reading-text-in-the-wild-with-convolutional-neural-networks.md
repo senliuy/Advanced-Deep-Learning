@@ -114,7 +114,7 @@ OCR中，有基于字符的时序序列分类器和基于单词的分类器。�
 
 ###### 图1：Read Text in the Wild的识别网络
 
-
+![](/assets/ReadingTextintheWild_1.png)
 
 ## Reference
 
