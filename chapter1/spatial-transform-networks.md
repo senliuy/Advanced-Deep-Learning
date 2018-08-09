@@ -67,9 +67,19 @@ locnet.add(Dense(6, weights=weights))
    \left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
  $$
 
+图2展示了STM中的一次仿射变换（b）和直接映射的区别。
 
+###### 图2
+
+
+
+这里需要注意两点：
+1. $$\Theta$$可以是一个更通用的矩阵，并不局限于仿射变换，甚至不局限于6个值；
+2. 映射得到的$$(s^s_i, y^s_i)$$一般不是整数，因此不能$$(x^t_i, y^t_i)$$不能使用$$(s^s_i, y^s_i)$$的值，而是根据它进行插值，也就是我们下一节要讲的东西。
 
 ### 1.3 Differentiable Image Sampling
+
+1.2节我们讲到，当$$(s^s_i, y^s_i)$$不是整数时，我们需要进行插值才能
 
 ## Reference
 
