@@ -214,6 +214,7 @@ $$
 
 STN也可扩展到三维，此时的放射变换矩阵是的3行4列的，仿射变换表示为:
 
+
 $$
 \left(
 \begin{matrix}
@@ -239,18 +240,16 @@ z_i^t \\
 \right)
 $$
 
+
 此时Localisation Network需要回归预测12个值，插值则是使用的三线性插值。
 
 STN的另外一个有趣的方向是通过将图像在一个维度上展开，将3维物体压缩到二维，如图7。
 
 ###### 图6：STN用于高维映射
 
-
-
-
+![](/assets/STN_7.png)
 
 ## 附件A：仿射变换矩阵
 
 仿射变换\(Affline Transformation\)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness）和平行性（parallelness）。
 
-    
