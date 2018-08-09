@@ -2,6 +2,7 @@
   "plugins": [
   	"disqus",
     "mathjax"],
+    
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy"
