@@ -30,3 +30,7 @@ STM的结构见图1：
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
 
+## 附件A：仿射变换矩阵
+
+仿射变换(Affline Transformation)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness）和平行性（parallelness）。
+
