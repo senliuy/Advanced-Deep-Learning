@@ -10,7 +10,7 @@ Spatial Transformer Network（STN）的提出动机源于对池化的改进，�
 
 下面根据一份STN的keras源码：[https://github.com/oarriaga/spatial\_transformer\_networks](https://github.com/oarriaga/spatial_transformer_networks)详解STN的算法细节。
 
-## STM详解
+## 1. STM详解
 
 STM由三个模块组成：
 
@@ -23,6 +23,8 @@ STM的结构见图1：
 ###### 图1：STM的框架图
 
 ![](/assets/STN_1.png)
+
+### 1.1 Localisation Network
 
 ## Reference
 
