@@ -32,9 +32,8 @@ $$
 \theta = 
   \left[
   \begin{matrix}
-   1 & 2 & 3 \\
-   4 & 5 & 6 \\
-   7 & 8 & 9
+   \theta_{11} & \theta_{12} & \theta_{13} \\
+   \theta_{21} & \theta_{22} & \theta_{23}
   \end{matrix} 
   \right]
   \tag{1}
@@ -58,10 +57,16 @@ locnet.add(Dense(6, weights=weights))
 
 ### 1.2 Parameterised Sampling Grid
 
- Parameterised Sampling Grid利用Localisation Network产生的$$\theta$$进行仿射变换，即由输出Feature Map上的某一位置$$(x^t_i, y^t_i)$$根据变换参数$$\theta$$ 得到输入Feature Map的某一位置：
+ Parameterised Sampling Grid利用Localisation Network产生的$$\theta$$进行仿射变换，即由输出Feature Map上的某一位置$$G_i = (x^t_i, y^t_i)$$根据变换参数$$\theta$$ 得到输入Feature Map的某一位置$$(s^s_i, y^s_i)$$：
  
  $$
- 
+ \left(\begin{matrix}x_i^s \\y_i^s\end{matrix} \right) 
+ = \mathcal{T}_\theta(G_i) 
+ = A_\theta\left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
+ = \left[\begin{matrix}\theta_{11} & \theta_{12} & \theta_{13} \\
+   \theta_{21} & \theta_{22} & \theta_{23}\end{matrix}\right]
+   \left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
+  \tag{1}
  $$
 
 ### 1.3 Differentiable Image Sampling
