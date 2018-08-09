@@ -13,74 +13,10 @@
         "search-pro",
         "collapsible-menu",
         "bibtex-indexed-cite",
-        "-livereload"],
+        "-livereload"]
   "pluginsConfig": {
     "disqus": {
-      "shortName": "senliuy"
-      
-    },
-    "theme-default":
-        {
-            "showLevel": true
-        },
-        "sharing":
-        {
-            "douban": false,
-            "facebook": false,
-            "google": false,
-            "hatenaBookmark": false,
-            "instapaper": false,
-            "line": false,
-            "linkedin": false,
-            "messenger": false,
-            "pocket": false,
-            "qq": true,
-            "qzone": true,
-            "stumbleupon": false,
-            "twitter": false,
-            "viber": false,
-            "vk": false,
-            "weibo": true,
-            "whatsapp": false,
-            "all": [
-                "facebook", "google", "twitter",
-                "weibo", "qq", "linkedin",
-                "qzone", "douban"
-            ]
-        },
-
-        "localized-footer":
-        {
-            "hline": true,
-            "filename": "./FOOTER.md"
-        },
-
-        "include-codeblock":
-        {
-            "template": "ace",
-            "unindent": true,
-            "edit": false
-        },
-
-        "quiz":
-        {
-            "labels":
-            {
-                "check": "提交答案",
-                "showExplanation": "显示解释",
-                "showCorrect": "显示正确答案",
-                "explanationHeader": "释义"
-            },
-            "text":
-            {
-                "noChosen": "Choose at least one answer",
-                "incomplete": "Some correct answers are missing"
-            },
-            "buttons":
-            {
-                "showCorrect": true,
-                "showExplanation": true
-            }
-        },
+      "shortName": "senliuy" 
+    }
   }
 }
