@@ -34,6 +34,6 @@
   * Spatial Transform Networks
   * 场景文字检测
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
-
-
+  * 文字识别
+  * 端到端文字检测与识别
 
