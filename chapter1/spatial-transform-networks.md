@@ -34,6 +34,7 @@ $$\theta =
    4 & 5 & 6 \\
    7 & 8 & 9
   \end{matrix} 
+  \right]
 $$
 下面的是源码中给出的Localisation Network的结构。
 
