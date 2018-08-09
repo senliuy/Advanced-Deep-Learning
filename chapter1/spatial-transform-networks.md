@@ -210,7 +210,37 @@ $$
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
 
+### 3.3 高维ST
+
+STN也可扩展到三维，此时的放射变换矩阵是的3行4列的，仿射变换可以表示为:
+
+$$
+\left(
+\begin{matrix}
+x_i^s \\
+y_i^s \\
+z_i^s
+\end{matrix}
+\right) = 
+\left[
+\begin{matrix}
+\theta_{11} & \theta_{12} & \theta_{13} & \theta_{14} \\
+\theta_{21} & \theta_{22} & \theta_{23} & \theta_{24} \\
+\theta_{31} & \theta_{32} & \theta_{33} & \theta_{34} 
+\end{matrix}
+\right] = 
+\left(
+\begin{matrix}
+x_i^t \\
+y_i^t \\
+z_i^t \\
+1
+\end{matrix}
+\right)
+$$
+
 ## 附件A：仿射变换矩阵
 
 仿射变换\(Affline Transformation\)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness）和平行性（parallelness）。
 
+    
