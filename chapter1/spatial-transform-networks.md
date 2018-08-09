@@ -9,17 +9,19 @@ Spatial Transformer Network（STN）的提出动机源于对池化的改进，�
 基于这个动机，作者设计了Spatial Transformer Module（STM），STM具有显示学习仿射变换的能力，并且STM是**可导**的，因此可以直接整合进卷积网络中进行端到端的训练，插入STM的卷积网络叫做STN。
 
 下面根据一份STN的keras源码：[https://github.com/oarriaga/spatial\_transformer\_networks](https://github.com/oarriaga/spatial_transformer_networks)详解STN的算法细节。
-## STN详解
+## STM详解
 
-STN由三个模块组成：
+STM由三个模块组成：
 
 1. Localisation Network：该模块学习仿射变换矩阵（附件A）；
 2. Parameterised Sampling Grid：根据Localisation Network得到仿射变换矩阵，得到输入Feature Map和输出Feature Map之间的位置映射关系；
 3. Differentiable Image Sampling：计算输出Feature Map的每个像素点的值。
 
-STN的结构见图1：
+STM的结构见图1：
 
-###### 图1：STN
+###### 图1：STM的框架图
+
+
 
 ## Reference
 
