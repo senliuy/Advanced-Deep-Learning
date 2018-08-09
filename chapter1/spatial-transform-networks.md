@@ -69,6 +69,7 @@ locnet.add(Dense(6, weights=weights))
   \tag{2}
  $$
 
+
 ### 1.3 Differentiable Image Sampling
 
 ## Reference

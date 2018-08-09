@@ -1,7 +1,7 @@
 {
   "plugins": [
   	"disqus",
-    "mathjax",
+    "katex",
     "tbfed-pagefooter",
     "splitter"],
     
