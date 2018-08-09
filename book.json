@@ -1,19 +1,6 @@
 {
   "plugins": [
-  	"disqus",
-        "katex",
-        "-sharing",
-        "sharing-plus",
-        "localized-footer",
-        "include-codeblock",
-        "ace",
-        "quiz",
-        "-lunr",
-        "-search",
-        "search-pro",
-        "collapsible-menu",
-        "bibtex-indexed-cite",
-        "-livereload"]
+  	"disqus"]
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy" 
