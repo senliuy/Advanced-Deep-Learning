@@ -1,10 +1,23 @@
 {
   "plugins": [
   	"disqus",
-        "katex"],
+        "katex",
+        "-sharing",
+        "sharing-plus",
+        "localized-footer",
+        "include-codeblock",
+        "ace",
+        "quiz",
+        "-lunr",
+        "-search",
+        "search-pro",
+        "collapsible-menu",
+        "bibtex-indexed-cite",
+        "-livereload"],
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy"
+      
     }
     "theme-default":
         {
