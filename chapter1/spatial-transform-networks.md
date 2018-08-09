@@ -116,7 +116,7 @@ $$
 
 $$
 \frac{\partial V_i^c}{\partial x_{i}^s} = \sum^H_n \sum^W_m U^c_{nm} max(0,1-|y_i^s -m|) \left\{
-\begin{array}
+\begin{array}{aligned}
 0 & \text{if}\;|m-x_i^s|>1\\
 1 & \text{if}\;m\geq x_i^s\\
 -1 & \text{if}\;m< x_i^s
@@ -128,7 +128,7 @@ $$
 
 $$
 \frac{\partial V_i^c}{\partial y_{i}^s} = \sum^H_n \sum^W_m U^c_{nm} max(0,1-|x_i^s -n|) \left\{
-\begin{array}
+\begin{array}{aligned}
 0 & \text{if}\;|n-y_i^s|>1\\
 1 & \text{if}\;n\geq y_i^s\\
 -1 & \text{if}\;n< y_i^s
