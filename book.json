@@ -2,7 +2,6 @@
   "plugins": [
   	"disqus",
     "katex",
-    "tbfed-pagefooter",
     "splitter"],
     
   "pluginsConfig": {
@@ -17,10 +16,5 @@
                 "facebook", "google", "weibo"
             ]
         }
-    },
-    "tbfed-pagefooter": {
-        "copyright":"Copyright &copy senliuy@gmail.com 2018",
-        "modify_label": "该文件修订时间：",
-        "modify_format": "YYYY-MM-DD HH:mm:ss"
     }
 }
