@@ -26,6 +26,10 @@ STM的结构见图1：
 
 ### 1.1 Localisation Network
 
+### 1.2 Parameterised Sampling Grid
+
+### 1.3 Differentiable Image Sampling
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
