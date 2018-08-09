@@ -55,7 +55,7 @@ locnet.add(Dense(6, weights=weights))
 
 ### 1.2 Parameterised Sampling Grid
 
-
+ Parameterised Sampling Grid利用Localisation Network产生的$$\theta$$
 
 ### 1.3 Differentiable Image Sampling
 
