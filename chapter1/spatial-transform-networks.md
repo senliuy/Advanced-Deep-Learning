@@ -109,8 +109,6 @@ $$
 
 ![](/assets/STN_3.png)
 
-
-
 上式中的几个值都是可偏导的:
 
 
@@ -190,11 +188,14 @@ ST的可导带来的好处是其可以和整个卷积网络一起端到端的训
 
 Loss使用的是Hinge损失函数:
 
+
 $$
 \sum_n^N \sum_{n\neq m}^M \text{max}(0, ||e(I_n^{\mathcal{T}})-e(I_m^{\mathcal{T}})||^2_2 - ||e(I_n^{\mathcal{T}})-e(I_n^{rand})||^2_2 +\alpha)
 $$
 
+
 其中
+
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
