@@ -14,5 +14,10 @@
                 "facebook", "google", "weibo"
             ]
         }
-  }
+    },
+    "include-codeblock": {
+            "template": "ace",
+            "unindent": true,
+            "edit": false
+     }
 }
