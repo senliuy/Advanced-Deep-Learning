@@ -26,6 +26,18 @@ STM的结构见图1：
 
 ### 1.1 Localisation Network
 
+```py
+locnet = Sequential()
+locnet.add(MaxPooling2D(pool_size=(2,2), input_shape=input_shape))
+locnet.add(Conv2D(20, (5, 5)))
+locnet.add(MaxPooling2D(pool_size=(2,2)))
+locnet.add(Conv2D(20, (5, 5)))
+
+locnet.add(Flatten())
+locnet.add(Dense(50))
+locnet.add(Activation('relu'))
+locnet.add(Dense(6, weights=weights))
+```
 ### 1.2 Parameterised Sampling Grid
 
 ### 1.3 Differentiable Image Sampling
