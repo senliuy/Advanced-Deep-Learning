@@ -26,7 +26,7 @@ STM的结构见图1：
 
 ### 1.1 Localisation Network
 
-Localisation Network是一个小型的卷积网络$$\theta = f_{loc}(U)$$，其输入是Feature Map （$$U\in R^{W\times H\times C}$$），输出是仿射矩阵$$\theta$$ 的六个值。因此输出层是一个有六个节点回归器。
+Localisation Network是一个小型的卷积网络$$\Theta = f_{loc}(U)$$，其输入是Feature Map （$$U\in R^{W\times H\times C}$$），输出是仿射矩阵$$\Theta$$ 的六个值。因此输出层是一个有六个节点回归器。
 
 $$
 \theta = 
@@ -57,12 +57,12 @@ locnet.add(Dense(6, weights=weights))
 
 ### 1.2 Parameterised Sampling Grid
 
- Parameterised Sampling Grid利用Localisation Network产生的$$\theta$$进行仿射变换，即由输出Feature Map上的某一位置$$G_i = (x^t_i, y^t_i)$$根据变换参数$$\theta$$ 得到输入Feature Map的某一位置$$(s^s_i, y^s_i)$$：
+ Parameterised Sampling Grid利用Localisation Network产生的$$\Theta$$进行仿射变换，即由输出Feature Map上的某一位置$$G_i = (x^t_i, y^t_i)$$根据变换参数$$\theta$$ 得到输入Feature Map的某一位置$$(s^s_i, y^s_i)$$：
  
  $$
  \left(\begin{matrix}x_i^s \\y_i^s\end{matrix} \right) 
  = \mathcal{T}_\theta(G_i) 
- = A_\theta\left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
+ = \Theta\left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
  = \left[\begin{matrix}\theta_{11} & \theta_{12} & \theta_{13} \\
    \theta_{21} & \theta_{22} & \theta_{23}\end{matrix}\right]
    \left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
