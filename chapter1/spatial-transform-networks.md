@@ -103,7 +103,13 @@ V_{i}^c = \sum^H_n \sum^W_m U^c_{nm} max(0, 1 - |x_i^s-m|) max(0,1-|y_i^s -m|)
 $$
 
 
-上式可以这么理解：遍历整个输入Feature Map，如果遍历到的点$$(n,m)$$距离大于1，即$$|x_i^s-m|>1$$，那么$$max(0, 1 - |x_i^s-m|)=0$$（n处同理），即只有距离$$(s^s_i, y^s_i)$$最近的四个点参与计算。且距离与权重成反比，也就是距离越小，权值越大，也就是双线性插值的过程。
+上式可以这么理解：遍历整个输入Feature Map，如果遍历到的点$$(n,m)$$距离大于1，即$$|x_i^s-m|>1$$，那么$$max(0, 1 - |x_i^s-m|)=0$$（n处同理），即只有距离$$(s^s_i, y^s_i)$$最近的四个点参与计算。且距离与权重成反比，也就是距离越小，权值越大，也就是双线性插值的过程，如图3。
+
+###### 图3：STN中的双线性插值
+
+![](/assets/STN_3.png)
+
+
 
 上式中的几个值都是可偏导的:
 
@@ -170,7 +176,7 @@ ST的可导带来的好处是其可以和整个卷积网络一起端到端的训
 
 ###### 图3：并行ST
 
-![](/assets/STN_3.png)
+![](/assets/STN_4.png)
 
 具体的将，给定两张图像，初始化两个ST，将两个ST分别作用于两张图片，得到四个Feature Map，将这个四个通道的图片作为FCN的输入，预测0-18间的一个整数值。图3左边的实验结果显示了两个并行ST的效果明显强于单个ST。
 
@@ -180,8 +186,15 @@ ST的可导带来的好处是其可以和整个卷积网络一起端到端的训
 
 ###### 图4：STN用于物体检测
 
-![](/assets/STN_4.png)
+![](/assets/STN_5.png)
 
+Loss使用的是Hinge损失函数:
+
+$$
+\sum_n^N \sum_{n\neq m}^M \text{max}(0, ||e(I_n^{\mathcal{T}})-e(I_m^{\mathcal{T}})||^2_2 - ||e(I_n^{\mathcal{T}})-e(I_n^{rand})||^2_2 +\alpha)
+$$
+
+其中
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
