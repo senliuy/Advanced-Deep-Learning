@@ -3,8 +3,7 @@
   	"disqus",
     "mathjax",
     "tbfed-pagefooter",
-    "splitter",
-    "toggle-chapters"],
+    "splitter"],
     
   "pluginsConfig": {
     "disqus": {
