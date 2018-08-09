@@ -56,7 +56,7 @@ locnet.add(Dense(6, weights=weights))
 
 ### 1.2 Parameterised Sampling Grid
 
- Parameterised Sampling Grid利用Localisation Network产生的$$\Theta$$进行仿射变换，即由输出Feature Map上的某一位置$$G_i = (x^t_i, y^t_i)$$根据变换参数$$\theta$$ 得到输入Feature Map的某一位置$$(s^s_i, y^s_i)$$：
+ Parameterised Sampling Grid利用Localisation Network产生的$$\Theta$$进行仿射变换，即由输出Feature Map上的某一位置$$G_i = (x^t_i, y^t_i)$$根据变换参数$$\theta$$ 得到输入Feature Map的某一位置$$(x^s_i, y^s_i)$$：
  
  $$
  \left(\begin{matrix}x_i^s \\y_i^s\end{matrix} \right) 
@@ -75,11 +75,19 @@ locnet.add(Dense(6, weights=weights))
 
 这里需要注意两点：
 1. $$\Theta$$可以是一个更通用的矩阵，并不局限于仿射变换，甚至不局限于6个值；
-2. 映射得到的$$(s^s_i, y^s_i)$$一般不是整数，因此不能$$(x^t_i, y^t_i)$$不能使用$$(s^s_i, y^s_i)$$的值，而是根据它进行插值，也就是我们下一节要讲的东西。
+2. 映射得到的$$(x^s_i, y^s_i)$$一般不是整数，因此不能$$(x^t_i, y^t_i)$$不能使用$$(x^s_i, y^s_i)$$的值，而是根据它进行插值，也就是我们下一节要讲的东西。
 
 ### 1.3 Differentiable Image Sampling
 
-1.2节我们讲到，当$$(s^s_i, y^s_i)$$不是整数时，我们需要进行插值才能
+1.2节我们讲到，当$$(s^s_i, y^s_i)$$不是整数时，我们需要进行插值才能确定输出Feature Map的位置$$(x^t_i, y^t_i)$$处的值。在这个过程叫做一次插值，或者一次采样（Sampling）。在STM中，插值过程是以通道为单位进行的，那么插值过程可以用下式表示：
+
+$$
+V_{i}^c = \sum^H_n \sum^W_m U^c_{nm} k(x_i^s-m;\Phi_x) k(y_i^s -m; \Phi_y) 
+, where \forall i\in[1,...,H'W'],\forall c\in[1,...,C]
+
+$$
+
+在上式中，函数$$f()$$表示插值函数，本文将以双线性插值为例进行解析，$$\Phi$$为$$f()$$中的参数，$$U^c_{nm}$$为输入Feature Map上点$$(n, m, c)$$处的值
 
 ## Reference
 
