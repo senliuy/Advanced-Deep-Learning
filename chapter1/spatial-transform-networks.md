@@ -66,7 +66,7 @@ locnet.add(Dense(6, weights=weights))
  = \left[\begin{matrix}\theta_{11} & \theta_{12} & \theta_{13} \\
    \theta_{21} & \theta_{22} & \theta_{23}\end{matrix}\right]
    \left(\begin{matrix}x_i^t\\y_i^t\\1\end{matrix}\right)
-  \tag{1}
+  \tag{2}
  $$
 
 ### 1.3 Differentiable Image Sampling
