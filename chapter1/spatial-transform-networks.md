@@ -26,7 +26,7 @@ STM的结构见图1：
 
 ### 1.1 Localisation Network
 
-Localisation Network是一个小型的卷积网络$$\theta = f_{loc}(\theta)$$，其输入是Feature Map （$$U\in R^{W\times H\times C}$$），输出是仿射矩阵$$\theta$$ 的六个值。因此输出层是一个有六个节点回归器。
+Localisation Network是一个小型的卷积网络$$\theta = f_{loc}(U)$$，其输入是Feature Map （$$U\in R^{W\times H\times C}$$），输出是仿射矩阵$$\theta$$ 的六个值。因此输出层是一个有六个节点回归器。
 $$\theta = 
   \left[
   \begin{matrix}
