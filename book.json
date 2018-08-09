@@ -7,23 +7,9 @@
       "shortName": "senliuy"
     },
     "sharing": {
-            "douban": false,
             "facebook": true,
             "google": true,
-            "hatenaBookmark": false,
-            "instapaper": false,
-            "line": false,
-            "linkedin": false,
-            "messenger": false,
-            "pocket": false,
-            "qq": true,
-            "qzone": true,
-            "stumbleupon": false,
-            "twitter": false,
-            "viber": false,
-            "vk": false,
             "weibo": true,
-            "whatsapp": false,
             "all": [
                 "facebook", "google", "weibo"
             ]
