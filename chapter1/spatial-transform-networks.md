@@ -136,7 +136,17 @@ $$
 \right.
 $$
 
+在对$$\theta$$ 求导为:
 
+$$
+\frac{\partial V_i^c}{\partial \theta} = 
+\left(
+\begin{matrix}
+\frac{\partial V_i^c}{\partial x_i^s}\cdot\frac{\partial x_i^s}{\partial \theta} \\
+\frac{\partial V_i^c}{\partial y_i^s}\cdot\frac{\partial y_i^s}{\partial \theta}
+\end{matrix}
+\right)
+$$
 STM的可导带来的好处是其可以和整个卷积网络一起端到端的训练，能够以layer的形式直接插入到卷积网络中。
 
 ## 2. STN
@@ -144,7 +154,7 @@ STM的可导带来的好处是其可以和整个卷积网络一起端到端的�
 1.3节中介绍过，将STM插入到卷积网络中便得到了STN，在插入STM的时候，需要注意以下几点：
 
 1. 在输入图像之后接一个STM是最常见的操作，也是最容易理解的，即自动图像矫正；
-2. 理论上讲STM是可以以任意数量插入到网络中的任意位置，但这时无疑增加了网络的深度，其带来的收益价值值得讨论；
+2. 理论上讲STM是可以以任意数量插入到网络中的任意位置，多个STM可以起到裁剪的作用，是一种高级的Attention机制。但多个STM无疑增加了网络的深度，其带来的收益价值值得讨论；
 3. STM虽然可以起到降采样的作用，但一般不这么使用，因为基于STM的降采样产生了对其的问题；
 4. 可以在同一个卷积网络中并行使用多个STM，但是一般STM和图像中的对象是$$1:1$$的关系，因此并不是具有非常广泛的通用性。
 
