@@ -1,6 +1,5 @@
 {
-  "plugins": [
-  	"disqus"]
+  "plugins": ["disqus"]
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy" 
