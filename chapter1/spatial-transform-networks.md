@@ -79,16 +79,40 @@ locnet.add(Dense(6, weights=weights))
 
 ### 1.3 Differentiable Image Sampling
 
-1.2节我们讲到，当$$(s^s_i, y^s_i)$$不是整数时，我们需要进行插值才能确定输出Feature Map的位置$$(x^t_i, y^t_i)$$处的值。在这个过程叫做一次插值，或者一次采样（Sampling）。在STM中，插值过程是以通道为单位进行的，那么插值过程可以用下式表示：
+如果$$(x^s_i, y^s_i)$$为一整数，那么输出Feature Map的$$(x^t_i, y^t_i)$$处的值便可以从输入Feature Map上直接映射过去。然而在的1.2节我们讲到，$$(s^s_i, y^s_i)$$往往不是整数，这时我们需要进行插值才能确定输出其值，在这个过程叫做一次插值，或者一次采样（Sampling）。插值过程可以用下式表示：
 
 $$
 V_{i}^c = \sum^H_n \sum^W_m U^c_{nm} k(x_i^s-m;\Phi_x) k(y_i^s -m; \Phi_y) 
-, where \forall i\in[1,...,H'W'],\forall c\in[1,...,C]
-
+,\quad where\quad \forall i\in[1,...,H'W'],\forall c\in[1,...,C]
 $$
 
-在上式中，函数$$f()$$表示插值函数，本文将以双线性插值为例进行解析，$$\Phi$$为$$f()$$中的参数，$$U^c_{nm}$$为输入Feature Map上点$$(n, m, c)$$处的值
+在上式中，函数$$f()$$表示插值函数，本文将以双线性插值为例进行解析，$$\Phi$$为$$f()$$中的参数，$$U^c_{nm}$$为输入Feature Map上点$$(n, m, c)$$处的值，$$V_i^c$$便是插值后输出Feature Map的$$(x^t_i, y^t_i)$$处的值。
 
+$$H'， W'$$分别为输出Feature Map的高和宽。当$$H'=H$$并且$$W'=W$$时，则STM是正常的仿射变换，当$$H'=H/2$$并且$$W'=W/2$$时, 此时STM可以起到和池化类似的降采样的功能。
+
+以双线性插值为例，插值过程即为：
+
+$$
+V_{i}^c = \sum^H_n \sum^W_m U^c_{nm} max(0, 1 - |x_i^s-m|) max(0,1-|y_i^s -m|) 
+$$
+
+上式可以这么理解：遍历整个输入Feature Map，如果遍历到的点$$(n,m)$$距离大于1，即$$|x_i^s-m|>1$$，那么$$max(0, 1 - |x_i^s-m|)=0$$（n处同理），即只有距离$$(s^s_i, y^s_i)$$最近的四个点参与计算。且距离与权重成反比，也就是距离越小，权值越大，也就是双线性插值的过程。
+
+上式中的几个值都是可偏导的:
+
+$$
+\frac{\partial V_i^c}{\partial U_{nm}^c} = \sum^H_n \sum^W_m max(0, 1 - |x_i^s-m|) max(0,1-|y_i^s -m|) 
+$$
+
+$$
+\frac{\partial V_i^c}{\partial x_{i}^s} = \sum^H_n \sum^W_m U^c_{nm} max(0,1-|y_i^s -m|) \left\{
+\begin{array}{rcl}
+0 \\
+1 \\
+-1
+\end{array}
+\right.
+$$
 ## Reference
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
