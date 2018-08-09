@@ -1,7 +1,7 @@
 {
   "plugins": [
   	"disqus",
-    "katex"],
+    "mathjax"],
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy"
