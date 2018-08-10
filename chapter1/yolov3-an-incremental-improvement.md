@@ -1,5 +1,7 @@
 # YOLOv3: An Incremental Improvement
 
+tags: YOLOv3, YOLOv2, YOLO
+
 ## 前言
 
 YOLOv3论文的干货并不多，用作者自己的话说是一篇“Tech Report”。这篇主要是在[YOLOv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html) \[2\]的基础上的一些Trick尝试，有的Trick成功了，包括：
