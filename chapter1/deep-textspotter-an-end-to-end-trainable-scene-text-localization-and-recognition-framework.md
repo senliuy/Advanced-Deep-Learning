@@ -36,11 +36,33 @@ Deep TextSpotter的一个创新点是将NMS放到了识别之后，使用识别�
 
 **NMS**：Deep TextSpotter的一个创新点在于并没有这检测完之后就使用NMS，考虑到的一个问题是只覆盖部分文字区域的检测框的置信度有可能高于检测到完整文字区域的置信度要高。在这里，只使用阈值$$\theta=0.1$$过滤掉部分置信度非常低的样本。
 
-### 1.3 双线性抽样
+### 1.3 双线性插值
 
 经过YOLOv2得到的检测框的尺寸，角度，比例等都是不同的，为了产生长度固定的特征向量。Faster R-CNN等方法采用的是ROI Pooling，Deep TextSpotter则是使用STN的策略，STN不仅能产生长度固定的特征向量，还能学到图像的仿射变换矩阵，是非常适用于OCR领域的。
 
 Deep TextSpotter产生的是长宽比不变，宽度固定位$$H'=32$$的Feature Map，即对于一个检测到的区域$$U\in R^{w\times h \times C}$$，其得到的Feature Map的为$$V \in R^{\frac{wH'}{h}\times H' \times C}$$。
+
+Feature Map中位置$$(x',y')$$处的值为:
+
+
+$$
+V_{x',y'}^c = \sum^w_{x=1}\sum^h_{y=1}\mathbf{U}_{x,y}^c \kappa(x - \mathcal{T}_x(x')) \kappa(y - \mathcal{T}_y(y'))
+$$
+
+
+这个过程便是双线性插值，不理解的参考我在STN的解释。
+
+其中$$(x,y)$$为检测框中的一点，\(x',y'\)为输出Feature Map上的一点，范围是$$x'\in[0, \frac{wH'}{h}-1], y\in[0,H'-1]$$。$$\mathcal{T}(\cdot)$$为位置转移函数，应该是仿射变换矩阵。$$\kappa(v)=max(0,1-|v|)$$为双线性插值函数。
+
+在STN中我们讲过其双线性插值是可导的，因此到目前为止该过程是端到端的。
+
+### 1.4 文本识别
+
+Deep TextSpotter使用的是基于字符序列识别方式，骨干网络使用的是基于图3的全卷积网络。网络支持宽的变长输入，但是高是固定的。图3中的
+
+###### 图3：Deep TextSpotter识别部分的全卷积网络
+
+![](/assets/DeepTextSpotter.png)
 
 ## Reference
 
@@ -51,4 +73,6 @@ Deep TextSpotter产生的是长宽比不变，宽度固定位$$H'=32$$的Feature
 \[3\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
 
 \[4\] Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Networks. Graves, A., Fernandez, S., Gomez, F. and Schmidhuber, J., 2006. Proceedings of the 23rd international conference on Machine Learning, pp. 369--376. DOI: 10.1145/1143844.1143891
+
+\[5\] Lai, S., Xu, L., Liu, K., & Zhao, J. \(2015, January\). Recurrent Convolutional Neural Networks for Text Classification. In AAAI \(Vol. 333, pp. 2267-2273\).
 
