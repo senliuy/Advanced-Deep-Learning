@@ -278,5 +278,12 @@ y'\\
 0 & 0 & 1
 \end{matrix}
 \right]
+\left[
+\begin{matrix}
+x'\\
+y'\\
+1
+\end{matrix}
+\right]
 $$
 
