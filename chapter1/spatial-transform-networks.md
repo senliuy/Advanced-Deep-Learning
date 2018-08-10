@@ -261,5 +261,22 @@ STN的另外一个有趣的方向是通过将图像在一个维度上展开，�
 
 ## 附件A：仿射变换矩阵
 
-仿射变换\(Affline Transformation\)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness）和平行性（parallelness）。
+仿射变换\(Affline Transformation\)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness，即变换后直线依旧是直线，不会变成曲线）和平行性（parallelness，平行线依旧平行，不会相交）。仿射变换可以由一系列原子变换构成，其中包括：平移（Translation），缩放（Scale），翻转（Flip），旋转（Rotation）和剪切（Crop）。仿射变换可以用下面公式表示：
+
+$$
+\left[
+\begin{matrix}
+x'\\
+y'\\
+1
+\end{matrix}
+\right] = 
+\left[
+\begin{matrix}
+\theta_{11} & \theta_{12} & \theta_{13}\\
+\theta_{21} & \theta_{22} & \theta_{23}\\
+0 & 0 & 1
+\end{matrix}
+\right]
+$$
 
