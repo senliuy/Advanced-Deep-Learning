@@ -108,10 +108,10 @@ $$
 
 $$
 V_{(x_i^s, y_i^s) } = 
-(1-0.2) \times (1-0.3) \times 1 
-+ (1-0.8) \times (1-0.3) \times 2 
-+ (1-0.2) \times (1-0.7) \times 3 
-+ (1-0.8) \times (1-0.7) \times 4 = 1.8
+0.8 \times 0.7 \times 1 
++ 0.2 \times 0.7 \times 2 
++ 0.8 \times 0.3 \times 3 
++ 0.2 \times 0.3 \times 4 = 1.8
 $$
 
 
