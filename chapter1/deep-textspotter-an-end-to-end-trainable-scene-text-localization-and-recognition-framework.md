@@ -22,7 +22,7 @@ Deep TextSpotter的一个创新点是将NMS放到了识别之后，使用识别�
 
 ### 1.2 候选区域提取
 
-**输出向量**：Deep TextSpotter的检测部分预测了6个值，它们分别是坐标$$r_x$$，$$r_y$$，尺寸$$r_w$$，$$r_w$$，$$r_h$$，检测置信度$$r_p$$以及比YOLOv2增加的一个旋转角度$$r_\theta$$。
+**输出向量**：Deep TextSpotter的检测部分预测了6个值，它们分别是坐标$$r_x$$，$$r_y$$，尺寸$$r_w$$，$$r_h$$，检测置信度$$r_p$$以及比YOLOv2增加的一个旋转角度$$r_\theta$$。
 
 ## Reference
 
