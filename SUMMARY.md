@@ -30,7 +30,7 @@
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
   * 场景文字检测
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
-  * 文字识别
+  * [文字识别](chapter1/wen-zi-shi-bie.md)
     * [Spatial Transform Networks](chapter1/spatial-transform-networks.md)
   * 端到端文字检测与识别
     * [Reading Text in the Wild with Convolutional Neural Networks](chapter1/reading-text-in-the-wild-with-convolutional-neural-networks.md)
