@@ -1,5 +1,7 @@
 # Reading Text in the Wild with Convolutional Neural Networks
 
+tags: OCR, CNN
+
 ## 前言
 
 这篇论文出自著名的牛津大学计算机视觉组（Visual Geometry Group），没错，就是发明VGG网络的那个实验室。这篇论文是比较早的研究端到端文字检测和识别的经典算法之一。参考文献显示文章发表于2016年，但是该论文于2014年就开始投稿，正好也是那一年物体检测的开山算法R-CNN发表。
