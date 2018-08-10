@@ -206,9 +206,6 @@ $$
 
 其中$$I_n^\mathcal{T}$$和$$I_m^\mathcal{T}$$是STN裁剪得到的图像，$$I_n^{rand}$$是随机采样的图像，$$e()$$是编码函数，$$\alpha$$是hinge loss的margin，即裕度，相当于净赚多少。
 
-## Reference
-
-\[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
 
 ### 3.3 高维ST
 
@@ -248,6 +245,11 @@ STN的另外一个有趣的方向是通过将图像在一个维度上展开，�
 ###### 图7：STN用于高维映射
 
 ![](/assets/STN_7.png)
+
+## Reference
+
+\[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
+
 
 ## 附件A：仿射变换矩阵
 
