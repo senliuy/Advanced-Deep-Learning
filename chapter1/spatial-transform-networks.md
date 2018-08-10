@@ -105,6 +105,7 @@ $$
 
 上式可以这么理解：遍历整个输入Feature Map，如果遍历到的点$$(n,m)$$距离大于1，即$$|x_i^s-m|>1$$，那么$$max(0, 1 - |x_i^s-m|)=0$$（n处同理），即只有距离$$(x^s_i, y^s_i)$$最近的四个点参与计算。且距离与权重成反比，也就是距离越小，权值越大，也就是双线性插值的过程，如图3。其中$$(x^s_i, y^s_i)=(1.2, 2.3)$$, $$U_{12} = 1, U_{13} = 2, U_{22} = 3, U_{23}$$，则
 
+
 $$
 V_{(x_i^s, y_i^s) } = 
 (1-0.2) \times (1-0.3) \times 1 
@@ -113,10 +114,10 @@ V_{(x_i^s, y_i^s) } =
 + (1-0.8) \times (1-0.7) \times 4 = 1.8
 $$
 
+
 ###### 图3：STN中的双线性插值示例
 
 ![](/assets/STN_3.png)
-
 
 上式中的几个值都是可偏导的:
 
@@ -215,7 +216,6 @@ $$
 
 其中$$I_n^\mathcal{T}$$和$$I_m^\mathcal{T}$$是STN裁剪得到的图像，$$I_n^{rand}$$是随机采样的图像，$$e()$$是编码函数，$$\alpha$$是hinge loss的margin，即裕度，相当于净赚多少。
 
-
 ### 3.3 高维ST
 
 STN也可扩展到三维，此时的放射变换矩阵是的3行4列的，仿射变换表示为:
@@ -259,8 +259,7 @@ STN的另外一个有趣的方向是通过将图像在一个维度上展开，�
 
 \[1\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
 
-
 ## 附件A：仿射变换矩阵
 
-仿射变换\(Affline Transformation\)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness）和平行性（parallelness）。 
+仿射变换\(Affline Transformation\)是一种二维坐标到二维坐标的线性变化，其保持了二维图形的平直性（straightness）和平行性（parallelness）。
 
