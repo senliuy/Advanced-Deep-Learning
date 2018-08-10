@@ -42,7 +42,6 @@ $$
 
 $$
    w_b(s_i) = 1-\max\limits_{T} \prod ^{|T|-1}_j a(t_j, t_{j+1})
-   tags: 1
 $$
 
 
