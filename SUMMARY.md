@@ -28,7 +28,7 @@
   * [YOLOv3: An Incremental Improvement](chapter1/yolov3-an-incremental-improvement.md)
   * [Learning to Segment Every Thing](chapter1/learning-to-segment-every-thing.md)
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
-  * 场景文字检测
+  * [场景文字检测](chapter1/chang-jing-wen-zi-jian-ce.md)
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [文字识别](chapter1/wen-zi-shi-bie.md)
     * [Spatial Transform Networks](chapter1/spatial-transform-networks.md)
