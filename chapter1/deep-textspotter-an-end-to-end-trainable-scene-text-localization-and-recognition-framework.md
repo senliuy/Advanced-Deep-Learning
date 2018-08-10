@@ -58,11 +58,23 @@ $$
 
 ### 1.4 文本识别
 
-Deep TextSpotter使用的是基于字符序列识别方式，骨干网络使用的是基于图3的全卷积网络。网络支持宽的变长输入，但是高是固定的。图3中的
+Deep TextSpotter使用的是基于字符序列识别方式，骨干网络使用的是基于图3的全卷积网络。网络支持宽的变长输入，但是高是固定的。图3中的Recurrent Convolution猜测是使用\[5\]的RCNN，论文中没有给出注释。
+
+损失函数使用的是CTC，参考第二章[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)一节，此处不再废话。
 
 ###### 图3：Deep TextSpotter识别部分的全卷积网络
 
 ![](/assets/DeepTextSpotter.png)
+
+### 1.5 NMS
+
+在检测中搁置的NMS将在识别完之后在使用，NMS中使用的置信度是识别的置信度，阈值给的是$$0.5$$。
+
+## 总结
+
+由于使用了STN连接检测和识别，Deep TextSpotter是一个真正的端到端模型，所以在训练的过程中，只需要针对分类的loss进行训练。
+
+Deep TextSpotter，算法最核心的部件是STN，但是并没有cite该论文，识别中的RCNN也没cite，进而导致了理解上的困难，这毛病可不好。
 
 ## Reference
 
