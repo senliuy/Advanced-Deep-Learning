@@ -76,7 +76,7 @@ $$
 \right)^T
 $$
 
-其中$$\Delta_{\mathbf{C}'} \in \mathfrak{R}^{(K+3)\times{K+3}}$$是一个只由$$\mathbf{C}'$$
+其中是一个只由$$\mathbf{C}'$$定义的
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
