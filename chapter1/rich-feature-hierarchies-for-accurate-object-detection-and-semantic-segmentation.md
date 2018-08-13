@@ -1,5 +1,7 @@
 # Rich feature hierarchies for accurate object detection and semantic segmentation
 
+tags: R-CNN, Object Detection
+
 # 简介
 
 论文发表于2014年，自2012年之后，物体检测的发展开始变得缓慢，一个重要的原因是基于计算机视觉的方法（SIFT，HOG）进入了一个瓶颈期。生物学上发现人类的视觉是一个多层次的流程，而SIFT或者HOG只相当于人类视觉的第一层，这是导致瓶颈期的一个重要原因。
