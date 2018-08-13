@@ -47,9 +47,10 @@ STN的算法流程如图3。
 
 Localization network是一个有卷积层，池化层和全连接构成的卷积网络（图4）。由于一个点由$$(x,y)$$定义，所以一个要预测$$K$$个基准点的卷积网络需要由$$2K$$个输出。为了将基准点的范围控制到$$[-1,1]$$，输出层使用$$tanh$$作为激活函数，在论文的实验部分给出$$K=20$$。如图2和图3所示的绿色'+'即为Localization network预测的基准点。
 
-得到网络的输出后，其被reshape成一个$$2\times K$$的矩阵$$\mathbf{C}$$，即$$\mathbf{C} = [\mathbf{c}_1, \mathbf{c}_2, ..., \mathbf{c}_K] \in \mathfrak{R}^{2\times K}$$。 
+得到网络的输出后，其被reshape成一个$$2\times K$$的矩阵$$\mathbf{C}$$，即$$\mathbf{C} = [\mathbf{c}_1, \mathbf{c}_2, ..., \mathbf{c}_K] \in \mathfrak{R}^{2\times K}$$。
 
 ###### 图4: Localization network的结构
+
 ![](/assets/RARE_4.png)
 
 ### 1.1.2 Grid Generator
@@ -60,7 +61,22 @@ Localization network是一个有卷积层，池化层和全连接构成的卷积
 
 ###### 图5：TPS中的转换关系
 
+![](/assets/RARE_5.png)
 
+当从localization network得到基准点$$\mathbf{C}$$和固定基-基准点$$\mathbf{C}'$$后，转换矩阵$$T\in\mathfrak{R}^{2\times(K+3)}$$的值已经可以确定：
+
+$$
+\mathbf{T} = \left(\Delta^{-1}_{\mathbf{C}'}
+\left[
+\begin{matrix}
+\mathbf{C}^T \\
+\mathbf{0}^{3\times2}
+\end{matrix}
+\right]
+\right)^T
+$$
+
+其中$$\Delta_{\mathbf{C}'} \in \mathfrak{R}^{(K+3)\times{K+3}}$$是一个只由$$\mathbf{C}'$$
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
