@@ -26,7 +26,9 @@ STM的结构见图1：
 
 ![](/assets/STN_1.png)
 
-ST使用的插值方法属于后向插值的一种，即给定输出Feature Map上的一个点$$G_i = (x^t_i, y^t_i)$$，我们某种变化呢反向找到其在输入Feature Map中对应的位置$$(x^s_i, y^s_i)$$，如果$$(x^s_i, y^s_i)$$为整数，则输出Feature Map在$$(x^t_i, y^t_i)$$处的值和输入Feature Map在$$G_i = (x^t_i, y^t_i)$$处的值相同，否则需要通过插值的方法得到输出Feature Map在$$(x^t_i, y^t_i)$$处的值。
+ST使用的插值方法属于“后向插值”的一种，即给定输出Feature Map上的一个点$$G_i = (x^t_i, y^t_i)$$，我们某种变化呢反向找到其在输入Feature Map中对应的位置$$(x^s_i, y^s_i)$$，如果$$(x^s_i, y^s_i)$$为整数，则输出Feature Map在$$(x^t_i, y^t_i)$$处的值和输入Feature Map在$$G_i = (x^t_i, y^t_i)$$处的值相同，否则需要通过插值的方法得到输出Feature Map在$$(x^t_i, y^t_i)$$处的值。
+
+说了后向插值，当然还有一种插值方式叫做前向插值，例如我们在[Mask R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)中介绍的插值方法。
 
 ### 1.1 Localisation Network
 
