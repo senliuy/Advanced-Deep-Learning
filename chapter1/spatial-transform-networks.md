@@ -17,7 +17,7 @@ Spatial Transformer Network（STN）的提出动机源于对池化的改进，�
 ST由三个模块组成：
 
 1. Localisation Network：该模块学习仿射变换矩阵（附件A）；
-2. Parameterised Sampling Grid：根据Localisation Network得到仿射变换矩阵，得到输入Feature Map和输出Feature Map之间的位置映射关系；
+2. Parameterised Sampling Grid：根据Localisation Network得到仿射变换矩阵，得到输出Feature Map和输入Feature Map之间的位置映射关系；
 3. Differentiable Image Sampling：计算输出Feature Map的每个像素点的值。
 
 STM的结构见图1：
@@ -25,6 +25,8 @@ STM的结构见图1：
 ###### 图1：STM的框架图
 
 ![](/assets/STN_1.png)
+
+ST使用的插值方法属于后向插值的一种，即给定输出Feature Map上的一个点$$G_i = (x^t_i, y^t_i)$$，我们某种变化呢反向找到其在输入Feature Map中对应的位置$$(x^s_i, y^s_i)$$，如果$$(x^s_i, y^s_i)$$为整数，则输出Feature Map在$$(x^t_i, y^t_i)$$处的值和输入Feature Map在$$G_i = (x^t_i, y^t_i)$$处的值相同，否则需要通过插值的方法得到输出Feature Map在$$(x^t_i, y^t_i)$$处的值。
 
 ### 1.1 Localisation Network
 
