@@ -45,7 +45,7 @@ STN的算法流程如图3。
 
 #### 1.1.1 localization network
 
-###### 
+###### ![](/assets/RARE_4.png)
 
 ## Reference
 
