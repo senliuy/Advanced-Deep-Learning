@@ -92,7 +92,9 @@ $$
 其中$$\mathbf{1}^{K\times1}$$是一个$$K\times1$$的值全是$$1$$的行向量，$$\mathbf{1}^{1\times K}$$同理。$$\mathbf{R}\in \mathfrak{R}^{K\times K}$$是一个由$$r_{i,j}$$组成的$$K\times K$$的矩阵。其中
 
 $$
-r_{i,j} = d^2_{i,j}ln(d^2_{i,j}) \\
+r_{i,j} = d^2_{i,j}ln(d^2_{i,j})
+$$
+$$
 d_{i,j} = euclidean(c'_i, c'_j)
 $$
 
@@ -101,8 +103,12 @@ $$
 由此可见，仅仅使用$$C$$和$$C'$$我们便可以得到转换矩阵$$\mathbf{T}$$。那么对于STN这个反向插值的算法来说，对于矫正图片中$$I' = \{\mathbf{p'_i}\}_{i=1,2,...,N}$$（$$N = W\times H$$, 即输出图像的像素点的个数）的任意一点$$\mathbf{p}'_i = [x'_i, y'_i]^T$$，我们怎样才能找到其在原图$$I$$中对应的点$$\mathbf{p}_i = [x_i, y_i]^T$$呢？这就需要用到我们上面得到的$$\mathbf{T}$$了。
 
 $$
-r'_{i,k} = d^2_{i,k} ln(d^2_{i,k}) \\
-\hat{\mathbf{p}}'_i = [1, x'_i, y'_i, r'_{i,1}, r'_{i,2}, ..., r'_{i,3}] \\
+r'_{i,k} = d^2_{i,k} ln(d^2_{i,k})
+$$
+$$
+\hat{\mathbf{p}}'_i = [1, x'_i, y'_i, r'_{i,1}, r'_{i,2}, ..., r'_{i,3}]
+$$
+$$
 \mathbf{p}_i = \mathbf{T}\hat{\mathbf{p}}'_i
 $$
 
