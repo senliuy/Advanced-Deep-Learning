@@ -45,12 +45,21 @@ STN的算法流程如图3。
 
 #### 1.1.1 localization network
 
-Localization network是一个有卷积层，池化层和全连接构成的卷积网络（图4）。由于一个点由$$(x,y)$$定义，所以一个要预测$$K$$个基准点的卷积网络需要由$$2K$$个输出。为了将基准点的范围控制到$$[-1,1]$$，输出层使用$$tanh$$作为激活函数。如图3所示，其中绿色点纪委Localization network预测的基准点。
+Localization network是一个有卷积层，池化层和全连接构成的卷积网络（图4）。由于一个点由$$(x,y)$$定义，所以一个要预测$$K$$个基准点的卷积网络需要由$$2K$$个输出。为了将基准点的范围控制到$$[-1,1]$$，输出层使用$$tanh$$作为激活函数，在论文的实验部分给出$$K=20$$。如图2和图3所示的绿色'+'即为Localization network预测的基准点。
 
 得到网络的输出后，其被reshape成一个$$2\times K$$的矩阵$$\mathbf{C}$$，即$$\mathbf{C} = [\mathbf{c}_1, \mathbf{c}_2, ..., \mathbf{c}_K] \in \mathfrak{R}^{2\times K}$$。 
 
 ###### 图4: Localization network的结构
 ![](/assets/RARE_4.png)
+
+### 1.1.2 Grid Generator
+
+当给定了输出Feature Map的时候，我们可以再其顶边和底边分别均匀的生成$$K$$个点，如图5，这些点便被叫做基-基准点（base fiducial point），表示为$$\mathbf{C'} = [\mathbf{c'}_1, \mathbf{c'}_2, ..., \mathbf{c'}_K] \in \mathfrak{R}^{2\times K}$$，在RARE的STN中，输出的Feature Map的尺寸是固定的，所以$$\mathbf{C'}$$为一个常量。
+
+那么，1.1.2节要介绍的Grid Generator的作用就是如何利用$$C$$和$$C'$$，将图5中的图像$$I$$和图5中的图像$$I'$$的转换关系$$T$$。
+
+###### 图5：TPS中的转换关系
+
 
 ## Reference
 
