@@ -53,6 +53,8 @@ Localization network是一个有卷积层，池化层和全连接构成的卷积
 
 ![](/assets/RARE_4.png)
 
+如图4所示，RARE的输入图片的尺寸是$$100\times32$$，在RARE的实现中，STN的输出层的Feature Map的尺寸同样使用了$$100\times32$$的大小。
+
 ### 1.1.2 Grid Generator
 
 当给定了输出Feature Map的时候，我们可以再其顶边和底边分别均匀的生成$$K$$个点，如图5，这些点便被叫做基-基准点（base fiducial point），表示为$$\mathbf{C'} = [\mathbf{c'}_1, \mathbf{c'}_2, ..., \mathbf{c'}_K] \in \mathfrak{R}^{2\times K}$$，在RARE的STN中，输出的Feature Map的尺寸是固定的，所以$$\mathbf{C'}$$为一个常量。
@@ -65,6 +67,7 @@ Localization network是一个有卷积层，池化层和全连接构成的卷积
 
 当从localization network得到基准点$$\mathbf{C}$$和固定基-基准点$$\mathbf{C}'$$后，转换矩阵$$T\in\mathfrak{R}^{2\times(K+3)}$$的值已经可以确定：
 
+
 $$
 \mathbf{T} = \left(\Delta^{-1}_{\mathbf{C}'}
 \left[
@@ -76,7 +79,9 @@ $$
 \right)^T
 $$
 
+
 其中$$\Delta_{\mathbf{C}'} \in \mathfrak{R}^{(K+3)\times{K+3}}$$是一个只由$$\mathbf{C}'$$计算得到的矩阵:
+
 
 $$
 \Delta_{C'} = 
@@ -89,28 +94,42 @@ $$
 \right]
 $$
 
+
 其中$$\mathbf{1}^{K\times1}$$是一个$$K\times1$$的值全是$$1$$的行向量，$$\mathbf{1}^{1\times K}$$同理。$$\mathbf{R}\in \mathfrak{R}^{K\times K}$$是一个由$$r_{i,j}$$组成的$$K\times K$$的矩阵。其中
+
 
 $$
 r_{i,j} = d^2_{i,j}ln(d^2_{i,j})
 $$
+
+
+
 $$
 d_{i,j} = euclidean(c'_i, c'_j)
 $$
+
 
 上式中$$euclidean(a,b)$$表示$$a,b$$两点之间的欧式距离。
 
 由此可见，仅仅使用$$C$$和$$C'$$我们便可以得到转换矩阵$$\mathbf{T}$$。那么对于STN这个反向插值的算法来说，对于矫正图片中$$I' = \{\mathbf{p'_i}\}_{i=1,2,...,N}$$（$$N = W\times H$$, 即输出图像的像素点的个数）的任意一点$$\mathbf{p}'_i = [x'_i, y'_i]^T$$，我们怎样才能找到其在原图$$I$$中对应的点$$\mathbf{p}_i = [x_i, y_i]^T$$呢？这就需要用到我们上面得到的$$\mathbf{T}$$了。
 
+
 $$
 r'_{i,k} = d^2_{i,k} ln(d^2_{i,k})
 $$
+
+
+
 $$
 \hat{\mathbf{p}}'_i = [1, x'_i, y'_i, r'_{i,1}, r'_{i,2}, ..., r'_{i,3}]
 $$
+
+
+
 $$
 \mathbf{p}_i = \mathbf{T}\hat{\mathbf{p}}'_i
 $$
+
 
 其中$$d^2_{i,k}$$表示第$$i$$个像素点$$\mathbf{p}'_i$$和第$$k$$个基准点$$c'_k$$之间的欧式距离。
 
@@ -126,9 +145,12 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ###### 图6：SRN框架图
 
+![](/assets/RARE_6.png)
+
 ### 1.2.1 编码器（Encoder）
 
-编码器由一个
+RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。
+
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
