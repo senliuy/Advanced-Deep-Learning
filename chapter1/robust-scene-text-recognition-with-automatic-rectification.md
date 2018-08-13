@@ -35,7 +35,7 @@ TPS也常用于对扭曲图像的矫正，1.1.2节中介绍计算流程，至于
 
 1. **localization network**: 预测TPS矫正所需要的K个基准点（fiducial point）；
 2. **Grid Generator**：基于基准点进行TPS变换，生成输出Feature Map的采样窗格（Grid）；
-3. 每个Grid执行双线性插值。
+3. **Sampler**：每个Grid执行双线性插值。
 
 STN的算法流程如图3。
 
