@@ -33,7 +33,7 @@ TPS也常用于对扭曲图像的矫正，1.1.2节中介绍计算流程，至于
 
 纵观整个矫正算法，RARE的STN也分成3部分：
 
-1. **localization network**: 预测TPS矫正所需要的K个基准点（fiducial point）；
+1. **localization network**: 预测TPS矫正所需要的$$K$$个基准点（fiducial point）；
 2. **Grid Generator**：基于基准点进行TPS变换，生成输出Feature Map的采样窗格（Grid）；
 3. **Sampler**：每个Grid执行双线性插值。
 
@@ -45,7 +45,12 @@ STN的算法流程如图3。
 
 #### 1.1.1 localization network
 
-###### ![](/assets/RARE_4.png)
+Localization network是一个有卷积层，池化层和全连接构成的卷积网络（图4）。由于一个点由$$(x,y)$$定义，所以一个要预测$$K$$个基准点的卷积网络需要由$$2K$$个输出。为了将基准点的范围控制到$$[-1,1]$$，输出层使用$$tanh$$作为激活函数。如图3所示，其中绿色点纪委Localization network预测的基准点。
+
+得到网络的输出后，其被reshape成一个$$2\times K$$的矩阵$$\mathbf{C}$$，即$$\mathbf{C} = [\mathbf{c}_1, \mathbf{c}_2, ..., \mathbf{c}_K] \in \mathfrak{R}^{2\times K}$$。 
+
+###### 图4: Localization network的结构
+![](/assets/RARE_4.png)
 
 ## Reference
 
