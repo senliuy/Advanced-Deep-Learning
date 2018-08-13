@@ -6,12 +6,22 @@ tags: RARE, OCR, STN, TPS, Attention
 
 RARE实现了对不规则文本的end-to-end的识别，算法包括两部分：
 
-1. 基于STN\[2\]的不规则文本区域的矫正：与STN不同的是，RARE在Localisation部分预测的并不是仿射变换矩阵，而是K个TPS（Thin Plate Spines）\[3\]\[4\]的基准点，其中TPS基于样条（spines）的插值和平滑技术，在1.1节中会详细介绍其在RARE中的计算过程。
-2. 基于SRN的文字识别：SRN（Sequence Recognition Network）是基于Attention \[5\]的序列模型，包括有CNN和RNN构成的编码（Encoder）模块和基于Attention和RNN的解码（Decoder）模块构成，此部分会在1.2节介绍。
+1. 基于[STN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/spatial-transform-networks.html)\[2\]的不规则文本区域的矫正：与STN不同的是，RARE在Localisation部分预测的并不是仿射变换矩阵，而是K个TPS（Thin Plate Spines）\[3\]\[4\]的基准点，其中TPS基于样条（spines）的插值和平滑技术，在1.1节中会详细介绍其在RARE中的计算过程。
+2. 基于SRN的文字识别：SRN（Sequence Recognition Network）是基于Attention \[5\]的序列模型，包括有CNN和[LSTM](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)构成的编码（Encoder）模块和基于[Attention](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)和LSTM的解码（Decoder）模块构成，此部分会在1.2节介绍。
 
 在测试阶段，RARE使用了基于贪心或Beam Search的方法寻找最优输出结果。
 
+RARE的流程如图1。
+
+###### 图1：RARE的算法框架
+
+
+
 ## 1. RARE详解
+
+### 1.1 Spatial Transformer Network
+
+场景文字检测的难点有很多，仿射变换是众多变换中的一种（图1.(a)）
 
 ## Reference
 
