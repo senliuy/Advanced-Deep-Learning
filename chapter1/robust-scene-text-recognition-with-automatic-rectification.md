@@ -122,10 +122,13 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ## 1.2 Sequence Recognition Network
 
-如图1的后半部分所示，RARE的SRN的输入是1.1节得到的校正后的图片，输出则是识别的字符串。SRN是一个基于Attention的序列到序列（Seq-to-Seq）的模型，包含编码器（Encoder）和解码器（Decoder）两部分，编码器用于将输入图像$$I'$$编码成特征向量$$\mathbf{h}$$，解码器则负责将特征向量$$\mathbf{h}$$解码成字符串$$\hat{\mathbf{y}}$$。
+如图1的后半部分所示，RARE的SRN的输入是1.1节得到的校正后的图片，输出则是识别的字符串。SRN是一个基于Attention的序列到序列（Seq-to-Seq）的模型，包含编码器（Encoder）和解码器（Decoder）两部分，编码器用于将输入图像$$I'$$编码成特征向量$$\mathbf{h}$$，解码器则负责将特征向量$$\mathbf{h}$$解码成字符串$$\hat{\mathbf{y}}$$。SRN的结构如图6所示。
+
+###### 图6：SRN框架图
 
 ### 1.2.1 编码器（Encoder）
 
+编码器由一个
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
