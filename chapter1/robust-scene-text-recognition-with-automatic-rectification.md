@@ -76,7 +76,44 @@ $$
 \right)^T
 $$
 
-其中是一个只由$$\mathbf{C}'$$定义的
+其中$$\Delta_{\mathbf{C}'} \in \mathfrak{R}^{(K+3)\times{K+3}}$$是一个只由$$\mathbf{C}'$$计算得到的矩阵:
+
+$$
+\Delta_{C'} = 
+\left[
+\begin{matrix}
+\mathbf{1}^{K\times1} & \mathbf{C}'^T & \mathbf{R} \\
+\mathbf{0} & \mathbf{0} & \mathbf{1}^{1\times K} \\
+\mathbf{0} & \mathbf{0} & \mathbf{C}'\\
+\end{matrix}
+\right]
+$$
+
+其中$$\mathbf{1}^{K\times1}$$是一个$$K\times1$$的值全是$$1$$的行向量，$$\mathbf{1}^{1\times K}$$同理。$$\mathbf{R}\in \mathfrak{R}^{K\times K}$$是一个由$$r_{i,j}$$组成的$$K\times K$$的矩阵。其中
+
+$$
+r_{i,j} = d^2_{i,j}ln(d^2_{i,j}) \\
+d_{i,j} = euclidean(c'_i, c'_j)
+$$
+
+上式中$$euclidean(a,b)$$表示$$a,b$$两点之间的欧式距离。
+
+由此可见，仅仅使用$$C$$和$$C'$$我们便可以得到转换矩阵$$\mathbf{T}$$。那么对于STN这个反向插值的算法来说，对于矫正图片中$$I' = \{\mathbf{p'_i}\}_{i=1,2,...,N}$$（$$N = W\times H$$, 即输出图像的像素点的个数）的任意一点$$\mathbf{p}'_i = [x'_i, y'_i]^T$$，我们怎样才能找到其在原图$$I$$中对应的点$$\mathbf{p}_i = [x_i, y_i]^T$$呢？这就需要用到我们上面得到的$$\mathbf{T}$$了。
+
+$$
+r'_{i,k} = d^2_{i,k} ln(d^2_{i,k}) \\
+\hat{\mathbf{p}}'_i = [1, x'_i, y'_i, r'_{i,1}, r'_{i,2}, ..., r'_{i,3}] \\
+\mathbf{p}_i = \mathbf{T}\hat{\mathbf{p}}'_i
+$$
+
+其中$$d^2_{i,k}$$表示第$$i$$个像素点$$\mathbf{p}'_i$$和第$$k$$个基准点$$c'_k$$之间的欧式距离。
+
+### 1.1.3 Sampler
+
+在1.1.2节中，我们得到了输出Feature Map上一点$$\mathbf{p}'_i = [x'_i, y'_i]^T$$对应的输入Feature Map上像素点的坐标$$\mathbf{p}_i = [x_i, y_i]^T$$的对应关系。在RARE中，使用了双线西插值得到了输出Feature Map在$$[x'_i, y'_i]$$上的值。
+
+RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意味着RARE也是一个可端到端训练的模型。不同点在于RARE将仿射变换矩阵变成了TPS，从而使模型有拥有矫正任何变换的能力，包括但不仅限于仿射变换，图2右侧部分是RARE的STN得到的实验结果。
+
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
