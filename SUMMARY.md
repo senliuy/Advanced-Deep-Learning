@@ -32,7 +32,8 @@
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [文字识别](chapter1/wen-zi-shi-bie.md)
     * [Spatial Transform Networks](chapter1/spatial-transform-networks.md)
-  * 端到端文字检测与识别
+    * [Robust Scene Text Recognition with Automatic Rectification](chapter1/robust-scene-text-recognition-with-automatic-rectification.md)
+  * [端到端文字检测与识别](chapter1/duan-dao-duan-wen-zi-jian-ce-yu-shi-bie.md)
     * [Reading Text in the Wild with Convolutional Neural Networks](chapter1/reading-text-in-the-wild-with-convolutional-neural-networks.md)
     * [Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework](chapter1/deep-textspotter-an-end-to-end-trainable-scene-text-localization-and-recognition-framework.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)

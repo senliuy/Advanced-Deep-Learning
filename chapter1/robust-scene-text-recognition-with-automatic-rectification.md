@@ -1,0 +1,1 @@
+Robust Scene Text Recognition with Automatic Rectification
