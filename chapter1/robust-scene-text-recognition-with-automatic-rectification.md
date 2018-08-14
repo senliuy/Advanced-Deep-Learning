@@ -49,7 +49,7 @@ Localization network是一个有卷积层，池化层和全连接构成的卷积
 
 得到网络的输出后，其被reshape成一个$$2\times K$$的矩阵$$\mathbf{C}$$，即$$\mathbf{C} = [\mathbf{c}_1, \mathbf{c}_2, ..., \mathbf{c}_K] \in \mathfrak{R}^{2\times K}$$。
 
-###### 图4: Localization network的结构
+###### 图4: Localization network的结构，其中所有卷积的$$padding=1$$，所有$$stride=1$$
 
 ![](/assets/RARE_4.png)
 
@@ -149,7 +149,10 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ### 1.2.1 编码器（Encoder）
 
-RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。如图7所示。
+RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。g根据论文中给出的结构，以及1.1节确定的STN的输出层的大小($$100\times32$$), Encoder的结构如图7所示。
+
+
+![](/assets/RARE_7.png)
 
 ## Reference
 
