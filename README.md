@@ -36,6 +36,9 @@
 * 2018-08-06：Reading Text in the Wild with Convolutional Neural Networks
 * 2018-08-09：Spatial Transform Networks
 * 2018-08-10：Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework
+* 2018-08-14：Robust Scene Text Recognition with Automatic Rectification
+
+
 
 
 
