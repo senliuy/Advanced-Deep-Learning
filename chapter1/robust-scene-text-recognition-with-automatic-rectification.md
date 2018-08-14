@@ -141,7 +141,7 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ## 1.2 Sequence Recognition Network
 
-如图1的后半部分所示，RARE的SRN的输入是1.1节得到的校正后的图片，输出则是识别的字符串。SRN是一个基于Attention的序列到序列（Seq-to-Seq）的模型，包含编码器（Encoder）和解码器（Decoder）两部分，编码器用于将输入图像$$I'$$编码成特征向量$$\mathbf{h}$$，解码器则负责将特征向量$$\mathbf{h}$$解码成字符串$$\hat{\mathbf{y}}$$。SRN的机构基本遵循Bahdanau在[5]中的结构，RARE的SRN的结构如图6所示。
+如图1的后半部分所示，RARE的SRN的输入是1.1节得到的校正后的图片，输出则是识别的字符串。SRN是一个基于Attention的序列到序列（Seq-to-Seq）的模型，包含编码器（Encoder）和解码器（Decoder）两部分，编码器用于将输入图像$$I'$$编码成特征向量$$\mathbf{h}$$，解码器则负责将特征向量$$\mathbf{h}$$解码成字符串$$\hat{\mathbf{y}}$$。SRN的机构基本遵循Bahdanau在\[5\]中的结构，RARE的SRN的结构如图6所示。
 
 ###### 图6：SRN框架图
 
@@ -151,29 +151,37 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。g根据论文中给出的结构，以及1.1节确定的STN的输出层的大小\($$100\times32$$\), Encoder的结构如图7所示。
 
-```
-这里有个非常大的疑问，
-```
-
 ###### 图7：SRN Encoder网络结果即输出Feature Map的尺寸
 
 ![](/assets/RARE_7.png)
 
+这里有个非常大的疑问。按照论文中给出的参数，卷积层的输出Feature   Map的尺寸是$$6\times1$$，这个尺寸带来了两个非常严重的问题：  
+1. 时间片的长度只有6，再算上终止运算符, 模型能预测的最大字符长度是5；  
+2. Feature Map的高度是1，也就是说论文中的Map-to-Sequence并没有起到作用。  
+猜测是作者的笔误，可能并没有进行多达4次的降采样。带有开源代码后再来看此处。
+
 在卷积层之后，Encoder设置了两个双向LSTM，每个LSTM的隐层节点的数量都是$$256$$，计第$$t$$个时间片的输出特征为$$\mathbf{x}_t$$，第$$t$$个时间片的正向LSTM的隐层节点为$$\mathbf{h}^f_t$$，反向LSTM的隐节点为$$\mathbf{h}^b_t$$，$$f()$$表示一个LSTM节点，则正向和反向传播可分别表示为：
+
 
 $$
 \mathbf{h}^f_t = f(\mathbf{x}_t, \mathbf{h}^f_{t-1})
 $$
+
+
+
 $$
 \mathbf{h}^b_t = f(\mathbf{x}_t, \mathbf{h}^b_{t+1})
 $$
 
-上式中的$$h_0$$以及$$h_7$$可以自己定义或者用默认的0值。
+
+上式中的$$h_0$$以及$$h_7$$可以自己定义或者用默认的0值。  
 Encoder的输出是正反向两个隐层节点拼接起来，这样每个时间片的特征响亮的个数便是512:
+
 
 $$
 \mathbf{h} = [\mathbf{h}^f_t; \mathbf{h}^b_t]
 $$
+
 
 卷积之后$$W_{conv}=6$$，Encoder的输出特征序列$$\mathbf{h}$$由所有时间片拼接而成，因此$$\mathbf{h} = (\mathbf{h}_1, ..., \mathbf{h}_L) \in \mathfrak{R}^{512\times L}$$，其中$$L=W_{conv}=6$$。
 
@@ -181,21 +189,31 @@ $$
 
 Decoder是基于单向GRU的序列模型，其在第$$t$$个时间片的特征$$\mathbf{s}_t$$表示为：
 
+
 $$
 \mathbf{s}_t = \text{GRU}(l_{t-1}, \mathbf{g}_t, s_{t-1})
 $$
 
+
 在训练时，$$l_{t-1}$$是第t个时间片的标签，在测试时则是第t个时间片的预测结果。$$\mathbf{g}_t$$是Attention的一个叫做glimpse的参数，从数学上理解是特征$$\mathbf{h}$$的各个时间片的特征的加权和：
+
 
 $$
 g_t = \sum_{i=1}^L \alpha_{ti}\mathbf{h}_i
 $$
 
+
+
 $$
 \alpha_{ti} = \frac{exp(tanh(s_{i-1}, \mathbf{h}_t))}{\sum_{k=1}^T exp(tanh(s_{i-1}, \mathbf{h}_k))}
 $$
 
-RARE使用的是
+
+RARE的输出向量有37个节点，包括26个字母+10个数字+1个终止符，输出层使用softmax做激活函数，每个时间片预测一个值：
+
+$$
+\hat{\mathbf{y}}_t = \text{softmax}(\mathbf{W}^Ts_t)
+$$
 
 ## Reference
 
