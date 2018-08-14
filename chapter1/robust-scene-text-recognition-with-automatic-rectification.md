@@ -186,6 +186,7 @@ $$
 $$
 g_t = \sum_{i=1}^L \alpha_{ti}\mathbf{h}_i
 $$
+
 $$
 \alpha_{ti} = \frac{exp(tanh(s_{i-1}, \mathbf{h}_t))}{\sum_{k=1}^T exp(tanh(s_{i-1}, \mathbf{h}_k))}
 $$
