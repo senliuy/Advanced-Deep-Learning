@@ -141,7 +141,7 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ## 1.2 Sequence Recognition Network
 
-如图1的后半部分所示，RARE的SRN的输入是1.1节得到的校正后的图片，输出则是识别的字符串。SRN是一个基于Attention的序列到序列（Seq-to-Seq）的模型，包含编码器（Encoder）和解码器（Decoder）两部分，编码器用于将输入图像$$I'$$编码成特征向量$$\mathbf{h}$$，解码器则负责将特征向量$$\mathbf{h}$$解码成字符串$$\hat{\mathbf{y}}$$。SRN的结构如图6所示。
+如图1的后半部分所示，RARE的SRN的输入是1.1节得到的校正后的图片，输出则是识别的字符串。SRN是一个基于Attention的序列到序列（Seq-to-Seq）的模型，包含编码器（Encoder）和解码器（Decoder）两部分，编码器用于将输入图像$$I'$$编码成特征向量$$\mathbf{h}$$，解码器则负责将特征向量$$\mathbf{h}$$解码成字符串$$\hat{\mathbf{y}}$$。SRN的机构基本遵循Bahdanau在[5]中的结构，RARE的SRN的结构如图6所示。
 
 ###### 图6：SRN框架图
 
@@ -149,11 +149,31 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ### 1.2.1 编码器（Encoder）
 
-RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。g根据论文中给出的结构，以及1.1节确定的STN的输出层的大小($$100\times32$$), Encoder的结构如图7所示。
+RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。g根据论文中给出的结构，以及1.1节确定的STN的输出层的大小\($$100\times32$$\), Encoder的结构如图7所示。如图7所示的输出Feature Map的尺寸到Map-to-Sequence的高度恰好为1，也就是说在实际实验中Map-to-Sequence并没有起到作用，此处留做疑问，带有开源代码之后再来解疑。
 
+###### 图7：SRN Encoder网络结果即输出Feature Map的尺寸
 
 ![](/assets/RARE_7.png)
 
+在卷积层之后，Encoder设置了两个双向LSTM，每个LSTM的隐层节点的数量都是$$256$$，计第$$t$$个时间片的输出特征为$$\mathbf{x}_t$$，第$$t$$个时间片的正向LSTM的隐层节点为$$\mathbf{h}^f_t$$，反向LSTM的隐节点为$$\mathbf{h}^b_t$$，$$f()$$表示一个LSTM节点，则正向和反向传播可分别表示为：
+
+$$
+\mathbf{h}^f_t = f(\mathbf{x}_t, \mathbf{h}^f_{t-1})
+$$
+$$
+\mathbf{h}^b_t = f(\mathbf{x}_t, \mathbf{h}^b_{t+1})
+$$
+
+上式中的$$h_0$$以及$$h_7$$可以自己定义或者用默认的0值。
+Encoder的输出是正反向两个隐层节点拼接起来，这样每个时间片的特征响亮的个数便是512:
+
+$$
+\mathbf{h} = [\mathbf{h}^f_t; \mathbf{h}^b_t]
+$$
+
+卷积之后$$W_{conv}=6$$，Encoder的输出特征序列$$\mathbf{h}$$由所有时间片拼接而成，因此$$\mathbf{h} = (\mathbf{h}_1, ..., \mathbf{h}_L) \in \mathfrak{R}^{512\times L}$$，其中$$L=W_{conv}=6$$。
+
+1.2.2 
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
