@@ -29,6 +29,7 @@
   * [Learning to Segment Every Thing](chapter1/learning-to-segment-every-thing.md)
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
   * [场景文字检测](chapter1/chang-jing-wen-zi-jian-ce.md)
+    * [DeepText: A Unified Framework for Text Proposal Generation and Text Detection in Natural Images](chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.md)
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
   * [文字识别](chapter1/wen-zi-shi-bie.md)
     * [Spatial Transform Networks](chapter1/spatial-transform-networks.md)
