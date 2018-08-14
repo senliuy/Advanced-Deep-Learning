@@ -89,7 +89,7 @@ $$
 \begin{matrix}
 \mathbf{1}^{K\times1} & \mathbf{C'}^{T} & \mathbf{R} \\
 \mathbf{0} & \mathbf{0} & \mathbf{1}^{1\times K} \\
-\mathbf{0} & \mathbf{0} & \mathbf{C}'\\
+\mathbf{0} & \mathbf{0} & \mathbf{C}'
 \end{matrix}
 \right]
 $$
