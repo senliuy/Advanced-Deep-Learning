@@ -149,7 +149,11 @@ RARE中的STN和原始版本的STN都是一个可微分的模型，这也就意�
 
 ### 1.2.1 编码器（Encoder）
 
-RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。g根据论文中给出的结构，以及1.1节确定的STN的输出层的大小\($$100\times32$$\), Encoder的结构如图7所示。如图7所示的输出Feature Map的尺寸到Map-to-Sequence的高度恰好为1，也就是说在实际实验中Map-to-Sequence并没有起到作用，此处留做疑问，带有开源代码之后再来解疑。
+RARE的编码器非常简单由一个7层的CNN和一个两层的双向LSTM组成。g根据论文中给出的结构，以及1.1节确定的STN的输出层的大小\($$100\times32$$\), Encoder的结构如图7所示。
+
+```
+这里有个非常大的疑问，
+```
 
 ###### 图7：SRN Encoder网络结果即输出Feature Map的尺寸
 
@@ -191,7 +195,7 @@ $$
 \alpha_{ti} = \frac{exp(tanh(s_{i-1}, \mathbf{h}_t))}{\sum_{k=1}^T exp(tanh(s_{i-1}, \mathbf{h}_k))}
 $$
 
-
+RARE使用的是
 
 ## Reference
 
