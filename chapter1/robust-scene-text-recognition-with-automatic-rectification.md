@@ -215,6 +215,20 @@ $$
 \hat{\mathbf{y}}_t = \text{softmax}(\mathbf{W}^Ts_t)
 $$
 
+### 1.3 训练
+
+RARE是一个端到端训练的模型，我们不需要STN专门的标签也可以训练它，所以损失函数仅是一个简单的log极大似然：
+
+$$
+\mathcal{L} = \sum_{i=1}^N log \prod_{t=1}^{|\mathbf{I}^{(i)}|} p(l_t^{(i)}|I^{(i)};\mathbf{\theta})
+$$
+
+为了提高STN的收敛速度，作者使用了图8的三种方式和书籍初始化的方式初始化基准点，其中(a)的收敛效果最好：
+
+###### 图8：基准点的几种初始化方式
+
+
+
 ## Reference
 
 \[1\] Shi B, Wang X, Lyu P, et al. Robust scene text recognition with automatic rectification\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 4168-4176.
