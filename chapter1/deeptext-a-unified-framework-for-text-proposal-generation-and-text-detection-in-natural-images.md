@@ -54,7 +54,9 @@ DeepText使用了VGG-16的Conv4_3和Conv5_3的多尺度特征，使用基于Grid
 
 ### 1.4 Iterative Bounding Box Voting (IBBV)
 
-在训练过程中，每个Iteration会预测一组检测框：$$D_c^t = \{B_{i,c}^t, B_{i,c}^t\}_{i=1}^{N_{c,t}}$$
+在训练过程中，每个Iteration会预测一组检测框：$$D_c^t = \{B_{i,c}^t, S_{i,c}^t\}_{i=1}^{N_{c,t}}$$，其中$$t=1,2,...,T$$表示训练阶段，$$N_{c,t}$$表示类别$$c$$的检测框，$$B$$和$$S$$分别表示检测框和置信度。NMS合并的是每个训练阶段的并集：$$D_c=\cup_{t=1}^{T} U_c^t$$。NMS使用的合并阈值是0.3。
+
+在IBBV之后，DeepText接了一个过滤器用于过滤多余的检测框，过滤器的具体内容不详，后续待补。
 
   
 
