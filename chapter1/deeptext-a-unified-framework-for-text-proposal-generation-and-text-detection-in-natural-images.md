@@ -9,7 +9,7 @@
 3. **MLRP**：使用了多尺度的特征，ROI提供的按Grid的池化的方式正好融合不同尺寸的Feature Map。
 4. **IBBV**：使用多个Iteration的bounding boxes的集合使用NMS
 
-###### 图1：DeepText网络结构图{#Fig.1}
+###### 图1：DeepText网络结构图
 
 ![](/assets/DeepText_1.png)
 
@@ -51,7 +51,7 @@ DeepText将样本分成3类：
 
 ### 1.3  Multi Layer ROI Pooling（MLRP）
 
-DeepText使用了VGG-16的Conv4\_3和Conv5\_3的多尺度特征，使用基于Grid的ROI Pooling将两个不同尺寸的Feature Map变成$$7\times7\times512$$的大小，通过$$1\times1$$卷积将Concatnate后的1024维的Feature Map降维到512维，如[图1](#Fig.1)所示。
+DeepText使用了VGG-16的Conv4\_3和Conv5\_3的多尺度特征，使用基于Grid的ROI Pooling将两个不同尺寸的Feature Map变成$$7\times7\times512$$的大小，通过$$1\times1$$卷积将Concatnate后的1024维的Feature Map降维到512维，如图1所示。
 
 ### 1.4 Iterative Bounding Box Voting \(IBBV\)
 
