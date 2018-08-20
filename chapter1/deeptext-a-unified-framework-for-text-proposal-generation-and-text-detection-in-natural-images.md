@@ -11,7 +11,7 @@
 
 ###### 图1：DeepText网络结构图
 
-![](\assets\DeepText_1.png)
+![](/assets/DeepText_1.png)
 
 在阅读本文前，一定要先搞清楚Faster R-CNN，本文只会对DeepText对Faster R-CNN的改进进行说明，相同部分不再重复。
 
