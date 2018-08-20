@@ -35,16 +35,22 @@ DeepText的Inception由3路不同的卷积构成：
 
 针对场景文字检测中Ground Truth的特点，DeepText使用了和Faster R-CNN不同的锚点：$$(32, 48, 64, 80)$$四个尺寸及$$(0.2, 0.5, 0.8, 1.0, 1.2, 1.5)$$六种比例共$$4\times6=24$$个锚点。
 
-DeepText的采样阈值也和Faster R-CNN不同————当$$\text{IoU} > 0.5$$时，锚点为正；$$\text{IoU} < 0.3$$，锚点为负。
+DeepText的采样阈值也和Faster R-CNN不同：当$$\text{IoU} > 0.5$$时，锚点为正；$$\text{IoU} < 0.3$$，锚点为负。
 
 Inception-RPN使用了阈值为0.7的NMS过滤锚点，最终得到的候选区域是top-2000的样本。
 
-### Ambiguous Text Classification（ATC） 
+### 1.2 Ambiguous Text Classification（ATC） 
 
 DeepText将样本分成3类：
 * Text: $$\text{IoU} > 0.5$$;
 * Ambiguous: $$0.2 < \text{IoU} < 0.5$$; 
 * Background: $$\text{IoU} < 0.2$$.
+
+这样做的目的是让模型在训练过程中见过所有IoU的样本，该方法对于提高模型的召回率作用非常明显。
+
+### 1.3  Multi Layer ROI Pooling（MLRP）
+
+
 
   
 
