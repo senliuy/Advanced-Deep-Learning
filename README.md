@@ -37,6 +37,7 @@
 * 2018-08-09：Spatial Transform Networks
 * 2018-08-10：Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework
 * 2018-08-14：Robust Scene Text Recognition with Automatic Rectification
+* 2018-08-20：DeepText: A Unified Framework for Text Proposal Generation and Text Detection in Natural Images
 
 
 
