@@ -31,6 +31,7 @@
   * [场景文字检测](chapter1/chang-jing-wen-zi-jian-ce.md)
     * [DeepText: A Unified Framework for Text Proposal Generation and Text Detection in Natural Images](chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.md)
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
+    * [EAST: An Efficient and Accurate Scene Text Detector](chapter1/east-an-efficient-and-accurate-scene-text-detector.md)
   * [文字识别](chapter1/wen-zi-shi-bie.md)
     * [Spatial Transform Networks](chapter1/spatial-transform-networks.md)
     * [Robust Scene Text Recognition with Automatic Rectification](chapter1/robust-scene-text-recognition-with-automatic-rectification.md)
