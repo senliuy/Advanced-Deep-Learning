@@ -63,6 +63,8 @@ DeepText使用了VGG-16的Conv4\_3和Conv5\_3的多尺度特征，使用基于Gr
 
 结合当时的研究现状，DeepText结合了当时state-of-the-art的Faster R-CNN，Inception设计了该算法。算法本身的技术性和创新性并不是很强，但是其设计的ATC和MLRP均在后面的物体检测算法中多次使用，而IBBV也在实际场景中非常值得测试。
 
+## Reference
+
 \[1\] Zhong Z, Jin L, Zhang S, et al. Deeptext: A unified framework for text proposal generation and text detection in natural images\[J\]. arXiv preprint arXiv:1605.07314, 2016.
 
 \[2\] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015.
