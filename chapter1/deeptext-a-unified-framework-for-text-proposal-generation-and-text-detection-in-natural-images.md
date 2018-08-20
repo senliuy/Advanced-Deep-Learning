@@ -50,7 +50,11 @@ DeepText将样本分成3类：
 
 ### 1.3  Multi Layer ROI Pooling（MLRP）
 
+DeepText使用了VGG-16的Conv4_3和Conv5_3的多尺度特征，使用基于Grid的ROI Pooling将两个不同尺寸的Feature Map变成$$7\times7\times512$$的大小，通过$$1\times1$$卷积将Concatnate后的1024维的Feature Map降维到512维，如图1所示。
 
+### 1.4 Iterative Bounding Box Voting (IBBV)
+
+在训练过程中，每个Iteration会预测一组检测框：$$D_c^t = \{B_{i,c}^t, B_{i,c}^t\}_{i=1}^{N_{c,t}}$$
 
   
 
