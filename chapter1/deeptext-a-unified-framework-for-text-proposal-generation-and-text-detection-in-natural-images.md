@@ -67,5 +67,5 @@ DeepText使用了VGG-16的Conv4\_3和Conv5\_3的多尺度特征，使用基于Gr
 
 \[2\] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015.
 
-\[3\] 
+\[3\] Szegedy C, Liu W, Jia Y, et al. Going deeper with convolutions\[C\]. Cvpr, 2015.
 
