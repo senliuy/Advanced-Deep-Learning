@@ -200,7 +200,7 @@ ST的可导带来的好处是其可以和整个卷积网络一起端到端的训
 
 ![](/assets/STN_5.png)
 
-在这里STN可以理解为一种Attention机制，即不同的Feature Map注意小鸟的不同部分，例如上面一排明显可以看出红色Feature Map比较注意小鸟的头部，而绿色则比较注重小鸟的身    体。
+在这里STN可以理解为一种Attention机制，即不同的Feature Map注意小鸟的不同部分，例如上面一排明显可以看出红色Feature Map比较注意小鸟的头部，而绿色则比较注重小鸟的身体。
 
 ### 3.2 STN用于半监督学习的co-localisation
 
