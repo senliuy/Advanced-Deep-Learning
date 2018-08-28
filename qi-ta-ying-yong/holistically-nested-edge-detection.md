@@ -90,13 +90,87 @@ def side_branch(x, factor):
     return x
 ```
 
-其中Conv2DTranspose是反卷积操作，side_branch的输出特征向量的维度已反应在注释中。
+其中Conv2DTranspose是反卷积操作，side_branch的输出特征向量的维度已反应在注释中。HED利用反卷积进行上采样的方法类似于DSSD。
 
 HED的fuse branch层是由5个side_branch的输出通过Concatenate操作合并而成的。网络的5个side_branch和一个fuse branch通过sigmoid激活函数后共同作为网络的输出，每个输出的尺寸均和输入图像相同。
 
 ### 1.3 HED的损失函数
 
+#### 1.3.1 训练
 
+设HED的训练集为$$S=\{(X_n, Y_n), n=1,...,N\}$$，其中$$X_n = \{x_j^{(n)}, j=1,...,|X_n|\}$$表示原始输入图像，$$Y_n = \{y_j^{(n)}, j=1,...,|X_n|\}$$表示$$X_n$$的二进制边缘标签map，故$$y_j^{(n)}\in\{0,1\}$$，$$|X_n|$$是一张图像的像素点的个数。
+
+假设VGG-16的网络的所有参数值为$$\mathbf{W}$$，如果网络有$$M$$个side branch的话，那么定义side branch的参数值为$$\mathbf{w} = (\mathbf{w}^{(1)},...,\mathbf{w}^{(M)})$$，则HED关于side branch的目标函数定义为：
+
+$$
+\mathcal{L}_{\text{side}}(\mathbf{W}, \mathbf{w}) = \sum^M_{m=1}\alpha_m \ell_{side}^{(m)}(\mathbf{W}, \mathbf{w}^{(m)})
+$$
+
+其中$$\alpha_m$$表示每个side branch的损失函数的权值，可以根据训练日志进行调整或者均为1/5。
+
+$$\ell_{side}^{(m)}(\mathbf{W},\mathbf{w}^{(m)})$$是每个side branch的损失函数，该损失函数是一个类别平衡的交叉熵损失函数：
+
+$$
+\ell_{side}^{(m)}(\mathbf{W},\mathbf{w}^{(m)}) = -\beta\sum_{j\in Y_+}log \text{Pr}(y_j=1|X;\mathbf{W},\mathbf{w}^{(m)}) - (1-\beta) \sum_{j\in Y_-}log \text{Pr}(y_j=0|X;\mathbf{W},\mathbf{w}^{(m)})
+$$
+
+其中$$\beta$$适用于平衡边缘检测的正负样本不均衡的类别平衡权值，其中$$\beta=\frac{|Y_-|}{|Y|}$$, $$1-\beta = \frac{|Y_+|}{Y}$$。$$|Y_+|$$表示非边缘像素的个数，那么$$|Y_-|$$则表示边缘像素的个数。
+
+$$\hat{Y}_{\text{side}}^{(m)} = \text{Pr}(y_j=1|X;\mathbf{W},\mathbf{w}^{(m)}) = \sigma(a_j^{(m)})$$表示第$$m$$个side branch在第$$j$$个像素处预测的边缘值,$$\sigma()$$是sigmoid激活函数。
+
+类别平衡损失函数实现如下
+
+```py
+def cross_entropy_balanced(y_true, y_pred):
+    _epsilon = _to_tensor(K.epsilon(), y_pred.dtype.base_dtype)
+    y_pred   = tf.clip_by_value(y_pred, _epsilon, 1 - _epsilon)
+    y_pred   = tf.log(y_pred/ (1 - y_pred))
+    y_true = tf.cast(y_true, tf.float32)
+    count_neg = tf.reduce_sum(1. - y_true)
+    count_pos = tf.reduce_sum(y_true)
+    beta = count_neg / (count_neg + count_pos)
+    pos_weight = beta / (1 - beta)
+    cost = tf.nn.weighted_cross_entropy_with_logits(logits=y_pred, targets=y_true, pos_weight=pos_weight)
+    cost = tf.reduce_mean(cost * (1 - beta))
+    return tf.where(tf.equal(count_pos, 0.0), 0.0, cost)
+```
+
+
+如图3所示，fuse层表示为m个side branch的加权和（代码中的$$1\times1$$卷积起到的作用），即$$\hat{Y}_{\text{fuse}} \equiv \sigma(\sum_{m=1}^M h_m \hat{A}_{\text{side}}^{(m)})$$，fuse层的损失函数1定义为：
+
+$$
+\mathcal{L}_{\text{fuse}}(\mathbf{W},\mathbf{w},\mathbf{h}) = \text{Dist}(Y, \hat{Y}_{\text{fuse}})
+$$
+
+其中$$\text{Dist}(\cdot,\cdot)$$表示交叉熵损失函数。源码中使用的是类别平衡的交叉熵损失函数，个人认为源码中的方案更科学。
+
+最后，训练模型时的目标函数便是最小化side branch损失$$\mathcal{L}_{\text{side}}(\mathbf{W}, \mathbf{w})$$以及fuse损失$$\mathcal{L}_{\text{fuse}}(\mathbf{W},\mathbf{w},\mathbf{h})$$的和：
+
+$$(\mathbf{W},\mathbf{w},\mathbf{h})^{\star}=
+\text{argmin}(\mathcal{L}_{\text{side}}(\mathbf{W}+\mathcal{L}_{\text{fuse}}(\mathbf{W},\mathbf{w},\mathbf{h}))
+$$
+
+### 1.3.2 测试
+
+给定一张图片$$X$$，HED预测$$M$$个side branch和一个fuse layer：
+
+$$
+(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{(1)}, ..., \hat{Y}_{\text{side}}^{(1)}) = CNN(X, (\mathbf{W},\mathbf{w},\mathbf{h})^\star)
+$$
+
+HED的输出是所以side branch和fuse layer的均值:
+
+$$
+\hat{Y}_{\text{HED}} = \text{Average}(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{(1)}, ..., \hat{Y}_{\text{side}}^{(1)})
+$$
+
+## 总结
+
+我是在研究EAST的时候读到的这篇论文，EAST算法的核心之一是使用语义分割构建损失函数，而其语义分割的标签便是由类似HED的结构得到的。
+
+从HED的实验结果可以看出，其边缘检测的效果着实经验，且测试非常快，具有非常光明的应用前景。
+
+HED的缺点是模型过于庞大，Keras训练的模型超过了100MB，原因是fuse layer合并了VGG-16每个block的Feature Map，且每个side branch的尺寸均为输入图像的大小。由此引发了HED训练过程中显存占用问题，不过在目前GPU环境下训练HED算法还是没有问题的。
 
 ## Reference
 
