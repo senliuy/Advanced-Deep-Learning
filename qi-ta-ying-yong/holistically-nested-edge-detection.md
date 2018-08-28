@@ -94,6 +94,10 @@ def side_branch(x, factor):
 
 HED的fuse branch层是由5个side_branch的输出通过Concatenate操作合并而成的。网络的5个side_branch和一个fuse branch通过sigmoid激活函数后共同作为网络的输出，每个输出的尺寸均和输入图像相同。
 
+### 1.3 HED的损失函数
+
+
+
 ## Reference
 
 \[1\] Xie S, Tu Z. Holistically-nested edge detection\[C\]//Proceedings of the IEEE international conference on computer vision. 2015: 1395-1403.
