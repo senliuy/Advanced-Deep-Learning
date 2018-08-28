@@ -39,6 +39,7 @@
     * [Reading Text in the Wild with Convolutional Neural Networks](chapter1/reading-text-in-the-wild-with-convolutional-neural-networks.md)
     * [Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework](chapter1/deep-textspotter-an-end-to-end-trainable-scene-text-localization-and-recognition-framework.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
-* 其它应用
+* [其它应用](qi-ta-ying-yong.md)
+  * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
 * [Tags](tags.md)
 
