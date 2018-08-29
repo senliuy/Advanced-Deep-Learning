@@ -38,6 +38,9 @@ HMCP的数据的Ground Truth分别包含基于文本行和基于字符的标签�
 
 HMCP的骨干网络继承自HED，如图4所示。HMCP的主干网络使用的是VGG-16，在每个block降采样之前通过反卷积得到和输入图像大小相同的Feature Map，最后通过fuse层将5个side branch的Feature Map拼接起来并得到预测值。HMCP和HED的不同之处是HMCP的输出节点有三个任务。
 
+###### 图4：HMCP的骨干网络
+
+
 ### 1.3 HMCP的损失函数
 
 
