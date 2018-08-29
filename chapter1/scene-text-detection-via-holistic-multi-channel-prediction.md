@@ -28,15 +28,25 @@ HMCP的流程如图2：\(a\)是输入图像，\(b\)是预测的三个mask，分�
 
 在文本检测数据集中，常见的标签类型有QUAD和RBOX两种形式。其中QUAD是指标签值包含四个点$$\mathbf{G}=\{(x_i,y_i)|i\in\{1,2,3,4\}\}$$，由这四个点构成的不规则四边形（Quadrangle）便是文本区域。QBOX则是由一个规则矩形$$\mathbf{R}$$和其旋转角度$$\theta$$构成，即$$\mathbf{G} = \{\mathbf{R}, \theta \}$$。QUAD和RBOX是可以相互转换的。
 
-HMCP的数据的Ground Truth分别包含基于文本行和基于字符的标签构成\(QUAD或RBOX\)，如图3.b和图3.c。\(d\)是基于文本行Ground Truth得到的二进制掩码图，文本区域的值为1，非文本区域的值为0。\(e\)是基于字符的二进制掩码图，掩码也是0或者1。由于字符间的距离往往比较小，为了能区分不同字符之间的掩码，正样本掩码的尺寸被压缩到了Ground Truth的一半。\(f\)是字符间连接角度掩码，其值为$$[-\pi/2, \pi/2]$$，然后再通过归一化映射到$$[0,1]$$之间。角度的值是由RBOX形式的Ground Truth得到的值。
+HMCP的数据的Ground Truth分别包含基于文本行和基于字符的标签构成\(QUAD或RBOX\)，如图3.\(b\)和图3.\(c\)。数据集中只有基于文本行的Ground Truth，其基于单词的Ground Truth是通过SWT\[3\]得到的。\(d\)是基于文本行Ground Truth得到的二进制掩码图，文本区域的值为1，非文本区域的值为0。\(e\)是基于单词的二进制掩码图，掩码也是0或者1。由于字符间的距离往往比较小，为了能区分不同字符之间的掩码，正样本掩码的尺寸被压缩到了Ground Truth的一半。\(f\)是字符间连接角度掩码，其值为$$[-\pi/2, \pi/2]$$，然后再通过归一化映射到$$[0,1]$$之间。角度的值是由RBOX形式的Ground Truth得到的值。
 
 ###### 图3：HMCP的Ground Truth以及三种Mask
 
 ![](/assets/HMCP_3.png)
+
+### 1.2 HMCP的骨干网络
+
+HMCP的骨干网络继承自HED，如图4所示。HMCP的主干网络使用的是VGG-16，在每个block降采样之前通过反卷积得到和输入图像大小相同的Feature Map，最后通过fuse层将5个side branch的Feature Map拼接起来并得到预测值。HMCP和HED的不同之处是HMCP的输出节点有三个任务。
+
+### 1.3 HMCP的损失函数
+
+
 
 ## Reference
 
 \[1\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
 
 \[2\] Xie S, Tu Z. Holistically-nested edge detection \[C\]//Proceedings of the IEEE international conference on computer vision. 2015: 1395-1403.
+
+\[3\] B. Epshtein, E. Ofek, and Y. Wexler. Detecting text in natural scenes with stroke width transform. In Proc. of CVPR, 2010.
 
