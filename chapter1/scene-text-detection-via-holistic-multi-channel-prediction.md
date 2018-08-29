@@ -26,6 +26,8 @@ HMCP的流程如图2：\(a\)是输入图像，\(b\)是预测的三个mask，分�
 
 ### 1.1 HMCP的标签值
 
+HMCP的数据的Ground Truth分别包含基于文本行和基于单词的由四个点构成的位置信息，如图3.b和图3.c。(d)是基于文本行Ground Truth得到的二进制掩码图，文本区域的值为1，非文本区域的值为0。(e)是基于字符的二进制掩码图，
+
 ## Reference
 
 \[1\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
