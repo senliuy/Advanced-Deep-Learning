@@ -1,5 +1,7 @@
 # Holistically-Nested Edge Detection
 
+tags: HED, Edge Detection
+
 # 前言
 
 本文提出了一个新的网络结构用于边缘检测，即本文的题目Holistically-Nested Network（HED）。其中Holistically表示该算法试图训练一个image-to-image的网络；Nested则强调在生成的输出过程中通过不断的集成和学习得到更精确的边缘预测图的过程。从图1中HED和传统Canny算法进行边缘检测的效果对比图我们可以看到HED的效果要明显优于Canny算子的。

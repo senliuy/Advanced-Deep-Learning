@@ -38,6 +38,14 @@
 * 2018-08-10：Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework
 * 2018-08-14：Robust Scene Text Recognition with Automatic Rectification
 * 2018-08-20：DeepText: A Unified Framework for Text Proposal Generation and Text Detection in Natural Images
+* 2018-08-28：Holistically-Nested Edge Detection
+
+
+
+
+
+
+
 
 
 
