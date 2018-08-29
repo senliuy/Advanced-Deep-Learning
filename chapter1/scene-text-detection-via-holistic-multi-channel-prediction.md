@@ -40,11 +40,9 @@ HMCP的骨干网络继承自HED，如图4所示。HMCP的主干网络使用的�
 
 ###### 图4：HMCP的骨干网络
 
-
+![](/assets/HMCP_4.png)
 
 ### 1.3 HMCP的损失函数
-
-
 
 ## Reference
 
