@@ -114,7 +114,7 @@ HMCP的检测过程如图5：给定输入图像\(a\)得到\(b\)，\(c\)，\(d\)�
 
 ![](/assets/HMCP_5.png)
 
-对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）\[4\]得到的三角形$$T$$我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$。
+对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）\[4\]得到的三角形$$T$$我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$，如图(g)。
 
 德劳内三角化能够有效的去除字符区域之间不必要的链接，维基百科给的德劳内三角化的定义是指德劳内三角化是一种三角剖分$$DT(P)$$，使得在P中没有点严格处于$$DT(P)$$中任意一个三角形外接圆的内部。德劳内三角化最大化了此三角剖分中三角形的最小角，换句话，此算法尽量避免出现“极瘦”的三角形，如图6。
 
@@ -147,8 +147,18 @@ $$
 
 
 $$
-a(i,j) = exp(\frac{}d^2(i,j){2D^2})
+a(i,j) = exp(\frac{d^2(i,j)}{2D^2})
 $$
+
+其中$$d(i,j)$$是$$(u_i,u_j)$$之间的欧氏距离，$$D$$是整个德劳内三角形的边长均值。
+
+角度相似性$$o(i,j)$$定义为：
+
+$$
+o(i,j)=cos(\Lambda(\phi(i,j)-\psi(i,j)))
+$$
+
+其中$$\phi(i,j)$$表示$$(u_i,u_j)$$形成的直线与水平方向的夹角，$$\psi(i,j)$$即两个节点之间的区域的所有像素点的夹角的平均值，$$\Lambda$$表示两个角度的夹角。
 
 
 ## Reference
@@ -160,4 +170,6 @@ $$
 \[3\] B. Epshtein, E. Ofek, and Y. Wexler. Detecting text in natural scenes with stroke width transform. In Proc. of CVPR, 2010.
 
 \[4\] L. Kang, Y. Li, and D. Doermann. Orientation robust text line detection in natural images. In Proc. of CVPR, 2014.
+
+\[5\] F. Yin and C. L. Liu. Handwritten text line extraction based on minimum spanning tree clustering. In Proc. of International Conference on Wavelet Analysis and Pattern Recognition, 2007.
 
