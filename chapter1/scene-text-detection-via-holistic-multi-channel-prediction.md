@@ -81,16 +81,19 @@ $$
 \Delta_r(\mathbf{W}, \mathbf{w},R,\hat{R}) = -\beta_R\sum_{j=1}^{|R|}R_j\text{log}Pr(\hat{R}_j=1;\mathbf{W}, \mathbf{w}) + (1-\beta_R) \sum_{j=1}^{|R|}(1-R_j) \text{log}Pr(\hat{R}_j=0;\mathbf{W}, \mathbf{w})
 $$
 
+
 上式中的$$\beta$$为平衡因子$$\beta_R=\frac{|R_-|}{|R|}$$，$$|R_-|$$为文本区域Ground Truth中负样本个数，$$|R|$$为所有样本的个数。
 
 基于字符掩码的损失值与$$\Delta_r(\mathbf{W}, \mathbf{w},R,\hat{R})$$类似：
+
 
 $$
 \Delta_c(\mathbf{W}, \mathbf{w},C,\hat{C}) = -\beta_C \sum_{j=1}^{|C|}C_j\text{log}Pr(\hat{C}_j=1;\mathbf{W}, \mathbf{w}) + (1-\beta_C) \sum_{j=1}^{|C|}(1-C_j) \text{log}Pr(\hat{C}_j=0;\mathbf{W}, \mathbf{w})
 $$
 
-$$\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)
-$$定义为：
+
+$$\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)$$定义为：
+
 
 $$
 \Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)=\sum_{j=1}^{|R|}R_j(\text{sin}(\pi|\hat{\Theta}_j - \Theta_j|))
@@ -105,13 +108,13 @@ HMCP的预测的三个Map均是由fuse层得到，因为作者发现side branch�
 
 ### 1.4.2 检测框生成
 
-HMCP的检测过程如图5：给定输入图像(a)得到(b)，(c)，(d)三组掩码。通过自适应阈值，我们可以得到(e)以及(f)的分别基于文本区域和基于字符的检测框，需要注意的是我们在制作字符掩码的时候掩码区域被压缩了一半，所以在这里我们需要将它们还原回来。
+HMCP的检测过程如图5：给定输入图像\(a\)得到\(b\)，\(c\)，\(d\)三组掩码。通过自适应阈值，我们可以得到\(e\)以及\(f\)的分别基于文本区域和基于字符的检测框，需要注意的是我们在制作字符掩码的时候掩码区域被压缩了一半，所以在这里我们需要将它们还原回来。
 
 ###### 图5：HMCP的检测框生成流程
 
 ![](/assets/HMCP_5.png)
 
-对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）[4]得到的三角形$$T$$我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$。
+对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）\[4\]得到的三角形$$T$$我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$。
 
 德劳内三角化能够有效的去除字符区域之间不必要的链接，维基百科给的德劳内三角化的定义是指德劳内三角化是一种三角剖分$$DT(P)$$，使得在P中没有点严格处于$$DT(P)$$中任意一个三角形外接圆的内部。德劳内三角化最大化了此三角剖分中三角形的最小角，换句话，此算法尽量避免出现“极瘦”的三角形，如图6。
 
@@ -120,21 +123,26 @@ HMCP的检测过程如图5：给定输入图像(a)得到(b)，(c)，(d)三组掩
 ![](/assets/HMCP_6.png)
 
 在图$$G=\{U,E\}$$中，$$U$$表示图的顶点表示字符的位置。$$E$$表示图的边表示两个字符之间的相似度，边的权值$$w$$的计算方式为：
-
 $$
-w=\begin{array}{}
-s(i,j) & \text{if} e\in T\\
+w = \left\{
+\begin{array}{}
+s(i,j) & \text{if}\quad e\in T\\
 0 & \text{otherwise}
 \end{array}
+\right.
 $$
 
+
 $$s(i,j)$$有空间相似性$$a(i,j)$$和角度相似性$$o(i,j)$$计算得到：
+
 
 $$
 s(i,j)=\frac{2a(i,j)o(i,j)}{a(i,j)+o(i,j)}
 $$
 
+
 空间相似性定义为
+
 
 $$
 a(i,j) = exp(\frac{}d^2(i,j){2D^2})
