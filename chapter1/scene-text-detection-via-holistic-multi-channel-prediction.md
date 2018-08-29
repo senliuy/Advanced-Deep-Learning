@@ -99,6 +99,7 @@ $$
 ### 1.3.2 测试
 
 
+
 ## Reference
 
 \[1\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
