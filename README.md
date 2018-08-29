@@ -39,16 +39,7 @@
 * 2018-08-14：Robust Scene Text Recognition with Automatic Rectification
 * 2018-08-20：DeepText: A Unified Framework for Text Proposal Generation and Text Detection in Natural Images
 * 2018-08-28：Holistically-Nested Edge Detection
-
-
-
-
-
-
-
-
-
-
+* 2018-08-29：Scene Text Detection via Holistic, Multi-Channel Prediction
 
 
 
