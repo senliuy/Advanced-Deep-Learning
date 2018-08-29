@@ -96,6 +96,8 @@ $$
 \Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)=\sum_{j=1}^{|R|}R_j(\text{sin}(\pi|\hat{\Theta}_j - \Theta_j|))
 $$
 
+### 1.3.2 测试
+
 
 ## Reference
 
