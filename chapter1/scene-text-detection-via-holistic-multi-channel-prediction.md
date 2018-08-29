@@ -48,7 +48,31 @@ HMCP的骨干网络继承自HED，如图4所示。HMCP的主干网络使用的�
 
 设HMCP的训练集为$$S=\{(X_n,y_n),n=1,...,N\}$$，其中$$N$$是样本的数量。标签$$Y_n$$由三个掩码图构成，即$$Y_n=\{R_n,C_n,\Theta_n\}$$，其中$$R_n=\{r_j^{(n)}\in\{0,1\},j=1,...,|R_n|\}$$表示文本区域的二进制掩码图，$$C_n=\{c_j^{(n)}\in\{0,1\},j=1,...,|C_n|\}$$是字符的二进制掩码图，$$\Theta_n=\{\theta_j^{(n)}\in\{0,1\},j=1,...,|\Theta_n|\}$$是相邻字符的连接角度。注意只有当$$r_j^{(n)}=1$$时$$\theta_j^{(n)}$$才有效。
 
-与HED不同的是HMCP只
+与HED不同的是HMCP的损失函数没有使用side branch，即损失函数仅由fuse层构成：
+
+$$
+\mathcal{L} = \mathcal{L}_{\text{fuse}}(\mathbf{W}, \mathbf{w}, Y, \hat{Y})
+$$
+
+其中$$\mathbf{W}$$为VGG-16部分的参数，$$\mathbf{w}$$为fuse层部分的参数。$$\hat{Y}=\{\hat{R}, \hat{C}, \hat{\Theta}\}$$是预测值：
+
+$$
+\hat{Y} = \text{CNN}(X,\mathbf{W},\mathbf{w})
+$$
+
+$$\mathcal{L}_{\text{fuse}}(\mathbf{W}, \mathbf{w}, Y, \hat{Y})$$由三个子任务构成:
+
+$$
+\mathcal{L}_{\text{fuse}}(\mathbf{W}, \mathbf{w}, Y,\hat{Y}) = \lambda_1\Delta_r(\mathbf{W}, \mathbf{w},R,\hat{R}) + 
+\lambda_2\Delta_c(\mathbf{W}, \mathbf{w},C,\hat{C}) +
+\lambda_3\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R) 
+$$
+
+其中$$\Delta_r(\mathbf{W}, \mathbf{w})$$表示基于文本掩码的损失值，$$\Delta_c(\mathbf{W}, \mathbf{w})$$是基于字符掩码的损失值，两个均是使用HED采用过的类别平衡交叉熵损失函数：
+
+$$
+\Delta_r(\mathbf{W}, \mathbf{w})
+$$
 
 ## Reference
 
