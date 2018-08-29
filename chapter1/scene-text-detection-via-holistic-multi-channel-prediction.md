@@ -50,29 +50,52 @@ HMCP的骨干网络继承自HED，如图4所示。HMCP的主干网络使用的�
 
 与HED不同的是HMCP的损失函数没有使用side branch，即损失函数仅由fuse层构成：
 
+
 $$
 \mathcal{L} = \mathcal{L}_{\text{fuse}}(\mathbf{W}, \mathbf{w}, Y, \hat{Y})
 $$
 
+
 其中$$\mathbf{W}$$为VGG-16部分的参数，$$\mathbf{w}$$为fuse层部分的参数。$$\hat{Y}=\{\hat{R}, \hat{C}, \hat{\Theta}\}$$是预测值：
+
 
 $$
 \hat{Y} = \text{CNN}(X,\mathbf{W},\mathbf{w})
 $$
 
+
 $$\mathcal{L}_{\text{fuse}}(\mathbf{W}, \mathbf{w}, Y, \hat{Y})$$由三个子任务构成:
+
 
 $$
 \mathcal{L}_{\text{fuse}}(\mathbf{W}, \mathbf{w}, Y,\hat{Y}) = \lambda_1\Delta_r(\mathbf{W}, \mathbf{w},R,\hat{R}) + 
 \lambda_2\Delta_c(\mathbf{W}, \mathbf{w},C,\hat{C}) +
-\lambda_3\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R) 
+\lambda_3\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)
 $$
+
 
 其中$$\Delta_r(\mathbf{W}, \mathbf{w})$$表示基于文本掩码的损失值，$$\Delta_c(\mathbf{W}, \mathbf{w})$$是基于字符掩码的损失值，两个均是使用HED采用过的类别平衡交叉熵损失函数：
 
+
 $$
-\Delta_r(\mathbf{W}, \mathbf{w})
+\Delta_r(\mathbf{W}, \mathbf{w},R,\hat{R}) = -\beta_R\sum_{j=1}^{|R|}R_j\text{log}Pr(\hat{R}_j=1;\mathbf{W}, \mathbf{w}) + (1-\beta_R) \sum_{j=1}^{|R|}(1-R_j) \text{log}Pr(\hat{R}_j=0;\mathbf{W}, \mathbf{w})
 $$
+
+上式中的$$\beta$$为平衡因子$$\beta_R=\frac{|R_-|}{|R|}$$，$$|R_-|$$为文本区域Ground Truth中负样本个数，$$|R|$$为所有样本的个数。
+
+基于字符掩码的损失值与$$\Delta_r(\mathbf{W}, \mathbf{w},R,\hat{R})$$类似：
+
+$$
+\Delta_c(\mathbf{W}, \mathbf{w},C,\hat{C}) = -\beta_C \sum_{j=1}^{|C|}C_j\text{log}Pr(\hat{C}_j=1;\mathbf{W}, \mathbf{w}) + (1-\beta_C) \sum_{j=1}^{|C|}(1-C_j) \text{log}Pr(\hat{C}_j=0;\mathbf{W}, \mathbf{w})
+$$
+
+$$\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)
+$$定义为：
+
+$$
+\Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)=\sum_{j=1}^{|R|}R_j(\text{sin}(\pi|\hat{\Theta}_j - \Theta_j|))
+$$
+
 
 ## Reference
 
