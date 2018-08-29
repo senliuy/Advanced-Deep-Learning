@@ -74,7 +74,7 @@ $$
 $$
 
 
-其中$$\Delta_r(\mathbf{W}, \mathbf{w})$$表示基于文本掩码的损失值，$$\Delta_c(\mathbf{W}, \mathbf{w})$$是基于字符掩码的损失值，两个均是使用HED采用过的类别平衡交叉熵损失函数：
+其中$$\lambda_1 + \lambda_2 + \lambda_3 = 1$$。$$\Delta_r(\mathbf{W}, \mathbf{w})$$表示基于文本掩码的损失值，$$\Delta_c(\mathbf{W}, \mathbf{w})$$是基于字符掩码的损失值，两个均是使用HED采用过的类别平衡交叉熵损失函数：
 
 
 $$
@@ -96,8 +96,28 @@ $$
 \Delta_o(\mathbf{W}, \mathbf{w},\Theta,\hat{\Theta},R)=\sum_{j=1}^{|R|}R_j(\text{sin}(\pi|\hat{\Theta}_j - \Theta_j|))
 $$
 
-### 1.3.2 测试
 
+### 1.4 检测
+
+### 1.4.1 预测掩码
+
+HMCP的预测的三个Map均是由fuse层得到，因为作者发现side branch的引入反而会伤害模型的性能。
+
+### 1.4.2 检测框生成
+
+HMCP的检测过程如图5：给定输入图像(a)得到(b)，(c)，(d)三组掩码。通过自适应阈值，我们可以得到(e)以及(f)的分别基于文本区域和基于字符的检测框，需要注意的是我们在制作字符掩码的时候掩码区域被压缩了一半，所以在这里我们需要将它们还原回来。
+
+###### 图5：HMCP的检测框生成流程
+
+![](/assets/HMCP_5.png)
+
+对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）[4]我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$。
+
+德劳内三角化能够有效的去除字符区域之间不必要的链接，维基百科给的德劳内三角化的定义是指德劳内三角化是一种三角剖分$$DT(P)$$，使得在P中没有点严格处于$$DT(P)$$中任意一个三角形外接圆的内部。德劳内三角化最大化了此三角剖分中三角形的最小角，换句话，此算法尽量避免出现“极瘦”的三角形，如图6。
+
+###### 图6：德劳内三角化
+
+![](/assets/HMCP_6.png)
 
 
 ## Reference
@@ -107,4 +127,6 @@ $$
 \[2\] Xie S, Tu Z. Holistically-nested edge detection \[C\]//Proceedings of the IEEE international conference on computer vision. 2015: 1395-1403.
 
 \[3\] B. Epshtein, E. Ofek, and Y. Wexler. Detecting text in natural scenes with stroke width transform. In Proc. of CVPR, 2010.
+
+\[4\] L. Kang, Y. Li, and D. Doermann. Orientation robust text line detection in natural images. In Proc. of CVPR, 2014.
 
