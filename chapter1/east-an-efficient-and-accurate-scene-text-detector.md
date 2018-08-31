@@ -24,7 +24,7 @@ EAST已经开源，所以我们根据[源码](https://github.com/argman/EAST)分
 
 中间绿色部分是特征合并分支，该分支从最后面的$$7\times7$$的Feature Map开始逐层向上上采样及合并。如图中绿色虚线部分所示，$$f_1$$是一个尺寸为$$7\times7$$的Feature Map，经过双线性插值上采样之后尺寸变为$$14\times14$$。这和$$f_2$$的尺寸是相同的，通过concatnate操作合并到一起，经过1层$$1\times1$$卷积核1层$$3\times3$$的same卷积得到尺寸为$$14\times14$$的Feature Map $$h_2$$。其中$$1\times1$$卷积用于降维，目的是降低网络复杂度。
 
-其它部分与
+
 
 ## Reference
 
