@@ -15,7 +15,7 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 直入主题，U-Net的U形结构如图1：
 
 <figure>
-    <img src="/assets/U-Net_1.png" alt="Tree frog" />
+    <img src="/assets/U-Net_1.png" alt="U-Net网络结构图" />
     <figcaption>U-Net网络结构图</figcaption>
 </figure>
 
