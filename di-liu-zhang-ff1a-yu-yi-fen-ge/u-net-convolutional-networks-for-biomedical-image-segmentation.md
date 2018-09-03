@@ -16,7 +16,7 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 
 <figure>
     <img src="/assets/U-Net_1.png" alt="Tree frog" />
-    <figcaption>Tree frog by David Clode on Unsplash</figcaption>
+    <figcaption>U-Net网络结构图</figcaption>
 </figure>
 
 ## Reference
