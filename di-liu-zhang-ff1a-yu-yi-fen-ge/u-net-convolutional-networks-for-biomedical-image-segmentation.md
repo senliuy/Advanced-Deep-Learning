@@ -20,10 +20,6 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 
 网络的右侧部分(绿色虚线)在论文中叫做扩展路径（expanding path）。同样由4个block组成，每个block开始之前通过反卷积将Feature Map的尺寸乘2，同时将其个数减半（最后一层略有不同），卷积操作依旧使用的是有效卷积操作，最终得到的Feature Map的尺寸是$$388\times388$$。由于该任务是一个二分类任务，所以网络有两个输出Feature Map。
 
-<figure>
-    <img src="/assets/U-Net_1.png" alt="图1：U-Net网络结构图" />
-    <figcaption>图1：U-Net网络结构图</figcaption>
-</figure>
 
 如图1中所示，网络的输入图片的尺寸是$$572\times572$$，而输出Feature Map的尺寸是$$388\times388$$，这两个图像的大小是不同的，无法直接计算损失函数，那么U-Net是怎么操作的呢？
 
