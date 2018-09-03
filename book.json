@@ -1,11 +1,11 @@
 {
   "plugins": [
-  	"disqus",
+    "disqus",
     "katex",
     "splitter",
     "tags",
     "image-captions"],
-    
+
   "pluginsConfig": {
     "disqus": {
       "shortName": "senliuy"
@@ -17,10 +17,9 @@
             "all": [
                 "facebook", "google", "weibo"
             ]
-        }
     },
-    "image-captions": {
+    "image-captions":{
       "caption": "Image - _CAPTION_"
     }
-  }
+  }  
 }
