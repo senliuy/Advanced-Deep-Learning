@@ -3,7 +3,8 @@
   	"disqus",
     "katex",
     "splitter",
-    "tags"],
+    "tags",
+    "image-captions"],
     
   "pluginsConfig": {
     "disqus": {

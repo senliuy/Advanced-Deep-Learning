@@ -8,6 +8,14 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 
 论文源码已开源，可惜是基于MATLAB的Caffe版本。虽然已有各种开源工具的实现版本的U-Net算法陆续开源，但是它们绝大多数都刻意回避了U-Net论文中的细节，虽然这些细节现在看起来已无关紧要甚至已被淘汰，但是为了充分理解这个算法，笔者还是建议去阅读作者的源码，地址如下：https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/
 
+## 1. 算法详解
+
+### 1.1 U-Net的网络结构
+
+直入主题，U-Net的U形结构如图1：
+
+###### 图1：U
+
 ## Reference
 
 \[1\] Ronneberger O, Fischer P, Brox T. U-net: Convolutional networks for biomedical image segmentation\[C\]//International Conference on Medical image computing and computer-assisted intervention. Springer, Cham, 2015: 234-241.
