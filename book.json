@@ -18,5 +18,9 @@
                 "facebook", "google", "weibo"
             ]
         }
+    },
+    "image-captions": {
+      "caption": "Image - _CAPTION_"
     }
+  }
 }
