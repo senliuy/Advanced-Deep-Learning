@@ -16,8 +16,6 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 
 直入主题，U-Net的U形结构如图1所示。网络是一个经典的全卷积网络（即网络中没有全连接操作）。网络的输入是一张$$572\times572$$的边缘经过镜像操作的图片（input image tile），关于“镜像操作“会在1.2节进行详细分析，网络的左侧（红色虚线）是由卷积和Max Pooling构成的一系列降采样操作，论文中将这一部分叫做压缩路径（contracting path）。压缩路径由4个block组成，每个block使用了3个有效卷积和1个Max Pooling降采样，每次降采样之后Feature Map的个数乘2，因此有了图中所示的Feature Map尺寸变化。最终得到了尺寸为$$32\times32$$的Feature Map。
 
-压缩路径后接了一个由3个$$3\times3$$有效卷积构成的block（蓝色虚线），用于向下一段要介绍的扩展路径过度，姑且将其叫做过度路径\(Transition Path\)，经过扩展路径之后，Feature Map的尺寸是$$28\times28$$
-
 网络的右侧部分\(绿色虚线\)在论文中叫做扩展路径（expanding path）。同样由4个block组成，每个block开始之前通过反卷积将Feature Map的尺寸乘2，同时将其个数减半（最后一层略有不同），卷积操作依旧使用的是有效卷积操作，最终得到的Feature Map的尺寸是$$388\times388$$。由于该任务是一个二分类任务，所以网络有两个输出Feature Map。
 
 <figure>
@@ -31,7 +29,8 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 
 论文中说的是U-Net的输入经过了镜像操作，如图2所示。但是镜像操作的具体细节并没有将，通过源码，我们可以得到该方法的详细细节。
 
-镜像操作源码位于`segmentAndTrack2.m`和`mycaffe_tiled_forward5.m`文件中，核心代码如下：
+首先，我们的原始图像的尺寸都是$$512\times512$$的
+
 
 
 ## Reference
