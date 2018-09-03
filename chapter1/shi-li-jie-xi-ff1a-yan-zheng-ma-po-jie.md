@@ -119,9 +119,8 @@ model = Model(input=[input_tensor, labels, input_length, label_length], output=[
 
 此处验证集便发挥非常重要的作用了，因为我们在训练和测试数据中也会采用相同的预处理方案，所以我们必须确保预处理在500张验证数据上均起到了正向的作用，否则此预处理操作便不能直接使用。
 
-###### 图1：某网站验证码和预处理效果图
-
 ![](/assets/CAPTCHA_1.png)   ![](/assets/CAPTCHA_2.png)
+*图1：某网站验证码和预处理效果图*
 
 #### 1.3.2 正向合成
 
