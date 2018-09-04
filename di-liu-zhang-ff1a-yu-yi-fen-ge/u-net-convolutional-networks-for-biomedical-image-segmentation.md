@@ -37,11 +37,23 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 根据图1中所示的压缩路径的网络架构，我们可以计算其感受野：
 
 $$
-rf = (((0 \times2 +2 +2)\times2 +2 +2)\times2 +2 +2)\times2 +2 +2 = 60
+\text{rf} = (((0 \times2 +2 +2)\times2 +2 +2)\times2 +2 +2)\times2 +2 +2 = 60
 $$
 
-这也就是为什么U-Net的输入数据是$$572\times572$$的。
+这也就是为什么U-Net的输入数据是$$572\times572$$的。572的卷积的另外一个好处是每次降采样操作的Feature Map的尺寸都是偶数，这个值也是和网络结构密切相关的。
 
+### 1.3 U-Net的损失函数
+
+ISBI数据集的一个非常严峻的挑战是紧密相邻的物体之间的分割问题。如图3所示，(a)是输入数据，(b)是Ground Truth，(c)是基于Ground Truth生成的分割掩码，(d)是U-Net使用的用于分离边界的损失权值。
+
+<figure>
+<img src="/assets/U-Net_2.png" alt="图1：U-Net镜像操作" />
+<figcaption>图3：ISBI数据集样本示例</figcaption>
+</figure>
+
+
+
+那么该怎样设计损失函数来让模型有分离边界的能力呢？
 
 ## Reference
 
