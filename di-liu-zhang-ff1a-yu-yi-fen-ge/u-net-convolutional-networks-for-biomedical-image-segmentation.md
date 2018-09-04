@@ -16,7 +16,7 @@ U-Net的实验是一个比较简单的ISBI cell tracking数据集，由于本身
 
 直入主题，U-Net的U形结构如图1所示。网络是一个经典的全卷积网络（即网络中没有全连接操作）。网络的输入是一张$$572\times572$$的边缘经过镜像操作的图片（input image tile），关于“镜像操作“会在1.2节进行详细分析，网络的左侧（红色虚线）是由卷积和Max Pooling构成的一系列降采样操作，论文中将这一部分叫做压缩路径（contracting path）。压缩路径由4个block组成，每个block使用了3个有效卷积和1个Max Pooling降采样，每次降采样之后Feature Map的个数乘2，因此有了图中所示的Feature Map尺寸变化。最终得到了尺寸为$$32\times32$$的Feature Map。
 
-网络的右侧部分\(绿色虚线\)在论文中叫做扩展路径（expansive path）。同样由4个block组成，每个block开始之前通过反卷积将Feature Map的尺寸乘2，同时将其个数减半（最后一层略有不同），卷积操作依旧使用的是有效卷积操作，最终得到的Feature Map的尺寸是$$388\times388$$。由于该任务是一个二分类任务，所以网络有两个输出Feature Map。
+网络的右侧部分\(绿色虚线\)在论文中叫做扩展路径（expansive path）。同样由4个block组成，每个block开始之前通过反卷积将Feature Map的尺寸乘2，同时将其个数减半（最后一层略有不同），然后和左侧对称的压缩路径的Feature Map合并，由于左侧压缩路径和右侧扩展路径的Feature Map的尺寸不一样，U-Net是通过将压缩路径的Feature Map裁剪到和扩展路径相同尺寸的Feature Map进行归一化的（即图1中左侧虚线部分）。扩展路径的卷积操作依旧使用的是有效卷积操作，最终得到的Feature Map的尺寸是$$388\times388$$。由于该任务是一个二分类任务，所以网络有两个输出Feature Map。
 
 <figure>
 <img src="/assets/U-Net_1.png" alt="图1：U-Net网络结构图" />
@@ -40,8 +40,7 @@ $$
 rf = (((0 \times2 +2 +2)\times2 +2 +2)\times2 +2 +2)\times2 +2 +2 = 60
 $$
 
-图1中左侧网络中的虚线部分显示的是未加边的图片在网络中的形状变化示意图，在$$32\times32$$的Feature Map中，镜像策略加的边已全部被有效卷积所抵消。
-
+这也就是为什么U-Net的输入数据是$$572\times572$$的。
 
 
 ## Reference
