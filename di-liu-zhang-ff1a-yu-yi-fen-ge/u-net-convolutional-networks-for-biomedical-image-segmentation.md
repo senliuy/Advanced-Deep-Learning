@@ -53,7 +53,19 @@ ISBI数据集的一个非常严峻的挑战是紧密相邻的物体之间的分�
 
 
 
-那么该怎样设计损失函数来让模型有分离边界的能力呢？
+那么该怎样设计损失函数来让模型有分离边界的能力呢？U-Net使用的是带边界权值的损失函数：
+
+$$
+E = \sum_{\mathbf{x}\in \Omega} w(\mathbf{x}) \text{log}(p_{\ell(\mathbf{x})}(\mathbf{x})) 
+$$
+
+其中$$p_{\ell(\mathbf{x})}(\mathbf{x})$$是$$softmax$$损失函数，$$\ell: \Omega \rightarrow \{1,...,K\}$$是像素点的标签值，$$w: \Omega \in \mathbb{R}$$是像素点的权值，目的是为了给图像中贴近边界点的像素更高的权值。
+
+$$
+w(\mathbf{x}) = w_c(\mathbf{x}) + w_0 \cdot exp(-\frac{(d_1(\mathbf{x})+ d_2(\mathbf{x}))^2}{2\sigma^2})
+$$
+
+
 
 ## Reference
 
