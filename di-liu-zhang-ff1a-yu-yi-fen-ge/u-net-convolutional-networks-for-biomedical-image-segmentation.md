@@ -51,8 +51,6 @@ ISBI数据集的一个非常严峻的挑战是紧密相邻的物体之间的分�
 <figcaption>图3：ISBI数据集样本示例</figcaption>
 </figure>
 
-
-
 那么该怎样设计损失函数来让模型有分离边界的能力呢？U-Net使用的是带边界权值的损失函数：
 
 $$
@@ -62,10 +60,21 @@ $$
 其中$$p_{\ell(\mathbf{x})}(\mathbf{x})$$是$$softmax$$损失函数，$$\ell: \Omega \rightarrow \{1,...,K\}$$是像素点的标签值，$$w: \Omega \in \mathbb{R}$$是像素点的权值，目的是为了给图像中贴近边界点的像素更高的权值。
 
 $$
-w(\mathbf{x}) = w_c(\mathbf{x}) + w_0 \cdot exp(-\frac{(d_1(\mathbf{x})+ d_2(\mathbf{x}))^2}{2\sigma^2})
+w(\mathbf{x}) = w_c(\mathbf{x}) + w_0 \cdot \text{exp}(-\frac{(d_1(\mathbf{x})+ d_2(\mathbf{x}))^2}{2\sigma^2})
 $$
 
+其中$$w_c: \Omega \in \mathbb{R}$$是平衡类别比例的权值，$$d_1: \Omega \in \mathbb{R}$$是像素点到距离其最近的细胞的距离，$$d_2: \Omega \in \mathbb{R}$$则是像素点到距离其第二近的细胞的距离。$$w_0$$和$$\sigma$$是常数值，在实验中$$w_0 = 10$$，$$\sigma\approx 5$$。
 
+## 2. 数据扩充
+
+由于训练集只有30张训练样本，作者使用了数据扩充的方法增加了样本数量。并且作者指出任意的弹性形变对训练非常有帮助。
+
+### 3. 总结
+
+U-Net是比较早的使用多尺度特征进行语义分割任务的算法之一，其U形结构也启发了后面很多算法。但其也有几个缺点：
+
+1. 有效卷积增加了模型设计的难度和普适性；目前很多算法直接采用了same卷积，这样也可以免去Feature Map合并之前的裁边操作
+2. 其通过裁边的形式和Feature Map并不是对称的，个人感觉采用双线性插值的效果应该会更好。
 
 ## Reference
 
