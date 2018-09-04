@@ -47,7 +47,7 @@ $$
 ISBI数据集的一个非常严峻的挑战是紧密相邻的物体之间的分割问题。如图3所示，(a)是输入数据，(b)是Ground Truth，(c)是基于Ground Truth生成的分割掩码，(d)是U-Net使用的用于分离边界的损失权值。
 
 <figure>
-<img src="/assets/U-Net_2.png" alt="图3：ISBI数据集样本示例" />
+<img src="/assets/U-Net_3.png" alt="图3：ISBI数据集样本示例" />
 <figcaption>图3：ISBI数据集样本示例</figcaption>
 </figure>
 
