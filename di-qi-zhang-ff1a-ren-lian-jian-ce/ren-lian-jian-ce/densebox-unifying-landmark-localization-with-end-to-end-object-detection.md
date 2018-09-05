@@ -50,8 +50,8 @@ DenseBox使用了16层的VGG-19作为骨干网络，但是只使用了其前12�
 <figcaption>图3：DenseBox中的网络结构</figcaption>
 </figure>
 
-
+首先需要注意的是在网络的Conv3_4和Conv4_4之间
 
 ## Reference
 
-\[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465.
+\[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
