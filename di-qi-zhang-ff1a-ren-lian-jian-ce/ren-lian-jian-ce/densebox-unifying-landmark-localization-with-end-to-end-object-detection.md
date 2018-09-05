@@ -21,7 +21,14 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 
 举例说明：一张训练图片中包含一个$$60\times80$$的人脸，那么第一步会裁剪出大小是$$384\times384$$的一个patch。在第二步中将这个patch resize到$$240\times240$$。这张图片便是训练样本的输入。
 
-训练集的标签的大小是$$60\times60$$，即训练样本经过了两次降采样。
+训练集的标签是一个$$60\times60\times5$$的热图（图2），$$60\times60$$表示热图的尺寸，从这个尺寸我们也可以看出训练样本经过了两次降采样。$$5$$表示热图的通道数，组成方式如下：
+
+<figure>
+<img src="/assets/DenseBox_1.png" alt="图1：DenseBox的Ground Truth" />
+<figcaption>图1：DenseBox的Ground Truth</figcaption>
+</figure>
+
+1. 
 
 ## Reference
 
