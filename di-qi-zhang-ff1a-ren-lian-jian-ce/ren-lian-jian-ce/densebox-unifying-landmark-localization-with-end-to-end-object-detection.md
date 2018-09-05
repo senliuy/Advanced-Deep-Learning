@@ -95,13 +95,14 @@ DenseBox使用的Hard Negative Mining的策略和SVM类似，具体策略是：
 
 $$
 M(\hat{t}_i) = 
-\begin{array}
-\left{
-0 \\
-1
-\right.
+\left\{
+\begin{array}{}
+0 \quad f_{ign}^i = 1\text{ or } f_{sel}^i = 0\\
+1 \quad \text{otherwise}
 \end{array}
+\right.
 $$
+
 
 ## Reference
 
