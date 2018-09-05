@@ -42,6 +42,10 @@
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
 * [第六章：语义分割](di-liu-zhang-ff1a-yu-yi-fen-ge.md)
   * [U-Net: Convolutional Networks for Biomedical Image Segmentation](di-liu-zhang-ff1a-yu-yi-fen-ge/u-net-convolutional-networks-for-biomedical-image-segmentation.md)
+* [第七章：人脸识别](di-qi-zhang-ff1a-ren-lian-jian-ce.md)
+  * [人脸检测](di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce.md)
+    * [DenseBox: Unifying Landmark Localization with End to End Object Detection](di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.md)
+    * UnitBox: An Advanced Object Detection Network
 * [其它应用](qi-ta-ying-yong.md)
   * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
 * [Tags](tags.md)
