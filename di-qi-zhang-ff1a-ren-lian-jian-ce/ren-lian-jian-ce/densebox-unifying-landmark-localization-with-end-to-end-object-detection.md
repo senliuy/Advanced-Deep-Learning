@@ -30,11 +30,24 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 
 1. 图1中最前面的热图用于标注人脸区域置信度，前景为1，背景为0。DenseBox并没有使用左图的人脸矩形区域而是使用半径（$$r_c$$）为Ground Truth的高的0.3倍的圆作为标签值，而圆形的中心就是热图的中心，即有图中的白色圆形部分；
 
-2. 图1中后面的四个热图表示像素点到Ground Truth的四个边界的距离，如图2所示。
+2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示。
 
 <figure>
 <img src="/assets/DenseBox_2.png" alt="图2：DenseBox中距离热图示意图" width="600"/>
 <figcaption>图2：DenseBox中距离热图示意图</figcaption>
+</figure>
+
+如果训练样本中的人脸比较密集，一个patch中可能出现多个人脸，如果某个人脸和中心点处的人脸的高的比例在$$[0.8,1.25]$$之间，则认为该样本为正样本。
+
+作者认为DenseBox的标签设计是和感受野密切相关的，具体的讲，结合1.2节要分析的网络结构我们可以计算得到热图中每个像素的感受野是$$48\times48$$，这和我们每个patch中每个人脸的尺寸是非常接近的。在DenseBox中，每个像素点有5个预测值，而这5个预测值便可以确定一个检测框，所以DenseBox本质上也是一个密集采样，每个图片的采样个数是$$60\times60=3600$$个。
+
+### 1.2 网络结构
+
+DenseBox使用了16层的VGG-19作为骨干网络，但是只使用了其前12层，如图3所示。
+
+<figure>
+<img src="/assets/DenseBox_3.png" alt="图3：DenseBox中的网络结构" width="600"/>
+<figcaption>图3：DenseBox中的网络结构</figcaption>
 </figure>
 
 
