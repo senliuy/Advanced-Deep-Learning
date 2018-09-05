@@ -21,6 +21,8 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 
 举例说明：一张训练图片中包含一个$$60\times80$$的人脸，那么第一步会裁剪出大小是$$384\times384$$的一个patch。在第二步中将这个patch resize到$$240\times240$$。这张图片便是训练样本的输入。
 
+通过上面方法采样得到的patch叫做正patch，除了这些正patch，DenseBox还随机采样到了等数量的随机patch，同时使翻转，位移和尺度变换三个数据增强的方法产生样本以增强模型的拟合能力。
+
 训练集的标签是一个$$60\times60\times5$$的热图（图1），$$60\times60$$表示热图的尺寸，从这个尺寸我们也可以看出训练样本经过了两次降采样。$$5$$表示热图的通道数，组成方式如下：
 
 <figure>
@@ -122,6 +124,8 @@ $$
 $$
 
 $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i$$使用的是归一化的值。
+
+
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
