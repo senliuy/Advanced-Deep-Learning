@@ -159,21 +159,21 @@ $$
 $$
 
 
-#### 1.3.2 测试
+#### 1.3.2 测试
 
-给定一张图片$$x = y$$，HED预测$$M$$个side branch和一个fuse layer：
-
-\(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{\(1\)}, ..., \hat{Y}\_{\text{side}}^{\(1\)}\) = CNN\(X, \(\mathbf{W},\mathbf{w},\mathbf{h}\)^\star\)
-
+给定一张图片$$X$$，HED预测$$M$$个side branch和一个fuse layer：
 
 $$
+(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{(1)}, ..., \hat{Y}\_{\text{side}}^{(1)}) = CNN(X, (\mathbf{W},\mathbf{w},\mathbf{h})^\star)
+$$
+
 HED的输出是所以side branch和fuse layer的均值:
-$$
 
-
-\hat{Y}_{\text{HED}} = \text{Average}\(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{\(1\)}, ..., \hat{Y}_{\text{side}}^{\(1\)}\)
 
 $$
+\hat{Y}_{\text{HED}} = \text{Average}(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{(1)}, ..., \hat{Y}_{\text{side}}^{(1)})
+$$
+
 
 ## 总结
 
