@@ -64,7 +64,12 @@ $$
 \mathcal{L}_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2
 $$
 
-第二个
+第二个分支是bounding box回归损失，即计算图2中像素点分别到Ground Truth和到预测值之间的l2损失：
+
+$$
+\mathcal{L}_{loc}(\hat{d}, d^*) = \sum_{i \in \{x^t, y^t, x^b, y^b\}}||\hat{d}_i - d^*_i||^2
+$$
+
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
