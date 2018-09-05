@@ -30,7 +30,7 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 
 1. 图1中最前面的热图用于标注人脸区域置信度，前景为1，背景为0。DenseBox并没有使用左图的人脸矩形区域而是使用半径（$$r_c$$）为Ground Truth的高的0.3倍的圆作为标签值，而圆形的中心就是热图的中心，即有图中的白色圆形部分；
 
-2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示。
+2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示，Ground Truth为蓝色矩形，表示为。
 
 <figure>
 <img src="/assets/DenseBox_2.png" alt="图2：DenseBox中距离热图示意图" width="600"/>
@@ -64,7 +64,7 @@ $$
 \mathcal{L}_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2
 $$
 
-
+第二个
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
