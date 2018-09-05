@@ -91,6 +91,17 @@ DenseBox使用的Hard Negative Mining的策略和SVM类似，具体策略是：
 
 ### 1.4.3 使用掩码的损失函数
 
+损失函数使用掩码来控制哪些样本参与训练，其掩码$$M(\hat{t}_i)$$是由1.4.1节的$$f_{ign}$$和1.4.2节的$$f_{sel}$$共同决定的：
+
+$$
+M(\hat{t}_i) = 
+\begin{array}
+\left{
+0 \\
+1
+\right.
+\end{array}
+$$
 
 ## Reference
 
