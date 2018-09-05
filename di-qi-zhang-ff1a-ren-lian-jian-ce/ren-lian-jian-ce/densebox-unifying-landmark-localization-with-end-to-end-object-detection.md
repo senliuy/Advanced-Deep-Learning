@@ -103,7 +103,25 @@ M(\hat{t}_i) =
 \right.
 $$
 
+使用掩码后，得到的损失函数如下
 
+$$
+\mathcal{L}_{det}(\theta) = \sum_i (M(\hat{t}_i)\mathcal{L}_{cls}(\hat{y}_i, y^*_i) + \lambda_{loc}[y^*_i>0]M(\hat{t}_i)\mathcal{L}_{cls}(\hat{d}_i, d^*_i)
+$$
+
+其中$$\theta$$为卷积网络的参数，$$[y^*_i>0]$$表示只有正样本参与bounding box的训练，其数学表达式为
+
+$$
+[y^*_i>0] = 
+\left\{
+\begin{array}{}
+ 0 \quad y^*_i>0\\
+ 1 \quad \text{otherwise}
+\end{array}
+\right.
+$$
+
+$$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i$$使用的是归一化的值。
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
