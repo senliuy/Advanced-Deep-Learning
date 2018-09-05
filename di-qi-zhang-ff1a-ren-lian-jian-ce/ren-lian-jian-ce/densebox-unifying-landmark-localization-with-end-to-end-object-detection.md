@@ -70,6 +70,28 @@ $$
 \mathcal{L}_{loc}(\hat{d}, d^*) = \sum_{i \in \{x^t, y^t, x^b, y^b\}}||\hat{d}_i - d^*_i||^2
 $$
 
+### 1.4 平衡采样
+
+在1.1节的最后我们讲到，DenseBox可被视为3600个样本的密集采样，其中每个像素点都可以看做是一个样本。在算法中并不是所有样本都会参与到训练中，且为了平衡正负样本，提高模型精度，DenseBox采用了以下策略。
+
+#### 1.4.1 忽略灰色区域
+
+所谓灰色区域，是指正负样本边界部分的像素点，因为在这些区域由于标注的样本是很难区分的，让其参与训练反而会降低模型的精度，因此这一部分不会参与训练，在论文中，长度小于2的边界部分视为灰色区域。DenseBox使用$$f_{ign}$$对灰色样本进行标注，$$f_{ign}=1$$表示为灰色区域样本。
+
+### 1.4.2 Hard Negative Mining
+
+DenseBox使用的Hard Negative Mining的策略和SVM类似，具体策略是：
+
+1. 计算整个patch的3600个所有样本点，并根据loss进行排序；
+2. 取其中的1%，也就是36个作为hard-negative样本；
+3. 随机采样36个负样本和hard-negative构成72个负样本；
+4. 随机采样72个正样本。
+
+使用上面策略得到的144个样本参与训练，DensoBox使用掩码$$f_{sel}$$对参与训练的样本点进行标注：样本被选中$$f_{sel}=1$$，否则$$f_{sel}=0$$。
+
+### 1.4.3 使用掩码的损失函数
+
+
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
