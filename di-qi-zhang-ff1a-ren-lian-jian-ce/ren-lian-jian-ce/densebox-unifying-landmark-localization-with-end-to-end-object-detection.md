@@ -33,7 +33,7 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示，Ground Truth为蓝色矩形，表示为。
 
 <figure>
-<img src="/assets/DenseBox_2.png" alt="图2：DenseBox中距离热图示意图" width="600"/>
+<img src="/assets/DenseBox_2.jpeg" alt="图2：DenseBox中距离热图示意图" width="600"/>
 <figcaption>图2：DenseBox中距离热图示意图</figcaption>
 </figure>
 
