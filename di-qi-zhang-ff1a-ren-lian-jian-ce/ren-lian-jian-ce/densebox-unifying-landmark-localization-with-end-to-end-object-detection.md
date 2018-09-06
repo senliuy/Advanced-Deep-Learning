@@ -142,7 +142,9 @@ Landmark使用了1.4节中介绍的灰色区域和Hard Negative Mining方法进�
 
 ## 1.6 Refine Network
 
-加入关键点检测分支之后，DenseBox根据关键点的置信度图对检测分支进行了改进，如图4的蓝色虚线部分。
+加入关键点检测分支之后，DenseBox根据关键点的置信度图和boudning box的置信度图构成了新的检测损失，并将其命名为Refine Network，如图4的蓝色虚线部分。更详细的讲，Refine Net通过拼接的方式融合了关键点检测的Conv5_2_landmark层和图2中bounding box的Conv5_2_det层，之后接了Max Pooling层，卷积层，上采样层最后生成新的预测值$$\hat{y}$$。Refine Network也是使用了相同的l2损失函数。
+
+最终得到的损失拿书
 
 ## Reference
 
