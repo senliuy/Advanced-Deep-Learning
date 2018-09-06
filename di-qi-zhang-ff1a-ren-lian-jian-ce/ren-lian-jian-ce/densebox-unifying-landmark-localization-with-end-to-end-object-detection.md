@@ -98,7 +98,7 @@ DenseBox使用的Hard Negative Mining的策略和SVM类似，具体策略是：
 $$
 M(\hat{t}_i) = 
 \left\{
-\begin{array}{}
+\begin{array}{l}
 0 \quad f_{ign}^i = 1\text{ or } f_{sel}^i = 0\\
 1 \quad \text{otherwise}
 \end{array}
@@ -116,7 +116,7 @@ $$
 $$
 [y^*_i>0] = 
 \left\{
-\begin{array}{}
+\begin{array}{l}
  0 \quad y^*_i>0\\
  1 \quad \text{otherwise}
 \end{array}
@@ -166,6 +166,7 @@ DenseBox的检测过程如图5所示，先考虑不带关键点检测的流程�
 
 ## 总结
 
+DenseBox在今天看来技术性依旧非常强，虽然作为一个人脸检测的论文被发表，但是其思想也可以迁移到通用的物体检测中。而且得到的效果几乎和Faster R-CNN旗鼓相当。由于采用了FCN的架构，DenseBox本身的速度应该不会太慢，唯一的性能瓶颈应该是图像金字塔的引入。在之后的研究中，DenseBox通过SPP-Net中的金字塔池化的方式将检测时间优化到了GPU的实时。本来DenseBox在物体检测中能有更大的价值的，但是由于其仅限于百度内部使用，并没有开源，论文投稿也比较晚造成了R-CNN系列的一统天下。当然R-CNN系列凭借其代码的规范性，算法的通用性等优点一统天下也不意外。
 
 ## Reference
 
