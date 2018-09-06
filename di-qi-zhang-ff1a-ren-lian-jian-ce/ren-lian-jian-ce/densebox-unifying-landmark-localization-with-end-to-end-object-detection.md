@@ -129,6 +129,10 @@ $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i
 
 论文中指出当DenseBox加入关键点检测的任务分支时模型的精度会进一步提升，这时只需要在图3的conv3_4和conv4_4融合之后的结果上添加一个用于关键点检测的分支即可，分支的详细结构如图4所示。
 
+<figure>
+<img src="/assets/DenseBox_4.png" alt="图3：DenseBox中的网络结构" width="600"/>
+<figcaption>图4：DenseBox中的网络结构</figcaption>
+</figure>
 
 
 ## Reference
