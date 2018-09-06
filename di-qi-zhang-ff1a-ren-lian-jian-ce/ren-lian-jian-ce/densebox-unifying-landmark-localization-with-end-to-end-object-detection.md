@@ -125,7 +125,12 @@ $$
 
 $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i$$使用的是归一化的值。
 
+## 1.5 结合关键点检测的多任务模型
+
+论文中指出当DenseBox加入关键点检测的任务分支时模型的精度会进一步提升，这时只需要在图3的conv3_4和conv4_4融合之后的结果上添加一个用于关键点检测的分支即可，分支的详细结构如图4所示。
+
+
 
 ## Reference
 
-\[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465._
+\[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465.
