@@ -130,22 +130,29 @@ $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i
 论文中指出当DenseBox加入关键点检测的任务分支时模型的精度会进一步提升，这时只需要在图3的conv3_4和conv4_4融合之后的结果上添加一个用于关键点检测的分支即可，分支的详细结构如图4所示。
 
 <figure>
-<img src="/assets/DenseBox_4.png" alt="图3：DenseBox中的网络结构" width="600"/>
-<figcaption>图4：DenseBox中的网络结构</figcaption>
+<img src="/assets/DenseBox_4.png" alt="图4：Refine Network的网络结构" width="600"/>
+<figcaption>图4：Refine Network的网络结构</figcaption>
 </figure>
 
 假设样本有$$N$$个关键点（在MALF中$$N=72$$），DenseBox的关键点检测的输出是$$N$$个热图，热图中的每个像素点表示改点为对应位置关键点的置信度。
 
 关键点的标签值的生成方式也很简单，对于标签集中的第i个关键点$$(x,y)$$，在第i个feature map在$$(x,y)$$处的值是1，其它位置为0，有时也可以以$$(x,y)$$为圆心将值为1的区域扩展成一个圆，半径为$$r_l$$。
 
-Landmark使用了1.4节中介绍的灰色区域和Hard Negative Mining方法进行采样，损失函数则是使用了采样样本之间的l2损失函数。整个关键点检测如图4中红色虚线部分所示。
+Landmark使用了1.4节中介绍的灰色区域和Hard Negative Mining方法进行采样，损失函数则是使用了采样样本之间的l2损失函数$$\mathcal{L}_{lm}$$。整个关键点检测如图4中红色虚线部分所示。
 
 ## 1.6 Refine Network
 
-加入关键点检测分支之后，DenseBox根据关键点的置信度图和boudning box的置信度图构成了新的检测损失，并将其命名为Refine Network，如图4的蓝色虚线部分。更详细的讲，Refine Net通过拼接的方式融合了关键点检测的Conv5_2_landmark层和图2中bounding box的Conv5_2_det层，之后接了Max Pooling层，卷积层，上采样层最后生成新的预测值$$\hat{y}$$。Refine Network也是使用了相同的l2损失函数。
+加入关键点检测分支之后，DenseBox根据关键点的置信度图和boudning box的置信度图构成了新的检测损失，并将其命名为Refine Network，如图4的蓝色虚线部分。更详细的讲，Refine Net通过拼接的方式融合了关键点检测的Conv5_2_landmark层和图2中bounding box的Conv5_2_det层，之后接了Max Pooling层，卷积层，上采样层最后生成新的预测值$$\hat{y}$$。Refine Network也是使用了相同的l2损失函数，表示为$$\mathcal{L}_{rf}$$。
 
-最终得到的损失拿书
+## 1.7 最终输出
 
+最终得到的损失函数$$\mathcal{L}_{full}$$是bounding box检测任务，关键点检测任务和Refine之后的分类任务的加权和，表示为：
+
+$$
+\mathcal{L}_{full}(\theta) = \lambda_{det}\mathcal{L}_{full}(\theta) + \lambda_{lm}\mathcal{L}_{full}(\theta) + \mathcal{L}_{full}(\theta)
+$$
+
+$$\lambda_{det}$$和$$\lambda_{lm}$$是平衡各任务的权值，论文中的值分别是1和0.5，更好的策略是根据收敛情况进行调整。
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465.
