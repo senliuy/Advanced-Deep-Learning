@@ -35,7 +35,7 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示，Ground Truth为蓝色矩形，表示为$$d^* = (d^*_{x^t},d^*_{x^b},d^*_{y^t},d^*_{y^b})$$, 绿色为预测的矩形，表示为$$\hat{d} = (\hat{d}_{x^t},\hat{d}_{x^b},\hat{d}_{y^t},\hat{d}_{y^b})$$。(论文中符号的使用混乱且有错误，这里没有采用和论文完全相同的符号)。
 
 <figure>
-<img src="/assets/DenseBox_2.jpeg" alt="图2：DenseBox中距离热图示意图" width="600"/>
+<img src="/assets/DenseBox_2.jpeg" alt="图2：DenseBox中距离热图示意图" width="300"/>
 <figcaption>图2：DenseBox中距离热图示意图</figcaption>
 </figure>
 
@@ -48,7 +48,7 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 DenseBox使用了16层的VGG-19作为骨干网络，但是只使用了其前12层，如图3所示。
 
 <figure>
-<img src="/assets/DenseBox_3.png" alt="图3：DenseBox中的网络结构" width="300"/>
+<img src="/assets/DenseBox_3.png" alt="图3：DenseBox中的网络结构" width="600"/>
 <figcaption>图3：DenseBox中的网络结构</figcaption>
 </figure>
 
