@@ -48,7 +48,7 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 DenseBox使用了16层的VGG-19作为骨干网络，但是只使用了其前12层，如图3所示。
 
 <figure>
-<img src="/assets/DenseBox_3.png" alt="图3：DenseBox中的网络结构" width="600"/>
+<img src="/assets/DenseBox_3.png" alt="图3：DenseBox中的网络结构" width="300"/>
 <figcaption>图3：DenseBox中的网络结构</figcaption>
 </figure>
 
