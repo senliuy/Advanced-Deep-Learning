@@ -108,7 +108,7 @@ $$
 使用掩码后，得到的损失函数如下
 
 $$
-\mathcal{L}_{det}(\theta) = \sum_i (M(\hat{t}_i)\mathcal{L}_{cls}(\hat{y}_i, y^*_i) + \lambda_{loc}[y^*_i>0]M(\hat{t}_i)\mathcal{L}_{cls}(\hat{d}_i, d^*_i)
+\mathcal{L}_{det}(\theta) = \sum_i (M(\hat{t}_i)\mathcal{L}_{cls}(\hat{y}_i, y^*_i) + \lambda_{loc}[y^*_i>0]M(\hat{t}_i)\mathcal{L}_{loc}(\hat{d}_i, d^*_i)
 $$
 
 其中$$\theta$$为卷积网络的参数，$$[y^*_i>0]$$表示只有正样本参与bounding box的训练，其数学表达式为
@@ -125,7 +125,7 @@ $$
 
 $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i$$使用的是归一化的值。
 
-## 1.5 结合关键点检测的多任务模型
+### 1.5 结合关键点检测的多任务模型
 
 论文中指出当DenseBox加入关键点检测的任务分支时模型的精度会进一步提升，这时只需要在图3的conv3_4和conv4_4融合之后的结果上添加一个用于关键点检测的分支即可，分支的详细结构如图4所示。
 
@@ -140,19 +140,32 @@ $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i
 
 Landmark使用了1.4节中介绍的灰色区域和Hard Negative Mining方法进行采样，损失函数则是使用了采样样本之间的l2损失函数$$\mathcal{L}_{lm}$$。整个关键点检测如图4中红色虚线部分所示。
 
-## 1.6 Refine Network
+### 1.6 Refine Network
 
 加入关键点检测分支之后，DenseBox根据关键点的置信度图和boudning box的置信度图构成了新的检测损失，并将其命名为Refine Network，如图4的蓝色虚线部分。更详细的讲，Refine Net通过拼接的方式融合了关键点检测的Conv5_2_landmark层和图2中bounding box的Conv5_2_det层，之后接了Max Pooling层，卷积层，上采样层最后生成新的预测值$$\hat{y}$$。Refine Network也是使用了相同的l2损失函数，表示为$$\mathcal{L}_{rf}$$。
 
-## 1.7 最终输出
+### 1.7 最终输出
 
-最终得到的损失函数$$\mathcal{L}_{full}$$是bounding box检测任务，关键点检测任务和Refine之后的分类任务的加权和，表示为：
+最终得到的损失函数$$\mathcal{L}_{full}$$是1.4节中的$$\mathcal{L}_{det}(\theta)$$，关键点检测任务和Refine之后的分类任务的加权和，表示为：
 
 $$
-\mathcal{L}_{full}(\theta) = \lambda_{det}\mathcal{L}_{full}(\theta) + \lambda_{lm}\mathcal{L}_{full}(\theta) + \mathcal{L}_{full}(\theta)
+\mathcal{L}_{full}(\theta) = \lambda_{det}\mathcal{L}_{det}(\theta) + \lambda_{lm}\mathcal{L}_{lm}(\theta) + \mathcal{L}_{rf}(\theta)
 $$
 
-$$\lambda_{det}$$和$$\lambda_{lm}$$是平衡各任务的权值，论文中的值分别是1和0.5，更好的策略是根据收敛情况进行调整。
+注意$$\mathcal{L}_{det}(\theta)$$是由检测任务和bounding box定位任务共两个任务组成，因此$$\mathcal{L}_{full}(\theta)$$本质上是个四任务模型。$$\lambda_{det}$$和$$\lambda_{lm}$$是平衡各任务的权值，论文中的值分别是1和0.5，更好的策略是根据收敛情况进行调整。
+
+### 1.8 测试
+
+DenseBox的检测过程如图5所示，先考虑不带关键点检测的流程：
+
+1. 图像金字塔作为输入；
+2. 经过网络后产生5个通道的Feature Map；
+3. 两次双线性插值上采样得到和输入图像相同尺寸的Feature Map；
+4. 根据Feature Map得到检测框；
+5. NMS合并检测框得到最终的检测结果。
+
+#
+
 ## Reference
 
 \[1\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465.
