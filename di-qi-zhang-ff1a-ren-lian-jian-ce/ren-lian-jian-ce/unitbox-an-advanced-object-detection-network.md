@@ -14,12 +14,14 @@ UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning
 2. 输出Feature Map的每个像素点$$(x_i, y_i)$$都是可以确定一个检测框的样本，包样本含置信度$$y$$和该点到bounding box四条边的距离$$(x_t,x_b,y_t,y_b)$$，如图1所示
 
 <figure>
-<img src="/assets/UnitBox_1.png" alt="图1：UnitBox的Ground Truth" />
+<img src="/assets/UnitBox_1.png" alt="图1：UnitBox的Ground Truth" width="600"/>
 <figcaption>图1：UnitBox的Ground Truth</figcaption>
 </figure>
 
 
 ### 1.1 UnitBox的前向计算 
+
+前向计算非常简单，如图2中的伪代码所示：
 
 
 
