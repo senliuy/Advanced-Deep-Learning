@@ -8,10 +8,12 @@ UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning
 
 ## 1. UnitBox详解
 
-首先回顾DenseBox中介绍的几个重要的知识点，明白了这些知识点才能理解下面要讲解的UnitBox。这里声明，为了和DenseBox的l2损失做对比，我们放弃了论文中使用的变量名，而是采用DenseBox中的变量名。
+首先回顾DenseBox中介绍的几个重要的知识点，明白了这些知识点才能理解下面要讲解的UnitBox。
 
 1. DenseBox网络结构是全卷积网络，输出层是一个$$\frac{m}{4}\times \frac{n}{4}$$的Feature Map，是一个image-to-image的任务；
-2. 输出Feature Map的每个像素点$$(x_i, y_i)$$都是可以确定一个检测框的样本，包样本含置信度$$y$$和该点到bounding box四条边的距离$$(d_{x^t},d_{x^b},d_{y^t},d_{y^b})$$，如[DenseBox解析](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.html)中的图2。
+2. 输出Feature Map的每个像素点$$(x_i, y_i)$$都是可以确定一个检测框的样本，包样本含置信度$$y$$和该点到bounding box四条边的距离$$(x_t,x_b,y_t,y_b)$$，如图1所示
+
+
 
 ### 1.1 UnitBox的前向计算 
 
