@@ -43,7 +43,7 @@ $$
 
 $$
 \frac{\partial \mathcal{L}}{\partial x_t} = 
-\begin{equation}
+\begin{array}
 \frac{\partial}{\partial x_t}(-ln(IoU)) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(IoU) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(\frac{I}{U}) \\
@@ -51,7 +51,7 @@ $$
 = \frac{I\times\frac{\partial}{x_t}(X+\tilde{X}-I) - U\times\frac{\partial I}{\partial x_t}}{U^2 IoU} \\
 = \frac{I\times (\frac{\partial}{x_t}X - \frac{\partial}{\partial x_t}I) - U \times \frac{\partial I}{\partial x_t}}{U^2 IoU} \\
 = \frac{1}{U}\frac{\partial X}{x_t} - \frac{U+I}{UI}\frac{\partial I}{x_t}
-\end{equation}
+\end{array}
 $$
 
 其中：
