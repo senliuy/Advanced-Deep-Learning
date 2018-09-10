@@ -64,6 +64,7 @@ DenseBox的第一个损失为分类损失（检测损失）。在1.1节中我们
 
 $$
 \mathcal{L}_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2
+\tag1
 $$
 
 第二个分支是bounding box回归损失，即计算图2中像素点分别到Ground Truth和到预测值之间的l2损失：
