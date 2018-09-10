@@ -18,8 +18,8 @@ UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning
 <figcaption>图1：UnitBox的Ground Truth</figcaption>
 </figure>
 
-
-### 1.1 UnitBox的前向计算 
+Unit box
+### 1.1 IoU损失的前向计算 
 
 前向计算非常简单，如图2中的伪代码所示：
 
@@ -28,7 +28,24 @@ UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning
 <figcaption>图2：IoU损失前向计算伪代码</figcaption>
 </figure>
 
+注意结合图1中的$$x$$和$$\tilde{x}$$的定义理解图2中的伪代码，$$X$$计算的是预测bounding box的面积，$$\tilde{X}$$则是ground truth的bounding box的面积，$$I$$是两个区域的交集，$$U$$是两个区域的并集。
 
+$$\mathcal{L} = -ln(IoU)$$本质上是对IoU的交叉熵损失函数：那么可以将IoU看做从伯努利分布中的随机采样，并且$$p(IoU=1)=1$$，于是可以化简成源码中的公式，即
+
+$$
+\mathcal{L} = -pln(IoU)-(1-p)ln(IoU)=-ln(IoU)
+$$
+
+### 1.2 IoU损失的反向计算
+
+
+## 2. 总结
+
+IoU损失有如下优点：
+
+* IoU损失将位置信息作为一个整体进行训练，而l2损失把它们当做互相独立的四个变量进行训练，这样得到的结果更准确；
+
+* 无论输入的样本是什么样子，IoU的值均介于$$[0,1]$$，这种天然的归一化的损失使模型具有更强的处理多尺度图像的能力。
 
 
 ## Reference
