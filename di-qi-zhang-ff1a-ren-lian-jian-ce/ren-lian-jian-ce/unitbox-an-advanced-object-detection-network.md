@@ -82,11 +82,18 @@ $$
 
 ## 1.3 UnitBox网络架构
 
+UnitBox的网络结构如图3所示：
+
+<figure>
+<img src="/assets/UnitBox_2.png" alt="图2：UnitBox网络结构" width="600"/>
+<figcaption>图2：UnitBox网络结构</figcaption>
+</figure>
+
 
 
 ## 2. 总结
 
-IoU损失有如下优点：
+IoU损失有如下优点
 
 * IoU损失将位置信息作为一个整体进行训练，而l2损失把它们当做互相独立的四个变量进行训练，这样得到的结果更准确；
 
