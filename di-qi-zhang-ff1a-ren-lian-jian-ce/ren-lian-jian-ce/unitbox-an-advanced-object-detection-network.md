@@ -82,14 +82,24 @@ $$
 
 ## 1.3 UnitBox网络架构
 
-UnitBox的网络结构如图3所示：
+UnitBox的网络结构如图3所示，下面分析几个重要的方面
 
 <figure>
 <img src="/assets/UnitBox_3.png" alt="图3：UnitBox网络结构" width="600"/>
 <figcaption>图3：UnitBox网络结构</figcaption>
 </figure>
 
+### 1.3.1 网络的输入输出
 
+**输入**：由于使用了全卷积结构，在测试时直接输入原始图片即可。在训练时每个batch的图像的尺寸相同即可。
+
+**输出**：UnitBox的输出标签分成两部分，上半部分椭圆形为置信度热图，具体标签生成方法论文中没有讲，猜测应该是采样类似于DenseBox中的策略。另外一组是bounding box热图，生成策略应该也是类似于DenseBox。
+
+### 1.3.2 骨干网络
+
+骨干网络是VGG-16，用于计算置信度热图的是stage-4阶段的Feature Map，计算方式是先通过线性插值得到相同尺寸的Feature Map，再通过$$1\times1$$卷积将Feature Map的通道数降到1，此时得到的Feature Map表示预测的置信度热图。网络的另外一个分支用于预测bounding box的热图，Feature Map取自VGG-16的stage-5。通过和上面类似的方法得到和原图尺寸相同的4个预测bounding box热图。并且在后面加入了ReLU将负值置0。
+
+至于为什么两个任务使用不同的stage，论文中给出的解释是IoU损失计算的Bounding box是一个整体，因此需要更大的感受野，由于UnitBox仅添加了两组$$1\times1$$卷积，因此速度要比DenseBox快很多。
 
 ## 2. 总结
 
