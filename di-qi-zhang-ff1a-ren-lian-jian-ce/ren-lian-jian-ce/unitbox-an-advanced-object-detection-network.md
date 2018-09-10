@@ -18,7 +18,8 @@ UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning
 <figcaption>图1：UnitBox的Ground Truth</figcaption>
 </figure>
 
-Unit box
+Unitbox的一个最重要的特征是使用IoU损失替代了传统的l2损失，下面我们先从IoU损失入手讲解UnitBox。
+
 ### 1.1 IoU损失的前向计算 
 
 前向计算非常简单，如图2中的伪代码所示：
