@@ -1,5 +1,7 @@
 # DenseBox: Unifying Landmark Localization with End to End Object Detection
 
+tags: OCR, DenseBox
+
 ## 前言
 
 DenseBox百度IDL的作品，提出的最初动机是为了解决普适的物体检测问题。其在2015年初就被提出来了，甚至比Fast R-CNN还要早，但是由于论文发表的比较晚，虽然算法上非常有创新点，但是依旧阻挡不了Fast R-CNN一统江山。
