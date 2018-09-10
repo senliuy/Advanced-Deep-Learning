@@ -65,7 +65,7 @@ DenseBox使用了16层的VGG-19作为骨干网络，但是只使用了其前12�
 DenseBox的第一个损失为分类损失（检测损失）。在1.1节中我们知道，分类标签$$y^* \in \{0,1\}$$，设$$\hat{y}$$为模型的预测值。作者使用的是l2损失:
 
 $$
-\mathcal{L}_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2 \tag1
+\mathcal{L}_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2
 $$
 
 第二个分支是bounding box回归损失，即计算图2中像素点分别到Ground Truth和到预测值之间的l2损失：
