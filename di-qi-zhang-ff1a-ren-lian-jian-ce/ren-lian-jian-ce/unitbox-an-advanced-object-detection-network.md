@@ -14,7 +14,7 @@ UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning
 2. 输出Feature Map的每个像素点$$(x_i, y_i)$$都是可以确定一个检测框的样本，包样本含置信度$$y$$和该点到bounding box四条边的距离$$(x_t,x_b,y_t,y_b)$$，如图1所示
 
 <figure>
-<img src="/assets/UnitBox_1.png" alt="图1：UnitBox的Ground Truth" width="600" align="center"/>
+<img src="/assets/UnitBox_1.png" alt="图1：UnitBox的Ground Truth" align="center"/>
 <figcaption>图1：UnitBox的Ground Truth</figcaption>
 </figure>
 
@@ -85,7 +85,7 @@ $$
 UnitBox的网络结构如图3所示，下面分析几个重要的方面
 
 <figure>
-<img src="/assets/UnitBox_3.png" alt="图3：UnitBox网络结构" width="600"/>
+<img src="/assets/UnitBox_3.png" alt="图3：UnitBox网络结构"/>
 <figcaption>图3：UnitBox网络结构</figcaption>
 </figure>
 
