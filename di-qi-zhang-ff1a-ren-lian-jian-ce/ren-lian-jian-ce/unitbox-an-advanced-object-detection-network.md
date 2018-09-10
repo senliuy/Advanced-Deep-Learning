@@ -42,15 +42,16 @@ $$
 这里我们推导一下IoU损失的反向计算公式，以变量$$x_t$$为例：
 
 $$
-\begin{array}{}
-\frac{\partial \mathcal{L}}{\partial x_t} = \frac{\partial}{\partial x_t}(-ln(IoU)) \\
+\frac{\partial \mathcal{L}}{\partial x_t} = 
+\begin{equation}
+\frac{\partial}{\partial x_t}(-ln(IoU)) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(IoU) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(\frac{I}{U}) \\
 = \frac{1}{IoU}\frac{I\times\frac{\partial U}{\partial x_t} - U\times\frac{\partial I}{\partial x_t}}{U^2}\\
 = \frac{I\times\frac{\partial}{x_t}(X+\tilde{X}-I) - U\times\frac{\partial I}{\partial x_t}}{U^2 IoU} \\
 = \frac{I\times (\frac{\partial}{x_t}X - \frac{\partial}{\partial x_t}I) - U \times \frac{\partial I}{\partial x_t}}{U^2 IoU} \\
 = \frac{1}{U}\frac{\partial X}{x_t} - \frac{U+I}{UI}\frac{\partial I}{x_t}
-\end{array}
+\end{equation}
 $$
 
 其中：
