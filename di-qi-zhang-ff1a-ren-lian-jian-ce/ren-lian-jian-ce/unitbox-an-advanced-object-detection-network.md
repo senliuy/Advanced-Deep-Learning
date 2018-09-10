@@ -39,7 +39,35 @@ $$
 
 ### 1.2 IoU损失的反向计算
 
+这里我们推导一下IoU损失的反向计算公式，以变量$$x_t$$为例：
 
+$$
+\frac{\partial \mathcal{L}}{\partial x_t} = \frac{\partial}{\partial x_t}(-ln(IoU)) \\
+= -\frac{1}{IoU}\frac{\partial}{\partial x_t}(IoU) \\
+= -\frac{1}{IoU}\frac{\partial}{\partial x_t}(\frac{I}{U}) \\
+= \frac{1}{IoU}\frac{I\times\frac{\partial U}{\partial x_t} - U\times\frac{\partial I}{\partial x_t}}{U^2}\\
+= \frac{I\times\frac{\partial}{x_t}(X+\tilde{X}-I) - U\times\frac{\partial I}{\partial x_t}}{U^2 IoU} \\
+= \frac{I\times (\frac{\partial}{x_t}X - \frac{\partial}{\partial x_t}I) - U \times \frac{\partial I}{\partial x_t}}{U^2 IoU} \\
+= \frac{1}{U}\frac{\partial X}{x_t} - \frac{U+I}{UI}\frac{\partial I}{x_t}
+$$
+
+其中：
+
+$$
+\frac{\partial X}{x_t} = x_l+x_r
+$$
+
+$$
+\frac{\partial I}{x_t} = 
+\left\{
+\begin{array}{}
+I_w, \quad \text{if } x_t < \tilde{x}_t (\text{or }x_b < \tilde{x}_b) \\
+0, \quad \text{otherwise}
+\end{array}
+\right.
+$$
+
+其它三个变量的推导方法类似，这里不再重复。
 ## 2. 总结
 
 IoU损失有如下优点：
