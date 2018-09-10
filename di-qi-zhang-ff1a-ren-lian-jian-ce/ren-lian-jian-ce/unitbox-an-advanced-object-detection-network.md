@@ -42,8 +42,8 @@ $$
 这里我们推导一下IoU损失的反向计算公式，以变量$$x_t$$为例：
 
 $$
-\frac{\partial \mathcal{L}}{\partial x_t} = 
 \begin{array}{}
+\frac{\partial \mathcal{L}}{\partial x_t} = 
 \frac{\partial}{\partial x_t}(-ln(IoU)) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(IoU) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(\frac{I}{U}) \\
