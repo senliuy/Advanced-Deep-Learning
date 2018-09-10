@@ -43,7 +43,7 @@ $$
 
 $$
 \frac{\partial \mathcal{L}}{\partial x_t} = 
-\begin{array}
+\begin{array}{}
 \frac{\partial}{\partial x_t}(-ln(IoU)) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(IoU) \\
 = -\frac{1}{IoU}\frac{\partial}{\partial x_t}(\frac{I}{U}) \\
