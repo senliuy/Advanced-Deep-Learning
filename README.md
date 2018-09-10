@@ -42,6 +42,7 @@
 * 2018-08-29：Scene Text Detection via Holistic, Multi-Channel Prediction
 * 2018-09-04：U-Net: Convolutional Networks for Biomedical Image Segmentation
 * 2018-09-06：DenseBox: Unifying Landmark Localization with End to End Object Detection
+* 2018-09-06：UnitBox: An Advanced Object Detection Network
 
 
 
