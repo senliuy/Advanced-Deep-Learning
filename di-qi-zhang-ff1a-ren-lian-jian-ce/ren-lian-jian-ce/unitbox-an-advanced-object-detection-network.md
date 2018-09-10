@@ -85,8 +85,8 @@ $$
 UnitBox的网络结构如图3所示：
 
 <figure>
-<img src="/assets/UnitBox_2.png" alt="图2：UnitBox网络结构" width="600"/>
-<figcaption>图2：UnitBox网络结构</figcaption>
+<img src="/assets/UnitBox_3.png" alt="图3：UnitBox网络结构" width="600"/>
+<figcaption>图3：UnitBox网络结构</figcaption>
 </figure>
 
 
