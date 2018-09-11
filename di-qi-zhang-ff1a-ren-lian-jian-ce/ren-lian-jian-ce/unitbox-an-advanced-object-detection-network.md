@@ -25,7 +25,7 @@ Unitbox的一个最重要的特征是使用IoU损失替代了传统的l2损失�
 前向计算非常简单，如图2中的伪代码所示：
 
 <figure>
-<img src="/assets/UnitBox_2.jpeg" alt="图2：IoU损失前向计算伪代码" width="400"/>
+<img src="/assets/UnitBox_2.png" alt="图2：IoU损失前向计算伪代码" width="400"/>
 <figcaption>图2：IoU损失前向计算伪代码</figcaption>
 </figure>
 
