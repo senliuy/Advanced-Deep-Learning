@@ -60,15 +60,43 @@ R-Anchor的锚点由3个尺寸，3个比例以及6个角度组成：3个尺寸�
 
 为了缓解过拟合的问题，并增加模型对选择区域的检测能力，RRPN使用了数据扩充的方法增加样本的数量。RRPN使用的扩充方法之一是将输入图像选择$$\alpha$$。
 
-对于一张尺寸为$$I_w\times I_h$$的输入图像，设其中一个Ground Truth表示为$$(x,y,w,h,\theta)$$，旋转$$\alpha$$后得到的Ground Truth为$$(x',y',w',h',\theta')$$，其中Ground Truth的尺寸并不会改变，即$$w'=w$$，$$h'=h$$。$$\theta'=\theta+\alpha+k\pi$$，$$k\pi$$用于将$$\theta'$$的范围控制到$$[-\frac{\pi}{4},\frac{3\pi}{4})$$之间。$$(x',y')$$的计算方式为：
+对于一张尺寸为$$I_W\times I_H$$的输入图像，设其中一个Ground Truth表示为$$(x,y,w,h,\theta)$$，旋转$$\alpha$$后得到的Ground Truth为$$(x',y',w',h',\theta')$$，其中Ground Truth的尺寸并不会改变，即$$w'=w$$，$$h'=h$$。$$\theta'=\theta+\alpha+k\pi$$，$$k\pi$$用于将$$\theta'$$的范围控制到$$[-\frac{\pi}{4},\frac{3\pi}{4})$$之间。$$(x',y')$$的计算方式为：
 
 $$
-\begin{array}
-\left[
+\left[\begin{matrix}
 x'\\y'\\1
-\right]
-\end{array}=
+\end{matrix}\right]=
+\mathbf{T}(\frac{I_W}{2}, \frac{I_H}{2})
+\mathbf{R}(\alpha)
+\mathbf{T}(-\frac{I_W}{2},-\frac{I_H}{2})
+\left[\begin{matrix}
+x\\y\\1
+\end{matrix}\right]
 $$
+
+$$\mathbf{T}(\delta_x, \delta_y)$$和$$\mathbf{R}(\alpha)$$的定义分别是：
+
+$$
+\mathbf{T}(\delta_x, \delta_y)=
+\left[\begin{matrix}
+1 & 0 & \delta_x \\
+0 & 1 & \delta_y \\
+0 & 0 & 1
+\end{matrix}\right]
+$$
+
+$$
+\mathbf{R}(\alpha)=
+\left[\begin{matrix}
+\text{cos }\alpha & \text{sin }\alpha & 0 \\
+-\text{sin }\alpha & \text{cos }\alpha & 0 \\
+0 & 0 & 1
+\end{matrix}\right]
+$$
+
+## 2.4 RRPN中正负锚点的判断规则
+
+传统RPN的锚点正负的判断方法是不能应用到RRPN中的，例如一个$$(x,y,w,h)$$均判断正确但是仅角度偏转了$$\frac{\pi}{12}$$的锚点，其与Ground Truth的IoU仅为0.31，但是它还是非常像是一个正锚点的，如图3所示。
 
 ## Reference
 
