@@ -33,6 +33,7 @@
     * [Detecting Text in Natural Image with Connectionist Text Proposal Network](chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.md)
     * [Scene Text Detection via Holistic, Multi-Channel Prediction](chapter1/scene-text-detection-via-holistic-multi-channel-prediction.md)
     * [EAST: An Efficient and Accurate Scene Text Detector](chapter1/east-an-efficient-and-accurate-scene-text-detector.md)
+    * [Arbitrary-Oriented Scene Text Detection via Rotation Proposals](chapter1/arbitrary-oriented-scene-text-detection-via-rotation-proposals.md)
   * [文字识别](chapter1/wen-zi-shi-bie.md)
     * [Spatial Transform Networks](chapter1/spatial-transform-networks.md)
     * [Robust Scene Text Recognition with Automatic Rectification](chapter1/robust-scene-text-recognition-with-automatic-rectification.md)
