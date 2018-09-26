@@ -52,13 +52,23 @@ RRPN的网络结构如图1所示，检测过程可以分成三步：
 R-Anchor的锚点由3个尺寸，3个比例以及6个角度组成：3个尺寸分别是8，16，32；3个比例分别是$$1:2$$，$$1:5$$，$$1:8$$；6个角度分别是$$-\frac{\pi}{6}, 0, \frac{\pi}{6},\frac{\pi}{3},\frac{\pi}{2},\frac{2\pi}{3}$$。锚点的形状如图2所示。因此在RRPN中每个特征向量共有$$3\times3\times6=54$$个锚点。
 
 <figure>
-<img src="/assets/RRPN_2.jpeg" alt="图1：RRPN的锚点" />
-<figcaption>图1：RRPN的锚点</figcaption>
+<img src="/assets/RRPN_2.jpeg" alt="图2：RRPN的锚点" />
+<figcaption>图2：RRPN的锚点</figcaption>
 </figure>
 
 ### 2.3 RRPN的图像扩充
 
+为了缓解过拟合的问题，并增加模型对选择区域的检测能力，RRPN使用了数据扩充的方法增加样本的数量。RRPN使用的扩充方法之一是将输入图像选择$$\alpha$$。
 
+对于一张尺寸为$$I_w\times I_h$$的输入图像，设其中一个Ground Truth表示为$$(x,y,w,h,\theta)$$，旋转$$\alpha$$后得到的Ground Truth为$$(x',y',w',h',\theta')$$，其中Ground Truth的尺寸并不会改变，即$$w'=w$$，$$h'=h$$。$$\theta'=\theta+\alpha+k\pi$$，$$k\pi$$用于将$$\theta'$$的范围控制到$$[-\frac{\pi}{4},\frac{3\pi}{4})$$之间。$$(x',y')$$的计算方式为：
+
+$$
+\begin{array}
+\left[
+x'\\y'\\1
+\right]
+\end{array}=
+$$
 
 ## Reference
 
