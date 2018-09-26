@@ -21,6 +21,19 @@ L({p_i},{t_i})=\frac{1}{N_{cls}}\sum_{i}L_{cls}(p_i,p_i^*)+\lambda\frac{1}{N_{re
 $$
 
 其中$$L_{cls}$$是分类任务，损失函数是$$softmax$$，用于计算该锚点为前景或者背景的概率；$$L_{reg}$$是回归任务，损失韩式是Smooth L1，用于计算锚点和Ground Truth的相对关系。
+
+
+## 2.RRPN详解
+
+RRPN的网络结构如图1所示，
+
+<figure>
+<img src="/assets/RRPN_1.png" alt="图1：RRPN网络结构图" />
+<figcaption>图1：RRPN网络结构图</figcaption>
+</figure>
+
+
+
 ## Reference
 
 \[1\] Ma J, Shao W, Ye H, et al. Arbitrary-oriented scene text detection via rotation proposals\[J\]. IEEE Transactions on Multimedia, 2018.
