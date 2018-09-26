@@ -25,6 +25,8 @@ $$
 
 ## 2.RRPN详解
 
+### 2.1. RRPN网络结构
+
 RRPN的网络结构如图1所示，检测过程可以分成三步：
 
 1. 使用卷积网络产生Feature Map，论文中使用的是[VGG-16](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)，也可以替换成物体检测的主流框架，例如基于[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)的[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)；
@@ -36,6 +38,10 @@ RRPN的网络结构如图1所示，检测过程可以分成三步：
 <img src="/assets/RRPN_1.png" alt="图1：RRPN网络结构图" />
 <figcaption>图1：RRPN网络结构图</figcaption>
 </figure>
+
+### 2.2 R-Anchor
+
+传统的RPN的锚点均是与坐标轴平行的矩形，而RRPN中添加了角度信息，我们将这样的锚点叫做R-Anchor。R-Anchor由$$(x,y,w,h,\theta)$$五要素组成，其中$$(x,y)$$表示bounding box的几何中心（RPN中是左上角）。$$(w,h)$$分别是bounding box的长边和短边。$$\theta$$是锚点的旋转角度。
 
 
 
