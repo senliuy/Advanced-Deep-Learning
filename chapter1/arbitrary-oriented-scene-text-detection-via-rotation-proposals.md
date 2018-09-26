@@ -25,7 +25,12 @@ $$
 
 ## 2.RRPN详解
 
-RRPN的网络结构如图1所示，
+RRPN的网络结构如图1所示，检测过程可以分成三步：
+
+1. 使用卷积网络产生Feature Map，论文中使用的是[VGG-16](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)，也可以替换成物体检测的主流框架，例如基于[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)的[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)；
+
+2. 使用RRPN产生带角度的候选区域；
+3. 使用RRoI Pooling产生长度固定的特征向量，之后接两层全连接用于候选区域的类别精校。
 
 <figure>
 <img src="/assets/RRPN_1.png" alt="图1：RRPN网络结构图" />
