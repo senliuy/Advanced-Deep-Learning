@@ -225,3 +225,15 @@ RRPN非常创新的提出了使用带角度的锚点处理场景文字检测中�
 
 \[1\] Ma J, Shao W, Ye H, et al. Arbitrary-oriented scene text detection via rotation proposals\[J\]. IEEE Transactions on Multimedia, 2018.
 
+\[2\] Wolf, C., Jolion, J.: Object count / area graphs for the evaluation of object detection and segmentation algorithms. International Journal of Document Analysis 8, 280–296 (2006)
+
+\[3\] Zhong Z, Jin L, Zhang S, et al. Deeptext: A unified framework for text proposal generation and text detection in natural images\[J\]. arXiv preprint arXiv:1605.07314, 2016.
+
+\[4\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
+
+\[5\] Zhou X, Yao C, Wen H, et al. EAST: an efficient and accurate scene text detector\[C\]//Proc. CVPR. 2017: 2642-2651.
+
+\[6\] Ren, S., He, K., Girshick, R., Sun, J.: Faster R-CNN: Towards real-time object detection with region proposal networks (2015), in Neural Information Processing Systems (NIPS)
+
+
+
