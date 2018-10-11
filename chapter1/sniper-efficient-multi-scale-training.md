@@ -21,6 +21,9 @@ SNIPER策略最重要的贡献是提出了尺寸固定（$$512 \times 512$$）�
 <figcaption>图1：SNIPER的chips示意图</figcaption>
 </figure>
 
+### 1.1 Postive Chips的采样
+
+
 
 ## Reference
 
