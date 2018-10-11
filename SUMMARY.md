@@ -27,6 +27,7 @@
   * [YOLO9000: Better, Faster, Stronger](chapter1/yolo9000-better-faster-stronger.md)
   * [YOLOv3: An Incremental Improvement](chapter1/yolov3-an-incremental-improvement.md)
   * [Learning to Segment Every Thing](chapter1/learning-to-segment-every-thing.md)
+  * [SNIPER: Efficient Multi-Scale Training](chapter1/sniper-efficient-multi-scale-training.md)
 * [第五章：光学字符识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie.md)
   * [场景文字检测](chapter1/chang-jing-wen-zi-jian-ce.md)
     * [DeepText: A Unified Framework for Text Proposal Generation and Text Detection in Natural Images](chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.md)
