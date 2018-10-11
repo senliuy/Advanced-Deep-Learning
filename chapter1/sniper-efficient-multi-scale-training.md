@@ -17,12 +17,9 @@ SNIPER策略最重要的贡献是提出了尺寸固定（$$512 \times 512$$）�
 作为一个采样策略，SNIPER的输入数据是原始的数据集，输出的是在图像上采样得到的子图（chips），如图1的虚线部分所示，而这些chips会直接作为s。当然，chips上的物体的Ground Truth也需要针对性的修改。那么这些chips是怎么计算的呢，下面我们详细分析之。
 
 <figure>
-<img src="/assets/SNIPER_1.png" alt="图1：U-Net网络结构图" />
+<img src="/assets/SNIPER.png" alt="图1：U-Net网络结构图" />
 <figcaption>图1：U-Net网络结构图</figcaption>
 </figure>
-
-
-![](/assets/SNIPER_1.png)
 
 ## Reference
 
