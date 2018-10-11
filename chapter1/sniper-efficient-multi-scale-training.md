@@ -12,9 +12,14 @@ SNIPER策略最重要的贡献是提出了尺寸固定（$$512 \times 512$$）�
 
 需要注意的是SNIPER只是一个采样策略，是对图像金字塔的替代。在论文中作者将SNIPER应用到了Faster R-CNN和Mask R-CNN中，同理，SNIPER也几乎可以应用到其它任何检测甚至识别算法中。
 
-## SNIPER 详解
+## 1. SNIPER 详解
 
-作为一个采样策略，
+作为一个采样策略，SNIPER的输入数据是原始的数据集，输出的是在图像上采样得到的子图（chips），如图1的虚线部分所示，而这些chips会直接作为s。当然，chips上的物体的Ground Truth也需要针对性的修改。那么这些chips是怎么计算的呢，下面我们详细分析之。
+
+<figure>
+<img src="/assets/SNIPER_1.png" alt="图1：SNIPER的chips示意图" />
+<figcaption>图1：SNIPER的chips示意图</figcaption>
+</figure>
 
 ## Reference
 
