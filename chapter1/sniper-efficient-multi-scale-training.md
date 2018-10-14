@@ -48,8 +48,8 @@ $$
 图2中得到的chips便是从图1中的虚线部分裁剪出来的。
 
 <figure>
-<img src="/assets/SNIPER_2.png" alt="图1：SNIPER的chips示意图" />
-<figcaption>图1：SNIPER的chips示意图</figcaption>
+<img src="/assets/SNIPER_2.png" alt="图2：由图1得到的chips" />
+<figcaption>图2：由图1得到的chips</figcaption>
 </figure>
 
 
