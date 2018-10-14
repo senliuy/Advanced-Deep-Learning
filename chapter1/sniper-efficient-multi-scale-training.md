@@ -45,7 +45,7 @@ $$
 
 因为多尺度的chips之间是互相覆盖的，所以可以保证了一个Ground Truth至少被一个Chip采样得到，一个Ground Truth既可以被不同尺度的chips所共同包围，也可以被相同尺度的不同chips所共同包围。
 
-图2中得到的chips便是从图1中的虚线部分裁剪出来的。
+图2中得到的chips便是从图1中的虚线部分裁剪出来的。如图2所示，绿色的Ground Truth代表的是和该chips匹配的待检测物体，而红色的Ground Truth由于面积不在范围内，因此不会被标注出来，在检测的时候等同的看做背景区域。
 
 <figure>
 <img src="/assets/SNIPER_2.png" alt="图2：由图1得到的chips" />
