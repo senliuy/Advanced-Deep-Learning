@@ -47,7 +47,6 @@ $$
 
 图2中得到的chips便是从图1中的虚线部分裁剪出来的。如图2所示，绿色的Ground Truth代表的是和该chips匹配的待检测物体，而红色的Ground Truth由于面积不在范围内，因此不会被标注出来，在检测的时候等同的看做背景区域。
 
-
 <figure>
 <img src="/assets/SNIPER_2.jpeg" alt="图2：由图1得到的chips" />
 <figcaption>图2：由图1得到的chips</figcaption>
