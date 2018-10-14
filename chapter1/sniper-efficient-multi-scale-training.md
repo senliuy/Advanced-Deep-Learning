@@ -1,4 +1,4 @@
-# SNIPER: Efficient Multi-Scale Training
+![# ](/assets/SNIPER_2.png)# SNIPER: Efficient Multi-Scale Training
 
 ## 前言
 
