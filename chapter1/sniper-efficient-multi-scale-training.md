@@ -41,9 +41,18 @@ $$
 
 如果一个Ground Truth完全位于一个chip内，那么我们就说这个Ground Truth被这个chip包围（Covered）。在实际采样中，处于计算量和样本平衡的角度考虑，所有的chip不可能都被采样到。在论文中，作者使用了贪心的策略根据chip包围的Ground Truth的数量的多少，从每个尺度中抽取了前$$K$$个chip作为正chip，记做$$C_{pos}^i$$
 
-最后在放大或者缩小的图像中，将采样的chips裁剪出来，得到一系列大小固定（$$512\times512$$）的子图，这些子图将作为后续检测算法的训练样本。
+最后在放大或者缩小的图像中，将采样的chips裁剪出来，得到一系列大小固定（$$512\times512$$）的子图，这些子图将作为后续检测算法的训练样本。由于得到的chip的尺寸比较小，且大多数没用的背景都都被忽略了（思想类似于Attention），这对训练的速度的提升是非常有帮助的，同时每个chip只包含合适尺寸的检测物体，这使得模型更加容易收敛。
 
 因为多尺度的chips之间是互相覆盖的，所以可以保证了一个Ground Truth至少被一个Chip采样得到，一个Ground Truth既可以被不同尺度的chips所共同包围，也可以被相同尺度的不同chips所共同包围。
+
+图2中得到的chips便是从图1中的虚线部分裁剪出来的。
+
+<figure>
+<img src="/assets/SNIPER_2.png" alt="图1：SNIPER的chips示意图" />
+<figcaption>图1：SNIPER的chips示意图</figcaption>
+</figure>
+
+
 
 ### 1.3 负chips
 
