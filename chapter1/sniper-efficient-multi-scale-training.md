@@ -49,7 +49,7 @@ $$
 
 
 <figure>
-<img src="/assets/SNIPER_2.png" alt="图2：由图1得到的chips" />
+<img src="/assets/SNIPER_2.jpeg" alt="图2：由图1得到的chips" />
 <figcaption>图2：由图1得到的chips</figcaption>
 </figure>
 
