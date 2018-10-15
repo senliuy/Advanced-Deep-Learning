@@ -64,7 +64,10 @@ $$
 
 如图3所示，上排绿色部分表示Ground Truth，下排红色区域表示弱RPN预测的候选区域，橙色区域表示根据弱RPN得到的负chips。
 
-
+<figure>
+<img src="/assets/SNIPER_3.png" alt="图3：SNIPER中的负chips" />
+<figcaption>图3：SNIPER中的负chips</figcaption>
+</figure>
 
 ## Reference
 
