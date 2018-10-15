@@ -99,5 +99,7 @@ SNIPER使用的图像金字塔的尺度依次是$$(480,512)(800,1280)(1400,2000)
 
 \[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
 
-\[2\]
+\[2\] B. Singh and L. S. Davis. An analysis of scale invariance in object detection-snip. CVPR, 2018.
+
+\[3\] S. Ren, K. He, R. Girshick, and J. Sun. Faster r-cnn: Towards real-time object detection with region proposal networks. In Advances in neural information processing systems, pages 91–99, 2015.
 
