@@ -62,6 +62,7 @@ $$
 
 论文中给出的策略是首先只使用正chip训练一个只有几个Epoch的弱RPN。在这里我们对RPN的精度并没有特别高的要求，因为它只是我们用来选择chip的一个工具，对最终的结果影响十分微弱。尽管这个RPN检测能力很弱，但是其并不是随机初始化的一个模型，它得到的检测框还是有一定的置信度的。所以策略的第二步是根据弱RPN的检测结果选择那些“假正“的样本。详细的说，首先去掉$$C_{pos}^i$$中的正chips，然后根据弱RPN的检测结果，从每个尺度选择至少包含$$M$$个候选区域的chips组成负chips池，最后在训练的时候从中随机选择固定数量的组成训练的负样本，表示为$$\cup_{i=1}^n C_{neg}^i$$。
 
+
 ## Reference
 
 \[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
