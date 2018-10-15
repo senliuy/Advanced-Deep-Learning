@@ -58,6 +58,10 @@ $$
 
 如果只用正chips作为样本进行训练，模型的假正利率往往很低。具体原因是因为参与模型训练的数据都是包围着Ground Truth的chips，而在测试的时候（第2节详细介绍SNIPER的测试部分），输入的是整张图像的图像金字塔，这时候必然包含不包围任何Ground Truth的背景区域，也就是说训练集和测试集的分布是不一样的。
 
+为了弥补训练集合测试集之间的分布差距，SNIPER提出了从图像金字塔中采样出一批$$512\times512$$负chips，它们将作为训练数据共同参与模型的训练。所谓负chips，是指不包含Ground Truth或者包含的Ground Truth比较少的chip。
+
+
+
 ## Reference
 
 \[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
