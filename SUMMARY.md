@@ -6,6 +6,7 @@
   * [Very Deep Convolutional Networks for Large-Scale Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.md)
   * [Going Deeper with Convolutions](di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.md)
   * [Deep Residual Learning for Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.md)
+  * [Squeeze-and-Excitation Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.md)
   * [Densely Connected Convolutional Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.md)
 * [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
