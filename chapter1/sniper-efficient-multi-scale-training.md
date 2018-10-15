@@ -69,6 +69,7 @@ $$
 <figcaption>图3：SNIPER中的负chips</figcaption>
 </figure>
 
+
 ## Reference
 
 \[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
