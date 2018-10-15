@@ -75,7 +75,7 @@ Faster R-CNN\[3\]系列论文中我们讲过，Faster R-CNN是由RPN和Fast R-CN
 
 ## 2. SNIPER的测试过程
 
-
+SNIPER的测试过程有一个致命的缺点，它必须要求输入的图像是图像金字塔，因为它参与训练的Fast R-CNN的chip在范围$$\mathcal{R}$$之外已经过滤掉了，因此模型并不擅长检测不在这个范围内的物体，也就是如果只使用单尺度的话，
 
 ## Reference
 
