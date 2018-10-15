@@ -44,6 +44,7 @@
 * 2018-09-06：DenseBox: Unifying Landmark Localization with End to End Object Detection
 * 2018-09-06：UnitBox: An Advanced Object Detection Network
 * 2018-09-27：Arbitrary-Oriented Scene Text Detection via Rotation Proposals
+* 2019-10-15：SNIPER: Efficient Multi-Scale Training
 
 
 
