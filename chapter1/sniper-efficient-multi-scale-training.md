@@ -69,13 +69,11 @@ $$
 <figcaption>图3：SNIPER中的负chips</figcaption>
 </figure>
 
-### 1.4 标签赋值
+### 1.4 SNIPER的训练
+
+通过上面的分析，我们可以根据Ground Truth和弱RPN得到一批正chips和一批负chips，这批chips将作为训练样本直接输入给检测算法。SNIPER采用了Faster R-CNN作为这些chips的检测算法框架，并且SNIPER后面模型训练的细节也基本和Faster R-CNN相同，除了一点，SNIPER接的Faster R-CNN的RPN和Fast R-CNN使用了不同的标签系统。
 
 Faster R-CNN\[3\]系列论文中我们讲过，Faster R-CNN是由RPN和Fast R-CNN组成的多任务模型，在SNIPER中，两个任务会使用两个不同的标签，首先训练RPN时，chips中的待检测物体的Ground Truth并不会受范围$$\mathcal{R}$$的限制。但是再根据RPN提取的候选区域训练Fast R-CNN时，在范围$$\mathcal{R}$$之外的候选区域并不会参与Fast R-CNN的训练。这么做的原因作者没有指出，猜测是RPN需要检测的候选区域覆盖范围更广，因此需要更多的，范围更大的Ground Truth。而Fast R-CNN需要检测的更准确，因此把这个任务交给了能提取到更合适的特征向量的对应尺度。
-
-### 1.5 SNIPER的训练
-
-
 
 ## 2. SNIPER的测试过程
 
