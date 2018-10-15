@@ -89,6 +89,8 @@ SNIPER使用的图像金字塔的尺度依次是$$(480,512)(800,1280)(1400,2000)
 
 需要注意SNIPER并不是一个检测算法，而是对输入图像的一个采样策略，其采样的结果（chips）将作为输入输入到物体检测算法中。
 
+算法虽然使用了RPN，但是并不是离开了RPN就wufa工作了
+
 ## Reference
 
 \[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
