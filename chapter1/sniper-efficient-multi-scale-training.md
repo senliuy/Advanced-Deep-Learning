@@ -83,6 +83,10 @@ SNIPER使用的图像金字塔的尺度依次是$$(480,512)(800,1280)(1400,2000)
 
 在图像金字塔提取完检测框之后，使用soft-NMS得到最终的候选区域。
 
+## 3. 总结
+
+
+
 ## Reference
 
 \[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
