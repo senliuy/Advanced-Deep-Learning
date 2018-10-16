@@ -8,7 +8,11 @@ SENet由一些列SE block组成，一个SE block的过程分为Squeeze（压缩�
 
 SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以接受的范围之内，从GFLOPs，参数数量以及运行时间的实验结果上来看，SENet的损失并不是非常显著。
 
-## SE Blocks详解
+## 1. SENet详解
+
+# 1.1. SE Block
+
+一个SE Block的结构如图1所示
 
 
 
