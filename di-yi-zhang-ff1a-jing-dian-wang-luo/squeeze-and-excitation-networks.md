@@ -38,7 +38,13 @@ Excitation部分的作用是通过$$z_c$$学习$$C$$中每个通道的特征权�
 2. 要足够简单，这样不至于添加SE blocks之后网络的训练速度大幅降低；
 3. 通道之间的关系是non-exclusive的，也就是说学习到的特征能过激励重要的特征，抑制不重要的特征。
 
-根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。
+根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。门控单元$$\mathbf{s}$$的计算法方式表示为：
+
+$$
+\mathbf{s} = \mathbf{F}_{ex}(\mathbf{z}, \mathbf{W}) = \sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(g(\mathbf{W}_2 \delta(\mathbf{W}_2 \mathbf{z})))
+$$
+
+
 
 ## Reference
 
