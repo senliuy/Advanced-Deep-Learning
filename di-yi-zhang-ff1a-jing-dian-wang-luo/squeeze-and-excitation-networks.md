@@ -41,10 +41,10 @@ Excitation部分的作用是通过$$z_c$$学习$$C$$中每个通道的特征权�
 根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。门控单元$$\mathbf{s}$$的计算法方式表示为：
 
 $$
-\mathbf{s} = \mathbf{F}_{ex}(\mathbf{z}, \mathbf{W}) = \sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(g(\mathbf{W}_2 \delta(\mathbf{W}_2 \mathbf{z})))
+\mathbf{s} = \mathbf{F}_{ex}(\mathbf{z}, \mathbf{W}) = \sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(g(\mathbf{W}_2 \delta(\mathbf{W}_1 \mathbf{z})))
 $$
 
-其中$$\delta$$表示ReLU激活函数，$$\sigma$$表示sigmoid激活函数
+其中$$\delta$$表示ReLU激活函数，$$\sigma$$表示sigmoid激活函数。$$\mathbf{W}_1 \in \mathbb{R}^{\frac{C}{r}\times C}$$, $$\mathbf{W}_2 \in \mathbb{R}^{C\times\frac{C}{r}}$$分别是两个全连接层的权值矩阵。$$r$$则是中间层的隐层节点数。
 
 ## Reference
 
