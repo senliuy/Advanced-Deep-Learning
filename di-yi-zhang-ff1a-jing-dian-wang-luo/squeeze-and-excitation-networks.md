@@ -10,7 +10,7 @@ SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以
 
 ## 1. SENet详解
 
-# 1.1. SE Block
+### 1.1. SE Block
 
 一个SE Block的结构如图1所示
 
@@ -20,8 +20,17 @@ SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以
 
 经过$$F_{sq}(\cdot)$$（Squeeze操作）后，图像变成了一个$$1\times1\times C$$的特征向量，特征向量的值由$$U$$确定。经过$$F_{ex}(\cdot,\mathbf{W})$$后，特征向量的维度没有变，但是向量值变成了新的值。这些值会通过和$$U$$的$$F_{scale}(\cdot,\cdot)$$得到加权后的$$\tilde{X}$$。$$\tilde{X}$$和$$U$$的维度是相同的。
 
-## 1.2. Squeeze
+### 1.2. Squeeze
 
+Squeeze层的作用是获得Feature Map $$U$$的每个通道的全局信息嵌入（特征向量）。在SE block中，这一步通过VGG中引入的Global Average Pooling（GAP）实现的。也就是通过求每个通道$$c, c\in\{1,C\}$$的Feature Map的平均值：
+
+$$
+z_c = \mathbf{F}_{sq}(\mathbf{u}_c) = \frac{1}{W\times H} \sum_{i=1}^W\sum_{j=1}^H u_c(i,j)
+$$
+
+通过GAP得到的特征值是全局的（虽然比较粗糙）。另外，$$z_c$$也可以通过其它方法得到，要求只有一个，得到的特征向量具有全局性。
+
+### 1.3. Excitation
 
 
 ## Reference
