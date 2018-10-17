@@ -44,7 +44,7 @@ $$
 \mathbf{s} = \mathbf{F}_{ex}(\mathbf{z}, \mathbf{W}) = \sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(g(\mathbf{W}_2 \delta(\mathbf{W}_2 \mathbf{z})))
 $$
 
-
+其中$$\delta$$表示ReLU激活函数，$$\sigma$$表示sigmoid激活函数
 
 ## Reference
 
