@@ -22,7 +22,7 @@ SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以
 
 ### 1.2. Squeeze
 
-Squeeze层的作用是获得Feature Map $$U$$的每个通道的全局信息嵌入（特征向量）。在SE block中，这一步通过VGG中引入的Global Average Pooling（GAP）实现的。也就是通过求每个通道$$c, c\in\{1,C\}$$的Feature Map的平均值：
+Squeeze部分的作用是获得Feature Map $$U$$的每个通道的全局信息嵌入（特征向量）。在SE block中，这一步通过VGG中引入的Global Average Pooling（GAP）实现的。也就是通过求每个通道$$c, c\in\{1,C\}$$的Feature Map的平均值：
 
 $$
 z_c = \mathbf{F}_{sq}(\mathbf{u}_c) = \frac{1}{W\times H} \sum_{i=1}^W\sum_{j=1}^H u_c(i,j)
@@ -32,6 +32,13 @@ $$
 
 ### 1.3. Excitation
 
+Excitation部分的作用是通过$$z_c$$学习$$C$$中每个通道的特征权值，要求有两点：
+
+1. 要足够灵活，这样能保证学习到的权值比较具有价值；
+2. 要足够简单，这样不至于添加SE blocks之后网络的训练速度大幅降低；
+3. 通道之间的关系是non-exclusive的，也就是说学习到的特征能过激励重要的特征，抑制不重要的特征。
+
+根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。
 
 ## Reference
 
