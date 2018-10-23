@@ -71,6 +71,30 @@ SE blocks的特性使其能够非常容易的和目前主流的卷及结构结�
 
 ![](/assets/SENet_2.png)
 
+## 2. SENet的复杂性分析
+
+SENet的本质是根据Feature Map的值学习每个Feature Map的权值。$$\mathbf{U}$$往往是一个由几万个节点值组成的三维矩阵，但是我们得到的$$\mathbf{s}$$ 却只有$$C$$个值，这种$$H\times W$$程度的压缩是具有非常大的可操作性的。例如将$$\mathbf{U}$$展开成$$(W\times H\times C)\times 1$$的特征向量，然后再通过全连接得到$$\mathbf{s}$$，这也是目前主流的Feature Map到FC的连接方式（`Flatten()`操作）。而且这种方式得到的$$\mathbf{s}$$往往也是效果优于SE blocks的策略的。但是SENet没这么做，他的原因是SENet是可以添加到网络中的任意一层之后的，而全连接操作往往是整个网络结构的性能瓶颈，尤其是当网络的节点数非常大时。
+
+论文中主要对比了ResNet-50以及在其中的每一层之后添加了SE blocks之后的在运行性能的各方面的指标：
+
+从计算性能的方向分析：ResNet-50需要约3.86GFLOPS，而SE-ResNet-50仅仅多了0.01个GFLOPS。
+
+从预测速度上来看，运行一个ResNet-50的时间是190ms，SE-ResNet-50的运行时间约209ms，多了10%。
+
+从参数数量上来看，SE-ResNet-50比ResNet-50的2500万个参数多了约250万个，约占10%。而且作者发现ResNet-50的最后几层的SE blocks可以省掉，但是性能影响并不大，这样的网络参数仅多了4%。
+
+## 3. 总结
+
+SENet的思想非常简单，即通过Feature Map为自身学习一个特征权值，通过单位乘的方式得到一组加权后的新的特征权值。使用的网络结构则是先GAP再接两层全连接的方式得到的权值向量。方法虽然简单，但是非常实用，并在ImageNet-2017上取得了非常优异的比赛成绩。
+
+第2节对复杂性的分析引发了我们队SE blocks的进一步联想：如何在计算量和性能之间进行权衡？
+
+下面是我的几点思考：
+
+1. 先通过RoI Pooling得到更小的Feature Map（例如$$3\times 3$$），在展开作为全连接的输入；
+2. 在网络的深度和隐层节点的数目进行权衡，究竟是更深的网络效果更好还是更宽的网络效果更好；
+3. 每一层的SE blocks是否要一定相同，比如作者发现浅层更需要SE blocks，那么我们能否给浅层使用一个计算量更大但是性能更好的SE block，而深层的SE blocks更为简单高效，例如单层全连接等。
+
 ## Reference
 
 \[1\] Hu J, Shen L, Sun G. Squeeze-and-excitation networks\[J\]. arXiv preprint arXiv:1709.01507, 2017, 7.
