@@ -14,7 +14,13 @@ SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以
 
 一个SE Block的结构如图1所示
 
-![](/assets/SENet_1.png)
+<figure>
+<img src="/assets/SENet_1.png" alt="图1：SENet网络结构"/>
+<figcaption>图1：SENet网络结构</figcaption>
+</figure>
+
+
+![](/assets/)
 
 网络的左半部分是一个传统的卷积变换，忽略掉这一部分并不会影响我们的SENet的理解。我们直接看一下后半部分，其中$$U$$是一个$$W\times H\times C$$的Feature Map，$$(W,H)$$是图像的尺寸，$$C$$是图像的通道数。
 
@@ -69,7 +75,10 @@ $$
 
 SE blocks的特性使其能够非常容易的和目前主流的卷及结构结合，例如论文中给出的Inception结构和残差网络结构，如图2。结合方式也非常简单，只需要在Inception blocks或者Residual blocks之后直接接上SE blocks即可。
 
-![](/assets/SENet_2.png)
+<figure>
+<img src="/assets/SENet_2.png" alt="图2：SE-Inception和SE-Resnet"/>
+<figcaption>图2：SE-Inception和SE-Resnet</figcaption>
+</figure>
 
 ## 2. SENet的复杂性分析
 
