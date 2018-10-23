@@ -38,7 +38,7 @@ Excitation部分的作用是通过$$z_c$$学习$$C$$中每个通道的特征权�
 2. 要足够简单，这样不至于添加SE blocks之后网络的训练速度大幅降低；
 3. 通道之间的关系是non-exclusive的，也就是说学习到的特征能过激励重要的特征，抑制不重要的特征。
 
-根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。门控单元$$\mathbf{s}$$的计算法方式表示为：
+根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。门控单元$$\mathbf{s}$$（即图1中$$1\times1\times C$$的特征向量）的计算法方式表示为：
 
 $$
 \mathbf{s} = \mathbf{F}_{ex}(\mathbf{z}, \mathbf{W}) = \sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(g(\mathbf{W}_2 \delta(\mathbf{W}_1 \mathbf{z})))
@@ -46,6 +46,20 @@ $$
 
 其中$$\delta$$表示ReLU激活函数，$$\sigma$$表示sigmoid激活函数。$$\mathbf{W}_1 \in \mathbb{R}^{\frac{C}{r}\times C}$$, $$\mathbf{W}_2 \in \mathbb{R}^{C\times\frac{C}{r}}$$分别是两个全连接层的权值矩阵。$$r$$则是中间层的隐层节点数，论文中指出这个值是16。
 
+得到门控单元$$\mathbf{s}$$后，最后的输出$$\tilde{X}$$表示为$$\mathbf{s}$$和$$\mathbf{U}$$的向量积，即图1中的$$\mathbf{F}_{scale}(\cdot,\cdot)$$操作：
+
+$$
+\tilde{x}_c = \mathbf{F}_{scale}(\mathbf{u}_c,s_c) = s_c \cdot \mathbf{u}_c
+$$
+
+其中$$\tilde{x}_c$$是$$\tilde{X}$$的一个特征通道的一个Feature Map，$$s_c$$是门控单元$$\mathbf{s}$$（是个向量）中的一个标量值。
+
+以上就是SE blocks算法的全部内容，SE blocks可以从两个角度理解：
+
+1. SE blocks学习了每个Feature Map的动态先验；
+2. SE blocks可以看做在Feature Map方向的Attention，因为注意力机制的本质也是学习一组权值。
+
+### 1.4. SE-Inception
 ## Reference
 
 \[1\] Hu J, Shen L, Sun G. Squeeze-and-excitation networks\[J\]. arXiv preprint arXiv:1709.01507, 2017, 7.
