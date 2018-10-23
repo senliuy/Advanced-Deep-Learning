@@ -59,7 +59,11 @@ $$
 1. SE blocks学习了每个Feature Map的动态先验；
 2. SE blocks可以看做在Feature Map方向的Attention，因为注意力机制的本质也是学习一组权值。
 
-### 1.4. SE-Inception
+### 1.4. SE-Inception 和 SE-ResNet
+
+
+
+
 ## Reference
 
 \[1\] Hu J, Shen L, Sun G. Squeeze-and-excitation networks\[J\]. arXiv preprint arXiv:1709.01507, 2017, 7.
