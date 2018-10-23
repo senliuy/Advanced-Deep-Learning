@@ -61,6 +61,7 @@ $$
 
 ### 1.4. SE-Inception 和 SE-ResNet
 
+SE blocks的特性使其能够非常容易的和目前主流的卷及结构结合，例如论文中给出的Inception结构和残差网络结构，如图2。结合方式也非常简单，只需要在Inception blocks或者Residual blocks之后直接接上SE blocks即可。
 
 
 
