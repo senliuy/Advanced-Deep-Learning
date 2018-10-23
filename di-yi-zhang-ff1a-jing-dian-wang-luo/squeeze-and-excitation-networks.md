@@ -24,9 +24,11 @@ SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以
 
 Squeeze部分的作用是获得Feature Map $$U$$的每个通道的全局信息嵌入（特征向量）。在SE block中，这一步通过VGG中引入的Global Average Pooling（GAP）实现的。也就是通过求每个通道$$c, c\in\{1,C\}$$的Feature Map的平均值：
 
+
 $$
 z_c = \mathbf{F}_{sq}(\mathbf{u}_c) = \frac{1}{W\times H} \sum_{i=1}^W\sum_{j=1}^H u_c(i,j)
 $$
+
 
 通过GAP得到的特征值是全局的（虽然比较粗糙）。另外，$$z_c$$也可以通过其它方法得到，要求只有一个，得到的特征向量具有全局性。
 
@@ -40,17 +42,21 @@ Excitation部分的作用是通过$$z_c$$学习$$C$$中每个通道的特征权�
 
 根据上面的要求，SE blocks使用了两层全连接构成的门机制（gate mechanism）。门控单元$$\mathbf{s}$$（即图1中$$1\times1\times C$$的特征向量）的计算法方式表示为：
 
+
 $$
 \mathbf{s} = \mathbf{F}_{ex}(\mathbf{z}, \mathbf{W}) = \sigma(g(\mathbf{z}, \mathbf{W})) = \sigma(g(\mathbf{W}_2 \delta(\mathbf{W}_1 \mathbf{z})))
 $$
+
 
 其中$$\delta$$表示ReLU激活函数，$$\sigma$$表示sigmoid激活函数。$$\mathbf{W}_1 \in \mathbb{R}^{\frac{C}{r}\times C}$$, $$\mathbf{W}_2 \in \mathbb{R}^{C\times\frac{C}{r}}$$分别是两个全连接层的权值矩阵。$$r$$则是中间层的隐层节点数，论文中指出这个值是16。
 
 得到门控单元$$\mathbf{s}$$后，最后的输出$$\tilde{X}$$表示为$$\mathbf{s}$$和$$\mathbf{U}$$的向量积，即图1中的$$\mathbf{F}_{scale}(\cdot,\cdot)$$操作：
 
+
 $$
 \tilde{x}_c = \mathbf{F}_{scale}(\mathbf{u}_c,s_c) = s_c \cdot \mathbf{u}_c
 $$
+
 
 其中$$\tilde{x}_c$$是$$\tilde{X}$$的一个特征通道的一个Feature Map，$$s_c$$是门控单元$$\mathbf{s}$$（是个向量）中的一个标量值。
 
@@ -63,7 +69,7 @@ $$
 
 SE blocks的特性使其能够非常容易的和目前主流的卷及结构结合，例如论文中给出的Inception结构和残差网络结构，如图2。结合方式也非常简单，只需要在Inception blocks或者Residual blocks之后直接接上SE blocks即可。
 
-
+![](/assets/SENet_2.png)
 
 ## Reference
 
