@@ -25,7 +25,7 @@ SENet虽然引入了更多的操作，但是其带来的性能下降尚在可以
 
 ### 1.2. Squeeze
 
-Squeeze部分的作用是获得Feature Map $$U$$的每个通道的全局信息嵌入（特征向量）。在SE block中，这一步通过VGG中引入的Global Average Pooling（GAP）实现的。也就是通过求每个通道$$c, c\in\{1,C\}$$的Feature Map的平均值：
+Squeeze部分的作用是获得Feature Map $$\mathbf{U}$$的每个通道的全局信息嵌入（特征向量）。在SE block中，这一步通过VGG中引入的Global Average Pooling（GAP）实现的。也就是通过求每个通道$$c, c\in\{1,C\}$$的Feature Map的平均值：
 
 
 $$
