@@ -1,4 +1,4 @@
-# EAST: An Efficient and Accurate Scene Text Detector
+#EAST: An Efficient and Accurate Scene Text Detector
 
 ## 前言
 
@@ -20,10 +20,13 @@ EAST已经开源，所以我们根据[源码](https://github.com/argman/EAST)分
 
 ![](/assets/EAST_1.png)
 
-左边橙色部分是PVANet的主干网络，用于特征提取。该网络有5个block，每个block执行完会进行一次降采样，Feature Map的尺寸变成原来的$$1/2$$。对于一张$$224\times224$$的图片，Feature Map的边长依次是$$224\rightarrow 112\rightarrow 56 \rightarrow 28 \rightarrow 14 \rightarrow 7$$。
+左边橙色部分是PVANet的主干网络，用于特征提取，PVANet采用的是FPN的思想。该网络有5个block，每个block执行完会进行一次降采样，Feature Map的尺寸变成原来的$$1/2$$。对于一张$$224\times224$$的图片，$$f_4 \rightarrow f_1$$的边长依次是$$56 \rightarrow 28 \rightarrow 14 \rightarrow 7$$。则$$h_1 \rightarrow h4$$的尺寸依次是$$7\rightarrow14\rightarrow27\rightarrow56$$。
 
-中间绿色部分是特征合并分支，该分支从最后面的$$7\times7$$的Feature Map开始逐层向上上采样及合并。如图中绿色虚线部分所示，$$f_1$$是一个尺寸为$$7\times7$$的Feature Map，经过双线性插值上采样之后尺寸变为$$14\times14$$。这和$$f_2$$的尺寸是相同的，通过concatnate操作合并到一起，经过1层$$1\times1$$卷积核1层$$3\times3$$的same卷积得到尺寸为$$14\times14$$的Feature Map $$h_2$$。其中$$1\times1$$卷积用于降维，目的是降低网络复杂度。
+中间绿色部分是特征合并分支，该分支从最后面的$$7\times7$$的Feature Map开始逐层向上上采样及合并。如图中绿色虚线部分所示，$$f_1$$是一个尺寸为$$7\times7$$的Feature Map，经过双线性插值上采样之后尺寸变为$$14\times14$$。这和$$f_2$$的尺寸是相同的，通过concatnate操作合并到一起，经过1层$$1\times1$$卷积核1层$$3\times3$$的same卷积得到尺寸为$$14\times14$$的Feature Map $$h_2$$。其中$$1\times1$$卷积用于降维，目的是降低网络复杂度，$$3\times3$$卷积的作用是为节点之间提供非线性特征。依次进行上采样以及合并，最终得到尺寸为$$56\times56$$的Feature Map $$h_4$$，也就是原图尺寸的$$\frac{1}{4}$$。
 
+### 1.2 标签值
+
+EAST的论文中提出了RBOX和QUAD两种标签方式，并在源码中给出了RBOX的实现，RBOX表示一个Ground Truth的标签$$\mathbf{G}$$可以表示为$$\mathbf{G} = \{\mathbf{R}, \theta\}$$，$$\mathbf{R}$$是物体检测中经典的AABB表示形式：$$\mathbf{R} = \{d_i|i\in\{1,2,3,4\}\}$$。
 
 
 ## Reference
@@ -31,4 +34,3 @@ EAST已经开源，所以我们根据[源码](https://github.com/argman/EAST)分
 \[1\] Zhou X, Yao C, Wen H, et al. EAST: an efficient and accurate scene text detector\[C\]//Proc. CVPR. 2017: 2642-2651.
 
 \[2\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
-
