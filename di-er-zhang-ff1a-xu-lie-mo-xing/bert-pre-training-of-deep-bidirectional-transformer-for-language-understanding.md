@@ -1,4 +1,4 @@
-# BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
+# [^1]BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
 
 ## 前言
 
@@ -15,12 +15,20 @@ BERT近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11
 
 ### 1.1 网络架构
 
+BERT的网络架构使用的是《Attention is all you need》中提出的多层双向Transformer[^1]结构，Transformer的结构在NLP领域中已经得到了广泛应用，并且作者已经发布在TensorFlow的[tensor2tensor](https://github.com/tensorflow/tensor2tensor)库中。
+
+一个Transformer节点的结构如图1所示。
 
 
 ## Reference
 
-\[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding[J]. arXiv preprint arXiv:1810.04805, 2018.
+\[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\[J\]. arXiv preprint arXiv:1810.04805, 2018.
 
 \[2\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
 
-\[3\] Wilson L Taylor. 1953. cloze procedure: A new tool for measuring readability. Journalism Bulletin, 30(4):415–433.
+\[3\] Wilson L Taylor. 1953. cloze procedure: A new tool for measuring readability. Journalism Bulletin, 30\(4\):415–433.
+
+
+
+[^1]: Enter footnote here.待删：此处先理解为神经网络的一个复杂的节点，Transformer的详细内容会在近期给出分析。
+
