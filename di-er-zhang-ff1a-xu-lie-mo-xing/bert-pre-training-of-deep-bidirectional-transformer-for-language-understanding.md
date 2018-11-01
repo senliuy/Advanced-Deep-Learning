@@ -25,6 +25,16 @@ Transformer的网络架构如图1所示：
 
 ![](/assets/BERT_2.png)
 
+BERT提供了简单和复杂两个模型，对应的超参数分别如下：
+
+* $$\mathbf{BERT}_{\mathbf{BASE}}$$: L=12，H=768，A=12，参数总量110M；
+
+* $$\mathbf{BERT}_{\mathbf{LARGE}}$$: L=24，H=1024，A=16，参数总量340M；
+
+在上面的超参数中，L表示网络的层数（即Transformer blocks的数量），A表示self-Attention的头的数量，filter的尺寸是4H。
+
+
+
 ## Reference
 
 \[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\[J\]. arXiv preprint arXiv:1810.04805, 2018.
