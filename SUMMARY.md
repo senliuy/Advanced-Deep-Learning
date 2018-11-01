@@ -13,6 +13,7 @@
   * [Neural Machine Translation by Jointly Learning to Align and Translate ](di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.md)
   * [Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Network](di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.md)
   * [About Long Short Term Memory](di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.md)
+  * [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](di-er-zhang-ff1a-xu-lie-mo-xing/bert-pre-training-of-deep-bidirectional-transformer-for-language-understanding.md)
 * [第三章：语音识别](di-san-zhang-ff1a-yu-yin-shi-bie.md)
   * [Speech Recognition with Deep Recurrent Neural Network](di-san-zhang-ff1a-yu-yin-shi-bie/speech-recognition-with-deep-recurrent-neural-network.md)
   * [Deep Speech: Scaling up end-to-end speech recognition](di-san-zhang-ff1a-yu-yin-shi-bie/deep-speech-scaling-up-end-to-end-speech-recognition.md)
