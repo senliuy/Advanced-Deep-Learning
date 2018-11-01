@@ -16,6 +16,7 @@ BERT近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11
 ### 1.1 网络架构
 
 
+
 ## Reference
 
 \[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding[J]. arXiv preprint arXiv:1810.04805, 2018.
