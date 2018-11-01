@@ -33,7 +33,9 @@ BERT提供了简单和复杂两个模型，对应的超参数分别如下：
 
 在上面的超参数中，L表示网络的层数（即Transformer blocks的数量），A表示self-Attention的头的数量，filter的尺寸是4H。
 
+论文中还对比了BERT和GPT\[4\]和ELMo\[5\]，它们两个的结构图如图3所示。
 
+![](/assets/BERT_3.png)
 
 ## Reference
 
