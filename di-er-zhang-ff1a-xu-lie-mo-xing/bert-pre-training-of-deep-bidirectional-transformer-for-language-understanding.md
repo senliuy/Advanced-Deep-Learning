@@ -11,6 +11,11 @@ BERT近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11
 3. 更彻底的捕捉语句中的双向关系；
 4. 使用更强大的机器训练更大规模的数据，使BERT的结果达到了全新的高度，并且Google开源了BERT模型，用户可以直接使用BERT作为Word2Vec的转换矩阵并高效的将其应用到自己的任务中。
 
+## 1. BERT 详解
+
+### 1.1 网络架构
+
+
 ## Reference
 
 \[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding[J]. arXiv preprint arXiv:1810.04805, 2018.
