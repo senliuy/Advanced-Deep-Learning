@@ -31,5 +31,7 @@ Transformer的网络架构如图1所示：
 
 \[3\] Wilson L Taylor. 1953. cloze procedure: A new tool for measuring readability. Journalism Bulletin, 30\(4\):415–433.
 
-[^1]: 待删：此处先理解为神经网络的一个复杂的节点，Transformer的详细内容会在近期给出分析。
+[^1]: 此处先理解为神经网络的一个复杂的节点，Transformer的详细内容会在近期给出分析
+
+
 
