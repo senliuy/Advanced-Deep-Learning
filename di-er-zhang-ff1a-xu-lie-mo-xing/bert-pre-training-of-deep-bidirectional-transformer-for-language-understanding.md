@@ -17,4 +17,4 @@ BERT近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11
 
 \[2\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
 
-\[3\] 
+\[3\] Wilson L Taylor. 1953. cloze procedure: A new tool for measuring readability. Journalism Bulletin, 30(4):415–433.
