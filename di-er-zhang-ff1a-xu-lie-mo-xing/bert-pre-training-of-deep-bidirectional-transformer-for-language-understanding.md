@@ -37,6 +37,8 @@ BERT提供了简单和复杂两个模型，对应的超参数分别如下：
 
 ![](/assets/BERT_3.png)
 
+
+
 ## Reference
 
 \[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\[J\]. arXiv preprint arXiv:1810.04805, 2018.
@@ -44,4 +46,8 @@ BERT提供了简单和复杂两个模型，对应的超参数分别如下：
 \[2\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
 
 \[3\] Wilson L Taylor. 1953. cloze procedure: A new tool for measuring readability. Journalism Bulletin, 30\(4\):415–433.
+
+\[4\] Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. 2018. Improving language understanding with unsupervised learning. Technical report, OpenAI.
+
+\[5\] Matthew Peters, Waleed Ammar, Chandra Bhagavatula, and Russell Power. 2017. Semi-supervised sequence tagging with bidirectional language models. In ACL.
 
