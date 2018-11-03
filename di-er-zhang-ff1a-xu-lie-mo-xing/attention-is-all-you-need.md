@@ -19,6 +19,14 @@ Transformer的提出解决了上面两个问题，首先它使用了Attention机
 
 ### 1.1 高层Transformer
 
+论文中的验证Transformer的实验室基于机器翻译的，下面我们就以机器翻译为例子详细剖析Transformer的结构，在机器翻译中，Transformer可概括为如图1：
+
+![](/assets/Transformer_1.png)
+
+Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表示为图2的结构：
+
+![](/assets/Transformer_2.png)
+
 
 
 ## Reference
@@ -29,6 +37,5 @@ Transformer的提出解决了上面两个问题，首先它使用了Attention机
 
 \[3\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\[J\]. arXiv preprint arXiv:1810.04805, 2018.
 
-\[4\] http://jalammar.github.io/illustrated-transformer
-
+\[4\] [http://jalammar.github.io/illustrated-transformer](http://jalammar.github.io/illustrated-transformer)
 
