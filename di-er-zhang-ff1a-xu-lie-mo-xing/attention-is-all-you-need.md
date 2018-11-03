@@ -35,6 +35,8 @@ Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表�
 $$
 \text{Attention}(Q,K,V)=\text{softmax}(\frac{QK^T}{\sqrt{d_k}})V
 $$
+
+
 第一次看到这个公式你可能会一头雾水，在后面的文章中我们会揭开这个公式背后的实际含义，在这一段暂时将其叫做$$Z$$。
 
 得到$$Z$$之后，它会被送到encoder的下一个模块，即Feed Forward Neural Network。这个全连接有两层，第一层的激活函数是ReLU，第二层是一个线性激活函数，可以表示为：
@@ -43,7 +45,9 @@ $$
 $$
 FFN(Z) = max(0, ZW_1 +b_1)W_2 + b_2
 $$
+Encoder的结构如图4所示：
 
+![](/assets/Transformer_4.png)
 
 ## Reference
 
