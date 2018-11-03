@@ -56,7 +56,7 @@ Decoder的结构如土5所示，它和encoder的不同之处在于Decoder多了�
 1. Self-Attention：当前翻译和已经翻译的前文之间的关系；
 2. Encoder-Decnoder Attention：当前翻译和编码的特征向量之间的关系。
 
-
+![](/assets/Transformer_5.png)
 
 ## Reference
 
