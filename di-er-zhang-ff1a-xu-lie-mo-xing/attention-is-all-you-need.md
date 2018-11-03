@@ -43,11 +43,20 @@ $$
 
 
 $$
-FFN(Z) = max(0, ZW_1 +b_1)W_2 + b_2
+\text{FFN}(Z) = max(0, ZW_1 +b_1)W_2 + b_2
 $$
+
+
 Encoder的结构如图4所示：
 
 ![](/assets/Transformer_4.png)
+
+Decoder的结构如土5所示，它和encoder的不同之处在于Decoder多了一个Encoder-Decoder Attention，两个Attention分别用于计算输入和输出的权值：
+
+1. Self-Attention：当前翻译和已经翻译的前文之间的关系；
+2. Encoder-Decnoder Attention：当前翻译和编码的特征向量之间的关系。
+
+
 
 ## Reference
 
