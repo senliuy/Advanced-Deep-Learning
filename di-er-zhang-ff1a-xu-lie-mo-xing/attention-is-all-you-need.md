@@ -29,11 +29,7 @@ Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表�
 
 如论文中所设置的，编码器由6个编码block组成，同样解码器是6个解码block组成。与所有的生成模型相同的是，编码器的输出会作为解码器的输入，如图3所示：
 
-![](/assets/Transformer_3.png)以上便是Transformer的高层结构，下面我们深入到每个Encoder的细节，看看它是怎么将词向量编码的。
-
-### 1.2 Encoder解析
-
-
+![](/assets/Transformer_3.png)我们继续分析每个Encoder的详细结构，
 
 ## Reference
 
