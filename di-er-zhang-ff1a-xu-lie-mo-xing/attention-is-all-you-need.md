@@ -6,7 +6,11 @@
 
 正如论文的题目所说的，Transformer中抛弃了传统的CNN和RNN，整个网络结构完全是由Attention机制组成。更准确地讲，Transformer由且仅由self-Attenion和Feed Forward Neural Network组成。一个基于Transformer的可训练的神经网络可以通过堆叠Transformer的形式进行搭建，作者的实验是通过搭建编码器和解码器各6层，总共12层的Encoder-Decoder，并在机器翻译中取得了BLEU值得新高。
 
+作者采用Attention机制的原因是考虑到RNN（或者LSTM，GRU等）
+
 遗憾的是，作者的论文比较难懂，尤其是Transformer的结构细节和实现方式并没有解释清楚。通过查阅资料，发现了一篇非常优秀的讲解Transformer的技术[博客](http://jalammar.github.io/illustrated-transformer/)\[4\]。本文中的大量插图也会从该博客中截取。首先感谢Jay Alammer详细的讲解，其次推荐大家去阅读原汁原味的文章。
+
+
 
 ## Reference
 
