@@ -13,7 +13,7 @@
 
 Transformer的提出解决了上面两个问题，首先它使用了Attention机制，将序列中的任意两个位置之间的距离是缩小为一个常量；其次它不是类似RNN的顺序结构，因此具有更好的并行性，符合现有的GPU框架。论文中给出Transformer的定义是：Transformer is the first transduction model relying entirely on self-attention to compute representations of its input and output without using sequence aligned RNNs or convolution。
 
-遗憾的是，作者的论文比较难懂，尤其是Transformer的结构细节和实现方式并没有解释清楚。通过查阅资料，发现了一篇非常优秀的讲解Transformer的技术[博客](http://jalammar.github.io/illustrated-transformer/)\[4\]。本文中的大量插图也会从该博客中截取。首先感谢Jay Alammer详细的讲解，其次推荐大家去阅读原汁原味的文章。
+遗憾的是，作者的论文比较难懂，尤其是Transformer的结构细节和实现方式并没有解释清楚。尤其是论文中的$$Q$$，$$V$$，$$K$$究竟代表什么意思作者并没有说明。通过查阅资料，发现了一篇非常优秀的讲解Transformer的技术[博客](http://jalammar.github.io/illustrated-transformer/)\[4\]。本文中的大量插图也会从该博客中截取。首先感谢Jay Alammer详细的讲解，其次推荐大家去阅读原汁原味的文章。
 
 ## 1. Transformer 详解
 
@@ -29,7 +29,7 @@ Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表�
 
 如论文中所设置的，编码器由6个编码block组成，同样解码器是6个解码block组成。与所有的生成模型相同的是，编码器的输出会作为解码器的输入，如图3所示：
 
-![](/assets/Transformer_3.png)我们继续分析每个Encoder的详细结构，
+![](/assets/Transformer_3.png)我们继续分析每个encoder的详细结构：在Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个
 
 ## Reference
 
