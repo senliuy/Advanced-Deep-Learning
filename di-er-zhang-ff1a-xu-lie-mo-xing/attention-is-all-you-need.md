@@ -120,7 +120,13 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 ![](/assets/Transformer_14.png)
 
-同self-attention一样，multi-head attention也
+同self-attention一样，multi-head attention也加入了short-cut机制。
+
+### 1.4 Encoder-Decoder Attention
+
+在解码器中，Transformer block比编码器中多了个encoder-cecoder attention。在encoder-decoder attention中，Q来之与解码器的上一个输出，K和V则来自于与编码器的输出。其计算方式完全和图10的过程相同。
+
+由于在机器翻译中，解码过程是一个顺序操作的过程，也就是当解码第$$k$$个特征向量时，我们只能看到第$$k-1$$及其之前的解码结果，论文中把这种情况下的multi-head attention叫做masked multi-head attention。
 
 ## 
 
