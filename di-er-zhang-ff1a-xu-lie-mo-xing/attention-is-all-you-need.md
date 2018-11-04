@@ -70,7 +70,15 @@ Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了�
 
 ### 1.3 Self-Attention
 
+Self-Attention是Transformer最核心的内容，然而作者并没有详细讲解，下面我们来补充一下作者遗漏的地方。回想Bahdanau等人提出的用Attention\\[2\\]，其核心内容是为输入向量的每个单词学习一个权重，例如在下面的例子中我们判断it代指的内容，
 
+```
+The animal didn't cross the street because it was too tired
+```
+
+通过加权之后可以得到类似图8的加权情况，在讲解self-attention的时候我们也会使用图8类似的表示方式
+
+![](/assets/Transformer_8.png)
 
 ## Reference
 
