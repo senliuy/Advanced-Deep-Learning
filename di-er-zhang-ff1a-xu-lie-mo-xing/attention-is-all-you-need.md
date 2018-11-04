@@ -80,6 +80,10 @@ The animal didn't cross the street because it was too tired
 
 ![](/assets/Transformer_8.png)
 
+在self-attention中，每个单词有3个不同的向量，它们分别是Query向量（Q），Key向量（K）和Value向量（V）。它们是通过3个不同的权值矩阵由嵌入向量$$X$$乘以三个不同的权值矩阵$$W^Q$$，$$W^K$$，$$W^V$$得到。
+
+![](/assets/Transformer_9.png)
+
 ## Reference
 
 \[1\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
