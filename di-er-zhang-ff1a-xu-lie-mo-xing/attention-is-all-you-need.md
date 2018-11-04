@@ -82,13 +82,27 @@ The animal didn't cross the street because it was too tired
 
 在self-attention中，每个单词有3个不同的向量，它们分别是Query向量（Q），Key向量（K）和Value向量（V），长度均是64。它们是通过3个不同的权值矩阵由嵌入向量$$X$$乘以三个不同的权值矩阵$$W^Q$$，$$W^K$$，$$W^V$$得到，其中三个矩阵的尺寸也是相同的。均是$$512\times 64$$。
 
-![](/assets/Transformer_9.png)那么Query，Key，Value是什么意思呢？它们在Attention的计算中扮演着什么角色呢？我们先看一下Attention的计算方法，整个过程可以分成5步：
+![](/assets/Transformer_9.png)那么Query，Key，Value是什么意思呢？它们在Attention的计算中扮演着什么角色呢？我们先看一下Attention的计算方法，整个过程可以分成7步：
 
 1. 如上文，将输入单词转化成嵌入向量；
 2. 根据嵌入向量得到$$q$$，$$k$$，$$v$$三个向量；
-3. 为每个向量计算一个score：$$\text{score} = q \cdot v$$；
-4. 
-## 
+3. 为每个向量计算一个score：$$\text{score} = q \cdot k$$；
+4. 为了梯度的稳定，Transformer使用了score归一化，即除以$$\sqrt{d_k}$$；
+5. 对score施以softmax激活函数；
+6. softmax点乘Value值$$v$$，得到加权的每个输入向量的评分$$v$$；
+7. 相加之后得到最终的输出结果$$z$$：$$z=\sum v$$。
+
+上面步骤的可以表示为图10的形式。
+
+![](/assets/Transformer_10.png)
+
+实际计算过程中是采用基于矩阵的计算方式，那么论文中的$$Q$$，$$V$$，$$K$$的计算方式如图11：
+
+![](/assets/Transformer_11.png)
+
+图10总结为如图12所示的矩阵形式：
+
+![](/assets/Transformer_12.png)
 
 ## Reference
 
