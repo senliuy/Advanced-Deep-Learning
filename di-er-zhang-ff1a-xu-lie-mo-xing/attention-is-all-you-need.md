@@ -49,7 +49,7 @@ $$
 
 Encoder的结构如图4所示：
 
-![](/assets/Transformer_4.png)
+![](/assets/Transformer_5.png)
 
 Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了一个Encoder-Decoder Attention，两个Attention分别用于计算输入和输出的权值：
 
