@@ -68,6 +68,10 @@ Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了�
 
 ![](/assets/Transformer_7.png)
 
+### 1.3 Self-Attention
+
+
+
 ## Reference
 
 \[1\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
