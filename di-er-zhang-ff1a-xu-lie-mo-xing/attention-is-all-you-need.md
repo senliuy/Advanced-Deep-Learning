@@ -104,6 +104,8 @@ The animal didn't cross the street because it was too tired
 
 ![](/assets/Transformer_12.png)这里也就是公式1的计算方式。
 
+### 1.3 Multi-Head Attention
+
 
 
 ## Reference
