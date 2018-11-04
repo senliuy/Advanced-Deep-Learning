@@ -151,12 +151,18 @@ $$
 PE(pos, 2i) = sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
 $$
 
+
+
 $$
 PE(pos, 2i+1) = cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
 $$
-关于位置编码的实现，可在Google开源的模型中[`get_timing_signal_1d()`](https://github.com/tensorflow/tensor2tensor/blob/23bd23b9830059fbc349381b70d9429b5c40a139/tensor2tensor/layers/common_attention.py)找到对应的实现。
+在上式中，$$pos$$表示单词的位置，$$i$$表示单词的维度。关于位置编码的实现可在Google开源的算法中[`get_timing_signal_1d()`](https://github.com/tensorflow/tensor2tensor/blob/23bd23b9830059fbc349381b70d9429b5c40a139/tensor2tensor/layers/common_attention.py)函数找到对应的代码。
 
+作者这么设计的原因是考虑到在NLP任务重，除了单词的绝对位置，单词的相对位置也非常重要。根据公式$$sin(\alpha+\beta) = sin \alpha cos \beta + cos \alpha sin\beta $$ 以及 $$cos(\alpha + \beta) = cos \alpha cos \beta - sin \alpha sin\beta$$，这表明位置$$k+p$$的位置向量可以表示为位置$$k$$的特征向量的线性变化，这为模型捕捉单词之间的相对位置关系提供了非常大的便利。
 
+## 3. 总结
+
+虽然Transformer最终也没有逃脱传统学习的套路，Transformer也只是一个全连接加Attention的结合体。但是其设计已经足够有创新，因为其抛弃了在NLP中最根本的RNN或者CNN并且取得了非常不错的效果。
 
 ## Reference
 
