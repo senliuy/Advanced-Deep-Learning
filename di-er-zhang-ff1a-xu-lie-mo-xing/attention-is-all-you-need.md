@@ -64,6 +64,8 @@ Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了�
 
 ![](/assets/Transformer_6.png)
 
+在最底层的block中，$$x$$将直接作为Transformer的输入，而在其他层中，输入则是上一个block的输出。
+
 ## Reference
 
 \[1\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
