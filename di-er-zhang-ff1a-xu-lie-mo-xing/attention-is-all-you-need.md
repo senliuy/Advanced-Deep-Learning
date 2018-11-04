@@ -136,6 +136,10 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 ![](/assets/Transformer_15.png)
 
+## 2. 位置编码
+
+
+
 ## Reference
 
 \[1\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
