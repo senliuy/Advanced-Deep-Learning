@@ -118,7 +118,7 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 整个过程如图14所示：
 
-![](/assets/Transformer_14.png)
+
 
 同self-attention一样，multi-head attention也
 
