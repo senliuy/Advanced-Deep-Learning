@@ -138,6 +138,24 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 ## 2. 位置编码
 
+截止目前为止，我们介绍的Transformer模型并没有捕捉顺序序列的能力，也就是说无论句子的结构怎么打乱，Transformer都会得到类似的结果。换句话说，Transformer只是一个功能更强大的词袋模型而已。
+
+为了解决这个问题，论文中在编码词向量时引入了位置编码（Position Embedding）的特征。具体地说，位置编码会在词向量中加入了单词的位置信息，这样Transformer就能区分不同位置的单词了。
+
+那么怎么编码这个位置信息呢？常见的模式有：a. 根据数据学习；b. 自己设计编码规则。在这里作者采用了第二种方式。那么这个位置编码该是什么样子呢？通常位置编码是一个长度为$$d_model$$的特征向量，这样便于和词向量进行单位加的操作，如图16。![](/assets/Transformer_16.png)
+
+论文给出的编码公式如下：
+
+
+$$
+PE(pos, 2i) = sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
+$$
+
+$$
+PE(pos, 2i+1) = cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
+$$
+关于位置编码的实现，可在Google开源的模型中[`get_timing_signal_1d()`](https://github.com/tensorflow/tensor2tensor/blob/23bd23b9830059fbc349381b70d9429b5c40a139/tensor2tensor/layers/common_attention.py)找到对应的实现。
+
 
 
 ## Reference
