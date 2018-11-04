@@ -110,6 +110,20 @@ The animal didn't cross the street because it was too tired
 
 ### 1.3 Multi-Head Attention
 
+Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble），在这里我们以$$h=8$$举例说明。Multi-Head Attention的输出分成3步：
+
+1. 将数据$$X$$分别输入到图13所示的8个self-attention中，得到8个加权后的特征矩阵$$Z_i, i\in\{1,2,...,8\}$$。
+2. 将8个$$Z_i$$按列拼成一个大的特征矩阵；
+3. 特征矩阵经过一层全连接后得到输出$$Z$$。
+
+整个过程如图14所示：
+
+![](/assets/Transformer_14.png)
+
+同self-attention一样，multi-head attention也
+
+## 
+
 ## Reference
 
 \[1\] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need \[C\]//Advances in Neural Information Processing Systems. 2017: 5998-6008.
