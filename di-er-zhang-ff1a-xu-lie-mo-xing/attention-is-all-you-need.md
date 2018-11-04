@@ -128,7 +128,13 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 由于在机器翻译中，解码过程是一个顺序操作的过程，也就是当解码第$$k$$个特征向量时，我们只能看到第$$k-1$$及其之前的解码结果，论文中把这种情况下的multi-head attention叫做masked multi-head attention。
 
-## 
+### 1.5 损失层
+
+解码器解码之后，解码的特征向量经过一层激活函数为softmax的全连接层之后得到反映每个单词概率的输出向量。此时我们便可以通过CTC等损失函数训练模型了。
+
+而一个完整可训练的网络结构便是encoder和decoder的堆叠（各$$N$$个，$$N=6$$），我们可以得到图15中的完整的Transformer的结构（即论文中的图1）：
+
+![](/assets/Transformer_15.png)
 
 ## Reference
 
