@@ -156,13 +156,17 @@ $$
 $$
 PE(pos, 2i+1) = cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
 $$
+
+
 在上式中，$$pos$$表示单词的位置，$$i$$表示单词的维度。关于位置编码的实现可在Google开源的算法中[`get_timing_signal_1d()`](https://github.com/tensorflow/tensor2tensor/blob/23bd23b9830059fbc349381b70d9429b5c40a139/tensor2tensor/layers/common_attention.py)函数找到对应的代码。
 
 作者这么设计的原因是考虑到在NLP任务重，除了单词的绝对位置，单词的相对位置也非常重要。根据公式$$sin(\alpha+\beta) = sin \alpha cos \beta + cos \alpha sin\beta $$ 以及 $$cos(\alpha + \beta) = cos \alpha cos \beta - sin \alpha sin\beta$$，这表明位置$$k+p$$的位置向量可以表示为位置$$k$$的特征向量的线性变化，这为模型捕捉单词之间的相对位置关系提供了非常大的便利。
 
 ## 3. 总结
 
-虽然Transformer最终也没有逃脱传统学习的套路，Transformer也只是一个全连接加Attention的结合体。但是其设计已经足够有创新，因为其抛弃了在NLP中最根本的RNN或者CNN并且取得了非常不错的效果。
+**优点**：（1）虽然Transformer最终也没有逃脱传统学习的套路，Transformer也只是一个全连接（或者是一维卷积）加Attention的结合体。但是其设计已经足够有创新，因为其抛弃了在NLP中最根本的RNN或者CNN并且取得了非常不错的效果，算法的设计非常精彩，值得每个深度学习的相关人员仔细研究和品位。（2）Transformer的设计最大的带来性能提升的关键是将任意两个单词的距离是1，这对解决NLP中棘手的长期依赖问题是非常有效的。（3）Transformer不仅仅可以应用在NLP的机器翻译领域，甚至可以不局限于NLP领域，是非常有科研潜力的一个方向。（4）算法的并行性非常好，符合目前的硬件（主要指GPU）环境。
+
+**缺点**：（1）粗暴的抛弃RNN和CNN虽然非常炫技，但是它也使模型丧失了捕捉局部特征的能力，RNN + CNN + Transformer的结合可能会带来更好的效果。（2）Transformer失去的位置信息其实在NLP中非常重要，而论文中在特征向量中加入Position Embedding也只是一个权宜之计，并没有改变Transformer结构上的固有缺陷。
 
 ## Reference
 
