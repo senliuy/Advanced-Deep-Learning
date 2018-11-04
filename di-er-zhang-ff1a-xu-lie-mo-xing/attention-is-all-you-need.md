@@ -66,7 +66,7 @@ Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了�
 
 在最底层的block中，$$x$$将直接作为Transformer的输入，而在其他层中，输入则是上一个block的输出。为了画图更简单，我们使用更简单的例子来表示接下来的过程，如图7所示：
 
-![](/assets/Transformer_7.png)
+![](/assets/Transformer_7.png)即对应于
 
 ### 1.3 Self-Attention
 
@@ -102,7 +102,9 @@ The animal didn't cross the street because it was too tired
 
 图10总结为如图12所示的矩阵形式：
 
-![](/assets/Transformer_12.png)
+![](/assets/Transformer_12.png)这里也就是公式1的计算方式。
+
+
 
 ## Reference
 
