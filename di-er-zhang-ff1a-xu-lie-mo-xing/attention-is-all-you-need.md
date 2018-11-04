@@ -58,7 +58,9 @@ Decoder的结构如土5所示，它和encoder的不同之处在于Decoder多了�
 
 ![](/assets/Transformer_5.png)
 
-### 1.2 Self-Attention
+### 1.2 输入编码
+
+
 
 ## Reference
 
