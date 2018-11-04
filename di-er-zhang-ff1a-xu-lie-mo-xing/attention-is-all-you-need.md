@@ -29,7 +29,7 @@ Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表�
 
 如论文中所设置的，编码器由6个编码block组成，同样解码器是6个解码block组成。与所有的生成模型相同的是，编码器的输出会作为解码器的输入，如图3所示：
 
-![](/assets/Transformer_3.png)我们继续分析每个encoder的详细结构：在Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个加权之后的特征向量$$Z$$，这个$$Z$$便是论文公式1中的$$\text{Attention}(Q,K,V)$$：
+![](/assets/Transformer_4.png)我们继续分析每个encoder的详细结构：在Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个加权之后的特征向量$$Z$$，这个$$Z$$便是论文公式1中的$$\text{Attention}(Q,K,V)$$：
 
 
 $$
