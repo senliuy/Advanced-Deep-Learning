@@ -51,7 +51,7 @@ Encoder的结构如图4所示：
 
 ![](/assets/Transformer_4.png)
 
-Decoder的结构如土5所示，它和encoder的不同之处在于Decoder多了一个Encoder-Decoder Attention，两个Attention分别用于计算输入和输出的权值：
+Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了一个Encoder-Decoder Attention，两个Attention分别用于计算输入和输出的权值：
 
 1. Self-Attention：当前翻译和已经翻译的前文之间的关系；
 2. Encoder-Decnoder Attention：当前翻译和编码的特征向量之间的关系。
@@ -59,6 +59,8 @@ Decoder的结构如土5所示，它和encoder的不同之处在于Decoder多了�
 ![](/assets/Transformer_5.png)
 
 ### 1.2 输入编码
+
+1.1节介绍的就是Transformer的主要框架，下面我们将介绍它的输入数据。如图6所示，首先通过Word2Vec等词嵌入方法将输入语料转化成特征向量，论文中使用的词嵌入的维度为$$d_{model}=512$$。
 
 
 
