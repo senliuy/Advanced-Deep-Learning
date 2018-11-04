@@ -46,6 +46,7 @@
 * 2018-09-27：Arbitrary-Oriented Scene Text Detection via Rotation Proposals
 * 2018-10-15：SNIPER: Efficient Multi-Scale Training
 * 2018-10-23：Squeeze-and-Excitation Networks
+* 2018-11-04：Attention Is All You Need
 
 
 
