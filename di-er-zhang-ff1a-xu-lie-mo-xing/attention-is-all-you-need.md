@@ -62,7 +62,7 @@ Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了�
 
 1.1节介绍的就是Transformer的主要框架，下面我们将介绍它的输入数据。如图6所示，首先通过Word2Vec等词嵌入方法将输入语料转化成特征向量，论文中使用的词嵌入的维度为$$d_{model}=512$$。
 
-
+![](/assets/Transformer_6.png)
 
 ## Reference
 
