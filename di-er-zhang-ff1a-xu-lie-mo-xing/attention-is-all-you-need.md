@@ -107,11 +107,16 @@ The animal didn't cross the street because it was too tired
 
 通过加权之后可以得到类似图8的加权情况，在讲解self-attention的时候我们也会使用图8类似的表示方式
 
-![](/assets/Transformer_8.png)
+<figure>
+<img src="/assets/Transformer_8.png" alt="图8：经典Attention可视化示例图" />
+<figcaption>图8：经典Attention可视化示例图</figcaption>
+</figure>
 
 在self-attention中，每个单词有3个不同的向量，它们分别是Query向量（Q），Key向量（K）和Value向量（V），长度均是64。它们是通过3个不同的权值矩阵由嵌入向量$$X$$乘以三个不同的权值矩阵$$W^Q$$，$$W^K$$，$$W^V$$得到，其中三个矩阵的尺寸也是相同的。均是$$512\times 64$$。
 
-![](/assets/Transformer_9.png)那么Query，Key，Value是什么意思呢？它们在Attention的计算中扮演着什么角色呢？我们先看一下Attention的计算方法，整个过程可以分成7步：
+![](/assets/Transformer_9.png)
+
+那么Query，Key，Value是什么意思呢？它们在Attention的计算中扮演着什么角色呢？我们先看一下Attention的计算方法，整个过程可以分成7步：
 
 1. 如上文，将输入单词转化成嵌入向量；
 2. 根据嵌入向量得到$$q$$，$$k$$，$$v$$三个向量；
