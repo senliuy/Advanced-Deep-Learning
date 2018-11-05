@@ -21,15 +21,28 @@ Transformer的提出解决了上面两个问题，首先它使用了Attention机
 
 论文中的验证Transformer的实验室基于机器翻译的，下面我们就以机器翻译为例子详细剖析Transformer的结构，在机器翻译中，Transformer可概括为如图1：
 
-![](/assets/Transformer_1.png)
+<figure>
+<img src="/assets/Transformer_1.png" alt="图1：Transformer用于机器翻译" />
+<figcaption>图1：Transformer用于机器翻译</figcaption>
+</figure>
+
+
 
 Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表示为图2的结构：
 
-![](/assets/Transformer_2.png)
+<figure>
+<img src="/assets/Transformer_2.png" alt="图2：Transformer的Encoder-Decoder结构" />
+<figcaption>图2：Transformer的Encoder-Decoder结构</figcaption>
+</figure>
 
 如论文中所设置的，编码器由6个编码block组成，同样解码器是6个解码block组成。与所有的生成模型相同的是，编码器的输出会作为解码器的输入，如图3所示：
 
-![](/assets/Transformer_4.png)我们继续分析每个encoder的详细结构：在Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个加权之后的特征向量$$Z$$，这个$$Z$$便是论文公式1中的$$\text{Attention}(Q,K,V)$$：
+<figure>
+<img src="/assets/Transformer_3.png" alt="图3：Transformer的Encoder和Decoder均由6个block堆叠而成" />
+<figcaption>图3：Transformer的Encoder和Decoder均由6个block堆叠而成</figcaption>
+</figure>
+
+我们继续分析每个encoder的详细结构：在Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个加权之后的特征向量$$Z$$，这个$$Z$$便是论文公式1中的$$\text{Attention}(Q,K,V)$$：
 
 
 $$
@@ -49,14 +62,24 @@ $$
 
 Encoder的结构如图4所示：
 
-![](/assets/Transformer_5.png)
+<figure>
+<img src="/assets/Transformer_4.png" alt="图4：Transformer由self-attention和Feed Forward neural network组成" />
+<figcaption>图4：Transformer由self-attention和Feed Forward neural network组成</figcaption>
+</figure>
+
 
 Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了一个Encoder-Decoder Attention，两个Attention分别用于计算输入和输出的权值：
 
 1. Self-Attention：当前翻译和已经翻译的前文之间的关系；
 2. Encoder-Decnoder Attention：当前翻译和编码的特征向量之间的关系。
 
-![](/assets/Transformer_5.png)
+<figure>
+<img src="/assets/Transformer_5.png" alt="图5：Transformer的解码器由self-attention，encoder-decoder attention以及FFNN组成" />
+<figcaption>图5：Transformer的解码器由self-attention，encoder-decoder attention以及FFNN组成</figcaption>
+</figure>
+
+
+
 
 ### 1.2 输入编码
 
