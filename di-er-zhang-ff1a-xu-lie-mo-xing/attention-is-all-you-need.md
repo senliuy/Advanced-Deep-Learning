@@ -79,17 +79,23 @@ Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了�
 </figure>
 
 
-
-
 ### 1.2 输入编码
 
 1.1节介绍的就是Transformer的主要框架，下面我们将介绍它的输入数据。如图6所示，首先通过Word2Vec等词嵌入方法将输入语料转化成特征向量，论文中使用的词嵌入的维度为$$d_{model}=512$$。
 
-![](/assets/Transformer_6.png)
+<figure>
+<img src="/assets/Transformer_6.png" alt="图6：单词的输入编码" />
+<figcaption>图6：单词的输入编码</figcaption>
+</figure>
 
 在最底层的block中，$$x$$将直接作为Transformer的输入，而在其他层中，输入则是上一个block的输出。为了画图更简单，我们使用更简单的例子来表示接下来的过程，如图7所示：
 
-![](/assets/Transformer_7.png)即对应于
+<figure>
+<img src="/assets/Transformer_7.png" alt="图7：输入编码作为一个tensor输入到encoder中" />
+<figcaption>图7：输入编码作为一个tensor输入到encoder中</figcaption>
+</figure>
+
+
 
 ### 1.3 Self-Attention
 
