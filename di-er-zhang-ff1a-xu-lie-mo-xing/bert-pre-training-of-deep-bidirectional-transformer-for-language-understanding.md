@@ -8,7 +8,7 @@ BERT（**B**idirectional **E**ncoder **R**epresentations from **T**ransformers�
 2. 使用了Mask Language Model\(MLM\) \[3\] 和 Next Sentence Prediction\(NSP\) 的多任务训练目标；
 3. 使用更强大的机器训练更大规模的数据，使BERT的结果达到了全新的高度，并且Google开源了BERT模型，用户可以直接使用BERT作为Word2Vec的转换矩阵并高效的将其应用到自己的任务中。
 
-BERT的源码和模型近期已经在Github上[开源](https://github.com/google-research/bert)。
+BERT的本质上是通过在海量的语料的基础上运行自监督学习方法为单词学习一个好的特征表示，所谓自监督学习是指在没有人工标注的数据上运行的监督学习。在以后特定的NLP任务中，我们可以直接使用BERT的特征表示作为该任务的词嵌入特征。所以BERT提供的是一个供其它任务迁移学习的模型，该模型可以根据任务微调或者固定之后作为特征提取器。BERT的源码和模型近期已经在Github上[开源](https://github.com/google-research/bert)。
 
 ## 1. BERT 详解
 
@@ -66,7 +66,7 @@ BERT的输入的编码向量（长度是512）是3个嵌入特征的单位和，
 
 ### 1.3 预训练任务
 
-BERT的任务是由两个无监督任务组成，即MLM和NSP。更准确的说，这两个任务应该是自监督任务，所谓自监督是指使用无标注数据训练有监督学习模型。
+BERT的任务是由两个自监督任务组成，即MLM和NSP。
 
 #### 1.3.1 Task #1： Masked Language Model
 
