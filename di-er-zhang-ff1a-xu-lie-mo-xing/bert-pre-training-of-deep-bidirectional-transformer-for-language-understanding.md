@@ -8,6 +8,8 @@ BERT（**B**idirectional **E**ncoder **R**epresentations from **T**ransformers�
 2. 使用了Mask Language Model\(MLM\) \[3\] 和 Next Sentence Prediction\(NSP\) 的多任务训练目标；
 3. 使用更强大的机器训练更大规模的数据，使BERT的结果达到了全新的高度，并且Google开源了BERT模型，用户可以直接使用BERT作为Word2Vec的转换矩阵并高效的将其应用到自己的任务中。
 
+BERT的源码和模型近期已经在Github上[开源](https://github.com/google-research/bert)。
+
 ## 1. BERT 详解
 
 ### 1.1 网络架构
@@ -53,7 +55,8 @@ BERT的输入的编码向量（长度是512）是3个嵌入特征的单位和，
 
 1. WordPiece 嵌入\[6\]：WordPiece是指将单词划分成一组有限的公共子词单元，能在单词的有效性和字符的灵活性之间取得一个折中的平衡。例如图4的示例中‘playing’被拆分成了‘play’和‘ing’；
 2. 位置嵌入（Position Embedding）：位置嵌入是指将单词的位置信息编码成特征向量，位置嵌入是向模型中引入单词位置关系的至关重要的一环。位置嵌入的具体内容参考我之前的[分析](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/attention-is-all-you-need.html)；
-3. 分割嵌入（Segment Embedding）：
+3. 分割嵌入（Segment Embedding）：用于区分两个句子，例如B是否是A的下文（对话场景，问答场景等）。对于句子对，第一个句子的特征值是0，第二个句子的特征值是1。
+
 
 ## Reference
 
