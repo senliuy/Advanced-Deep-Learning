@@ -1,5 +1,7 @@
 # Attention Is All You Need
 
+tags: NLP, Attention
+
 ## 前言
 
 [注意力（Attention）机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[2\]由Bengio团队与2014年提出并在近年广泛的应用在深度学习中的各个领域，例如在计算机视觉方向用于捕捉图像上的感受野，或者NLP中用于定位关键token或者特征。谷歌团队近期提出的用于生成词向量的BERT\[3\]算法在NLP的11项任务中取得了效果的大幅提升，堪称2018年深度学习领域最振奋人心的消息。而BERT算法的最重要的部分便是本文中提出的Transformer的概念。
@@ -114,7 +116,13 @@ The animal didn't cross the street because it was too tired
 
 在self-attention中，每个单词有3个不同的向量，它们分别是Query向量（Q），Key向量（K）和Value向量（V），长度均是64。它们是通过3个不同的权值矩阵由嵌入向量$$X$$乘以三个不同的权值矩阵$$W^Q$$，$$W^K$$，$$W^V$$得到，其中三个矩阵的尺寸也是相同的。均是$$512\times 64$$。
 
-![](/assets/Transformer_9.png)
+<figure>
+<img src="/assets/Transformer_9.png" alt="图9：Q，K，V的计算示例图" />
+<figcaption>图9：Q，K，V的计算示例图
+</figcaption>
+</figure>
+
+
 
 那么Query，Key，Value是什么意思呢？它们在Attention的计算中扮演着什么角色呢？我们先看一下Attention的计算方法，整个过程可以分成7步：
 
@@ -128,19 +136,40 @@ The animal didn't cross the street because it was too tired
 
 上面步骤的可以表示为图10的形式。
 
-![](/assets/Transformer_10.png)
+<figure>
+<img src="/assets/Transformer_10.png" alt="图10：Self-Attention计算示例图" />
+<figcaption>图10：Self-Attention计算示例图
+</figcaption>
+</figure>
 
 实际计算过程中是采用基于矩阵的计算方式，那么论文中的$$Q$$，$$V$$，$$K$$的计算方式如图11：
 
-![](/assets/Transformer_11.png)
+<figure>
+<img src="/assets/Transformer_11.png" alt="图11：Q，V，K的矩阵表示" />
+<figcaption>图11：Q，V，K的矩阵表示
+</figcaption>
+</figure>
+
+
 
 图10总结为如图12所示的矩阵形式：
 
-![](/assets/Transformer_12.png)这里也就是公式1的计算方式。
+<figure>
+<img src="/assets/Transformer_12.png" alt="图12：Self-Attention的矩阵表示" />
+<figcaption>图12：Self-Attention的矩阵表示
+</figcaption>
+</figure>
+
+这里也就是公式1的计算方式。
 
 在self-attention需要强调的最后一点是其采用了[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html) \[5\]中的short-cut结构，目的当然是解决深度学习中的退化问题，得到的最终结果如图13。
 
-![](/assets/Transformer_13.png)
+<figure>
+<img src="/assets/Transformer_13.png" alt="图13：Self-Attention中的short-cut连接" />
+<figcaption>图13：Self-Attention中的short-cut连接
+</figcaption>
+</figure>
+
 
 ### 1.3 Multi-Head Attention
 
@@ -152,7 +181,12 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 整个过程如图14所示：
 
-![](/assets/Transformer_14.png)
+<figure>
+<img src="/assets/Transformer_14.png" alt="图14：Multi-Head Attention" />
+<figcaption>图14：Multi-Head Attention
+</figcaption>
+</figure>
+
 
 同self-attention一样，multi-head attention也加入了short-cut机制。
 
@@ -168,7 +202,12 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 而一个完整可训练的网络结构便是encoder和decoder的堆叠（各$$N$$个，$$N=6$$），我们可以得到图15中的完整的Transformer的结构（即论文中的图1）：
 
-![](/assets/Transformer_15.png)
+<figure>
+<img src="/assets/Transformer_15.png" alt="图15：Transformer的完整结构图" />
+<figcaption>图15：Transformer的完整结构图
+</figcaption>
+</figure>
+
 
 ## 2. 位置编码
 
@@ -176,7 +215,15 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 为了解决这个问题，论文中在编码词向量时引入了位置编码（Position Embedding）的特征。具体地说，位置编码会在词向量中加入了单词的位置信息，这样Transformer就能区分不同位置的单词了。
 
-那么怎么编码这个位置信息呢？常见的模式有：a. 根据数据学习；b. 自己设计编码规则。在这里作者采用了第二种方式。那么这个位置编码该是什么样子呢？通常位置编码是一个长度为$$d_model$$的特征向量，这样便于和词向量进行单位加的操作，如图16。![](/assets/Transformer_16.png)
+那么怎么编码这个位置信息呢？常见的模式有：a. 根据数据学习；b. 自己设计编码规则。在这里作者采用了第二种方式。那么这个位置编码该是什么样子呢？通常位置编码是一个长度为$$d_model$$的特征向量，这样便于和词向量进行单位加的操作，如图16。
+
+<figure>
+<img src="/assets/Transformer_16.png" alt="图15：Transformer的完整结构图" />
+<figcaption>图16：Position Embedding
+</figcaption>
+</figure>
+
+
 
 论文给出的编码公式如下：
 
