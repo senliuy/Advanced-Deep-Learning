@@ -84,7 +84,7 @@ Masked Language Model（MLM）和核心思想取自Wilson Taylor在1953年发表
 
 #### 1.3.2 Task #2: Next Sentence Prediction
 
-
+Next Sentence Prediction（NSP）的任务是判断句子B是否是句子A的下文。如果是的话，输出
 
 ## Reference
 
