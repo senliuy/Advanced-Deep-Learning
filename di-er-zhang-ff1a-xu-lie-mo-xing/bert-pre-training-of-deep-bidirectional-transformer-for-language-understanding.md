@@ -49,7 +49,9 @@ BERT对比这两个算法的优点是只有BERT表征会**基于所有层中的�
 
 ### 1.2 输入表示
 
+BERT的输入是3个嵌入特征的和，如图4，这三个词嵌入特征是：
 
+1. WordPiece 嵌入\[6\]:
 
 ## Reference
 
@@ -62,4 +64,6 @@ BERT对比这两个算法的优点是只有BERT表征会**基于所有层中的�
 \[4\] Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. 2018. Improving language understanding with unsupervised learning. Technical report, OpenAI.
 
 \[5\] Matthew Peters, Waleed Ammar, Chandra Bhagavatula, and Russell Power. 2017. Semi-supervised sequence tagging with bidirectional language models. In ACL.
+
+\[6\] Yonghui Wu, Mike Schuster, Zhifeng Chen, Quoc V Le, Mohammad Norouzi, Wolfgang Macherey, Maxim Krikun, Yuan Cao, Qin Gao, Klaus Macherey, et al. 2016. Google’s neural ma- chine translation system: Bridging the gap between human and machine translation. arXiv:1609.08144.
 
