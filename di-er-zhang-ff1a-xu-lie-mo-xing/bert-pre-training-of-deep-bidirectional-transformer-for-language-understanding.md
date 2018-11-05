@@ -82,6 +82,8 @@ Masked Language Model（MLM）和核心思想取自Wilson Taylor在1953年发表
 
 #### 1.3.2 Task #2: Next Sentence Prediction
 
+
+
 ## Reference
 
 \[1\] Devlin J, Chang M W, Lee K, et al. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding\[J\]. arXiv preprint arXiv:1810.04805, 2018.
