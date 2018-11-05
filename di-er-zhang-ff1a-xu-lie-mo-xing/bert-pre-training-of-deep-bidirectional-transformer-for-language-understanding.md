@@ -1,5 +1,7 @@
 # BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
 
+tags: NLP, Transformer, BERT
+
 ## 前言
 
 BERT（**B**idirectional **E**ncoder **R**epresentations from **T**ransformers）近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11个方向大幅刷新了精度，可以说是近年来自残差网络最优突破性的一项技术了。论文的主要特点以下几点：
@@ -90,7 +92,7 @@ Next Sentence Prediction（NSP）的任务是判断句子B是否是句子A的下
 
 在海量单预料上训练完BERT之后，便可以将其应用到NLP的各个任务中了。对于NSP任务来说，其条件概率表示为$$P = \text{softmax}(CW^T)$$，其中$$C$$是BERT输出中的`[CLS]`符号，$$W$$是可学习的权值矩阵。
 
-对于其它任务来说，我们也可以根据BERT的输出信息作出对应的预测。图5展示了BERT在11个不同任务中的模型，它们只需要在BERT的基础上再添加一个输出层便可以完成对特定任务的微调。这些任务类似于我们做过的文科试卷，其中有选择题，简答题等等。图5中其中Tok表示不同的Token，E表示嵌入向量，T_i表示第i个Token在经过BERT处理之后得到的特征向量。
+对于其它任务来说，我们也可以根据BERT的输出信息作出对应的预测。图5展示了BERT在11个不同任务中的模型，它们只需要在BERT的基础上再添加一个输出层便可以完成对特定任务的微调。这些任务类似于我们做过的文科试卷，其中有选择题，简答题等等。图5中其中Tok表示不同的Token，E表示嵌入向量，$$T_i$$表示第$$i$$个Token在经过BERT处理之后得到的特征向量。
 
 <figure>
 <img src="/assets/BERT_5.png" alt="图5：BERT用于模型微调" />
@@ -123,9 +125,7 @@ $$
 
 （c）问答任务
 
-* SQuAD v1.1给定一个句子（通常是一个问题）和一段描述文本，输出这个问题的答案，类似于做阅读理解的简答题。
-
-如图5.(c)表示的，SQuAD的输入是问题和描述文本的句子对。输出是特征向量，通过在**描述文本**上接一层激活函数为softmax的全连接来获得输出文本的条件概率，全连接的输出节点个数是语料中Token的个数。
+* SQuAD v1.1给定一个句子（通常是一个问题）和一段描述文本，输出这个问题的答案，类似于做阅读理解的简答题。如图5.(c)表示的，SQuAD的输入是问题和描述文本的句子对。输出是特征向量，通过在**描述文本**上接一层激活函数为softmax的全连接来获得输出文本的条件概率，全连接的输出节点个数是语料中Token的个数。
 
 $$
 P_i = \frac{e^{S\cdot T_i}}{\sum_{j=1} e^{S\cdot T_i}}
@@ -133,9 +133,7 @@ $$
 
 （d）命名实体识别
 
-* CoNLL-2003 NER：判断一个句子中的单词是不是Person，Organization，Location，Miscellaneous或者other（无命名实体）。
-
-微调CoNLL-2003 NER时将整个句子作为输入，在每个时间片输出一个概率，并通过softmax得到这个Token的实体类别。
+* CoNLL-2003 NER：判断一个句子中的单词是不是Person，Organization，Location，Miscellaneous或者other（无命名实体）。微调CoNLL-2003 NER时将整个句子作为输入，在每个时间片输出一个概率，并通过softmax得到这个Token的实体类别。
 
 ## 2. 总结
 
