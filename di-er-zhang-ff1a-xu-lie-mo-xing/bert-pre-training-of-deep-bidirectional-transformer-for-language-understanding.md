@@ -80,6 +80,8 @@ Masked Language Model（MLM）和核心思想取自Wilson Taylor在1953年发表
 
 这么做的原因是如果句子中的某个Token100%都会被mask掉，那么在fine-tuning的时候模型就会有一些没有见过的单词。加入随机Token的原因是因为Transformer要保持对每个输入token的分布式表征，否则模型就会记住这个[mask]是token ’hairy‘。至于单词带来的负面影响，因为一个单词被随机替换掉的概率只有15%*10% =1.5%，这个负面影响其实是可以忽略不计的。
 
+另外文章指出每次只预测15%的单词，因此模型收敛的比较慢。
+
 #### 1.3.2 Task #2: Next Sentence Prediction
 
 
