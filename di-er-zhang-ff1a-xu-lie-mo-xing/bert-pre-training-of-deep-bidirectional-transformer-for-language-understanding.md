@@ -57,7 +57,17 @@ BERT的输入的编码向量（长度是512）是3个嵌入特征的单位和，
 2. 位置嵌入（Position Embedding）：位置嵌入是指将单词的位置信息编码成特征向量，位置嵌入是向模型中引入单词位置关系的至关重要的一环。位置嵌入的具体内容参考我之前的[分析](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/attention-is-all-you-need.html)；
 3. 分割嵌入（Segment Embedding）：用于区分两个句子，例如B是否是A的下文（对话场景，问答场景等）。对于句子对，第一个句子的特征值是0，第二个句子的特征值是1。
 
-最后
+最后，说明一下图4中的两个特殊符号`[CLS]`和`[SEP]`，其中`[CLS]`表示该特征用于分类模型，对非分类模型，该符合可以省去。`[SEP]`表示分句符号，用于断开输入语料中的两个句子。
+
+<figure>
+<img src="/assets/BERT_4.png" alt="图4：BERT的输入特征。特征是token嵌入，位置嵌入和分割嵌入的单位和" />
+<figcaption>图4：BERT的输入特征。特征是token嵌入，位置嵌入和分割嵌入的单位和</figcaption>
+</figure>
+
+### 1.3 预训练任务
+
+BERT的任务是由两个无监督任务组成，即MLM和NSP。更准确的说，这两个任务应该是自监督任务，所谓自监督是指使用无标注数据训练有监督学习模型。
+
 
 ## Reference
 
