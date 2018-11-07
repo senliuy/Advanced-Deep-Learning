@@ -28,6 +28,7 @@
   * [You Only Look Once: Unified, Real-Time Object Detection ](chapter1/you-only-look-once-unified-real-time-object-detection.md)
   * [SSD: Single Shot MultiBox Detector](chapter1/ssd-single-shot-multibox-detector.md)
   * [YOLO9000: Better, Faster, Stronger](chapter1/yolo9000-better-faster-stronger.md)
+  * [Focal Loss for Dense Object Detection](chapter1/focal-loss-for-dense-object-detection.md)
   * [YOLOv3: An Incremental Improvement](chapter1/yolov3-an-incremental-improvement.md)
   * [Learning to Segment Every Thing](chapter1/learning-to-segment-every-thing.md)
   * [SNIPER: Efficient Multi-Scale Training](chapter1/sniper-efficient-multi-scale-training.md)
