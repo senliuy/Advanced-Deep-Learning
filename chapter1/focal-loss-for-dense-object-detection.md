@@ -38,6 +38,36 @@ FL是一个尺度动态可调的交叉熵损失函数，在FL中有两个参数$
 
 ## 1. Focal Loss
 
+Focal Loss是交叉熵损失的改进版本，一个二分类交叉熵可以表示为：
+
+$$
+\text{CE}(p,y) = 
+\left\{
+\begin{array}{}
+-log(p) & \text{if}\quad y=1\\
+-log(1-p) & \text{otherwise}
+\end{array}
+\right.
+$$
+
+上面公式可以简写成：
+
+$$
+\text{CE}(p,y) = \text{CE}(p_t) = -log(p_t)
+$$
+
+其中：
+$$
+p_t = 
+\left\{
+\begin{array}{}
+p & \text{if}\quad y=1\\
+1-p & \text{otherwise}
+\end{array}
+\right.
+$$
+
+图2是Focal Loss中example预测概率和loss值之间的关系。其中蓝色曲线是原始交叉熵的曲线。
 
 
 ## 2. RetinaNet
