@@ -1,5 +1,7 @@
 # Focal Loss for Dense Object Detection
 
+tags: FPN, 残差网络, Focal Loss, RetinaNet
+
 ## 前言
 
 何凯明，RBG等人一直是Two-Stage方向的领军人，在这篇论文中，他们也开始涉足One-Stage的物体检测算法。大牛就是牛，一次就刷新了精度。下面我们就来分析这几个大牛的作品。
