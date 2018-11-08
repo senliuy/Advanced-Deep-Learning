@@ -29,7 +29,7 @@ Faster R-CNN之所以能解决两个不平衡问题是因为其采用了下面�
 
 
 $$
-\text{FL}(p_t) = - \alpha_t (1-p_t)^{\gamma}log(p_t)
+\text{FL}(p_t) = - \alpha_t (1-p_t)^{\gamma}\text{log}(p_t)
 $$
 
 
@@ -46,8 +46,8 @@ $$
 \text{CE}(p,y) = 
 \left\{
 \begin{array}{}
--log(p) & \text{if}\quad y=1\\
--log(1-p) & \text{otherwise}
+-\text{log}(p) & \text{if}\quad y=1\\
+-\text{log}(1-p) & \text{otherwise}
 \end{array}
 \right.
 $$
@@ -57,7 +57,7 @@ $$
 
 
 $$
-\text{CE}(p,y) = \text{CE}(p_t) = -log(p_t)
+\text{CE}(p,y) = \text{CE}(p_t) = -\text{log}(p_t)
 $$
 
 
@@ -74,19 +74,67 @@ p & \text{if}\quad y=1\\
 \right.
 $$
 
-### 1.1 平衡交叉熵
+
+### 1.1 $$\alpha$$：解决正负样本不平衡
+
+平衡交叉熵的提出是为了解决**正负样本不平衡**的问题的。它的原理很简单，为正负样本分配不同的权重比值$$\alpha \in [0,1]$$，当$$y=1$$时取$$\alpha$$，为$$-1$$时取$$1-\alpha$$。我们使用和$$p_t$$类似的方法将上面$$\alpha$$的情况表示为$$a_t$$，即：
 
 
+$$
+\alpha_t = 
+\left\{
+\begin{array}{}
+\alpha & \text{if}\quad y=1\\
+1-\alpha & \text{otherwise}
+\end{array}
+\right.
+$$
 
-### Focal Loss的细节
 
-图2是Focal Loss中example预测概率和loss值之间的关系。其中蓝色曲线是原始交叉熵的曲线。
+那么这个$$\alpha-\text{balanced}$$交叉熵损失可以表示为式\(6\)。
+
+
+$$
+\text{CE}(p_t) = -\alpha_t \text{log} (p_t)
+$$
+
+
+$$\alpha$$的值往往需要根据验证集进行调整，论文中给出的是0.25。
+
+### 1.2 $$\gamma$$：解决难易样本不平衡
+
+FL中$$\gamma$$的引入是为了解决**难易样本不平衡**的问题的。图2是FL中example预测概率和loss值之间的关系。其中蓝色曲线是交叉熵（$$\gamma=0$$时Focal Loss退化为交叉熵损失）的曲线。
 
 ![](/assets/Retina_2.png)
 
-从图2的曲线中我们可以看出对于一些well-classified examples (easy examples)虽然它们**单个example**的loss可以收敛到很小，但是由于它们的数量过于庞大，把一些hard example的loss覆盖掉。导致求和之后他们依然会支配整个批次样本的收敛方向。
+从图2的曲线中我们可以看出对于一些well-classified examples \(easy examples\)虽然它们**单个example**的loss可以收敛到很小，但是由于它们的数量过于庞大，把一些hard example的loss覆盖掉。导致求和之后他们依然会支配整个批次样本的收敛方向。
 
-一个非常简单的策略是继续缩小easy examples的训练比重，例如图2中$$\gamma>0$$的那四条曲线
+一个非常简单的策略是继续缩小easy examples的训练比重。作者的思路很简单，给每个乘以$$(1-p_t)^\gamma$$。因为easy example的loss $$p_t$$往往接近1，那么$$(1-p_t)^\gamma$$值会比较小，因此example得到了抑制，相对的hard example得到了放大，例如图2中$$\gamma>0$$的那四条曲线。
+
+FL的求导结果如公式\(7\):
+
+
+$$
+\frac{d\text{FL}}{dx} = y(1-p_t)^\gamma(\gamma p_t\text{log}(p_t) + p_t - 1)
+$$
+
+
+$$\gamma$$的值也可以根据验证集来调整，论文中给出的值是2。
+
+### 1.3 FL的最终形式
+
+结合1.1的$$\alpha$$和1.2的$$\gamma$$，我们便有了公式（1）中FL的最终形式。作者也通过实验验证了结合两个策略的实验效果最好。
+
+Focal Loss的最终形式并不是一定要严格的是\(1\)的情况，但是它应满前文的分析，即能缩小easy example的比重。例如在论文附录A中给出的另外一种Focal Loss：$$\text{FL}^\star$$，曲线见图3。它能取得和FL类似的效果。
+
+![](/assets/Retina_3.png)
+
+
+$$
+\text{FL}^\star = 
+-\frac{\text{log}(\sigma(\gamma yx + \beta))}{\gamma}
+$$
+
 
 ## 2. RetinaNet
 
