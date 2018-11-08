@@ -105,7 +105,7 @@ $$\alpha$$的值往往需要根据验证集进行调整，论文中给出的是0
 
 FL中$$\gamma$$的引入是为了解决**难易样本不平衡**的问题的。图2是FL中example预测概率和loss值之间的关系。其中蓝色曲线是交叉熵（$$\gamma=0$$时Focal Loss退化为交叉熵损失）的曲线。
 
-![](/assets/Retina_2.png)
+![](/assets/RetinaNet_2.png)
 
 从图2的曲线中我们可以看出对于一些well-classified examples \(easy examples\)虽然它们**单个example**的loss可以收敛到很小，但是由于它们的数量过于庞大，把一些hard example的loss覆盖掉。导致求和之后他们依然会支配整个批次样本的收敛方向。
 
@@ -127,7 +127,7 @@ $$\gamma$$的值也可以根据验证集来调整，论文中给出的值是2。
 
 Focal Loss的最终形式并不是一定要严格的是\(1\)的情况，但是它应满前文的分析，即能缩小easy example的比重。例如在论文附录A中给出的另外一种Focal Loss：$$\text{FL}^\star$$，曲线见图3。它能取得和FL类似的效果。
 
-![](/assets/Retina_3.png)
+![](/assets/RetinaNet_3.png)
 
 
 $$
