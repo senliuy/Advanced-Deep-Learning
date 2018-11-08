@@ -48,6 +48,7 @@
 * 2018-10-23：Squeeze-and-Excitation Networks
 * 2018-11-04：Attention Is All You Need
 * 2018-11-05：BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
+* 2018-11-08：Focal Loss for Dense Object Detection
 
 
 
