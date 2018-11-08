@@ -19,10 +19,13 @@
 
 ![](/assets/RetinaNet_1.png)
 
-解决正负样本的不平衡的传统策略是使用平衡的交叉熵损失函数，对于难易样本的不平衡通常是使用Hard Negative Mining的策略。
+Faster R-CNN之所以能解决两个不平衡问题是因为其采用了下面两个策略：
 
-而作者的解决方案是基于交叉熵提出了一个新的损失函数Focal Loss（FL）。
+1. 根据IoU采样候选区域，并将正负样本的比例设置成1：1。这样就解决了正负样本不平衡的问题；
 
+2. 根据score过滤掉easy example，避免了训练loss被easy example所支配的问题。
+
+而在这篇论文中他们采用的解决方案是基于交叉熵提出了一个新的损失函数Focal Loss（FL）。
 
 $$
 \text{FL}(p_t) = - \alpha_t (1-p_t)^{\gamma}log(p_t)
@@ -34,6 +37,8 @@ FL是一个尺度动态可调的交叉熵损失函数，在FL中有两个参数$
 最后，作者基于残差网络\[4\]，FPN\[5\]搭建了检测网络RetinaNet，该网络使用的策略都是他们自己提出的而且目前效果非常好的基础结构，再结合Focal Loss，刷新检测算法的精度也不意外。
 
 ## 1. Focal Loss
+
+
 
 ## 2. RetinaNet
 
