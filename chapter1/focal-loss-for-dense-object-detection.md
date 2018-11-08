@@ -79,6 +79,7 @@ $$
 
 ![](/assets/Retina_2.png)
 
+从图2的曲线中我们可以看出对于一些well-classified examples (easy examples)虽然它们**单个example**的loss可以收敛到很小，但是由于它们的数量过于庞大，把一些hard example的loss覆盖掉。导致求和之后他们依然会支配整个批次样本的收敛方向。
 ## 2. RetinaNet
 
 ## 3. 总结
