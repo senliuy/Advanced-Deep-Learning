@@ -9,6 +9,12 @@
 1. 正样本（Positive Example）和负样本（Negative Example）的不平衡；
 2. 难样本（Hard Example）和易样本（Easy Example）的不平衡。
 
+这些不平衡造成模型的效果不准确的原因如下：
+
+1. Negative example的数量过多，导致Postive example的loss被覆盖，就算Postive example的loss非常大也会被数量庞大的 negative example中和掉，这这些positive example往往是我们要检测的前景区域；
+
+2. 
+
 解决正负样本的不平衡的传统策略是使用平衡的交叉熵损失函数，对于难易样本的不平衡通常是使用Hard Negative Mining的策略。
 
 而作者的解决方案是基于交叉熵提出了一个新的损失函数Focal Loss（FL）。
@@ -22,7 +28,9 @@ FL是一个尺度动态可调的交叉熵损失函数，在FL中有两个参数$
 
 ## 1. Focal Loss
 
-## 2. Retina Net
+
+
+## 2. RetinaNet
 
 ## 3. 总结
 
