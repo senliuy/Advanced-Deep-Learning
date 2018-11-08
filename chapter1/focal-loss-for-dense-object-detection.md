@@ -15,7 +15,7 @@
 
 2. Hard example往往是前景和背景区域的过渡部分，因为这些样本很难区分，所以叫做Hard Example。剩下的那些Easy example往往很好计算，导致模型非常容易就收敛了。但是损失函数收敛了并不代表模型效果好，因为我们其实更需要把那些hard example训练好。
 
-四种Example的情况见图1。
+四种example的情况见图1。
 
 ![](/assets/RetinaNet_1.jpeg)
 
