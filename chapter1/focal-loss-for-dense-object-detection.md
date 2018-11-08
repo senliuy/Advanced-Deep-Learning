@@ -17,7 +17,7 @@
 
 四种Example的情况见图1。
 
-![](/assets/RetinaNet_1.png)
+![](/assets/RetinaNet_1.jpeg)
 
 Faster R-CNN之所以能解决两个不平衡问题是因为其采用了下面两个策略：
 
