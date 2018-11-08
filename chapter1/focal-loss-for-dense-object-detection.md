@@ -4,7 +4,7 @@
 
 何凯明，RBG等人一直是Two-Stage方向的领军人，在这篇论文中，他们也开始涉足One-Stage的物体检测算法。大牛就是牛，一次就刷新了精度。下面我们就来分析这几个大牛的作品。
 
-目前主流的检测算法分为两个方向：（1）以R-CNN\[2\]系列为代表的two-stage方向；（2）以YOLO\[3\]系列为代表的one-stage方向。虽然one-stage方向的速度更快，但是其精度往往比较低。究其原因，有两个方面：
+目前主流的检测算法分为两个方向：（1）以[R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/fast-r-cnn.html)\[2\]系列为代表的two-stage方向；（2）以[YOLO](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)\[3\]系列为代表的one-stage方向。虽然one-stage方向的速度更快，但是其精度往往比较低。究其原因，有两个方面：
 
 1. 正样本（Positive Example）和负样本（Negative Example）的不平衡；
 2. 难样本（Hard Example）和易样本（Easy Example）的不平衡。
@@ -38,7 +38,7 @@ $$
 
 FL是一个尺度动态可调的交叉熵损失函数，在FL中有两个参数$$\alpha_t$$和$$\gamma$$，其中$$\alpha_t$$主要作用是解决正负样本的不平衡，$$\gamma$$主要是解决难易样本的不平衡。
 
-最后，作者基于残差网络\[4\]，FPN\[5\]搭建了检测网络RetinaNet，该网络使用的策略都是他们自己提出的而且目前效果非常好的基础结构，再结合Focal Loss，刷新检测算法的精度也不意外。
+最后，作者基于[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)\[4\]，[FPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/mask-r-cnn.html)\[5\]搭建了检测网络RetinaNet，该网络使用的策略都是他们自己提出的而且目前效果非常好的基础结构，再结合Focal Loss，刷新检测算法的精度也不意外。
 
 ## 1. Focal Loss
 
@@ -115,7 +115,7 @@ FL中$$\gamma$$的引入是为了解决**难易样本不平衡**的问题的。�
 
 从图2的曲线中我们可以看出对于一些well-classified examples \(easy examples\)虽然它们**单个example**的loss可以收敛到很小，但是由于它们的数量过于庞大，把一些hard example的loss覆盖掉。导致求和之后他们依然会支配整个批次样本的收敛方向。
 
-一个非常简单的策略是继续缩小easy examples的训练比重。作者的思路很简单，给每个乘以$$(1-p_t)^\gamma$$。因为easy example的loss $$p_t$$往往接近1，那么$$(1-p_t)^\gamma$$值会比较小，因此example得到了抑制，相对的hard example得到了放大，例如图2中$$\gamma>0$$的那四条曲线。
+一个非常简单的策略是继续缩小easy examples的训练比重。作者的思路很简单，给每个乘以$$(1-p_t)^\gamma$$。因为easy example的score $$p_t$$往往接近1，那么$$(1-p_t)^\gamma$$值会比较小，因此example得到了抑制，相对的hard example得到了放大，例如图2中$$\gamma>0$$的那四条曲线。
 
 FL的求导结果如公式\(7\):
 
@@ -157,10 +157,6 @@ $$
 <img src="/assets/RetinaNet_4.png" alt="图4：RetinaNet网络结构图" />
 <figcaption>图4：RetinaNet网络结构图</figcaption>
 </figure>
-
-
-
-
 
 
 对于残差网络和FPN不清楚的参考论文或者我之前的分析。这里我们列出RetinaNet的几个重点：
