@@ -135,7 +135,7 @@ $$
 -\frac{\text{log}(\sigma(\gamma yx + \beta))}{\gamma}
 $$
 
-
+最后作者指出如果将单标签softmax换成多标签的sigmoid效果会更好，这里应该和我们在YOLOv3中分析的情况类似。
 ## 2. RetinaNet
 
 
