@@ -27,6 +27,7 @@ Faster R-CNN之所以能解决两个不平衡问题是因为其采用了下面�
 
 而在这篇论文中他们采用的解决方案是基于交叉熵提出了一个新的损失函数Focal Loss（FL）。
 
+
 $$
 \text{FL}(p_t) = - \alpha_t (1-p_t)^{\gamma}log(p_t)
 $$
@@ -40,6 +41,7 @@ FL是一个尺度动态可调的交叉熵损失函数，在FL中有两个参数$
 
 Focal Loss是交叉熵损失的改进版本，一个二分类交叉熵可以表示为：
 
+
 $$
 \text{CE}(p,y) = 
 \left\{
@@ -50,13 +52,18 @@ $$
 \right.
 $$
 
+
 上面公式可以简写成：
+
 
 $$
 \text{CE}(p,y) = \text{CE}(p_t) = -log(p_t)
 $$
 
+
 其中：
+
+
 $$
 p_t = 
 \left\{
@@ -67,8 +74,10 @@ p & \text{if}\quad y=1\\
 \right.
 $$
 
+
 图2是Focal Loss中example预测概率和loss值之间的关系。其中蓝色曲线是原始交叉熵的曲线。
 
+![](/assets/Retina_2.png)
 
 ## 2. RetinaNet
 
