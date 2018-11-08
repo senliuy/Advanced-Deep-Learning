@@ -19,7 +19,7 @@
 
 <figure>
 <img src="/assets/RetinaNet_1.jpeg" alt="图1：物体检测中的四种Example" />
-<figcaption>1：物体检测中的四种Example</figcaption>
+<figcaption>图1：物体检测中的四种Example</figcaption>
 </figure>
 
 Faster R-CNN之所以能解决两个不平衡问题是因为其采用了下面两个策略：
@@ -109,11 +109,9 @@ $$\alpha$$的值往往需要根据验证集进行调整，论文中给出的是0
 FL中$$\gamma$$的引入是为了解决**难易样本不平衡**的问题的。图2是FL中example预测概率和loss值之间的关系。其中蓝色曲线是交叉熵（$$\gamma=0$$时Focal Loss退化为交叉熵损失）的曲线。
 
 <figure>
-<img src="/assets/RetinaNet_2.png" alt="图1：物体检测中的四种Example" />
-<figcaption>1：物体检测中的四种Example</figcaption>
+<img src="/assets/RetinaNet_2.png" alt="图2：CE损失和FL损失曲线图" />
+<figcaption>图2：CE损失和FL损失曲线图</figcaption>
 </figure>
-
-2
 
 从图2的曲线中我们可以看出对于一些well-classified examples \(easy examples\)虽然它们**单个example**的loss可以收敛到很小，但是由于它们的数量过于庞大，把一些hard example的loss覆盖掉。导致求和之后他们依然会支配整个批次样本的收敛方向。
 
@@ -135,7 +133,12 @@ $$\gamma$$的值也可以根据验证集来调整，论文中给出的值是2。
 
 Focal Loss的最终形式并不是一定要严格的是\(1\)的情况，但是它应满前文的分析，即能缩小easy example的比重。例如在论文附录A中给出的另外一种Focal Loss：$$\text{FL}^\star$$，曲线见图3。它能取得和FL类似的效果。
 
-![](/assets/RetinaNet_3.png)
+<figure>
+<img src="/assets/RetinaNet_3.png" alt="图3：CE损失和FL*损失曲线图" />
+<figcaption>图3：CE损失和FL*损失曲线图</figcaption>
+</figure>
+
+
 
 
 $$
@@ -150,7 +153,15 @@ $$
 
 算法使用的检测框架RetinaNet并没有特别大的创新点，基本上是残差网络+FPN的最state-of-the-art的方法，如图4。
 
-![](/assets/RetinaNet_4.png)
+<figure>
+<img src="/assets/RetinaNet_4.png" alt="图4：RetinaNet网络结构图" />
+<figcaption>图4：RetinaNet网络结构图</figcaption>
+</figure>
+
+
+
+
+
 
 对于残差网络和FPN不清楚的参考论文或者我之前的分析。这里我们列出RetinaNet的几个重点：
 
