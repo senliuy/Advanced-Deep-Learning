@@ -17,7 +17,9 @@
 
 SqueezeNet正是诞生在这个环境下的一个精度的网络，它能够在ImageNet数据集上达到[AlexNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.html)[2]近似的效果，但是参数比AlexNet少50倍，结合他们的模型压缩技术 Deep Compression[3]，模型文件可比AlexNet小510倍。
 
-## SqueezeNet 详解
+## 1. SqueezeNet 详解
+
+### 1.1 SqueezeNet的压缩策略
 
 
 ## Reference
