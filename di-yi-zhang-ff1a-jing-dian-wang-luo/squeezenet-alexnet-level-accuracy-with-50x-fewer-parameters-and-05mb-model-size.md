@@ -1,5 +1,7 @@
 # SQUEEZENET: ALEXNET-LEVEL ACCURACY WITH 50X FEWER PARAMETERS AND < 0.5MB MODEL SIZE
 
+tags: AlexNet, SqueezeNet
+
 ## 前言
 
 从LeNet5到DenseNet，反应卷积网络的一个发展方向：提高精度。这里我们开始另外一个方向的介绍：**在大幅降低模型精度的前提下，最大程度的提高运算速度**。
