@@ -8,6 +8,7 @@
   * [Deep Residual Learning for Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.md)
   * [Squeeze-and-Excitation Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.md)
   * [Densely Connected Convolutional Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.md)
+  * [SQUEEZENET: ALEXNET-LEVEL ACCURACY WITH 50X FEWER PARAMETERS AND &lt;0.5MB MODEL SIZE](di-yi-zhang-ff1a-jing-dian-wang-luo/squeezenet-alexnet-level-accuracy-with-50x-fewer-parameters-and-05mb-model-size.md)
 * [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
   * [Neural Machine Translation by Jointly Learning to Align and Translate ](di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.md)
