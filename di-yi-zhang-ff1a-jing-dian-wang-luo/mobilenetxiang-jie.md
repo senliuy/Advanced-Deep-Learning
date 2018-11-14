@@ -12,6 +12,8 @@ MobileNet v2 [2]是在v1的Depthwise Separable的基础上引入了[残差结构
 
 ### 1.1 Depthwise Separable Convolution
 
+传统的卷积网络是跨通道的，一个尺寸为$$D_K$$的卷积的参数个数为$$D_K \times D_K \times M \times N$$，其中M为输入Feature Map的通道数，N为输出Feature Map的通道数。
+
 ## 2. MobileNet v2 详解
 
 ### 2.1 Linear Bottlenecks
