@@ -54,6 +54,14 @@ $$
 D_k \times D_K \times M \times D_W \times D_H
 $$
 
+在Keras中，我们可以使用[```DepthwiseConv2D ```](https://github.com/titu1994/MobileNetworks/blob/master/depthwise_conv.py)实现Depthwise卷积操作，它有几个重要的参数：
+
+* ```kernel_size```：卷积核的尺寸
+* ```strides```：卷积的步长
+* ```padding```：是否加边
+* ```activation```：激活函数
+
+Depthwise卷积的操作虽然非常
 ## 2. MobileNet v2 详解
 
 ### 2.1 Linear Bottlenecks
