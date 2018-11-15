@@ -219,8 +219,28 @@ $$
 
 
 
+### 2.3 MobileNet v2
 
+综上
 
+MobileNet v2的实现可以通过堆叠
+
+```py
+def MobileNetV2_relu(input_shape, k):
+    inputs = Input(shape = input_shape)
+    x = Conv2D(filters=32, kernel_size=(3,3), padding='same')(inputs)
+    x = _bottleneck_relu(x, 8, 6)
+    x = MaxPooling2D((2,2))(x)
+    x = _bottleneck_relu(x, 16, 6)
+    x = _bottleneck_relu(x, 16, 6)
+    x = MaxPooling2D((2,2))(x)
+    x = _bottleneck_relu(x, 32, 6)
+    x = GlobalAveragePooling2D()(x)
+    x = Dense(128, activation='relu')(x)
+    outputs = Dense(k, activation='softmax')(x)
+    model = Model(inputs, outputs)
+    return model
+```
 ## Reference
 
 \[1\] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
