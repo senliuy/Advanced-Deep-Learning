@@ -36,11 +36,23 @@ v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参�
 
 Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convolution。
 
-### 1.2 Depthwise Convolution
+### 1.2 Depthwise卷积
 
-其中Depthwise Convolution是指不跨通道的卷积，也就是说Feature Map的每个通道有一个独立的卷积核，并且这个卷积核作用且仅作用在这个通道之上，如图2所示。
+其中Depthwise卷积是指不跨通道的卷积，也就是说Feature Map的每个通道有一个独立的卷积核，并且这个卷积核作用且仅作用在这个通道之上，如图2所示。
 
 ![](/assets/MobileNet2.png)
+
+从图2和图1的对比中我们可以看出，因为放弃了卷积时的跨通道。Depthwise卷积的参数数量仅为传统卷积的$$\frac{1}{N}$$。Depthwise Convolution的数学表达式为：
+
+$$
+\hat{G}_{k,l,m} = \sum_{i,j} \hat{K}_{i,j,n} \cdot F_{k+i-1, l+j-1, m}
+$$
+
+它的计算代价也是传统卷积的$$\frac{1}{N}$$为:
+
+$$
+D_k \times D_K \times M \times D_W \times D_H
+$$
 
 ## 2. MobileNet v2 详解
 
