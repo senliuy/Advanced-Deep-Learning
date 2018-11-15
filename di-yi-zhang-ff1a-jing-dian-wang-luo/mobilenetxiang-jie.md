@@ -124,6 +124,8 @@ def Simple_NaiveConvNet(input_shape, k):
     model = Model(inputs, x)
     return model
 ```
+通过```Summary()```结果见图4。
+
 
 
 ## 2. MobileNet v2 详解
