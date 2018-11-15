@@ -249,9 +249,11 @@ def MobileNetV2_relu(input_shape, k):
 
 ![](/assets/MobileNet_10.png)
 
-如图\(b\)所示，MobileNet v1最主要的贡献是使用了Depthwise Separable Convolution，它又可以拆分成Depthwise卷积和Pointwise卷积。MobileNet v2主要是将残差网络和Depthwise Separable卷积进行了结合。通过分析单通道的流形特征对残差块进行了改进，包括对中间层的扩展以及bottleneck层的线性激活。
+如图\(b\)所示，MobileNet v1最主要的贡献是使用了Depthwise Separable Convolution，它又可以拆分成Depthwise卷积和Pointwise卷积。MobileNet v2主要是将残差网络和Depthwise Separable卷积进行了结合。通过分析单通道的流形特征对残差块进行了改进，包括对中间层的扩展\(d\)以及bottleneck层的线性激活\(c\)。Depthwise Separable Convolution的分离式设计直接将模型压缩了8倍左右，但是精度并没有损失非常严重，这一点还是非常震撼的。
 
+Depthwise Separable卷积的设计非常精彩但遗憾的是目前cudnn对其的支持并不好，导致在使用GPU训练网络过程中我们无法从算法中获益，但是使用串行CPU并没有这个问题，这也就给了MobileNet很大的市场空间，尤其是在嵌入式平台。
 
+最后，不得不承认v2的论文的一系列证明非常精彩，虽然没有这些证明我们也能明白v2的工作原理，但是这些证明过程还是非常值得仔细品鉴的，尤其是对于从事科研方向的工作人员。
 
 
 
