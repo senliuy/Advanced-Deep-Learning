@@ -214,16 +214,17 @@ $$
 
 ### 2.2 Inverted Residual
 
-当激活函数使用ReLU时，我们可以通过增加通道数来减少信息的损耗，使用参数$$t$$来控制，该层的通道数是输入Feature Map的$$t$$倍。传统的残差块的$$t$$一般取小于1的小数，常见的取值为0.1，而在v2中这个值一般是介于$$5-10$$之间的数，在作者的实验中，$$t=6$$。考虑到残差网络和v2的$$t$$的不同取值范围，他们分别形成了锥子形（两头小中间大）和沙漏形（两头大中间小）的结构，如图8所示。
+当激活函数使用ReLU时，我们可以通过增加通道数来减少信息的损耗，使用参数$$t$$来控制，该层的通道数是输入Feature Map的$$t$$倍。传统的残差块的$$t$$一般取小于1的小数，常见的取值为0.1，而在v2中这个值一般是介于$$5-10$$之间的数，在作者的实验中，$$t=6$$。考虑到残差网络和v2的$$t$$的不同取值范围，他们分别形成了锥子形（两头小中间大）和沙漏形（两头大中间小）的结构，如图8所示，其中斜线Feature Map表示使用的是线性激活函数。
 
-
-
+![](/assets/MobileNet_8.png)
 
 ### 2.3 MobileNet v2
 
-综上
+综上我们可以得到MobileNet v2的一个block的详细参数，如图9所示，其中$$s$$代表步长：
 
-MobileNet v2的实现可以通过堆叠
+![](/assets/MobileNet_9.png)
+
+MobileNet v2的实现可以通过堆叠bottleneck的形式实现，如下面代码片段
 
 ```py
 def MobileNetV2_relu(input_shape, k):
@@ -241,6 +242,19 @@ def MobileNetV2_relu(input_shape, k):
     model = Model(inputs, outputs)
     return model
 ```
+
+## 3. 总结
+
+在这篇文章中，我们介绍了两个版本的MobileNet，它们和传统卷积的对比如图10。
+
+![](/assets/MobileNet_10.png)
+
+如图\(b\)所示，MobileNet v1最主要的贡献是使用了Depthwise Separable Convolution，它又可以拆分成Depthwise卷积和Pointwise卷积。MobileNet v2主要是将残差网络和Depthwise Separable卷积进行了结合。通过分析单通道的流形特征对残差块进行了改进，包括对中间层的扩展以及bottleneck层的线性激活。
+
+
+
+
+
 ## Reference
 
 \[1\] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
