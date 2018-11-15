@@ -11,6 +11,7 @@ MobileNet v2 \[2\]是在v1的Depthwise Separable的基础上引入了[残差结�
 ## 1. MobileNet v1
 
 ### 1.1 回顾：传统卷积的参数量和计算量
+
 传统的卷积网络是跨通道的，对于一个通道数为$$M$$的输入Feature Map，我们要得到通道数为$$N$$的输出Feature Map。普通卷积会使用$$N$$个不同的$$D_K \times D_K \times M$$以滑窗的形式遍历输入Feature Map，因此对于一个尺寸为$$D_K\times D_K$$的卷积的参数个数为$$D_K \times D_K \times M \times N$$。一个普通的卷积可以表示为：
 
 
@@ -84,22 +85,28 @@ Pointwise的可视化如图3：
 
 合并1.2中的Depthwise卷积和1.3中的Pointwise卷积便是v1中介绍的Depthwise Separable卷积。它的一组操作（一次Depthwise卷积加一次Pointwise卷积）的参数数量为：$$D_K \times D_K \times M + M\times N$$是普通卷积的
 
+
 $$
 \frac{D_K \times D_K \times M + M\times N}{D_K \times D_K \times M \times N} = \frac{1}{N} + \frac{1}{D_K^2}
 $$
 
+
 计算量为：
+
 
 $$
 D_K \times D_K \times M \times D_W \times D_H + M\times N \times D_W \times D_H
 $$
 
+
 和普通卷积的比值为：
+
 
 $$
 \frac{D_K \times D_K \times M \times D_W \times D_H + M\times N \times D_W \times D_H
 }{D_K \times D_K \times M \times N \times D_W \times D_H} = \frac{1}{N} + \frac{1}{D_K^2}
 $$
+
 
 对于一个$$3\times3$$的卷积而言，v1的参数量和计算代价均为普通卷积的$$\frac{1}{8}$$左右。
 
@@ -124,9 +131,33 @@ def Simple_NaiveConvNet(input_shape, k):
     model = Model(inputs, x)
     return model
 ```
-通过```Summary()```结果见图4。
 
+通过将$$3\times3$$的`Conv2D()`换成$$3\times3$$的`DepthwiseConv2D`加上$$1\times1$$的`Conv2D()`（第一层保留传统卷积），我们将其改造成了MobileNet v1。
 
+```py
+def Simple_MobileNetV1(input_shape, k):
+    inputs = Input(shape=input_shape)
+    x = Conv2D(filters=32, kernel_size=(3,3), strides=(2,2), padding='same', activation='relu')(inputs)
+    x = DepthwiseConv2D(kernel_size=(3,3),padding='same', activation='relu',)(x)
+    x = Conv2D(filters=64, kernel_size=(1,1),padding='same', activation='relu')(x)
+    x = DepthwiseConv2D(kernel_size=(3,3), padding='same', activation='relu',)(x)
+    x = Conv2D(filters=128, kernel_size=(1,1),padding='same', activation='relu')(x)
+    x = DepthwiseConv2D(kernel_size=(3,3), strides=(2,2),padding='same', activation='relu',)(x)
+    x = Conv2D(filters=128, kernel_size=(1,1),padding='same', activation='relu')(x)
+    x = DepthwiseConv2D(kernel_size=(3,3),padding='same', activation='relu',)(x)
+    x = Conv2D(filters=128, kernel_size=(1,1), padding='same', activation='relu')(x)
+    x = GlobalAveragePooling2D()(x)
+    x = BatchNormalization()(x)
+    x = Dense(128, activation='relu')(x)
+    x = BatchNormalization()(x)
+    x = Dense(k, activation='softmax')(x)
+    model = Model(inputs, x)
+    return model
+```
+
+通过`Summary()`函数我们可以得到每个网络的每层的参数数量，见图4，左侧是普通卷积，右侧是MobileNet v1。![](/assets/MobileNet_4.png)
+
+普通卷积的
 
 ## 2. MobileNet v2 详解
 
