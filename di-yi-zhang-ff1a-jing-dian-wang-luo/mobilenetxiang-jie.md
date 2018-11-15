@@ -10,8 +10,7 @@ MobileNet v2 \[2\]是在v1的Depthwise Separable的基础上引入了[残差结�
 
 ## 1. MobileNet v1
 
-### 1.1 Depthwise Separable Convolution
-
+### 1.1 回顾：传统卷积的参数量和计算量
 传统的卷积网络是跨通道的，对于一个通道数为$$M$$的输入Feature Map，我们要得到通道数为$$N$$的输出Feature Map。普通卷积会使用$$N$$个不同的$$D_K \times D_K \times M$$以滑窗的形式遍历输入Feature Map，因此对于一个尺寸为$$D_K\times D_K$$的卷积的参数个数为$$D_K \times D_K \times M \times N$$。一个普通的卷积可以表示为：
 
 
@@ -32,9 +31,7 @@ $$
 
 ![](/assets/MobileNet_1.png)
 
-v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参数数量和计算代价过于高昂的问题。
-
-Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convolution。
+v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参数数量和计算代价过于高昂的问题。Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convolution。
 
 ### 1.2 Depthwise卷积
 
@@ -42,7 +39,7 @@ Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convoluti
 
 ![](/assets/MobileNet_2.png)
 
-从图2和图1的对比中我们可以看出，因为放弃了卷积时的跨通道。Depthwise卷积的参数数量仅为传统卷积的$$\frac{1}{N}$$。Depthwise Convolution的数学表达式为：
+从图2和图1的对比中我们可以看出，因为放弃了卷积时的跨通道。Depthwise卷积的参数数量为$$D_K \times D_K \times M$$。Depthwise Convolution的数学表达式为：
 
 
 $$
@@ -54,7 +51,7 @@ $$
 
 
 $$
-D_k \times D_K \times M \times D_W \times D_H
+D_K \times D_K \times M \times D_W \times D_H
 $$
 
 
@@ -82,6 +79,52 @@ $$
 Pointwise的可视化如图3：
 
 ![](/assets/MobileNet_3.png)
+
+### 1.4 Depthwise Separable卷积
+
+合并1.2中的Depthwise卷积和1.3中的Pointwise卷积便是v1中介绍的Depthwise Separable卷积。它的一组操作（一次Depthwise卷积加一次Pointwise卷积）的参数数量为：$$D_K \times D_K \times M + M\times N$$是普通卷积的
+
+$$
+\frac{D_K \times D_K \times M + M\times N}{D_K \times D_K \times M \times N} = \frac{1}{N} + \frac{1}{D_K^2}
+$$
+
+计算量为：
+
+$$
+D_K \times D_K \times M \times D_W \times D_H + M\times N \times D_W \times D_H
+$$
+
+和普通卷积的比值为：
+
+$$
+\frac{D_K \times D_K \times M \times D_W \times D_H + M\times N \times D_W \times D_H
+}{D_K \times D_K \times M \times N \times D_W \times D_H} = \frac{1}{N} + \frac{1}{D_K^2}
+$$
+
+对于一个$$3\times3$$的卷积而言，v1的参数量和计算代价均为普通卷积的$$\frac{1}{8}$$左右。
+
+### 1.5 Mobile v1的Keras实现及实验结果分析
+
+通过上面的分析，我们知道一个普通卷积的一组卷积操作可以拆分成了个Depthwise卷积核一个Pointwise卷积，由此而形成MobileNet v1的结构。在这个实验中我们首先会搭建一个普通卷积，然后再将其改造成v1，并在MNIST上给出实验结果，代码和实验结果见链接[TODO]()。
+
+首先我们搭建的传统卷积的结构如下面代码片段：
+
+```py
+def Simple_NaiveConvNet(input_shape, k):
+    inputs = Input(shape=input_shape)
+    x = Conv2D(filters=32, kernel_size=(3,3), strides=(2,2), padding='same', activation='relu')(inputs)
+    x = Conv2D(filters=64, kernel_size=(3,3),padding='same', activation='relu')(x)
+    x = Conv2D(filters=128, kernel_size=(3,3),padding='same', activation='relu')(x)
+    x = Conv2D(filters=128, kernel_size=(3,3), strides=(2,2),padding='same', activation='relu')(x)
+    x = GlobalAveragePooling2D()(x)
+    x = BatchNormalization()(x)
+    x = Dense(128, activation='relu')(x)
+    x = BatchNormalization()(x)
+    x = Dense(k, activation='softmax')(x)
+    model = Model(inputs, x)
+    return model
+```
+
 
 ## 2. MobileNet v2 详解
 
