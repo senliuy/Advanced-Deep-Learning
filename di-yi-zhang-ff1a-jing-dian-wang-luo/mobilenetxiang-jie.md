@@ -163,7 +163,7 @@ def Simple_MobileNetV1(input_shape, k):
 
 ![](/assets/MobileNet_5.png)
 
-对比单个Epcoh的训练时间，我们发现了一个奇怪的现象，在CPU上，v1的训练时间约70秒，传统卷积训练时间为140秒，这和我们的直觉是相同的。但是在GPU环境下，传统卷积核v1的训练时间分别为(#TODO)和(#TODO)，v1在GPU上反而更慢了，这是什么原因呢？
+对比单个Epcoh的训练时间，我们发现了一个奇怪的现象，在CPU上，v1的训练时间约70秒，传统卷积训练时间为140秒，这和我们的直觉是相同的。但是在GPU环境下，传统卷积和v1的训练时间分别为40秒和50秒，v1在GPU上反而更慢了，这是什么原因呢？
 
 问题在于cudnn对传统卷积的并行支持比较完善，而在cudnn7之前的版本并不支持depthwise卷积，现在虽然支持了，其并行性并没有做优化，依旧采用循环的形式遍历每个通道，因此在GPU环境下MobileNet v1反而要慢于传统卷积。所以说，是**开源工具慢，并不是MobileNet v1的算法慢**。
 
@@ -173,7 +173,7 @@ def Simple_MobileNetV1(input_shape, k):
 
 在MobileNet v2中，作者将v1中加入了残差网络，同时分析了v1的几个缺点并针对性的做了改进。v2的改进策略非常简单，但是在编写论文时，缺点分析的时候涉及了流行学习等内容，将优化过程弄得非常难懂。我们在这里简单总结一下v2中给出的问题分析，希望能对论文的阅读有所帮助，对v2的motivation感兴趣的同学推荐阅读论文。
 
-当我们单独去看Feature Map的每个通道的像素的值的时候，其实这些值代表的特征可以映射到一个低维子空间的一个流形区域上。在进行完卷积操作之后往往会接一层激活函数来增加特征的非线性性，一个最常见的激活函数便是ReLU。根据我们在[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)中介绍的数据处理不等式(DPI)，ReLU一定会带来信息损耗，而且这种损耗是没有办法恢复的，ReLU的信息损耗是当通道数非常少的时候更为明显。为什么这么说呢？我们看图6中这个例子，其输入是一个表示流形数据的矩阵，和卷机操作类似，他会经过$$n$$个ReLU的操作得到$$n$$个通道的Feature Map，然后我们试图通过这$$n$$个Feature Map还原输入数据，还原的越像说明信息损耗的越少。从图6中我们可以看出，当$$n$$的值比较小时，ReLU的信息损耗非常严重，当时当$$n$$的值比较大的时候，输入流形就能还原的很好了。
+当我们单独去看Feature Map的每个通道的像素的值的时候，其实这些值代表的特征可以映射到一个低维子空间的一个流形区域上。在进行完卷积操作之后往往会接一层激活函数来增加特征的非线性性，一个最常见的激活函数便是ReLU。根据我们在[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)中介绍的数据处理不等式\(DPI\)，ReLU一定会带来信息损耗，而且这种损耗是没有办法恢复的，ReLU的信息损耗是当通道数非常少的时候更为明显。为什么这么说呢？我们看图6中这个例子，其输入是一个表示流形数据的矩阵，和卷机操作类似，他会经过$$n$$个ReLU的操作得到$$n$$个通道的Feature Map，然后我们试图通过这$$n$$个Feature Map还原输入数据，还原的越像说明信息损耗的越少。从图6中我们可以看出，当$$n$$的值比较小时，ReLU的信息损耗非常严重，当时当$$n$$的值比较大的时候，输入流形就能还原的很好了。
 
 ![](/assets/MobileNet_6.png)
 
@@ -202,6 +202,7 @@ def _bottleneck(inputs, nb_filters, t):
 
 这里使用了MobileNet中介绍的ReLU6激活函数，它是对ReLU在6上的截断，数学形式为：
 
+
 $$
 ReLU(6) = min(max(0,x),6)
 $$
@@ -213,7 +214,12 @@ $$
 
 ### 2.2 Inverted Residual
 
-当激活函数使用ReLU时，我们可以通过增加通道数来减少信息的损耗，使用参数$$t$$来控制，该层的通道数是输入Feature Map的$$t$$倍。对比传统的残差块
+当激活函数使用ReLU时，我们可以通过增加通道数来减少信息的损耗，使用参数$$t$$来控制，该层的通道数是输入Feature Map的$$t$$倍。传统的残差块的$$t$$一般取小于1的小数，常见的取值为0.1，而在v2中这个值一般是介于$$5-10$$之间的数，在作者的实验中，$$t=6$$。考虑到残差网络和v2的$$t$$的不同取值范围，他们分别形成了锥子形（两头小中间大）和沙漏形（两头大中间小）的结构，如图8所示。
+
+
+
+
+
 
 ## Reference
 
@@ -222,5 +228,4 @@ $$
 \[2\] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
 
 \[3\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
-
 
