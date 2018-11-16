@@ -30,7 +30,12 @@ $$
 
 其中$$(D_W, D_H)$$为Feature Map的尺寸。普通卷积如图1所示。
 
-![](/assets/MobileNet_1.png)
+<figure>
+<img src="/assets/MobileNet_1.png" alt="图1：普通卷积的Feature Map之间的卷积核情况"/>
+<figcaption>图1：普通卷积的Feature Map之间的卷积核情况</figcaption>
+</figure>
+
+
 
 v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参数数量和计算代价过于高昂的问题。Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convolution。
 
@@ -38,7 +43,12 @@ v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参�
 
 其中Depthwise卷积是指不跨通道的卷积，也就是说Feature Map的每个通道有一个独立的卷积核，并且这个卷积核作用且仅作用在这个通道之上，如图2所示。
 
-![](/assets/MobileNet_2.png)
+<figure>
+<img src="/assets/MobileNet_2.png" alt="图2：Depthwise卷积示意图（3个通道）"/>
+<figcaption>图2：Depthwise卷积示意图（3个通道）</figcaption>
+</figure>
+
+
 
 从图2和图1的对比中我们可以看出，因为放弃了卷积时的跨通道。Depthwise卷积的参数数量为$$D_K \times D_K \times M$$。Depthwise Convolution的数学表达式为：
 
