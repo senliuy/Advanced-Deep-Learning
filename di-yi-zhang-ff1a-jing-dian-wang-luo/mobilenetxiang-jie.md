@@ -194,7 +194,10 @@ def Simple_MobileNetV1(input_shape, k):
 
 当我们单独去看Feature Map的每个通道的像素的值的时候，其实这些值代表的特征可以映射到一个低维子空间的一个流形区域上。在进行完卷积操作之后往往会接一层激活函数来增加特征的非线性性，一个最常见的激活函数便是ReLU。根据我们在[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)中介绍的数据处理不等式\(DPI\)，ReLU一定会带来信息损耗，而且这种损耗是没有办法恢复的，ReLU的信息损耗是当通道数非常少的时候更为明显。为什么这么说呢？我们看图6中这个例子，其输入是一个表示流形数据的矩阵，和卷机操作类似，他会经过$$n$$个ReLU的操作得到$$n$$个通道的Feature Map，然后我们试图通过这$$n$$个Feature Map还原输入数据，还原的越像说明信息损耗的越少。从图6中我们可以看出，当$$n$$的值比较小时，ReLU的信息损耗非常严重，当时当$$n$$的值比较大的时候，输入流形就能还原的很好了。
 
-![](/assets/MobileNet_6.png)
+<figure>
+<img src="/assets/MobileNet_6.png" alt="图6: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比"/>
+<figcaption>图6: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比</figcaption>
+</figure>
 
 根据对上面提到的信息损耗问题分析，我们可以有两种解决方案：
 
