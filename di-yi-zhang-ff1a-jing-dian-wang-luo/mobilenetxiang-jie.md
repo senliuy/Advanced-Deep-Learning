@@ -123,7 +123,7 @@ $$
 
 ### 1.5 Mobile v1的Keras实现及实验结果分析
 
-通过上面的分析，我们知道一个普通卷积的一组卷积操作可以拆分成了个Depthwise卷积核一个Pointwise卷积，由此而形成MobileNet v1的结构。在这个实验中我们首先会搭建一个普通卷积，然后再将其改造成v1，并在MNIST上给出实验结果，代码和实验结果见链接[TODO]()。
+通过上面的分析，我们知道一个普通卷积的一组卷积操作可以拆分成了个Depthwise卷积核一个Pointwise卷积，由此而形成MobileNet v1的结构。在这个实验中我们首先会搭建一个普通卷积，然后再将其改造成v1，并在MNIST上给出实验结果，代码和实验结果见链接[CPU](https://github.com/senliuy/CNN-Structures/blob/master/MobileNetV1_CPU.ipynb)，[GPU](https://github.com/senliuy/CNN-Structures/blob/master/MobileNetV1_GPU.ipynb)。
 
 首先我们搭建的传统卷积的结构如下面代码片段：
 
