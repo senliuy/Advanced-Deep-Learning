@@ -49,8 +49,8 @@
 * 2018-11-04：Attention Is All You Need
 * 2018-11-05：BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
 * 2018-11-08：Focal Loss for Dense Object Detection
-* 2018-11-12：SQUEEZENET: ALEXNET-LEVEL ACCURACY WITH 50X FEWER PARAMETERS AND < 0.5MB MODEL SIZE
-
+* 2018-11-12：SQUEEZENET: ALEXNET-LEVEL ACCURACY WITH 50X FEWER PARAMETERS AND &lt; 0.5MB MODEL SIZE
+* 2018-11-16：MobileNet v1 and MobileNet v2
 
 
 

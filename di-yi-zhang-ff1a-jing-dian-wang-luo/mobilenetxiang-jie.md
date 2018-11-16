@@ -1,5 +1,7 @@
 # MobileNet v1 and MobileNet v2
 
+tags: MobileNet
+
 ## 前言
 
 MobileNet\[1\]（这里叫做MobileNet v1，简称v1）中使用的Depthwise Separable Convolution是模型压缩的一个最为经典的策略，它是通过将跨通道的$$3\times3$$卷积换成单通道的$$3\times3$$卷积+跨通道的$$1\times1$$卷积来达到此目的的。
@@ -177,7 +179,7 @@ def Simple_MobileNetV1(input_shape, k):
 
 <figure>
 <img src="/assets/MobileNet_5.png" alt="图5: 使用ReLU激活函数的通道数和信息损耗之间的关系"/>
-<figcaption>图5: 使用ReLU激活函数的通道数和信息损耗之间的关系</figcaption>
+<figcaption>图5: 普通卷积和MobileNet v1在MNIST上的收敛曲线图</figcaption>
 </figure>
 
 
@@ -195,8 +197,8 @@ def Simple_MobileNetV1(input_shape, k):
 当我们单独去看Feature Map的每个通道的像素的值的时候，其实这些值代表的特征可以映射到一个低维子空间的一个流形区域上。在进行完卷积操作之后往往会接一层激活函数来增加特征的非线性性，一个最常见的激活函数便是ReLU。根据我们在[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)中介绍的数据处理不等式\(DPI\)，ReLU一定会带来信息损耗，而且这种损耗是没有办法恢复的，ReLU的信息损耗是当通道数非常少的时候更为明显。为什么这么说呢？我们看图6中这个例子，其输入是一个表示流形数据的矩阵，和卷机操作类似，他会经过$$n$$个ReLU的操作得到$$n$$个通道的Feature Map，然后我们试图通过这$$n$$个Feature Map还原输入数据，还原的越像说明信息损耗的越少。从图6中我们可以看出，当$$n$$的值比较小时，ReLU的信息损耗非常严重，当时当$$n$$的值比较大的时候，输入流形就能还原的很好了。
 
 <figure>
-<img src="/assets/MobileNet_6.png" alt="图6: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比"/>
-<figcaption>图6: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比</figcaption>
+<img src="/assets/MobileNet_6.png" alt="图6: 使用ReLU激活函数的通道数和信息损耗之间的关系"/>
+<figcaption>图6: 使用ReLU激活函数的通道数和信息损耗之间的关系</figcaption>
 </figure>
 
 根据对上面提到的信息损耗问题分析，我们可以有两种解决方案：
@@ -232,19 +234,31 @@ $$
 
 图7便是结合了残差网络和线性激活函数的MobileNet v2的一个block，最右侧是v1。
 
-![](/assets/MobileNet_7.png)
+<figure>
+<img src="/assets/MobileNet_7.png" alt="图7: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比"/>
+<figcaption>图7: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比</figcaption>
+</figure>
+
 
 ### 2.2 Inverted Residual
 
 当激活函数使用ReLU时，我们可以通过增加通道数来减少信息的损耗，使用参数$$t$$来控制，该层的通道数是输入Feature Map的$$t$$倍。传统的残差块的$$t$$一般取小于1的小数，常见的取值为0.1，而在v2中这个值一般是介于$$5-10$$之间的数，在作者的实验中，$$t=6$$。考虑到残差网络和v2的$$t$$的不同取值范围，他们分别形成了锥子形（两头小中间大）和沙漏形（两头大中间小）的结构，如图8所示，其中斜线Feature Map表示使用的是线性激活函数。这也就是为什么这种形式的卷积block被叫做Interved Residual block，因为他把short-cut转移到了bottleneck层。
 
-![](/assets/MobileNet_8.png)
+<figure>
+<img src="/assets/MobileNet_8.png" alt="图8: 残差网络的的Residual block和v2的Inverted Residual block卷积对比"/>
+<figcaption>图8: 残差网络的的Residual block和v2的Inverted Residual block卷积对比</figcaption>
+</figure>
+
 
 ### 2.3 MobileNet v2
 
 综上我们可以得到MobileNet v2的一个block的详细参数，如图9所示，其中$$s$$代表步长：
 
-![](/assets/MobileNet_9.png)
+<figure>
+<img src="/assets/MobileNet_9.png" alt="图9: MobileNetv2 block的超参数"/>
+<figcaption>图9: MobileNetv2 block的超参数</figcaption>
+</figure>
+
 
 MobileNet v2的实现可以通过堆叠bottleneck的形式实现，如下面代码片段
 
@@ -269,7 +283,11 @@ def MobileNetV2_relu(input_shape, k):
 
 在这篇文章中，我们介绍了两个版本的MobileNet，它们和传统卷积的对比如图10。
 
-![](/assets/MobileNet_10.png)
+<figure>
+<img src="/assets/MobileNet_10.png" alt="图10: 普通卷积(a) vs MobileNet v1(b) vs MobileNet v2(c, d)"/>
+<figcaption>图10: 普通卷积(a) vs MobileNet v1(b) vs MobileNet v2(c, d)</figcaption>
+</figure>
+
 
 如图\(b\)所示，MobileNet v1最主要的贡献是使用了Depthwise Separable Convolution，它又可以拆分成Depthwise卷积和Pointwise卷积。MobileNet v2主要是将残差网络和Depthwise Separable卷积进行了结合。通过分析单通道的流形特征对残差块进行了改进，包括对中间层的扩展\(d\)以及bottleneck层的线性激活\(c\)。Depthwise Separable Convolution的分离式设计直接将模型压缩了8倍左右，但是精度并没有损失非常严重，这一点还是非常震撼的。
 
