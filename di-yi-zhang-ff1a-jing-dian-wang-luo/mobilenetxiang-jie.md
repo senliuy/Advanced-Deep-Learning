@@ -35,8 +35,6 @@ $$
 <figcaption>图1：普通卷积的Feature Map之间的卷积核情况</figcaption>
 </figure>
 
-
-
 v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参数数量和计算代价过于高昂的问题。Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convolution。
 
 ### 1.2 Depthwise卷积
@@ -47,8 +45,6 @@ v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参�
 <img src="/assets/MobileNet_2.png" alt="图2：Depthwise卷积示意图（3个通道）"/>
 <figcaption>图2：Depthwise卷积示意图（3个通道）</figcaption>
 </figure>
-
-
 
 从图2和图1的对比中我们可以看出，因为放弃了卷积时的跨通道。Depthwise卷积的参数数量为$$D_K \times D_K \times M$$。Depthwise Convolution的数学表达式为：
 
@@ -89,7 +85,10 @@ $$
 
 Pointwise的可视化如图3：
 
-![](/assets/MobileNet_3.png)
+<figure>
+<img src="/assets/MobileNet_3.png" alt="图3: Pointwise卷积示意图"/>
+<figcaption>图3：Pointwise卷积示意图 </figcaption>
+</figure>
 
 ### 1.4 Depthwise Separable卷积
 
@@ -165,13 +164,23 @@ def Simple_MobileNetV1(input_shape, k):
 
 通过`Summary()`函数我们可以得到每个网络的每层的参数数量，见图4，左侧是普通卷积，右侧是MobileNet v1。
 
-![](/assets/MobileNet_4.png)
+<figure>
+<img src="/assets/MobileNet_4.png" alt="图4: 普通卷积和MobileNet v1网络结构参数汇总"/>
+<figcaption>图4: 普通卷积和MobileNet v1网络结构参数汇总 </figcaption>
+</figure>
+
+
 
 普通卷积的参数总量为259,082，去除未改造的部分剩余的参数数量为239,936。v1的参数总量为48,330去掉未改造的部分剩余参数29,184个。两个的比值为$$\frac{239,936}{29,184} \approx 8.22$$，符合我们之前的推算。
 
 接着我们在MNIST上跑一下实验，我们在CPU（Intel i7）和GPU（Nvidia 1080Ti）两个环境下运行一下，得到的收敛曲线如图5。在都训练10个epoch的情况下，我们发现MobileNet v1的结果要略差于传统卷积，这点完全可以理解，毕竟MobileNet v1的参数更少。
 
-![](/assets/MobileNet_5.png)
+<figure>
+<img src="/assets/MobileNet_5.png" alt="图5: 使用ReLU激活函数的通道数和信息损耗之间的关系"/>
+<figcaption>图5: 使用ReLU激活函数的通道数和信息损耗之间的关系</figcaption>
+</figure>
+
+
 
 对比单个Epcoh的训练时间，我们发现了一个奇怪的现象，在CPU上，v1的训练时间约70秒，传统卷积训练时间为140秒，这和我们的直觉是相同的。但是在GPU环境下，传统卷积和v1的训练时间分别为40秒和50秒，v1在GPU上反而更慢了，这是什么原因呢？
 
