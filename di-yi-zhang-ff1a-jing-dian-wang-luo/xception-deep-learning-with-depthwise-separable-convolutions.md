@@ -19,6 +19,7 @@ $$
 m\times k_1 + 3\times 3\times 3 \times \frac{k_1}{3} \times \frac{k_2}{3} = m\times k_1+ 3\times k_1 \times k_2
 $$
 
+
 ![](/assets/Xception_2.png)
 
 对比相同通道数，但是没有分组的普通卷积，普通卷积的参数数量为：
@@ -40,11 +41,14 @@ $$
 m\times k_1 + k_1\times 3\times 3
 $$
 
+
 更多时候我们希望两组卷积的输出Feature Map相同，这里我们将Inception的$$1\times1$$卷积的通道数设为$$k_2$$，即参数数量为
+
 
 $$
 m\times k_2 + k_2\times 3\times 3
 $$
+
 
 它的参数数量是普通卷积的$$\frac{1}{k_1}$$，我们把这种形式的Inception叫做Extreme Inception，如图3所示。
 
@@ -52,13 +56,22 @@ $$
 
 在搭建GoogLeNet网络时，我们一般采用堆叠Inception的形式，同理在搭建由Extreme Inception构成的网络的时候也是采用堆叠的方式，论文中将这种形式的网络结构叫做Xception。
 
-如果你看过深度可分离卷积的话你就会发现它和Xception几乎是等价的，唯一的区别就是先计算Pointwise卷积核先计算Depthwise的卷积的区别。
+如果你看过深度可分离卷积的话你就会发现它和Xception几乎是等价的，区别之一就是先计算Pointwise卷积和先计算Depthwise的卷积的区别。
 
-在[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[6]中，我们指出bottleneck的最后一层$$1\times1$$卷积核为线性激活时能够更有助于减少信息损耗，这也就是Xception和深度可分离卷积（准确说是MobileNet v2）的第二个不同点。
+在[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)\[6\]中，我们指出bottleneck的最后一层$$1\times1$$卷积核为线性激活时能够更有助于减少信息损耗，这也就是Xception和深度可分离卷积（准确说是MobileNet v2）的第二个不同点。
 
+结合残差结构，一个完整的模型见图4，其实现Keras官方已经[开源](https://github.com/keras-team/keras-applications/blob/master/keras_applications/xception.py)。
 
+![](/assets/Xception_4.png)
 
+上图中要注意的几点：
 
+1. Keras的```SeparalbeConv```函数是由$$3\times3$$的depthwise卷积和$$1\times1$$的pointwise卷积组成，因此可用于升维和降维；
+2. 图5中的$$\oplus$$是add操作，即两个Feature Map进行单位加。
+
+## 3. 总结
+
+Xception的结构和MobileNet非常像，两个算法的提出时间近似，不存在谁抄袭谁的问题。他们从不同的角度揭示了深度可分离卷积的强大作用，MobileNet的思路是通过将普通$$3\times3$$卷积拆分的形式来减少参数数量，而Xception是通过对Inception的充分解耦来完成的。
 
 ## Reference
 
@@ -72,5 +85,5 @@ $$
 
 \[5\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
 
-[6] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
+\[6\] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
 
