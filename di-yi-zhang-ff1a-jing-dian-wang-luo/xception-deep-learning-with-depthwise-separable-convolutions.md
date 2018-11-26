@@ -2,9 +2,9 @@
 
 ## 前言
 
-深度可分离卷积（Depthwise Separable Convolution）率先是由 Laurent Sifre载气博士论文《Rigid-Motion Scattering For Image Classification》\[2\]中提出。经典的[MobileNet]() \[3\]系列算法便是采用深度可分离卷积作为其核心结构。
+深度可分离卷积（Depthwise Separable Convolution）率先是由 Laurent Sifre载气博士论文《Rigid-Motion Scattering For Image Classification》\[2\]中提出。经典的[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html) \[3\]系列算法便是采用深度可分离卷积作为其核心结构。
 
-这篇文章主要从[Inception]() \[4\]的角度出发，探讨了Inception和深度可分离卷积的关系，从一个全新的角度解释了深度可分离卷积。再结合stoa的[残差网络]()\[5\]，一个新的架构Xception应运而生。Xception取义自Extreme Inception，即Xception是一种极端的Inception，下面我们来看看它是怎样的一种极端法。
+这篇文章主要从[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html) \[4\]的角度出发，探讨了Inception和深度可分离卷积的关系，从一个全新的角度解释了深度可分离卷积。再结合stoa的[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)\[5\]，一个新的架构Xception应运而生。Xception取义自Extreme Inception，即Xception是一种极端的Inception，下面我们来看看它是怎样的一种极端法。
 
 ## 1. Inception回顾
 
@@ -18,6 +18,7 @@ Inception的核心思想是将channel分成若干个不同感受野大小的通�
 $$
 m\times k_1 + 3\times 3\times 3 \times \frac{k_1}{3} \times \frac{k_2}{3} = m\times k_1+ 3\times k_1 \times k_2
 $$
+
 ![](/assets/Xception_2.png)
 
 对比相同通道数，但是没有分组的普通卷积，普通卷积的参数数量为：
@@ -39,12 +40,25 @@ $$
 m\times k_1 + k_1\times 3\times 3
 $$
 
+更多时候我们希望两组卷积的输出Feature Map相同，这里我们将Inception的$$1\times1$$卷积的通道数设为$$k_2$$，即参数数量为
 
-它的参数数量是普通卷积的$$\frac{1}{k_2}$$，论文中将这种极端（Extreme）的Inception命名为Xception，如图3所示。
+$$
+m\times k_2 + k_2\times 3\times 3
+$$
+
+它的参数数量是普通卷积的$$\frac{1}{k_1}$$，我们把这种形式的Inception叫做Extreme Inception，如图3所示。
 
 ![](/assets/Xception_3.png)
 
-在搭建GoogLeNet网络时，我们一般采用堆叠Inception的形式，
+在搭建GoogLeNet网络时，我们一般采用堆叠Inception的形式，同理在搭建由Extreme Inception构成的网络的时候也是采用堆叠的方式，论文中将这种形式的网络结构叫做Xception。
+
+如果你看过深度可分离卷积的话你就会发现它和Xception几乎是等价的，唯一的区别就是先计算Pointwise卷积核先计算Depthwise的卷积的区别。
+
+在[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[6]中，我们指出bottleneck的最后一层$$1\times1$$卷积核为线性激活时能够更有助于减少信息损耗，这也就是Xception和深度可分离卷积（准确说是MobileNet v2）的第二个不同点。
+
+
+
+
 
 ## Reference
 
@@ -57,4 +71,6 @@ $$
 \[4\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
 \[5\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
+
+[6] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
 
