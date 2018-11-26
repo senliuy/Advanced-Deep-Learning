@@ -1,5 +1,7 @@
 # Xception: Deep Learning with Depthwise Separable Convolutions
 
+tags: Inception, Xception
+
 ## 前言
 
 深度可分离卷积（Depthwise Separable Convolution）率先是由 Laurent Sifre载气博士论文《Rigid-Motion Scattering For Image Classification》\[2\]中提出。经典的[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html) \[3\]系列算法便是采用深度可分离卷积作为其核心结构。
