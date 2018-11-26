@@ -12,7 +12,10 @@ tags: Inception, Xception
 
 Inception的核心思想是将channel分成若干个不同感受野大小的通道，除了能获得不同的感受野，Inception还能大幅的降低参数数量。我们看图1中一个简单版本的Inception模型
 
-![](/assets/Xception_1.png)
+<figure>
+<img src="/assets/Xception_1.png" alt="图1：简单的Inception"/>
+<figcaption>图1：简单的Inception</figcaption>
+</figure>
 
 对于一个输入的Feature Map，首先通过三组$$1\times1$$卷积得到三组Feature Map，它和先使用一组$$1\times1$$卷积得到Feature Map，再将这组Feature Map分成三组是完全等价的（图2）。假设图1中$$1\times1$$卷积核的个数都是$$k_1$$，$$3\times3$$的卷积核的个数都是$$k_2$$，输入Feature Map的通道数为$$m$$，那么这个简单版本的参数个数为
 
@@ -22,7 +25,10 @@ m\times k_1 + 3\times 3\times 3 \times \frac{k_1}{3} \times \frac{k_2}{3} = m\ti
 $$
 
 
-![](/assets/Xception_2.png)
+<figure>
+<img src="/assets/Xception_2.png" alt="图2：简单Inception的等价形式"/>
+<figcaption>图2：简单Inception的等价形式</figcaption>
+</figure>
 
 对比相同通道数，但是没有分组的普通卷积，普通卷积的参数数量为：
 
@@ -54,7 +60,12 @@ $$
 
 它的参数数量是普通卷积的$$\frac{1}{k_1}$$，我们把这种形式的Inception叫做Extreme Inception，如图3所示。
 
-![](/assets/Xception_3.png)
+<figure>
+<img src="/assets/Xception_3.png" alt="图3：简单Inception的等价形式"/>
+<figcaption>图3：Extreme Inception</figcaption>
+</figure>
+
+
 
 在搭建GoogLeNet网络时，我们一般采用堆叠Inception的形式，同理在搭建由Extreme Inception构成的网络的时候也是采用堆叠的方式，论文中将这种形式的网络结构叫做Xception。
 
@@ -64,7 +75,11 @@ $$
 
 结合残差结构，一个完整的模型见图4，其实现Keras官方已经[开源](https://github.com/keras-team/keras-applications/blob/master/keras_applications/xception.py)。
 
-![](/assets/Xception_4.png)
+<figure>
+<img src="/assets/Xception_4.png" alt="图4：Xception"/>
+<figcaption>图4：Xception</figcaption>
+</figure>
+
 
 上图中要注意的几点：
 
