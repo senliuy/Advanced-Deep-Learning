@@ -10,7 +10,7 @@ tags: ResNext, ResNet, Inception
 
 ### 1.1 从全连接网络讲起
 
-
+给定一个$$D$$维的输入数据$$\mathbf{x} = [x_1, x_2, ..., x_d]$$，其
 
 ## Reference
 
