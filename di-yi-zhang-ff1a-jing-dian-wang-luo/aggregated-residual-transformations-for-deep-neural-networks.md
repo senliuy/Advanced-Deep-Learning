@@ -28,9 +28,20 @@ $$
 2. Transform：每个特征经过一个线性变换；
 3. Merge：通过单位加合成最后的输出。
 
-### 1.2 Inception
+### 1.2 简化Inception
 
 Inception是一个非常明显的“split-transform-merge”结构，作者认为Inception不同分支的不同拓扑结构的特征有非常刻意的人工雕琢的痕迹，而往往调整Inception的内部结构对应着大量的超参数，这些超参数调整起来是非常困难的。
+
+所以作者的思想是每个结构使用相同的拓扑结构，那么这时候的Inception（这里简称简化Inception）表示为
+
+$$
+\mathcal{F} = \sum_{i=1}^C \mathcal{T}_i(\mathbf{x})
+$$
+
+其中$$C$$是简Inception的基数(Cardinality)，$$\mathcal{T}_i$$是任意的变换，例如一系列的卷积操作等。图2便是一个简化Inception，其$$\mathcal{T}$$是由连续的卷积组成（$$1\times1$$->$$3\times3$$->$$1\times1$$）。
+
+### 1.3 ResNeXt
+
 
 ## Reference
 
