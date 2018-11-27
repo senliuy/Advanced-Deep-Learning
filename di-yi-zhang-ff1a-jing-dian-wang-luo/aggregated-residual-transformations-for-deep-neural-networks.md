@@ -28,7 +28,9 @@ $$
 2. Transform：每个特征经过一个线性变换；
 3. Merge：通过单位加合成最后的输出。
 
+### 1.2 Inception
 
+Inception是一个非常明显的“split-transform-merge”结构，作者认为Inception不同分支的不同拓扑结构的特征有非常刻意的人工雕琢的痕迹，而往往调整Inception的内部结构对应着大量的超参数，这些超参数调整起来是非常困难的。
 
 ## Reference
 
