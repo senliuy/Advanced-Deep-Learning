@@ -10,7 +10,12 @@ tags: ResNext, ResNet, Inception
 
 ### 1.1 从全连接网络讲起
 
-给定一个$$D$$维的输入数据$$\mathbf{x} = [x_1, x_2, ..., x_d]$$，其
+给定一个$$D$$维的输入数据$$\mathbf{x} = [x_1, x_2, ..., x_d]$$，其输入权值为我$$\mathbf{w} = [w_1, w_2, ..., w_n]$$，一个没有偏置的线性激活神经元为：
+
+$$
+\sum_{i=1}^D w_i x_i
+$$
+
 
 ## Reference
 
