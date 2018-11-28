@@ -105,6 +105,8 @@ ResNeXt提出了一种介于普通卷积核深度可分离卷积的这种策略�
 
 从上面的分析中我们可以看书ResNeXt的结构非常简单，但是其在ImageNet上取得了由于相同框架的残差网络，也算是Inception直接助攻了一把吧。
 
+ResNeXt确实比Inception V4的超参数更少，但是他直接废除了Inception的囊括不同感受野的特性仿佛不是很合理，在更多的环境中我们发现Inception V4的效果是优于ResNeXt的。
+
 
 ## Reference
 
