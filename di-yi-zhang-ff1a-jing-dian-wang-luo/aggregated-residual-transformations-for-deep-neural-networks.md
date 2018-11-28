@@ -61,18 +61,19 @@ $$
 到这里我们发现ResNeXt和Inception v4是非常像的。不同之处有两点：
 
 1. ResNeXt的分支的拓扑结构是相同的，Inception V4需要人工设计；
-2. ResNeXt是先进行$$1\times1$$卷积然后执行单位加，Inception V4是先拼接再执行$$1\times1$$卷积。
+2. ResNeXt是先进行$$1\times1$$卷积然后执行单位加，Inception V4是先拼接再执行$$1\times1$$卷积，如图4所示。
+
+![](/assets/ResNeXt_4.png)
 
 ### 1.4 组卷积
 
-组卷积的雏形更早要追溯到2012年深度学习鼻祖文章AlexNet [6]（图5）。受限于当时硬件的限制，作者不得不将卷积操作拆分到两台GPU上运行，这两台GPU的参数是不共享的。
+组卷积的雏形更早要追溯到2012年深度学习鼻祖文章AlexNet \[6\]（图5）。受限于当时硬件的限制，作者不得不将卷积操作拆分到两台GPU上运行，这两台GPU的参数是不共享的。
 
 ![](/assets/AlexNet_3.png)
 
 组卷积是介于普通卷积核深度可分离卷积的一种折中方案，不是彻底的将每个channel都要单独赋予一个独立的卷积核也不是整个Feature Map使用同一个卷积核。
 
 组卷积还有
-
 
 ## Reference
 
@@ -86,7 +87,5 @@ $$
 
 \[5\] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
 
-[6] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
-
-
+\[6\] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
 
