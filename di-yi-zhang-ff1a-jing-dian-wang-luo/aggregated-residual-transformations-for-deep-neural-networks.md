@@ -20,7 +20,11 @@ $$
 
 它的结构如图1所示。
 
-![](/assets/ResNeXt_1.png)
+<figure>
+<img src="/assets/ResNeXt_1.png" alt="图1：全连接的split-transform-merge结构"/>
+<figcaption>图1：全连接的split-transform-merge结构</figcaption>
+</figure>
+
 
 这是一个最简单的“split-transform-merge”结构，具体的讲图1可以拆分成3步：
 
@@ -42,7 +46,11 @@ $$
 
 其中$$C$$是简Inception的基数\(Cardinality\)，$$\mathcal{T}_i$$是任意的变换，例如一系列的卷积操作等。图2便是一个简化Inception，其$$\mathcal{T}$$是由连续的卷积组成（$$1\times1$$-&gt;$$3\times3$$-&gt;$$1\times1$$）。
 
-![](/assets/ResNeXt_2.png)
+<figure>
+<img src="/assets/ResNeXt_2.png" alt="图2：简单Inception的split-transform-merge结构"/>
+<figcaption>图2：简单Inception的split-transform-merge结构</figcaption>
+</figure>
+
 
 ### 1.3 ResNeXt
 
@@ -56,26 +64,39 @@ $$
 
 如图3所示：
 
-![](/assets/ResNeXt_3.png)
+<figure>
+<img src="/assets/ResNeXt_3.png" alt="图3：ResNeXt结构"/>
+<figcaption>图3：ResNeXt结构</figcaption>
+</figure>
+
 
 到这里我们发现ResNeXt和Inception v4是非常像的。不同之处有两点：
 
 1. ResNeXt的分支的拓扑结构是相同的，Inception V4需要人工设计；
 2. ResNeXt是先进行$$1\times1$$卷积然后执行单位加，Inception V4是先拼接再执行$$1\times1$$卷积，如图4所示。
 
-![](/assets/ResNeXt_4.png)
+<figure>
+<img src="/assets/ResNeXt_4.png" alt="图4：Inception V4拼接在前的结构"/>
+<figcaption>图4：Inception V4拼接在前的结构</figcaption>
+</figure>
 
 ### 1.4 分组卷积
 
 分组卷积的雏形更早要追溯到2012年深度学习鼻祖文章AlexNet \[6\]（图5）。受限于当时硬件的限制，作者不得不将卷积操作拆分到两台GPU上运行，这两台GPU的参数是不共享的。
 
-![](/assets/AlexNet_3.png)
+<figure>
+<img src="/assets/AlexNet_3.png" alt="图5：AlexNet"/>
+<figcaption>图5：AlexNet</figcaption>
+</figure>
 
 分组卷积是介于普通卷积核深度可分离卷积的一种折中方案，不是彻底的将每个channel都要单独赋予一个独立的卷积核也不是整个Feature Map使用同一个卷积核。
 
-分组卷积还一种变形是将开始的$$1\times1$$卷积也合并到一起，如图6。
+除了Inception v4，分组卷积的第三种变形是将开始的$$1\times1$$卷积也合并到一起，如图6。
 
-![](/assets/ResNeXt_6.png)
+<figure>
+<img src="/assets/ResNeXt_6.png" alt="图6：分组卷积的第三种形式"/>
+<figcaption>图6：分组卷积的第三种形式</figcaption>
+</figure>
 
 
 ## 总结
