@@ -8,6 +8,12 @@ tags: ShuffNet v1, ShuffleNet v2
 
 在ShuffleNet v2的文章中作者指出现在普遍采用的FLOPs评估模型性能是非常不合理的，因为一批样本的训练时间除了看FLOPs，还有很多过程需要消耗时间，例如文件IO，内存读取，GPU执行效率等等。作者从内存消耗成本，GPU并行性两个方向分析了模型可能带来的非FLOPs的行动损耗，进而设计了更加高效的ShuffleNet v2。ShuffleNet v2的架构和[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)[4]有异曲同工之妙，而且其速度和精度都要优于DenseNet。
 
+## 1. ShuffleNet v1
+
+### 1.1 Channel Shuffle
+
+通道洗牌是介于整个通道的Pointwise卷积和组内Pointwise卷积的一种折中方案，如图1所示，(c)是传统的策略，即在整个Feature Map上执行$$1\times1$$卷积，折中方案的缺点是
+
 ## Reference
 
 [1] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolu-tional neural network for mobile devices. arXiv preprint arXiv:1707.01083 (2017)
