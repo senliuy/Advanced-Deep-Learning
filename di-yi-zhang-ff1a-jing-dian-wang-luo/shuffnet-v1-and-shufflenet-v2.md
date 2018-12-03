@@ -12,8 +12,24 @@ tags: ShuffNet v1, ShuffleNet v2
 
 ### 1.1 Channel Shuffle
 
-通道洗牌是介于整个通道的Pointwise卷积和组内Pointwise卷积的一种折中方案，如图1所示，(c)是传统的策略，即在整个Feature Map上执行$$1\times1$$卷积，折中方案的缺点是
+通道洗牌是介于整个通道的Pointwise卷积和组内Pointwise卷积的一种折中方案，传统策略是在整个Feature Map上执行$$1\times1$$卷积。假设一个传统的深度可分离卷积由一个$$3\times3$$的Depthwise卷积和一个$$1\times1$$的Pointwise卷积组成。其中输入Feature Map的尺寸为$$h\times w \times c_1$$，输出Feature Map的尺寸为$$h \times w \times c_2$$，$$1\times1$$处的FLOPs为
 
+$$
+B = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2
+$$
+
+一般情况下$$c_1 \cdot c_2$$是远大于9的，也就是说深度可分离卷积的性能瓶颈主要在Pointwise卷积上。
+
+为了解决这个问题，ShuffleNet v1中提出了仅在分组内进行Pointwise卷积，对于一个分成了$$g$$个组的分组卷积，其FLOPs
+为：
+
+$$
+B = 9 \cdot h \cdot w + \frac{h \cdot w \cdot c_1 \cdot c_2}{g}
+$$
+
+从上面式子中我们可以看出组内Pointwise卷积可以非常有效的缓解性能瓶颈问题。然而这个策略的一个非常严重的问题是卷积直接的信息沟通不畅，网络趋近于一个由多个结构类似的网络构成的模型集成，精度大打折扣。
+
+为了解决通道之间的沟通问题，ShuffleNet v1提出了其最核心的操作：通道洗牌（Channel Shuffle）。
 ## Reference
 
 [1] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolu-tional neural network for mobile devices. arXiv preprint arXiv:1707.01083 (2017)
