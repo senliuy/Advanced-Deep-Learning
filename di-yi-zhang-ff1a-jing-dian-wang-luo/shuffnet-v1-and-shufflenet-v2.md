@@ -67,7 +67,6 @@ def channel_shuffle(x, groups):
     >>> x = np.transpose(x, [1,0])
     >>> x = np.reshape(x, (9,))
     '[0 1 2 3 4 5 6 7 8] --> [0 3 6 1 4 7 2 5 8]'
-
     """
     height, width, in_channels = x.shape.as_list()[1:]
     channels_per_group = in_channels // groups
