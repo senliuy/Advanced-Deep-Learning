@@ -53,6 +53,9 @@
 * 2018-11-16：MobileNet v1 and MobileNet v2
 * 2018-11-26：Xception: Deep Learning with Depthwise Separable Convolutions
 * 2018-11-28：Aggregated Residual Transformations for Deep Neural Networks
+* 2018-12-04：ShuffNet v1 and ShuffleNet v2
+
+
 
 
 
