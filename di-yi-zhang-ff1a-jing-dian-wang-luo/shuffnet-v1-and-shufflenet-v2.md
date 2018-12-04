@@ -33,7 +33,10 @@ $$
 
 从上面式子中我们可以看出组内Pointwise卷积可以非常有效的缓解性能瓶颈问题。然而这个策略的一个非常严重的问题是卷积直接的信息沟通不畅，网络趋近于一个由多个结构类似的网络构成的模型集成，精度大打折扣，如图1.\(a\)所示。
 
-![](/assets/ShuffleNet_1.png)
+<figure>
+<img src="/assets/ShuffleNet_1.png" alt="图1：分组Pointwise卷积 vs Channel Shuffle"/>
+<figcaption>图1：分组Pointwise卷积 vs Channel Shuffle</figcaption>
+</figure>
 
 为了解决通道之间的沟通问题，ShuffleNet v1提出了其最核心的操作：通道洗牌（Channel Shuffle）。假设分组Feature Map的尺寸为$$w\times h \times c_1$$，把$$c_1 = g\times n$$，其中$$g$$表示分组的组数。Channel Shuffle的操作细节如下：
 
@@ -44,7 +47,15 @@ $$
 
 shuffle的结果如图1.\(c\)所示，具体操作细节示意图见图2，Keras实现见代码片段1。
 
-![](/assets/ShuffleNet_2.png)
+<figure>
+<img src="/assets/ShuffleNet_2.png" alt="图2：分组Pointwise卷积 vs Channel Shuffle"/>
+<figcaption>图1：分组Pointwise卷积 vs Channel Shuffle</figcaption>
+</figure>
+
+
+
+
+
 
 ```py
 def channel_shuffle(x, groups):
