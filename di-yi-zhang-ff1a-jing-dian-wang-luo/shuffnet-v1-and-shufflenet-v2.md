@@ -16,7 +16,7 @@ tags: ShuffNet v1, ShuffleNet v2
 
 
 $$
-B = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2
+B = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2 \tag1
 $$
 
 
@@ -47,7 +47,6 @@ $$
 ![](/assets/ShuffleNet_2.png)
 
 ```py
-
 def channel_shuffle(x, groups):
     """
     Parameters
