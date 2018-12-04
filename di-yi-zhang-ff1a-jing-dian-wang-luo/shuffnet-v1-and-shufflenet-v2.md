@@ -34,8 +34,8 @@ $$
 从上面式子中我们可以看出组内Pointwise卷积可以非常有效的缓解性能瓶颈问题。然而这个策略的一个非常严重的问题是卷积直接的信息沟通不畅，网络趋近于一个由多个结构类似的网络构成的模型集成，精度大打折扣，如图1.\(a\)所示。
 
 <figure>
-<img src="/assets/ShuffleNet_1.png" alt="图1：分组Pointwise卷积 vs Channel Shuffle"/>
-<figcaption>图1：分组Pointwise卷积 vs Channel Shuffle</figcaption>
+<img src="/assets/ShuffleNet_1.png" alt="图1：分组Pointwise卷积 vs 通道洗牌"/>
+<figcaption>图1：分组Pointwise卷积 vs 通道洗牌</figcaption>
 </figure>
 
 为了解决通道之间的沟通问题，ShuffleNet v1提出了其最核心的操作：通道洗牌（Channel Shuffle）。假设分组Feature Map的尺寸为$$w\times h \times c_1$$，把$$c_1 = g\times n$$，其中$$g$$表示分组的组数。Channel Shuffle的操作细节如下：
@@ -48,13 +48,9 @@ $$
 shuffle的结果如图1.\(c\)所示，具体操作细节示意图见图2，Keras实现见代码片段1。
 
 <figure>
-<img src="/assets/ShuffleNet_2.png" alt="图2：分组Pointwise卷积 vs Channel Shuffle"/>
-<figcaption>图1：分组Pointwise卷积 vs Channel Shuffle</figcaption>
+<img src="/assets/ShuffleNet_2.png" alt="图2：通道洗牌过程详解"/>
+<figcaption>图2：通道洗牌过程详解</figcaption>
 </figure>
-
-
-
-
 
 
 ```py
@@ -87,7 +83,10 @@ def channel_shuffle(x, groups):
 
 图3.\(a\)是一个普通的带有残差结构的深度可分离卷积，例如，[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[5], [Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)[6]。ShuffleNet v1的结构如图3.(b)，3.(c)。其中3.(b)不需要降采样，3.(c)是需要降采样的情况。
 
-![](/assets/ShuffleNet_3.png)
+<figure>
+<img src="/assets/ShuffleNet_3.png" alt="图3：(a) MobileNet, (b) ShuffleNet v1，(c) ShuffleNet v1降采样情况"/>
+<figcaption>图3：(a) MobileNet, (b) ShuffleNet v1，(c) ShuffleNet v1降采样情况</figcaption>
+</figure>
 
 3.(b)和3.(c)已经介绍了ShuffleNet v1全部的实现细节，我们仔细分析之：
 
@@ -156,7 +155,11 @@ ShuffleNet v1完整网络的搭建可以通过堆叠ShuffleNet v1 单元的形�
 
 分支数量比较多的典型网络是Inception，NasNet等。作者证明这个一组准则是设计了一组对照试验：如图4所示，通过控制卷积的通道数来使5组对照试验的FLOPs相同，通过实验我们发现它们按效率从高到低排列依次是 (a) > (b) > (d) > (c) > (e)。
 
-![](/assets/ShuffleNet_4.png)
+<figure>
+<img src="/assets/ShuffleNet_4.png" alt="图4：网络分支对比试验样本示意图"/>
+<figcaption>图4：网络分支对比试验样本示意图</figcaption>
+</figure>
+
 
 造成这种现象的原因是更多的分支需要更多的卷积核加载和同步操作。
 
@@ -164,7 +167,11 @@ ShuffleNet v1完整网络的搭建可以通过堆叠ShuffleNet v1 单元的形�
 
 我们在计算FLOPs时往往只考虑卷积中的乘法操作，但是一些Element-wise操作（例如ReLU激活，偏置，单位加等）往往被忽略掉。作者指出这些Element-wise操作看似数量很少，但它对模型的速度影响非常大。尤其是深度可分离卷积这种MAC/FLOPs比值较高的算法。图5中统计了ShuffleNet v1和MobileNet v2中各个操作在GPU和ARM上的消耗时间占比。
 
-![](/assets/ShuffleNet_5.png)
+<figure>
+<img src="/assets/ShuffleNet_5.png" alt="图5：模型训练时间拆分示意图"/>
+<figcaption>图5：模型训练时间拆分示意图</figcaption>
+</figure>
+
 
 总结一下，在设计高性能网络时，我们要尽可能做到：
 
@@ -181,7 +188,10 @@ ShuffleNet v1完整网络的搭建可以通过堆叠ShuffleNet v1 单元的形�
 
 图6中，(a)，(b)是刚刚介绍的ShuffleNet v1，(c)，(d)是这里要介绍的ShuffleNet v2。
 
-![](/assets/ShuffleNet_6.png)
+<figure>
+<img src="/assets/ShuffleNet_6.png" alt="图6：(a) ShuffleNet v1 ，(b)ShuffleNet v1 降采样， (c)ShuffleNet v2，(d)ShuffleNet v2 降采样"/>
+<figcaption>图6：(a) ShuffleNet v1 ，(b)ShuffleNet v1 降采样， (c)ShuffleNet v2，(d)ShuffleNet v2 降采样</figcaption>
+</figure>
 
 仔细观察(c)，(d)对网络的改进我们发现了以下几点：
 
