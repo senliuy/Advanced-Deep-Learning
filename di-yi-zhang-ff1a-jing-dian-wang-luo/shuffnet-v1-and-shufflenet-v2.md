@@ -90,11 +90,32 @@ def channel_shuffle(x, groups):
 
 5. 如果进行了降采样，为了保证参数数量不骤减，往往需要加倍通道数量。所以在3.(c)中使用的是拼接（Concat）操作用于加倍通道数，而3.(b)中则是一个单位加。
 
-最后基于ShuffleNet v1 单元，我们计算一下ResNet，ResNeXt，ShuffleNet v1的FLOPs，即执行一个单元需要的计算量，假设输入Feature Map的尺寸为$$w\times h\times c$$，bottleneck的通道数为$$m$$。
+最后基于ShuffleNet v1 单元，我们计算一下ResNet，ResNeXt，ShuffleNet v1的FLOPs，即执行一个单元需要的计算量。Channel Shuffle处的操作数非常少，这里可以忽略不计。假设输入Feature Map的尺寸为$$w\times h\times c$$，bottleneck的通道数为$$m$$。
 
-1. ResNet：$$hw(2cm + 9m^2)$$
-2. ResNeXt：$$hw(2cm + \frac{9m^2}{g})$$
-3. ShuffleNet v1：$$hw(2cm/g + 9)$$
+1. ResNet：
+$$
+B_{\text{ResNet}} = hwcm +3\cdot3\cdot hwmm  + hwcm = hw(2cm + 9m^2)
+$$
+2. ResNeXt：
+$$
+B_{\text{ResNeXt}} = hwcm +3\cdot3\cdot hw\frac{m}{g}\frac{m}{g}\cdot g  + hwcm = hw(2cm + \frac{9m^2}{g})
+$$
+3. ShuffleNet v1：
+$$
+B_{\text{ShuffleNet v1}} = hw\frac{c}{g}\frac{m}{g}\cdot g + 3\cdot 3 h w m + hw\frac{c}{g}\frac{m}{g}\cdot g = hw(\frac{2cm}{g} + 9m)
+$$
+
+我们可以非常容易得到它们的FLOPs的关系：
+
+$$
+B_{\text{ResNet}} < B_{\text{ResNeXt}} < B_{\text{ShuffleNet v1}}
+$$
+
+### 1.3 ShuffleNet v1 网络
+
+ShuffleNet v1完整网络的搭建可以通过堆叠ShuffleNet v1 单元的形式构成，这里不再赘述。具体细节请查看已经开源的ShuffleNet v1的源码。
+
+## 2. S
 
 ## Reference
 
