@@ -16,7 +16,7 @@ tags: ShuffNet v1, ShuffleNet v2
 
 
 $$
-B = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2 \tag1
+B = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2 \tag{1}
 $$
 
 
