@@ -16,7 +16,7 @@ tags: ShuffNet v1, ShuffleNet v2
 
 
 $$
-B = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2
+F = 9 \cdot h \cdot w + h \cdot w \cdot c_1 \cdot c_2
 $$
 
 
@@ -27,7 +27,7 @@ $$
 
 
 $$
-B = 9 \cdot h \cdot w + \frac{h \cdot w \cdot c_1 \cdot c_2}{g}
+F = 9 \cdot h \cdot w + \frac{h \cdot w \cdot c_1 \cdot c_2}{g}
 $$
 
 
@@ -94,33 +94,117 @@ def channel_shuffle(x, groups):
 
 1. ResNet：
 $$
-B_{\text{ResNet}} = hwcm +3\cdot3\cdot hwmm  + hwcm = hw(2cm + 9m^2)
+F_{\text{ResNet}} = hwcm +3\cdot3\cdot hwmm  + hwcm = hw(2cm + 9m^2)
 $$
 2. ResNeXt：
 $$
-B_{\text{ResNeXt}} = hwcm +3\cdot3\cdot hw\frac{m}{g}\frac{m}{g}\cdot g  + hwcm = hw(2cm + \frac{9m^2}{g})
+F_{\text{ResNeXt}} = hwcm +3\cdot3\cdot hw\frac{m}{g}\frac{m}{g}\cdot g  + hwcm = hw(2cm + \frac{9m^2}{g})
 $$
 3. ShuffleNet v1：
 $$
-B_{\text{ShuffleNet v1}} = hw\frac{c}{g}\frac{m}{g}\cdot g + 3\cdot 3 h w m + hw\frac{c}{g}\frac{m}{g}\cdot g = hw(\frac{2cm}{g} + 9m)
+F_{\text{ShuffleNet v1}} = hw\frac{c}{g}\frac{m}{g}\cdot g + 3\cdot 3 h w m + hw\frac{c}{g}\frac{m}{g}\cdot g = hw(\frac{2cm}{g} + 9m)
 $$
 
 我们可以非常容易得到它们的FLOPs的关系：
 
 $$
-B_{\text{ResNet}} < B_{\text{ResNeXt}} < B_{\text{ShuffleNet v1}}
+F_{\text{ResNet}} < F_{\text{ResNeXt}} < F_{\text{ShuffleNet v1}}
 $$
 
 ### 1.3 ShuffleNet v1 网络
 
 ShuffleNet v1完整网络的搭建可以通过堆叠ShuffleNet v1 单元的形式构成，这里不再赘述。具体细节请查看已经开源的ShuffleNet v1的源码。
 
-## 2. S
+## 2. ShuffleNet v2
+
+### 2.1 模型性能的评估指标
+
+在上面的文章中我们统一使用FLOPs作为评估一个模型的性能指标，但是在ShuffleNet v2的论文中作者指出这个指标是间接的，因为一个模型实际的运行时间除了要把计算操作算进去之外，还有例如内存读写，GPU并行性，文件IO等也应该考虑进去。最直接的方案还应该回归到最原始的策略，即直接在同一个硬件上观察每个模型的运行时间。如图4所示，在整个模型的计算周期中，FLOPs耗时仅占50%左右，如果我们能优化另外50%，我们就能够在不损失计算量的前提下进一步提高模型的效率。
+
+在ShuffleNet v2中，作者从内存访问代价（Memory Access Cost，MAC）和GPU并行性的方向分析了网络应该怎么设计才能进一步减少运行时间，直接的提高模型的效率。
+
+### 2.2 高效模型的设计准则
+
+** G1）：当输入通道数和输出通道数相同时，MAC最小 **
+
+假设一个卷积操作的输入Feature Map的尺寸是$$w\times h\times c_1$$，输出Feature Map的尺寸为$$w\times h\times c_2$$。卷积操作的FLOPs为$$F = hwc_1 c_2$$。在计算这个卷积的过程中，输入Feature Map占用的内存大小是$$hwc_1$$，输出Feature Map占用的内存是$$hwc_2$$，卷积核占用的内存是$$c_1 c_2$$。总计：
+
+![](/assets/ShuffleNet_f1.png)
+
+当$$c_1 = c_2$$时上式取等号。也就是说当FLOPs确定的时候，$$c_1 = c_2$$时模型的运行效率最高，因为此时的MAC最小。
+
+** G2）：MAC与分组数量$$g$$成正比 **
+
+在分组卷积中，FLOPs为$$F = hw\frac{c_1}{g} \frac{c_2}{g} g = \frac{hwc_1 c_2}{g} $$，其MAC的计算方式为：
+
+![](/assets/ShuffleNet_f2.png)
+
+根据G2，我们在设计网络时$$g$$的值不应过大。
+
+** G3）：网络的分支数量降低并行能力 **
+
+分支数量比较多的典型网络是Inception，NasNet等。作者证明这个一组准则是设计了一组对照试验：如图4所示，通过控制卷积的通道数来使5组对照试验的FLOPs相同，通过实验我们发现它们按效率从高到低排列依次是 (a) > (b) > (d) > (c) > (e)。
+
+![](/assets/ShuffleNet_4.png)
+
+造成这种现象的原因是更多的分支需要更多的卷积核加载和同步操作。
+
+** G4）：Element-wise操作是非常耗时的 **
+
+我们在计算FLOPs时往往只考虑卷积中的乘法操作，但是一些Element-wise操作（例如ReLU激活，偏置，单位加等）往往被忽略掉。作者指出这些Element-wise操作看似数量很少，但它对模型的速度影响非常大。尤其是深度可分离卷积这种MAC/FLOPs比值较高的算法。图5中统计了ShuffleNet v1和MobileNet v2中各个操作在GPU和ARM上的消耗时间占比。
+
+![](/assets/ShuffleNet_5.png)
+
+总结一下，在设计高性能网络时，我们要尽可能做到：
+
+1. G1). 使用输入通道和输出通道相同的卷积操作；
+2. G2). 谨慎使用分组卷积；
+3. G3). 减少网络分支数；
+4. G4). 减少element-wise操作。
+
+例如在ShuffleNet v1中使用的分组卷积是违背G2的，而每个ShuffleNet v1单元使用了bottleneck结构是违背G1的。MobileNet v2中的大量分支是违背G3的，在Depthwise处使用ReLU6激活是违背G4的。
+
+从它的对比实验中我们可以看到虽然ShuffleNet v2要比和它FLOPs数量近似的的模型的速度要快。
+
+### 2.3 ShuffleNet v2结构
+
+图6中，(a)，(b)是刚刚介绍的ShuffleNet v1，(c)，(d)是这里要介绍的ShuffleNet v2。
+
+![](/assets/ShuffleNet_6.png)
+
+仔细观察(c)，(d)对网络的改进我们发现了以下几点：
+
+1. 在(c)中ShuffleNet v2使用了一个通道分割（Channel Split）操作。这个操作非常简单，即将$$c$$个输入Feature分成$$c-c'$$和$$c'$$两组，一般情况下$$c' = \frac{c}{2}$$。这种设计是为了尽量控制分支数，为了满足G3。
+
+2. 在分割之后的两个分支，左侧是一个直接映射，右侧是一个输入通道数和输出通道数均相同的深度可分离卷积，为了满足G1。
+
+3. 在右侧的卷积中，$$1\times1$$卷积并没有使用分组卷积，为了满足G2。
+
+4. 最后在合并的时候均是使用拼接操作，为了满足G4。
+
+5. 在堆叠ShuffleNet v2的时候，通道拼接，通道洗牌和通道分割可以合并成1个element-wise操作，也是为了满足G4。
+
+最后当需要降采样的时候我们通过不进行通道分割的方式达到通道数量的加倍，如图6.(d)，非常简单。
+
+### 2.4 ShuffleNet v2和DenseNet
+
+ShuffleNet v2能够得到非常高的精度是因为它和DenseNet有着思想上非常一致的结构：强壮的特征重用（Feature Reuse）。在DenseNet中，作者大量使用的拼接操作直接将上一层的Feature Map原汁原味的传到下一个乃至下几个模块。从6.(c)中我们也可以看处，左侧的直接映射和DenseNet的特征重用是非常相似的。
+
+不同于DenseNet的整个Feature Map的直接映射，ShuffleNet v2只映射了一半。恰恰是这一点不同，是ShuffleNet v2有了和DenseNet的升级版CondenseNet[8]相同的思想。在CondenseNet中，作者通过可视化DenseNet的特征重用和Feature Map的距离关系发现**距离越近的Feature Map之间的特征重用越重要**。ShuffleNet v2中第$$i$$个和第$$i+j$$个Feature Map的重用特征的数量是$$(\frac{1}{2})^j c$$。也就是距离越远，重用的特征越少。
+
+## 总结
+
+截止本文截止，ShuffleNet算是将轻量级网络推上了新的巅峰，两个版本都有其独到的地方。
+
+ShuffleNet v1中提出的通道洗牌（Channel Shuffle）操作非常具有创新点，其对于解决分组卷积中通道通信困难上非常简单高效。
+
+ShuffleNet v2分析了模型性能更直接的指标：运行时间。根据对运行时间的拆分，通过数学证明或是实验证明或是理论分析等方法提出了设计高效模型的四条准则，并根据这四条准则设计了ShuffleNet v2。ShuffleNet v2中的通道分割也是创新点满满。通过仔细分析通道分割，我们发现了它和DenseNet有异曲同工之妙，在这里轻量模型和高精度模型交汇在了一起。
+
+ShuffleNet v2的证明和实验以及最后网络结构非常精彩，整篇论文读完给人一种畅快淋漓的感觉，建议读者们读完本文后拿出论文通读一遍，你一定会收获很多。
 
 ## Reference
 
-\[1\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolu-  
-tional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
+\[1\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
 
 \[2\] Ma N, Zhang X, Zheng H T, et al. Shufflenet v2: Practical guidelines for efficient cnn architecture design\[J\]. arXiv preprint arXiv:1807.11164, 2018.
 
@@ -133,5 +217,7 @@ tional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017
 [6] Chollet F. Xception: Deep learning with depthwise separable convolutions\[J\]. arXiv preprint, 2017: 1610.02357.
 
 [7] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
+
+[8] Huang G, Liu S, van der Maaten L, et al. CondenseNet: An Efficient DenseNet using Learned Group Convolutions[J]. group, 2017, 3(12): 11.
 
 
