@@ -84,6 +84,14 @@ def channel_shuffle(x, groups):
 
 2. 在第一个$$1\times1$$卷积之后添加一个1.1节介绍的Channel Shuffle操作。
 
+3. 如图3.(c)中需要降采样的情况，左侧shortcut部分使用的是步长为2的$$3\times3$$平均池化，右侧使用的是步长为2的$$3\times3$$的Depthwise卷积。
+
+4. 去掉了$$3\times3$$卷积之后的ReLU激活，目的是为了减少ReLU激活造成的信息损耗，具体原因见[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[7]。
+
+5. 如果进行了降采样，为了保证参数数量不骤减，往往需要加倍通道数量。所以在3.(c)中使用的是拼接（Concat）操作用于加倍通道数，而3.(b)中则是一个单位加。
+
+
+
 ## Reference
 
 \[1\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolu-  
@@ -98,5 +106,7 @@ tional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017
 [5] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
 
 [6] Chollet F. Xception: Deep learning with depthwise separable convolutions\[J\]. arXiv preprint, 2017: 1610.02357.
+
+[7] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
 
 
