@@ -50,22 +50,17 @@ $$
 def channel_shuffle(x, groups):
     """
     Parameters
-    ----------
-    x: Input tensor of with `channels_last` data format
-    groups: int number of groups per channel
-
+        x: Input tensor of with `channels_last` data format
+        groups: int number of groups per channel
     Returns
-    -------
         channel shuffled output tensor
-
     Examples
-    --------
-    Example for a 1D Array with 3 groups
-    >>> d = np.array([0,1,2,3,4,5,6,7,8])
-    >>> x = np.reshape(d, (3,3))
-    >>> x = np.transpose(x, [1,0])
-    >>> x = np.reshape(x, (9,))
-    '[0 1 2 3 4 5 6 7 8] --> [0 3 6 1 4 7 2 5 8]'
+        Example for a 1D Array with 3 groups
+        >>> d = np.array([0,1,2,3,4,5,6,7,8])
+        >>> x = np.reshape(d, (3,3))
+        >>> x = np.transpose(x, [1,0])
+        >>> x = np.reshape(x, (9,))
+        '[0 1 2 3 4 5 6 7 8] --> [0 3 6 1 4 7 2 5 8]'
     """
     height, width, in_channels = x.shape.as_list()[1:]
     channels_per_group = in_channels // groups
