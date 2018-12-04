@@ -35,14 +35,14 @@ $$
 
 ![](/assets/ShuffleNet_1.png)
 
-为了解决通道之间的沟通问题，ShuffleNet v1提出了其最核心的操作：通道洗牌（Channel Shuffle）。假设分组Feature Map的尺寸为$$w\times h \ times c_1$$，把$$c_1 = g\times n$$，其中$$g$$表示分组的组数。Channel Shuffle的操作细节如下：
+为了解决通道之间的沟通问题，ShuffleNet v1提出了其最核心的操作：通道洗牌（Channel Shuffle）。假设分组Feature Map的尺寸为$$w\times h \times c_1$$，把$$c_1 = g\times n$$，其中$$g$$表示分组的组数。Channel Shuffle的操作细节如下：
 
 1. 将Feature Map展开成$$g\times n\times w\times h$$的四维矩阵（为了简单理解，我们把$$w\times h$$降到一维，表示为s）；
 2. 沿着尺寸为$$g\times n\times s$$的矩阵的$$g$$轴和$$n$$轴进行转置；
 3. 将$$g$$轴和$$n$$轴进行平铺后得到洗牌之后的Feature Map；
 4. 进行组内$$1\times1$$卷积。
 
-示意图见图2，Keras实现见代码片段1。
+shuffle的结果如图1.\(c\)所示，具体操作细节示意图见图2，Keras实现见代码片段1。
 
 ![](/assets/ShuffleNet_2.png)
 
@@ -70,6 +70,20 @@ def channel_shuffle(x, groups):
     return x
 ```
 
+从代码中我们也可以看出，channel shuffle的操作是步步可微分的，因此可以嵌入到卷积网络中。
+
+### 1.2 ShuffleNet v1 单元
+
+图3.\(a\)是一个普通的带有残差结构的深度可分离卷积，例如，[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[5], [Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)[6]。ShuffleNet v1的结构如图3.(b)，3.(c)。其中3.(b)不需要降采样，3.(c)是需要降采样的情况。
+
+![](/assets/ShuffleNet_3.png)
+
+3.(b)和3.(c)已经介绍了ShuffleNet v1全部的实现细节，我们仔细分析之：
+
+1. 上下两个红色部分的$$1\times1$$卷积替换为$$1\times1$$的分组卷积，分组$$g$$一般不会很大，论文中的几个值分别是1，2，3，4，8。当$$g=1$$时，ShuffleNet v1退化为Xception。$$g$$的值确保能够被通道数整除，保证reshape操作的有效执行。
+
+2. 在第一个$$1\times1$$卷积之后添加一个1.1节介绍的Channel Shuffle操作。
+
 ## Reference
 
 \[1\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolu-  
@@ -80,4 +94,9 @@ tional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017
 \[3\] Xie S, Girshick R, Dollár P, et al. Aggregated residual transformations for deep neural networks\[C\]//Computer Vision and Pattern Recognition \(CVPR\), 2017 IEEE Conference on. IEEE, 2017: 5987-5995.
 
 \[4\] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
+
+[5] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
+
+[6] Chollet F. Xception: Deep learning with depthwise separable convolutions\[J\]. arXiv preprint, 2017: 1610.02357.
+
 
