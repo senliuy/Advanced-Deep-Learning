@@ -56,7 +56,7 @@ def dense_block(x, depth=5, growth_rate = 3):
 
 ### 1.3 成长率（Growth Rate）
 
-成长率$$k$$是DenseNet的一个超参数，反应的是Dense Block中每个节点的输入数据的增长速度。在Dense Block中，每个节点的输出均是一个$$k$$维的特征向量。假设整个Dense Block的输入数据是$$k_0$$维的，那么第l个节点的输入便是$$k_0 + k\times(l-1)$$。作者通过实验验证，$$k$$一般取一个比较小的值，作者通过实验将$$k$$设置为12。
+成长率$$k$$是DenseNet的一个超参数，反应的是Dense Block中每个节点的输入数据的增长速度。在Dense Block中，每个节点的输出均是一个$$k$$维的特征向量。假设整个Dense Block的输入数据是$$k_0$$维的，那么第$$l$$个节点的输入便是$$k_0 + k\times(l-1)$$。作者通过实验验证，$$k$$一般取一个比较小的值，作者通过实验将$$k$$设置为12。
 
 ### 1.4 Compression
 
