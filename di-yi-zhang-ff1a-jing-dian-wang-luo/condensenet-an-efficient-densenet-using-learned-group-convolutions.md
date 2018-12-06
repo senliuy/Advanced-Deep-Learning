@@ -12,14 +12,17 @@ DenseNet，CondenseNet的训练和测试阶段的示意图如图1。其中的细
 
 ### 1.1 分组卷积的问题
 
-在[ShuffleNet]()\[4\]中我们指出分组卷积存在通道之间的信息沟通不畅以及特征多样性不足的问题。CondenseNet提出的解决策略是在训练的过程中让模型选择更好的分组方式，理论上每个通道的Feature Map是可以和所有Feature Map沟通到的。传统的沟通不畅的分组卷积自然不可能被学习到。图2是普通卷积核分组卷积的示意图。
+在[ShuffleNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/shuffnet-v1-and-shufflenet-v2.html)\[4\]中我们指出分组卷积存在通道之间的信息沟通不畅以及特征多样性不足的问题。CondenseNet提出的解决策略是在训练的过程中让模型选择更好的分组方式，理论上每个通道的Feature Map是可以和所有Feature Map沟通到的。传统的沟通不畅的分组卷积自然不可能被学习到。图2是普通卷积核分组卷积的示意图。
 
 ![](/assets/CondenseNet_2.png)
 
 我们换一个角度来看分组卷积，它也可以别看做普通卷积的稀疏表示，只不过指着稀疏方式是由认为生硬的指定的。这种稀疏连接虽然高效，但是人为的毫无根据的指定那些连接重要，哪些连接需要被删除无疑非常不合理。CondenseNet指出的解决方案是使用训练数据学习卷积网络的稀疏表示，让识别精度决定哪些权值该被保留，这个过程叫做_learning group convolution_，即图1中间红色的'L-Conv'。
 
-### Learned Group Convolution
+### 1.2 自学习分组卷积
 
+如图3所示，自学习分组卷积（Learned Group Convolution）可以分成两个阶段：浓缩阶段和优化阶段。
+
+![](/assets/CondenseNet_3.png)
 
 ## Reference
 
