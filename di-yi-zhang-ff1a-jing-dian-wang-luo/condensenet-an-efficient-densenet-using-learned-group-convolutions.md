@@ -32,7 +32,7 @@ DenseNet，CondenseNet的训练和测试阶段的示意图如图1。其中的细
 
 ![](/assets/CondenseNet_4.png)
 
-图4中是基于CIFAR-10数据集，CondenseNet的压缩率$$C=4$$，所以有3个浓缩阶段。学习率是采用的是_cosine shape learning rate_[5]。每次浓缩之后loss会有个明显的震动，最后一次loss震动的比较剧烈是因为一半的特征被剪枝掉。
+图4中是基于CIFAR-10数据集，CondenseNet的压缩率$$C=4$$，所以有3个浓缩阶段。学习率是采用的是_cosine shape learning rate_\[5\]。每次浓缩之后loss会有个明显的震动，最后一次loss震动的比较剧烈是因为一半的特征被剪枝掉。
 
 ### 1.3 剪枝准则
 
@@ -42,9 +42,11 @@ CondenseNet的浓缩阶段一般发生在$$1\times1$$卷积部分，假设输入
 
 $$j \in (1,R)$$表示第输入Feature Map的索引，$$i \in (1, \frac{O}{G})$$表示组内输出Feature Map的索引。第$$j$$个滤波器关于这个组的重要性可以用权值的l1范数的和来表示：
 
+
 $$
 \sum_{i=1}^{\frac{O}{G}}|\mathbf{F}_{i,j}^g|
 $$
+
 
 我们一般可以认为l1范数和越大，该特征越重要，因为经过分组lasso正则化之后得到的是稀疏的特征，不重要的特征的值往往更接近0，因此可以被剪枝掉。在CondenseNet中我们剪枝掉的是$$\frac{O}{G}\times \frac{F}{C}$$个最小的特征，如图3中浓缩阶段2训练的便是浓缩阶段1剪枝$$\frac{1}{C}$$之后剩下的网络。优化阶段优化的是浓缩到只有原来的尺寸的$$\frac{1}{C}$$的网络。
 
@@ -64,5 +66,5 @@ CondenseNet的剪枝并不是直接将这个特征删除，而是通过掩码的
 
 \[4\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
 
-[5] I. Loshchilov and F. Hutter. SGDR: stochastic gradient descent with restarts. In ICLR, 2017. 4
+\[5\] I. Loshchilov and F. Hutter. SGDR: stochastic gradient descent with restarts. In ICLR, 2017. 4
 
