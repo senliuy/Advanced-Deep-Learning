@@ -32,6 +32,12 @@ CondenseNet用于优化阶段的总Epoch数和浓缩阶段是相同的。也就�
 
 ![](/assets/CondenseNet_4.png)
 
+图4中是基于CIFAR-10数据集，CondenseNet的压缩率$$C=4$$，所以有3个浓缩阶段。学习率是采用的是_cosine shape learning rate_[5]。每次浓缩之后loss会有个明显的震动，最后一次loss震动的比较剧烈是因为一半的特征被剪枝掉。
+
+### 1.3 浓缩准则
+
+
+
 ## Reference
 
 \[1\] Huang G, Liu S, van der Maaten L, et al. CondenseNet: An Efficient DenseNet using Learned Group Convolutions\[J\]. group, 2017, 3\(12\): 11.
@@ -42,5 +48,5 @@ CondenseNet用于优化阶段的总Epoch数和浓缩阶段是相同的。也就�
 
 \[4\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
 
-z
+[5] I. Loshchilov and F. Hutter. SGDR: stochastic gradient descent with restarts. In ICLR, 2017. 4
 
