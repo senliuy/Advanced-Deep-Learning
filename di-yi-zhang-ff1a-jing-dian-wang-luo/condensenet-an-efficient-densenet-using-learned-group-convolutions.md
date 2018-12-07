@@ -26,8 +26,11 @@ DenseNet，CondenseNet的训练和测试阶段的示意图如图1。其中的细
 
 在图3中分组数$$G=3$$。压缩率$$C=3$$，即只保留原来1/3的特征。
 
-浓缩阶段1（图3的最左侧）是普通的卷积网络，在训练该网络时使用了分组lasso正则项，这样学到的特征会呈现结构化稀疏分布，好处是在后面剪枝部分不会过分的影响精度。
+压缩率为$$C$$的CondenseNet会有$$C$$个浓缩阶段，它的第一个浓缩阶段（图3的最左侧）是普通的卷积网络，在训练该网络时使用了分组lasso正则项，这样学到的特征会呈现结构化稀疏分布，好处是在后面剪枝部分不会过分的影响精度。在随后的$$C-1$$个浓缩阶段每次会裁减掉$$\frac{1}{C}$$的特征，也就是经过浓缩阶段后会保留$$\frac{1}{C}$$的特征。
 
+CondenseNet用于优化阶段的总Epoch数和浓缩阶段是相同的。也就是说假设网络的总训练Epoch数是$$M$$，压缩率是$$C$$。它会有$$C-1$$个浓缩阶段，每个阶段的Epoch数均是$$\frac{M}{2(C-1)}$$。以及一个优化阶段，Epoch数为$$\frac{2}{M}$$，损失值，学习率以及Epoch分布情况见图4。
+
+![](/assets/CondenseNet_4.png)
 
 ## Reference
 
@@ -40,3 +43,4 @@ DenseNet，CondenseNet的训练和测试阶段的示意图如图1。其中的细
 \[4\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
 
 z
+
