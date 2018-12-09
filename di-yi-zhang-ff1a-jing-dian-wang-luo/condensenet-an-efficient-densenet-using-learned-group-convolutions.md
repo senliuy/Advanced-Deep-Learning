@@ -60,6 +60,12 @@ CondenseNet的剪枝并不是直接将这个特征删除，而是通过掩码的
 
 ![](/assets/CondenseNet_5.png)
 
+### 1.5 架构设计
+
+在CondenseNet中作者对DenseNet做了两点改进：
+
+1. Growth rate的指数级增长；
+2. 全密集连接。
 
 
 ## Reference
