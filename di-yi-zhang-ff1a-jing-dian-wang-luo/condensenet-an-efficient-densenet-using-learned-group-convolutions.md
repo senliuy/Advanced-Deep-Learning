@@ -56,7 +56,7 @@ CondenseNet的剪枝并不是直接将这个特征删除，而是通过掩码的
 
 经过训练过程的剪枝之后我们得到了一个系数结构，如图3右侧所示。目前这种形式是不能用传统的分组卷积的形式计算的，如果使用训练过程中的掩码的形式则剪枝的意义就不复存在。
 
-为了解决这个问题，在测试的时候CondenseNet引入了索引层（Index Layer），索引层的作用是将输入Feature Map重新整理以方便分组卷积的高效运行。举例：图3中，组1使用的输入Feature Maps是\(3,7,9,12\)，组2使用的Feature Maps是(1,5,10,12)，组3使用的Feature Maps是(5,6,8,11)，索引层的作用就是将输入Feature Map排列成(3,7,9,12,1,5,10,12,5,6,8,11)的形式，之后便可以直接连接标准的分组卷积，如图5所示。
+为了解决这个问题，在测试的时候CondenseNet引入了索引层（Index Layer），索引层的作用是将输入Feature Map重新整理以方便分组卷积的高效运行。举例：图3中，组1使用的输入Feature Maps是\(3,7,9,12\)，组2使用的Feature Maps是\(1,5,10,12\)，组3使用的Feature Maps是\(5,6,8,11\)，索引层的作用就是将输入Feature Map排列成\(3,7,9,12,1,5,10,12,5,6,8,11\)的形式，之后便可以直接连接标准的分组卷积，如图5所示。
 
 ![](/assets/CondenseNet_5.png)
 
@@ -68,10 +68,13 @@ CondenseNet的剪枝并不是直接将这个特征删除，而是通过掩码的
 
 通过可视化DenseNet中特征重用的热力图，作者发现临近的Feature Map之间的特征重用更为有效，因此作者想通过增强临近节点之间的连接来增强模型的表现能力。为了实现这个动机，CondenseNet使用了指数级增长的增长率。按照上段给出的定义，第$$i$$层的通道数是$$k = 2^{i-1}k_0$$。也就是说越接近block输出层的地方保留的Feature Map越多，
 
-**全密集连接**：在DenseNet中，block之间是没有shortcut的，CondenseNet在block之间也增加了shortcut，用以实现更强的特征重用，如图6所示。
+**全密集连接**：在DenseNet中，block之间是没有shortcut的，CondenseNet在block之间也增加了shortcut，结合平均池化用于实现不同尺寸的Feature Map之间的拼接用以实现更强的特征重用，如图6所示。
 
+![](/assets/CondenseNet_6.png)
 
+## 2. 总结
 
+文章最大的创新点是通过模型训练得到目前轻量级网络中常见的分组卷积的分组形式，比ShuffleNet解决分组卷积通信问题的方法更加有效，并结合Index层实现了测试时候的高效运行。最后，结合对DenseNet的dense block的改进完成了CondenseNet的完整结构。
 
 ## Reference
 
