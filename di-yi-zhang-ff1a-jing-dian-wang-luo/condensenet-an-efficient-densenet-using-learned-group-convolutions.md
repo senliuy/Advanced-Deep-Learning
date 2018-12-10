@@ -64,8 +64,13 @@ CondenseNet的剪枝并不是直接将这个特征删除，而是通过掩码的
 
 在CondenseNet中作者对DenseNet做了两点改进：
 
-1. Growth rate的指数级增长；
-2. 全密集连接。
+**Growth rate的指数级增长**：增长率（Growth Rate）$$k$$是在[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)中提出的一个超参数，反应的是每个Dense Block中Feature Map通道数的增长速度，例如一个block中第1层的Feature Map的通道数是$$k_0$$，那么第$$i$$层的通道数即为$$k_0 + k\cdot(i-1)$$。
+
+通过可视化DenseNet中特征重用的热力图，作者发现临近的Feature Map之间的特征重用更为有效，因此作者想通过增强临近节点之间的连接来增强模型的表现能力。为了实现这个动机，CondenseNet使用了指数级增长的增长率。按照上段给出的定义，第$$i$$层的通道数是$$k = 2^{i-1}k_0$$。也就是说越接近block输出层的地方保留的Feature Map越多，
+
+**全密集连接**：在DenseNet中，block之间是没有shortcut的，CondenseNet在block之间也增加了shortcut，用以实现更强的特征重用，如图6所示。
+
+
 
 
 ## Reference
