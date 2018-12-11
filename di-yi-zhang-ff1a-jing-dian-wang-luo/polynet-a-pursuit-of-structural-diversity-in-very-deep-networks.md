@@ -119,7 +119,7 @@ $$
 <figcaption>图7：随机路径。（左）：I+F+GF+HGF to I+GF；（右）I+F+G+H to I+G+H</figcaption>
 </figure>
 
-**加权路径**：简单版本的多项式结构容易导致模型不稳定，Very Deep PolyNet提出的策略是为Inception部分乘以权值$$\beta$$，例如_2-way_的表达式将由$$I+F+G$$变成$$I+\beta F+\beta G$$，论文给出的\beta的参考值是0.3。
+**加权路径**：简单版本的多项式结构容易导致模型不稳定，Very Deep PolyNet提出的策略是为Inception部分乘以权值$$\beta$$，例如_2-way_的表达式将由$$I+F+G$$变成$$I+\beta F+\beta G$$，论文给出的$$\beta$$的参考值是0.3。
 
 ## 2. 总结
 
