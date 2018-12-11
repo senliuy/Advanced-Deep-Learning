@@ -1,6 +1,5 @@
 # Summary
 * [前言](README.md)
-
 * [第一章：经典网络](di-yi-zhang-ff1a-jing-dian-wang-luo.md)
   * [ImageNet Classification with Deep Convolutional Neural Network](di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.md)
   * [Very Deep Convolutional Networks for Large-Scale Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.md)
