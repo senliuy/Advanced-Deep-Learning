@@ -96,6 +96,14 @@ $$
 
 **加权路径**：简单版本的多项式结构容易导致模型不稳定，Very Deep PolyNet提出的策略是为Inception部分乘以权值$$\beta$$，例如_2-way_的表达式将由$$I+F+G$$变成$$I+\beta F+\beta G$$，论文给出的\beta的参考值是0.3。
 
+## 2. 总结
+
+PolyNet从多项式的角度提出了更多由Inception和残差块组合而成的网络结构，模型并没有创新性。最大的优点在于从多项式的角度出发，并且我们从这个角度发现了PolyNet和DenseNet有异曲同工之妙。
+
+论文中最优结构的选择是通过实验得出的，如果能结合数学推导得出前因后果本文将上升到另一个水平。结合上面的Block，作者提出了混合模型Very Deep PolyNet并在ImageNet取得了目前的效果。
+
+最后训练的时候使用的初始化策略和基于集成思想的随机路径反而非常有实用价值。
+
 ## Reference
 
 \[1\] Zhang X, Li Z, Loy C C, et al. Polynet: A pursuit of structural diversity in very deep networks\[C\]//Computer Vision and Pattern Recognition \(CVPR\), 2017 IEEE Conference on. IEEE, 2017: 3900-3908.
