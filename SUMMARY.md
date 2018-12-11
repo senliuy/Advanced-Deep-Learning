@@ -8,7 +8,6 @@
   * [Deep Residual Learning for Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.md)
   * [PolyNet: A Pursuit of Structural Diversity in Very Deep Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/polynet-a-pursuit-of-structural-diversity-in-very-deep-networks.md)
   * [Squeeze-and-Excitation Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.md)
-  * [PolyNet: A Pursuit of Structural Diversity in Very Deep Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/polynet-a-pursuit-of-structural-diversity-in-very-deep-networks.md)
   * [Densely Connected Convolutional Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.md)
   * [SQUEEZENET: ALEXNET-LEVEL ACCURACY WITH 50X FEWER PARAMETERS AND &lt;0.5MB MODEL SIZE](di-yi-zhang-ff1a-jing-dian-wang-luo/squeezenet-alexnet-level-accuracy-with-50x-fewer-parameters-and-05mb-model-size.md)
   * [MobileNet v1 and MobileNet v2](di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.md)
