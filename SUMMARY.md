@@ -14,7 +14,6 @@
   * [MobileNet v1 and MobileNet v2](di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.md)
   * [Xception: Deep Learning with Depthwise Separable Convolutions](di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.md)
   * [Aggregated Residual Transformations for Deep Neural Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/aggregated-residual-transformations-for-deep-neural-networks.md)
-  * [PolyNet: A Pursuit of Structural Diversity in Very Deep Networks](di-yi-zhang-ff1a-jing-dian-wang-luo/polynet-a-pursuit-of-structural-diversity-in-very-deep-networks.md)
 * [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
   * [Neural Machine Translation by Jointly Learning to Align and Translate ](di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.md)
