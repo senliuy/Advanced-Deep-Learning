@@ -26,17 +26,36 @@ $$
 $$
 
 
-其中$$\mathbf{x}$$是输入，$$I$$是单位映射，在残差网络中$$F$$是两个连续的卷积操作。如果$$F$$是Inception的话，上式便是IR的表达式，如图2所示。
+其中$$\mathbf{x}$$是输入，$$I$$是单位映射，‘$$+$$’单位加操作，表示在残差网络中$$F$$是两个连续的卷积操作。如果$$F$$是Inception的话，上式便是IR的表达式，如图2所示。
 
 ![](/assets/PolyNet_2.png)
 
 下面我们将$$F$$一直看做Inception，然后通过将上式表示为更复杂的多项式的形式来推导出几个更复杂的结构。
 
-* _poly-2_：$$I + F + F^2$$。在这个形式中，网络有三个分支，左侧路径是一个直接映射，中间路径是一个Inception结构，右侧路径是两个连续的Inception，如图3\(a\)所示。在这个网络中，所有Inception的参数是共享的，所以不会引入额外的参数。由于参数共享，我们可以推出它的的等价形式，如图3\(b\)。因为$$I + F + F^2 = I + (I+F)F$$，而且这种形式的网络计算量少了1/3。
+* _poly-2_：$$I+F+F^2$$。在这个形式中，网络有三个分支，左侧路径是一个直接映射，中间路径是一个Inception结构，右侧路径是两个连续的Inception，如图3\(a\)所示。在这个网络中，所有Inception的参数是共享的，所以不会引入额外的参数。由于参数共享，我们可以推出它的的等价形式，如图3\(b\)。因为$$I+F+F^2=I+(I+F)F$$，而且这种形式的网络计算量少了1/3。
 
+* _mpoly-2_：$$I+F+GF$$。这个block的结构和图3(b)相同，不同之处是两个Inception的参数不共享。其也可以表示为$$I+(I+G)F$$，如图3(c)所示。它具有更强的表达能力，但是参数数量也加倍了。
 
+* _2-way_：$$I+F+G$$。即向网络中添加一个额外且参数不共享的残差块，思想和Multi-Residual Networks[5]相同，如图3(d)。
 
 ![](/assets/PolyNet_3.png)
+
+结合上文提出的多项式的思想，几乎可以衍生出无限的网络模型，出于对计算性能的考虑，我们仅考虑下面三个结构:
+
+* _poly-3_：$$I+F+F^2+F^3$$。
+
+* _mploy-3_：$$I+F+GF+HGF$$。
+
+* _3-way_：$$I+F+G+H$$。
+
+如果你看过[DenseNet]()[6]的话，你会发现DenseNet本质上也是一个多项式模型，对于一个含有$$n$$个卷积的block块，可以用数学公式表示为：
+
+$$
+I \oplus C \oplus C^2 \oplus ... \oplus C^n
+$$
+
+其中$$C$$表示一个普通的卷积操作，$$\oplus$$表示特征拼接。
+
 
 ## Reference
 
@@ -48,3 +67,6 @@ $$
 
 \[4\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
 
+[5] M. Abdi and S. Nahavandi. Multi-residual networks. arXiv preprint arXiv:1609.05672, 2016. 1, 2, 3, 4
+
+[6] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
