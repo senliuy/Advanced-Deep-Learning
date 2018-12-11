@@ -94,6 +94,8 @@ $$
 
 ![](/assets/PolyNet_7.png)
 
+**加权路径**：简单版本的多项式结构容易导致模型不稳定，Very Deep PolyNet提出的策略是为Inception部分乘以权值$$\beta$$，例如_2-way_的表达式将由$$I+F+G$$变成$$I+\beta F+\beta G$$，论文给出的\beta的参考值是0.3。
+
 ## Reference
 
 \[1\] Zhang X, Li Z, Loy C C, et al. Polynet: A pursuit of structural diversity in very deep networks\[C\]//Computer Vision and Pattern Recognition \(CVPR\), 2017 IEEE Conference on. IEEE, 2017: 3900-3908.
