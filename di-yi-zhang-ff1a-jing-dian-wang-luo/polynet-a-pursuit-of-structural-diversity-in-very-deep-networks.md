@@ -1,5 +1,7 @@
 # PolyNet: A Pursuit of Structural Diversity in Very Deep Networks
 
+tags: PolyNet, Inception, 残差网络
+
 ## 前言
 
 在[Inception v4](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)\[2\]中，[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)\[3\]和[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)\[4\]首次得以共同使用，后面简称IR。这篇文章提出的PolyNet可以看做是IR的进一步扩展，它从多项式的角度推出了更加复杂且效果更好的混合模型，并通过实验得出了这些复杂模型的最优混合形式，命名为_Very Deep PolyNet_。

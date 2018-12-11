@@ -55,7 +55,7 @@
 * 2018-11-28：Aggregated Residual Transformations for Deep Neural Networks
 * 2018-12-04：ShuffNet v1 and ShuffleNet v2
 * 2018-12-10：CondenseNet: An Efficient DenseNet using Learned Group Convolutions
-
+* 2018-12-11：PolyNet: A Pursuit of Structural Diversity in Very Deep Networks
 
 
 
