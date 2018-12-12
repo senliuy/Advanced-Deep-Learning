@@ -1,6 +1,6 @@
 # PolyNet: A Pursuit of Structural Diversity in Very Deep Networks
 
-tags: PolyNet, Inception, 残差网络
+tags: PolyNet, Inception, ResNet
 
 ## 前言
 
