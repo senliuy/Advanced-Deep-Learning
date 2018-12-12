@@ -24,6 +24,8 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 
 ### 2.2 NAS-RNN
 
+了解了控制器的结构以及控制器如何生成一个卷积网络，唯一剩下的也是最终要的便是如何更新控制器的参数。
+
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
