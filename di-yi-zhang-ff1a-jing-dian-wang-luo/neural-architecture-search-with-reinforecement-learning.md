@@ -4,7 +4,7 @@ tags: Reinforcement Learning, CNN, RNN
 
 ## 前言
 
-CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计，然而这些设计是非常困难以及依靠经验的。作者在这篇文章中提出了使用强化学习（Reinforcement Learning）学习一个CNN（后面简称NASCNN）或者一个RNN cell（后面简称NASRNN），并通过最大化网络在验证集上的精度期望来优化网络，在CIFAR-10数据集上，NASCNN的错误率已经逼近当时最好的DenseNet，在TreeBank数据集上，NASRNN要优于LSTM。
+CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计，然而这些设计是非常困难以及依靠经验的。作者在这篇文章中提出了使用强化学习（Reinforcement Learning）学习一个CNN（后面简称NAS-CNN）或者一个RNN cell（后面简称NAS-RNN），并通过最大化网络在验证集上的精度期望来优化网络，在CIFAR-10数据集上，NAS-CNN的错误率已经逼近当时最好的DenseNet，在TreeBank数据集上，NAS-RNN要优于LSTM。
 
 ## 1. 背景介绍
 
@@ -16,7 +16,7 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 
 ## 2. NAS详细介绍
 
-
+### 2.1 NAS-CNN
 
 ## Reference
 
