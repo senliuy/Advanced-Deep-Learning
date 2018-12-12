@@ -14,6 +14,10 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 
 ![](/assets/NAS_1.png)
 
+## 2. NAS详细介绍
+
+
+
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
