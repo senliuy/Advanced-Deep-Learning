@@ -1,6 +1,6 @@
 # Focal Loss for Dense Object Detection
 
-tags: FPN, 残差网络, Focal Loss, RetinaNet
+tags: FPN, ResNet, Focal Loss, RetinaNet
 
 ## 前言
 
