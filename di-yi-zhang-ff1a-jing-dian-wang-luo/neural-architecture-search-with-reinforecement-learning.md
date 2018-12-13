@@ -4,7 +4,7 @@ tags: Reinforcement Learning, CNN, RNN
 
 ## 前言
 
-CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计，然而这些设计是非常困难以及依靠经验的。作者在这篇文章中提出了使用强化学习（Reinforcement Learning）学习一个CNN（后面简称NAS-CNN）或者一个RNN cell（后面简称NAS-RNN），并通过最大化网络在验证集上的精度期望来优化网络，在CIFAR-10数据集上，NAS-CNN的错误率已经逼近当时最好的DenseNet，在TreeBank数据集上，NAS-RNN要优于LSTM。
+CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计，然而这些设计是非常困难以及依靠经验的。作者在这篇文章中提出了使用强化学习（Reinforcement Learning）学习一个CNN（后面简称NAS-CNN）或者一个RNN cell（后面简称NAS-RNN），并通过最大化网络在验证集上的精度期望来优化网络，在CIFAR-10数据集上，NAS-CNN的错误率已经逼近当时最好的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)[2]，在TreeBank数据集上，NAS-RNN要优于LSTM。
 
 ## 1. 背景介绍
 
@@ -32,7 +32,7 @@ J(\theta_c) = E_{P(a_{1:T};\theta_c)}[R]
 $$
 
 
-由于$$R$$是不可导的，所以我们需要一种可以更新$$\theta_c$$的策略，NAS中采用的是Williams等人提出的REINFORCE rule\[2\]：
+由于$$R$$是不可导的，所以我们需要一种可以更新$$\theta_c$$的策略，NAS中采用的是Williams等人提出的REINFORCE rule\[3\]：
 
 
 $$
@@ -60,7 +60,7 @@ $$
 
 基线b是以前架构精度的指数移动平均值。
 
-上面得到的控制器的搜索空间是不包含跳跃连接（skip connection）的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[3\]来添加跳跃连接的，如图3。
+上面得到的控制器的搜索空间是不包含跳跃连接（skip connection）的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[4\]来添加跳跃连接的，如图3。
 
 ![](/assets/NAS_3.png)
 
@@ -86,13 +86,21 @@ $$
 
 ![](/assets/NAS_4.png)
 
+从图4我们可以发现NAS-CNN和DenseNet有很多相通的地方：
+
+1. 都是密集连接；
+2. Feature Map的个数都比较少；
+3. Feature Map之间都是采用拼接的方式进行连接。
+
 ### 2.2 NAS-RNN
 
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
 
-\[2\] Williams R J. Simple statistical gradient-following algorithms for connectionist reinforcement learning\[J\]. Machine learning, 1992, 8\(3-4\): 229-256.
+[2] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks[C]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1(2): 3.
 
-\[3\] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
+\[3\] Williams R J. Simple statistical gradient-following algorithms for connectionist reinforcement learning\[J\]. Machine learning, 1992, 8\(3-4\): 229-256.
+
+\[43\] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
 
