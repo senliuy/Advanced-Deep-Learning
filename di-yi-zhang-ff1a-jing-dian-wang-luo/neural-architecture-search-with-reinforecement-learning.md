@@ -62,6 +62,8 @@ $$
 
 上面得到的控制器的搜索空间是不包含跳跃连接的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[3\]来添加跳跃连接的，如图3。
 
+![](/assets/NAS_3.png)
+
 在第$$N$$层，我们添加$$N-1$$个anchor来确定是否需要在该层和之前的某一层添加跳跃连接，这个anchor是通过两层的隐节点状态和sigmoid激活函数来完成判断的，具体的讲：
 
 
@@ -69,10 +71,8 @@ $$
 P(\text{Layer j is an input to layer i}) = \text{sigmoid}(v^T \text{tanh}(W_{prev} * h_j + W_{curr} * h_i))
 $$
 
+
 其中$$h_j$$是第$$j$$层隐层节点的状态，$$j\in[0,N-1]$$。$$W_{prev}$$，$$W_{curr}$$和$$v^T$$是可学习的参数，跳跃连接的添加并不会影响更新策略。
-
-
-
 
 ### 2.2 NAS-RNN
 
