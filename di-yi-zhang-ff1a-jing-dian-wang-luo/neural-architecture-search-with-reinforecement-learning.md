@@ -69,7 +69,9 @@ $$
 P(\text{Layer j is an input to layer i}) = \text{sigmoid}(v^T \text{tanh}(W_{prev} * h_j + W_{curr} * h_i))
 $$
 
-其中$$h_j$$是第$$j$$层隐层节点的状态，$$j\in[0,N-1]$$。$$W_{prev}$$，$$W_{curr}$$和$$v^T$$是可学习的参数，跳跃连接的
+其中$$h_j$$是第$$j$$层隐层节点的状态，$$j\in[0,N-1]$$。$$W_{prev}$$，$$W_{curr}$$和$$v^T$$是可学习的参数，跳跃连接的添加并不会影响更新策略。
+
+
 
 
 ### 2.2 NAS-RNN
