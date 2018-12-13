@@ -24,8 +24,35 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 
 了解了控制器的结构以及控制器如何生成一个卷积网络，唯一剩下的也是最终要的便是如何更新控制器的参数$$\theta_c$$。
 
-控制器没生成一个网络可以看做一个action，记做$$a_{1:T}$$，其中$$T$$是要预测的超参数的数量。
+控制器每生成一个网络可以看做一个action，记做$$a_{1:T}$$，其中$$T$$是要预测的超参数的数量。当模型收敛时其在验证集上的精度是$$R$$。我们使用$$R$$来作为强化学习的奖励信号，也就是说通过调整参数$$\theta_c$$来最大化R的期望，表示为：
 
+$$
+J(\theta_c) = E_{P(a_{1:T};\theta_c)}[R]
+$$
+
+由于$$R$$是不可导的，所以我们需要一种可以更新$$\theta_c$$的策略，NAS中采用的是Williams等人提出的REINFORCE rule[2]：
+
+$$
+\nabla_{\theta_c} J(\theta_c) = \sum_{t=1}^T E_{P(a_{1:T};\theta_c)}[\nabla_{\theta_c}logP(a_t|a_{(t-1):1};\theta_c)R]
+$$
+
+上式近似等价于：
+
+$$
+\frac{1}{m}\sum_{k=1}^m \sum_{t=1}^T \nabla_{\theta_c} logP(a_t|a_{(t-1):1};\theta_c)R_k
+$$
+
+其中$$m$$是每个batch中网络的数量。
+
+上式是梯度的无偏估计，但是往往方差比较大，为了减小方差算法中使用的是下面的更新值：
+
+$$
+\frac{1}{m}\sum_{k=1}^m \sum_{t=1}^T \nabla_{\theta_c} logP(a_t|a_{(t-1):1};\theta_c)(R_k-b)
+$$
+
+基线b是以前架构精度的指数移动平均值。
+
+上面得到的控制器的搜索空间是不包含跳跃连接的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)来添加跳跃连接的。
 
 
 ### 2.2 NAS-RNN
@@ -35,4 +62,6 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
+
+[2] Williams R J. Simple statistical gradient-following algorithms for connectionist reinforcement learning[J]. Machine learning, 1992, 8(3-4): 229-256.
 
