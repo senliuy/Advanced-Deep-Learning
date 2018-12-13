@@ -60,7 +60,7 @@ $$
 
 基线b是以前架构精度的指数移动平均值。
 
-上面得到的控制器的搜索空间是不包含跳跃连接的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[3\]来添加跳跃连接的，如图3。
+上面得到的控制器的搜索空间是不包含跳跃连接（skip connection）的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[3\]来添加跳跃连接的，如图3。
 
 ![](/assets/NAS_3.png)
 
@@ -73,6 +73,18 @@ $$
 
 
 其中$$h_j$$是第$$j$$层隐层节点的状态，$$j\in[0,N-1]$$。$$W_{prev}$$，$$W_{curr}$$和$$v^T$$是可学习的参数，跳跃连接的添加并不会影响更新策略。
+
+由于添加了跳跃连接，而由训练得到的参数可能会产生许多问题，例如某个层和其它所有层都没有产生连接等等，所以有几个问题我们需要注意：
+
+1. 如果一个层和其之前的所有层都没有跳跃连接，那么这层将作为输入层；
+2. 如果一个层和其之后的所有层都没有跳跃连接，那么这层将作为输出层，并和所有输出层拼接之后作为分类器的输入；
+3. 如果输入层拼接了多个尺寸的输入，则通过将小尺寸输入加值为0的padding的方式进行尺寸统一。
+
+除了卷积和跳跃连接，例如池化，BN，Dropout等策略也可以通过相同的方式添加到控制器中，只不过这时候需要引入更多的策略相关参数了。
+
+经过训练之后，在CIFAR-10上得到的卷积网络如图4所示。
+
+![](/assets/NAS_4.png)
 
 ### 2.2 NAS-RNN
 
