@@ -4,7 +4,7 @@ tags: Reinforcement Learning, CNN, RNN
 
 ## 前言
 
-CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计，然而这些设计是非常困难以及依靠经验的。作者在这篇文章中提出了使用强化学习（Reinforcement Learning）学习一个CNN（后面简称NAS-CNN）或者一个RNN cell（后面简称NAS-RNN），并通过最大化网络在验证集上的精度期望来优化网络，在CIFAR-10数据集上，NAS-CNN的错误率已经逼近当时最好的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)[2]，在TreeBank数据集上，NAS-RNN要优于LSTM。
+CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计，然而这些设计是非常困难以及依靠经验的。作者在这篇文章中提出了使用强化学习（Reinforcement Learning）学习一个CNN（后面简称NAS-CNN）或者一个RNN cell（后面简称NAS-RNN），并通过最大化网络在验证集上的精度期望来优化网络，在CIFAR-10数据集上，NAS-CNN的错误率已经逼近当时最好的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)\[2\]，在TreeBank数据集上，NAS-RNN要优于LSTM。
 
 ## 1. 背景介绍
 
@@ -96,17 +96,19 @@ $$
 
 在这篇文章中，作者采用强化学习的方法同样生成了RNN中类似于[LSTM](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)或者[GRU](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.html)的一个Cell。控制器的参数更新方法和1.2节类似，这里我们主要介绍如何使用一个RNN控制器来描述一个RNN cell。
 
-RNN单元和LSTM单元的共同点是他们的输入都是$$x_t$$和$$h_{t-1}$$，输出都是$$h_t$$，不同之处是LSTM的内部处理要复杂得多，所以NAS-RNN的作用便是学习一个功能更强大的Cell。
+传统RNN的的输入是$$x_t$$和$$h_{t-1}$$，输出是$$h_t$$，计算方式是$$h_t = tanh(W_1 x_t + W_2 h_{t-1})$$。LSTM的输入是$$x_t$$，$$h_{t-1}$$以及单元状态$$c_t-1$$，输出是$$h_t$$和$$c_t$$，LSTM的处理可以看做一个将$$x_t$$，$$h_{t-1}$$和$$c_t-1$$作为叶子节点的树结构，如图5所示。
 
+和LSTM一样，NAS-RNN也需要保存一个和LSTM类似的Cell
 
+![](/assets/NAS_5.png)
 
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
 
-[2] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks[C]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1(2): 3.
+\[2\] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
 
 \[3\] Williams R J. Simple statistical gradient-following algorithms for connectionist reinforcement learning\[J\]. Machine learning, 1992, 8\(3-4\): 229-256.
 
-\[43\] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
+\[4\] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
 
