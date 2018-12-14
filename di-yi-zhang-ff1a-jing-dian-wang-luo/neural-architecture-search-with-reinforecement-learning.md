@@ -96,6 +96,8 @@ $$
 
 在这篇文章中，作者采用强化学习的方法同样生成了RNN中类似于[LSTM](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)或者[GRU](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.html)的一个Cell。控制器的参数更新方法和1.2节类似，这里我们主要介绍如何使用一个RNN控制器来描述一个RNN cell。
 
+RNN单元和LSTM单元的共同点是他们的输入都是$$x_t$$和$$h_{t-1}$$，输出都是$$h_t$$，不同之处是LSTM的内部处理要复杂得多。
+
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
