@@ -92,6 +92,8 @@ $$
 2. Feature Map的个数都比较少；
 3. Feature Map之间都是采用拼接的方式进行连接。
 
+在生成NAS-CNN的实验中，使用的是CIFAR-10数据集。网络中加入了BN和跳跃连接。卷积核的高的范围是$$[1,3,5,7]$$，宽的范围也是$$[1,3,5,7]$$，
+
 ### 2.2 NAS-RNN
 
 在这篇文章中，作者采用强化学习的方法同样生成了RNN中类似于[LSTM](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)或者[GRU](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.html)的一个Cell。控制器的参数更新方法和1.2节类似，这里我们主要介绍如何使用一个RNN控制器来描述一个RNN cell。
@@ -111,9 +113,10 @@ $$
 1. 控制器为索引为0的树预测的操作和激活函数分别是_Add_和_tanh_，意味着$$a_0 = tanh(W_1 * x_t + W_2 * h_{t-1})$$；
 2. 控制器为索引为1的树预测的操作和激活函数分别是_ElemMult_和_ReLU_，意味着$$a_1 = ReLU((W_3 * x_t)\odot(W_4*h_{t-1}))$$；
 3. 控制器为Cell Indices的第二个元素的预测值为0，Cell Inject的预测值是_add_和_ReLU_，意味着$$a_0$$值需要更新为$$a_0^{new}=ReLU(a_0 + c_{t-1})$$，注意这里不需要额外的参数。
-2. 控制器为索引为1的树预测的操作和激活函数分别是_ElemMult_和_ReLU_，意味着$$a_1 = ReLU((W_3 * x_t)\odot(W_4*h_{t-1}))$$；
+4. 控制器为索引为2的树预测的操作和激活函数分别是_ElemMult_和_Sigmoid_，意味着$$a_2 = sigmoid(a_0^{new}\odot a_1)$$，因为a_2是最大的树的索引，所以$$h_t = a_2$$；
+5. 控制器为Cell Indices的第一个元素的预测值是1，意思是$$c_t$$要使用索引为1的树在使用激活函数的值，即$$c_t = (W_3*x_t) \odot (W_4*h_{t-1})$$。
 
-
+上面例子是使用“base 2”的超参作为例子进行讲解的，在实际中使用的是base 8，得到图7两个RNN单元。左侧是不包含_max_和_sin_的搜索空间，右侧是包含_max_和_sin_的搜索空间（控制器并没有选择sin）。
 
 
 
