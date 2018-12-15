@@ -115,7 +115,7 @@ $$
 
 在这篇文章中，作者采用强化学习的方法同样生成了RNN中类似于[LSTM](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)或者[GRU](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.html)的一个Cell。控制器的参数更新方法和1.2节类似，这里我们主要介绍如何使用一个RNN控制器来描述一个RNN cell。
 
-传统RNN的的输入是$$x_t$$和$$h_{t-1}$$，输出是$$h_t$$，计算方式是$$h_t = tanh(W_1 x_t + W_2 h_{t-1})$$。LSTM的输入是$$x_t$$，$$h_{t-1}$$以及单元状态$$c_t-1$$，输出是$$h_t$$和$$c_t$$，LSTM的处理可以看做一个将$$x_t$$，$$h_{t-1}$$和$$c_t-1$$作为叶子节点的树结构，如图5所示。
+传统RNN的的输入是$$x_t$$和$$h_{t-1}$$，输出是$$h_t$$，计算方式是$$h_t = tanh(W_1 x_t + W_2 h_{t-1})$$。LSTM的输入是$$x_t$$，$$h_{t-1}$$以及单元状态$$c_{t-1}$$，输出是$$h_t$$和$$c_t$$，LSTM的处理可以看做一个将$$x_t$$，$$h_{t-1}$$和$$c_{t-1}$$作为叶子节点的树结构，如图5所示。
 
 <figure>
 <img src="/assets/NAS_5.png" alt="图5：LSTM的计算图"/>
@@ -136,7 +136,7 @@ $$
 1. 控制器为索引为0的树预测的操作和激活函数分别是_Add_和_tanh_，意味着$$a_0 = tanh(W_1 * x_t + W_2 * h_{t-1})$$；
 2. 控制器为索引为1的树预测的操作和激活函数分别是_ElemMult_和_ReLU_，意味着$$a_1 = ReLU((W_3 * x_t)\odot(W_4*h_{t-1}))$$；
 3. 控制器为Cell Indices的第二个元素的预测值为0，Cell Inject的预测值是_add_和_ReLU_，意味着$$a_0$$值需要更新为$$a_0^{new}=ReLU(a_0 + c_{t-1})$$，注意这里不需要额外的参数。
-4. 控制器为索引为2的树预测的操作和激活函数分别是_ElemMult_和_Sigmoid_，意味着$$a_2 = sigmoid(a_0^{new}\odot a_1)$$，因为a\_2是最大的树的索引，所以$$h_t = a_2$$；
+4. 控制器为索引为2的树预测的操作和激活函数分别是_ElemMult_和_Sigmoid_，意味着$$a_2 = sigmoid(a_0^{new}\odot a_1)$$，因为$$a_2$$是最大的树的索引，所以$$h_t = a_2$$；
 5. 控制器为Cell Indices的第一个元素的预测值是1，意思是$$c_t$$要使用索引为1的树在使用激活函数的值，即$$c_t = (W_3*x_t) \odot (W_4*h_{t-1})$$。
 
 上面例子是使用“base 2”的超参作为例子进行讲解的，在实际中使用的是base 8，得到图7两个RNN单元。左侧是不包含_max_和_sin_的搜索空间，右侧是包含_max_和_sin_的搜索空间（控制器并没有选择sin）。
