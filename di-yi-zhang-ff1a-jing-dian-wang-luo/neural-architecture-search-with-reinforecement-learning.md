@@ -146,8 +146,6 @@ $$
 <figcaption>图7：NAS-CNN生辰的网络节点的计算图</figcaption>
 </figure>
 
-
-
 在生成NAS-RNN的实验中，使用的是Penn TreeBank数据集。操作的范围是\[_add_, _elem\_mult_\]，激活函数的范围是\[_identity_,_tanh_,_sigmoid_,_relu_\]。
 
 ## 2. 总结
