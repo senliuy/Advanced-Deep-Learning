@@ -26,8 +26,8 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 首先我们考虑最简单的CNN，即只有卷积层构成。那么这种类型的网络是很容易用控制器来表示的。即将控制器分成$$N$$段，每一段由若干个输出，每个输出表示CNN的一个超参数，例如Filter的高，Filter的宽，横向步长，纵向步长以及Filter的数量，如图2所示。
 
 <figure>
-<img src="/assets/NAS_2.png" alt="图1：NAS的算法流程图"/>
-<figcaption>图1：NAS的算法流程图</figcaption>
+<img src="/assets/NAS_2.png" alt="图2：NAS-CNN的控制器结构图"/>
+<figcaption>图2：NAS-CNN的控制器结构图</figcaption>
 </figure>
 
 
@@ -71,7 +71,11 @@ $$
 
 上面得到的控制器的搜索空间是不包含跳跃连接（skip connection）的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[4\]来添加跳跃连接的，如图3。
 
-![](/assets/NAS_3.png)
+<figure>
+<img src="/assets/NAS_3.png" alt="图3：NAS-CNN中加入跳跃连接的控制器结构图"/>
+<figcaption>图3：NAS-CNN中加入跳跃连接的控制器结构图</figcaption>
+</figure>
+
 
 在第$$N$$层，我们添加$$N-1$$个anchor来确定是否需要在该层和之前的某一层添加跳跃连接，这个anchor是通过两层的隐节点状态和sigmoid激活函数来完成判断的，具体的讲：
 
@@ -93,7 +97,11 @@ $$
 
 经过训练之后，在CIFAR-10上得到的卷积网络如图4所示。
 
-![](/assets/NAS_4.png)
+<figure>
+<img src="/assets/NAS_4.png" alt="图4：NAS-CNN生成的密集连接的网络结构"/>
+<figcaption>图4：NAS-CNN生成的密集连接的网络结构</figcaption>
+</figure>
+
 
 从图4我们可以发现NAS-CNN和DenseNet有很多相通的地方：
 
@@ -109,13 +117,19 @@ $$
 
 传统RNN的的输入是$$x_t$$和$$h_{t-1}$$，输出是$$h_t$$，计算方式是$$h_t = tanh(W_1 x_t + W_2 h_{t-1})$$。LSTM的输入是$$x_t$$，$$h_{t-1}$$以及单元状态$$c_t-1$$，输出是$$h_t$$和$$c_t$$，LSTM的处理可以看做一个将$$x_t$$，$$h_{t-1}$$和$$c_t-1$$作为叶子节点的树结构，如图5所示。
 
-![](/assets/NAS_5.png)
+<figure>
+<img src="/assets/NAS_5.png" alt="图5：LSTM的计算图"/>
+<figcaption>图5：LSTM的计算图</figcaption>
+</figure>
 
 和LSTM一样，NAS-RNN也需要输入一个$$c_{t-1}$$并输出一个$$c_t$$，并在控制器的最后两个单元中控制如何使用$$c_{t-1}$$以及如何计算$$c_t$$。
 
 如图6所示，在这个树结构中有两个叶子节点和一个中间节点，这种两个叶子节点的情况简称为base2，而图4的LSTM则是base4。叶子节点的索引是0，1，中间节点的索引是2，如图6左侧部分。也就是说控制器需要预测3个block，每个block包含一个操作（加，点乘等）和一个激活函数（ReLU，sigmoid，tanh等）。在3个block之后接的是一个Cell inject，用于控制$$c_{t-1}$$的使用，最后是一个Cell indices，确定哪些树用于计算$$c_t$$。
 
-![](/assets/NAS_6.png)
+<figure>
+<img src="/assets/NAS_6.png" alt="图6：NAS-RNN的控制器生成RNN节点示例图"/>
+<figcaption>图6：NAS-RNN的控制器生成RNN节点示例图</figcaption>
+</figure>
 
 详细分析一下图6：
 
@@ -127,7 +141,12 @@ $$
 
 上面例子是使用“base 2”的超参作为例子进行讲解的，在实际中使用的是base 8，得到图7两个RNN单元。左侧是不包含_max_和_sin_的搜索空间，右侧是包含_max_和_sin_的搜索空间（控制器并没有选择sin）。
 
-![](/assets/NAS_7.png)
+<figure>
+<img src="/assets/NAS_7.png" alt="图7：NAS-CNN生辰的网络节点的计算图"/>
+<figcaption>图7：NAS-CNN生辰的网络节点的计算图</figcaption>
+</figure>
+
+
 
 在生成NAS-RNN的实验中，使用的是Penn TreeBank数据集。操作的范围是\[_add_, _elem\_mult_\]，激活函数的范围是\[_identity_,_tanh_,_sigmoid_,_relu_\]。
 
