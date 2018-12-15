@@ -12,7 +12,12 @@ CNN和RNN是目前主流的CNN框架，这些网络均是由人为手动设计�
 
 所以，NAS会使用一个RNN构成的控制器（controller）以概率$$p$$随机采样一个网络结构$$A$$，接着在CIFAR-10上训练这个网络并得到其在验证集上的精度$$R$$，然后在使用$$R$$更新控制器的参数，如此循环执行直到模型收敛，如图1所示。
 
-![](/assets/NAS_1.png)
+<figure>
+<img src="/assets/NAS_1.png" alt="图1：NAS的算法流程图"/>
+<figcaption>图1：NAS的算法流程图</figcaption>
+</figure>
+
+
 
 ## 2. NAS详细介绍
 
