@@ -122,6 +122,10 @@ $$
 
 在生成NAS-RNN的实验中，使用的是Penn TreeBank数据集。操作的范围是\[_add_, _elem\_mult_\]，激活函数的范围是\[_identity_,_tanh_,_sigmoid_,_relu_\]。
 
+## 2. 总结
+
+
+
 ## Reference
 
 \[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
