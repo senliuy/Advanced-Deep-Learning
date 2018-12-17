@@ -10,6 +10,8 @@
 
 ## 1. NASNet详解
 
+### 1.1 NASNet 控制器
+
 在NASNet中，完整的网络的结构还是需要手动设计的，NASNet学习的是完整网络中被堆叠、被重复使用的网络单元。为了便于将网络迁移到不同的数据集上，我们需要学习两种类型的网络块：（1）_Normal Cell_：输出Feature Map和输入Feature Map的尺寸相同；（2）_Reduction Cell_：输出Feature Map对输入Feature Map进行了一次降采样，在Reduction Cell中，对使用Input Feature作为输入的操作（卷积或者池化）会默认步长为2。
 
 NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络块（block）组成，在实验中$$B=5$$。每个块的具体形式如图1右侧部分，每个块有并行的两个卷积组成，它们会由控制器决定选择哪些Feature Map作为输入（灰色部分）以及使用哪些运算（黄色部分）来计算输入的Feature Map。最后它们会由控制器决定如何合并这两个Feature Map。
@@ -47,6 +49,11 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 在5中可以选择的合并操作有（1）单位加；（2）拼接。
 
 最后所有生成的Feature Map通过拼接操作合成一个完整的Feature Map。
+
+为了能让控制器同时预测Normal Cell和Reduction Cell，RNN会有$$2\times5\times B$$个输出，其中前$$5\times B$$个输出预测Normal Cell的$$B$$个块（如图1每个块有5个输出），后$$5\times B$$个输出预测Reduction Cell的$$B$$个块。
+
+### 1.2 NASNet的强化学习
+
 
 
 ## 总结
