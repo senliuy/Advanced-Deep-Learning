@@ -12,9 +12,21 @@
 
 在NASNet中，完整的网络的结构还是需要手动设计的，NASNet学习的是完整网络中被堆叠、被重复使用的网络单元。为了便于将网络迁移到不同的数据集上，我们需要学习两种类型的网络块：（1）_Normal Cell_：输出Feature Map和输入Feature Map的尺寸相同；（2）_Reduction Cell_：输出Feature Map对输入Feature Map进行了一次降采样，在Reduction Cell中，对使用Input Feature作为输入的操作（卷积或者池化）会默认步长为2。
 
-NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络块组成，在实验中，$$B=5$$。每个块的具体形式如图1右侧部分，每个块有并行的两个卷积组成
+NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络块（block）组成，在实验中，$$B=5$$。每个块的具体形式如图1右侧部分，每个块有并行的两个卷积组成，它们会由控制器决定选择哪些Feature Map作为输入（灰色部分）以及使用哪些运算（黄色部分）来计算输入的Feature Map。最后它们会由控制器决定如何合并这两个Feature Map。
 
 ![](/assets/NASNet_1.png)
+
+更精确的讲，NASNet网络单元的计算分为5步：
+
+1. 从第$$h_{i-1}$$个Feature Map或者第$$h_i$$个Feature Map或者之前已经生成的网络块中选择一个Feature Map作为hidden layer A的输入，图2是学习到的网络单元，从中可以看到三种不同输入Feature Map的情况；
+2. 采用和1类似的方法为Hidden Layer B选择一个输入；
+3. 为1的Feature Map选择一个运算；
+4. 为2的Feature Map选择一个元素；
+5. 选择一个合并3，4得到的Feature Map的运算。
+
+![](/assets/NASNet_2.png)
+
+## 总结
 
 ## Reference
 
