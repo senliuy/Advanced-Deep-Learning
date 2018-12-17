@@ -50,7 +50,7 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 
 最后所有生成的Feature Map通过拼接操作合成一个完整的Feature Map。
 
-为了能让控制器同时预测Normal Cell和Reduction Cell，RNN会有$$2\times5\times B$$个输出，其中前$$5\times B$$个输出预测Normal Cell的$$B$$个块（如图1每个块有5个输出），后$$5\times B$$个输出预测Reduction Cell的$$B$$个块。
+为了能让控制器同时预测Normal Cell和Reduction Cell，RNN会有$$2\times5\times B$$个输出，其中前$$5\times B$$个输出预测Normal Cell的$$B$$个块（如图1每个块有5个输出），后$$5\times B$$个输出预测Reduction Cell的$$B$$个块。RNN使用的是单层100个隐层节点的[LSTM](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.html)。
 
 ### 1.2 NASNet的强化学习
 
