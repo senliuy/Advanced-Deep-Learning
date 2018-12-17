@@ -16,6 +16,7 @@
   * [ShuffleNet v1 and ShuffleNet v2](di-yi-zhang-ff1a-jing-dian-wang-luo/shuffnet-v1-and-shufflenet-v2.md)
   * [CondenseNet: An Efficient DenseNet using Learned Group Convolution](di-yi-zhang-ff1a-jing-dian-wang-luo/condensenet-an-efficient-densenet-using-learned-group-convolutions.md)
   * [Neural Architecture Search with Reinforecement Learning](di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.md)
+  * [Learning Transferable Architectures for Scalable Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.md)
 * [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
   * [Neural Machine Translation by Jointly Learning to Align and Translate ](di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.md)
