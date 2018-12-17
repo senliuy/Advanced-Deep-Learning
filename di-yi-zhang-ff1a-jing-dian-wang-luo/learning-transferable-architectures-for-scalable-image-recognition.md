@@ -68,12 +68,18 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 在NASNet中，强化学习的搜索空间大大减小，很多超参数已经由算法写死或者人为调整。这里介绍一下NASNet需要人为设定的超参数。
 
 1. 激活函数统一使用ReLU，实验结果表明ELU nonlinearity[5]效果略优于ReLU；
-
 2. 全部使用Valid卷积，padding值由卷积核大小决定；
 3. Reduction Cell的Feature Map的数量需要乘以2，Normal Cell数量不变。初始数量人为设定，一般来说数量越多，计算越慢，效果越好；
 4. Normal Cell的重复次数（图3中的$$N$$）人为设定；
 5. 深度可分离卷积在深度卷积和单位卷积中间不使用BN或ReLU;
-6. 
+6. 使用深度可分离卷积时，该算法执行两次；
+7. 所有卷积遵循ReLU->卷积->BN的计算顺序；
+8. 为了保持Feature Map的数量的一致性，必要的时候添加$$1\times1$$卷积。
+
+堆叠Cell得到的CIFAR_10和ImageNet的实验结果如图3所示。
+
+![](/assets/NASNet_3.png)
+
 
 ## 总结
 
