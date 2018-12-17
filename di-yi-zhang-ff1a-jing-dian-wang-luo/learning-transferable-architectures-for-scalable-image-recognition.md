@@ -10,7 +10,7 @@
 
 ## 1. NASNet详解
 
-在NASNet中，完整的网络的结构还是需要手动设计的，NASNet学习的是完整网络中被堆叠、被重复使用的网络块。为了便于将网络迁移到不同的数据集上，我们需要学习两种类型的网络块：（1）输出Feature Map和输入Feature Map的尺寸相同；（2）输出Feature Map对输入Feature Map进行了一次降采样。
+在NASNet中，完整的网络的结构还是需要手动设计的，NASNet学习的是完整网络中被堆叠、被重复使用的网络块。为了便于将网络迁移到不同的数据集上，我们需要学习两种类型的网络块：（1）_Normal Cell_：输出Feature Map和输入Feature Map的尺寸相同；（2）_Reduction Cell_：输出Feature Map对输入Feature Map进行了一次降采样。
 
 
 ## Reference
