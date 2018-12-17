@@ -1,5 +1,7 @@
 # Learning Transferable Architectures for Scalable Image Recognition
 
+tags: NAS, NASNet
+
 ## 前言
 
 在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)\[2\]一文中我们介绍了如何使用强化学习学习一个完整的CNN网络或是一个独立的RNN单元，这种dataset interest的网络的效果也是目前最优的。但是NAS提出的网络的计算代价是相当昂贵的，仅仅在CIFAR-10上学习一个网络就需要500台GPU运行28天才能找到最优结构。这使得NAS很难迁移到大数据集上，更不要提ImageNet这样几百G的数据规模了。而在目前的行内规则上，如果不能在ImageNet上取得令人信服的结果，你的网络结构很难令人信服的。
