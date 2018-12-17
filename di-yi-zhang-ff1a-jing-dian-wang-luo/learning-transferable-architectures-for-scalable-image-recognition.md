@@ -63,9 +63,17 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 
 在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath\[4\]。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
 
-### 1.4 网络结构
+### 1.4 其它超参
 
-![](/assets/NASNet_3.png)
+在NASNet中，强化学习的搜索空间大大减小，很多超参数已经由算法写死或者人为调整。这里介绍一下NASNet需要人为设定的超参数。
+
+1. 激活函数统一使用ReLU，实验结果表明ELU nonlinearity[5]效果略优于ReLU；
+
+2. 全部使用Valid卷积，padding值由卷积核大小决定；
+3. Reduction Cell的Feature Map的数量需要乘以2，Normal Cell数量不变。初始数量人为设定，一般来说数量越多，计算越慢，效果越好；
+4. Normal Cell的重复次数（图3中的$$N$$）人为设定；
+5. 深度可分离卷积在深度卷积和单位卷积中间不使用BN或ReLU;
+6. 
 
 ## 总结
 
@@ -78,4 +86,6 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 \[3\] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347, 2017.
 
 \[4\] G. Larsson, M. Maire, and G. Shakhnarovich. Fractalnet: Ultra-deep neural networks without residuals. arXiv preprint arXiv:1605.07648, 2016.
+
+[5] D.-A. Clevert, T. Unterthiner, and S. Hochreiter. Fast and accurate deep network learning by exponential linear units (elus). In International Conference on Learning Representa-tions, 2016.
 
