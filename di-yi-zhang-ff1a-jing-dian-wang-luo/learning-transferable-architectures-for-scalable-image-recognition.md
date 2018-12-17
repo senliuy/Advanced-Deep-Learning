@@ -56,16 +56,16 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 
 NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一下：
 
-1. NASNet进行迁移学习时使用的优化策略是Proximal Policy Optimization（PPO）[3]；
+1. NASNet进行迁移学习时使用的优化策略是Proximal Policy Optimization（PPO）\[3\]；
 2. 作者尝试了均匀分布的搜索策略，效果略差于策略搜索。
 
 ### 1.3 Scheduled Drop Path
 
-在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath[4]。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
+在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath\[4\]。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
 
 ### 1.4 网络结构
 
-
+![](/assets/NASNet_3.png)
 
 ## 总结
 
@@ -75,7 +75,7 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 
 \[2\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
 
-[3] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347, 2017.
+\[3\] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347, 2017.
 
-[4] G. Larsson, M. Maire, and G. Shakhnarovich. Fractalnet: Ultra-deep neural networks without residuals. arXiv preprint arXiv:1605.07648, 2016.
+\[4\] G. Larsson, M. Maire, and G. Shakhnarovich. Fractalnet: Ultra-deep neural networks without residuals. arXiv preprint arXiv:1605.07648, 2016.
 
