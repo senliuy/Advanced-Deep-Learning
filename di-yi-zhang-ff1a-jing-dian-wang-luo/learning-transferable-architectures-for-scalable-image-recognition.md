@@ -18,7 +18,11 @@ tags: NAS, NASNet
 
 NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络块（block）组成，在实验中$$B=5$$。每个块的具体形式如图1右侧部分，每个块有并行的两个卷积组成，它们会由控制器决定选择哪些Feature Map作为输入（灰色部分）以及使用哪些运算（黄色部分）来计算输入的Feature Map。最后它们会由控制器决定如何合并这两个Feature Map。
 
-![](/assets/NASNet_1.png)
+<figure>
+<img src="/assets/NASNet_1.png" alt="图1：NASNet控制器结构示意图"/>
+<figcaption>图1：NASNet控制器结构示意图</figcaption>
+</figure>
+
 
 更精确的讲，NASNet网络单元的计算分为5步：
 
@@ -28,7 +32,11 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 4. 为2的Feature Map选择一个元素；
 5. 选择一个合并3，4得到的Feature Map的运算。
 
-![](/assets/NASNet_2.png)
+<figure>
+<img src="/assets/NASNet_2.png" alt="图2：NASNet生成的CNN单元。(左)：Normal Cell，（右）Reduction Cell"/>
+<figcaption>图2：NASNet生成的CNN单元。(左)：Normal Cell，（右）Reduction Cell</figcaption>
+</figure>
+
 
 在3，4中我们可以选择的操作有：
 
@@ -80,7 +88,10 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 
 堆叠Cell得到的CIFAR_10和ImageNet的实验结果如图3所示。
 
-![](/assets/NASNet_3.png)
+<figure>
+<img src="/assets/NASNet_3.png" alt="图3：NASNet的CIFAR10和ImageNet的网络结构"/>
+<figcaption>图3：NASNet的CIFAR10和ImageNet的网络结构</figcaption>
+</figure>
 
 ## 2. 总结
 
