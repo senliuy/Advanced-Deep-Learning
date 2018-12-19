@@ -12,6 +12,10 @@ tags: NAS, NASNet, PNAS
 2. Sequential model-based optimization(SMBO)：即训练的模型从简单到复杂，不在精度低的模型上浪费时间；
 3. 启发式搜索：在训练过程中剪枝掉精度差的搜索空间，操作类似于Beam Search。
 
+## 1. PNAS详解
+
+
+
 ## Reference
 
 [1] Liu C, Zoph B, Shlens J, et al. Progressive neural architecture search[J]. arXiv preprint arXiv:1712.00559, 2017.
