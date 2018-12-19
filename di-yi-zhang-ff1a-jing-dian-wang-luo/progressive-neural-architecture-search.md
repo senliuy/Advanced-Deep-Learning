@@ -92,7 +92,7 @@ SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/c
 
 ### 2.1 增进式的结构
 
-根据1.2节介绍的SMBO的搜索过程，PNASNet可以非常容易得得出网络块数小于$$B$$的所有模型，其结果如图2所示。
+根据1.2节介绍的SMBO的搜索过程，PNASNet可以非常容易得得出网络块数小于等于$$B$$的所有模型，其结果如图2所示。
 
 <figure>
 <img src="/assets/PNASNet_2.png" alt="图2：PNASNet得出的B=1,2,3,4,5的几个网络单元，推荐使用B=5"/>
