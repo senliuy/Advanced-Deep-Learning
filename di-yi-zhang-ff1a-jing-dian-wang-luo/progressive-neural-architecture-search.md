@@ -95,15 +95,21 @@ SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/c
 
 根据1.2节介绍的SMBO的搜索过程，PNASNet可以非常容易得得出网络块数小于$$B$$的所有模型，其结果如图2所示。
 
-![](/assets/PNASNet_2.png)
+<figure>
+<img src="/assets/PNASNet_2.png" alt="图2：PNASNet得出的B=1,2,3,4,5的几个网络单元，推荐使用B=5"/>
+<figcaption>图2：PNASNet得出的B=1,2,3,4,5的几个网络单元，推荐使用B=5</figcaption>
+</figure>
 
 作者也尝试了$$B>5$$的情况，发现这时候模型的精度会下降，推测原因是因为搜索空间过去庞大了。
 
 ### 2.2 迁移到ImageNet
 
-NAS中提倡学习dataset interest的网络结构，但是NASNet和PNASNet在CIFAR-10上学习到的结构迁移到ImageNet上也可以取得非常好的效果。作者通过一组不同网络单元在CIFAR-10和ImageNet上的实验验证了CIFAR-10和ImageNet在网络结构上的强相关，实验结果见图3。
+NAS中提倡学习dataset interest的网络结构，但是NASNet和PNASNet在CIFAR-10上学习到的结构迁移到ImageNet上也可以取得非常好的效果。作者通过一组不同网络单元在CIFAR-10和ImageNet上的实验验证了CIFAR-10和ImageNet在网络结构上的强相关性，实验结果见图3。
 
-![](/assets/PNASNet_3.png)
+<figure>
+<img src="/assets/PNASNet_3.png" alt="图3：CIFAR10和ImageNet对网络单元的强相关性"/>
+<figcaption>图3：CIFAR10和ImageNet对网络单元的强相关性</figcaption>
+</figure>
 
 ## 3. 总结
 
