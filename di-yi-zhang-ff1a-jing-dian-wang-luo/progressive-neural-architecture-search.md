@@ -9,8 +9,8 @@ tags: NAS, NASNet, PNAS
 本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNAS，其训练时间降为NASNet的1/8并且取得了目前在ImageNet上最优的效果。其主要的优化策略为：
 
 1. 更小的搜索空间；
-2. Sequential model-based optimization(SMBO)：即训练的模型从简单到复杂，不在精度低的模型上浪费时间；
-3. 启发式搜索：在训练过程中剪枝掉精度差的搜索空间，操作类似于Beam Search；
+2. Sequential model-based optimization(SMBO)：一种启发式搜索的策略，训练的模型从简单到复杂，不在精度低的模型上浪费时间；
+3. Beam Search：在训练过程中剪枝掉精度差的搜索空间；
 4. 代理函数：使用代理函数预测模型的精度，省去了耗时的训练过程。
 
 ## 1. PNAS详解
