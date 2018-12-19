@@ -4,12 +4,12 @@ tags: NAS, NASNet, PNASNet
 
 ## 前言
 
-在[NAS]()[2]和[NASNet]()[3]中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
+在[NAS]()\[2\]和[NASNet]()\[3\]中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
 
 本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNASNet，其训练时间降为NASNet的1/8并且取得了目前在ImageNet上最优的效果。其主要的优化策略为：
 
 1. 更小的搜索空间；
-2. Sequential model-based optimization(SMBO)：一种启发式搜索的策略，训练的模型从简单到复杂，从剪枝的空间中进行搜索；
+2. Sequential model-based optimization\(SMBO\)：一种启发式搜索的策略，训练的模型从简单到复杂，从剪枝的空间中进行搜索；
 3. 代理函数：使用代理函数预测模型的精度，省去了耗时的训练过程。
 
 在阅读本文之前，确保你已经读懂了[NAS]()和[NASNet]()两篇文章。
@@ -20,15 +20,17 @@ tags: NAS, NASNet, PNASNet
 
 回顾NASNet的控制器策略，它是一个有$$2\times B \times 5$$个输出的LSTM，其中2表示分别学习Normal Cell和Reduction Cell。$$B$$表示每个网络单元有$$B$$个网络块。$$5$$表示网络块有5个需要学习的超参，记做$$(I_1, I_2, O_1, O_2, C)$$。$$I_1, I_2 \in \mathcal{I}_b$$用于预测网络块两个隐层状态的输入（Input），它会从之前一个，之前两个，或者已经计算的网络块中选择一个。$$O_1, O_2 \in \mathcal{O}$$用于预测对两个隐层状态的输入的操作（Operation，共有13个，具体见NASNet。$$C\in \mathcal{C}$$表示$$O_1, O_2$$的合并方式，有单位加和合并两种操作。因此它的搜索空间的大小为：
 
+
 $$
 (2^2\times13^2 \times 3^2\times13^2 \times4^2\times13^2 \times5^2\times13^2 \times6^2\times13^2 \times 2)^2 \approx 2.0\times 10^{34}
 $$
+
 
 PNASNet的控制器的运作方式和NASNet类似，但也有几点不同。
 
 **只有Normal Cell**：PNASNet只学习了Normal Cell，是否进行降采样用户自己设置。当使用降采样时，它使用和Normal Cell完全相同的架构，只是要把Feature Map的数量乘2。这种操作使控制器的输出节点数变为$$B \times 5$$。
 
-**更小的$$\mathcal{O}$$**：在观察NASNet的实验结果是，我们发现有5个操作是从未被使用过的，因此我们将它们从搜索空间中删去，保留的操作剩下了8个：
+**更小的**$$\mathcal{O}$$：在观察NASNet的实验结果是，我们发现有5个操作是从未被使用过的，因此我们将它们从搜索空间中删去，保留的操作剩下了8个：
 
 * 直接映射
 * $$1\times1$$卷积；
@@ -40,19 +42,21 @@ PNASNet的控制器的运作方式和NASNet类似，但也有几点不同。
 * $$7\times7$$深度可分离卷积；
 * $$1\times7$$卷积 + $$7\times1$$卷积；
 
-**合并$$\mathcal{C}$$**：通过观察NASNet的实验结果，作者发现拼接操作也从未被使用，因此我们也可以将这种情况从搜索空间中删掉。
+**合并**$$\mathcal{C}$$：通过观察NASNet的实验结果，作者发现拼接操作也从未被使用，因此我们也可以将这种情况从搜索空间中删掉。
 
 因此PNASNet的搜索空间的大小是：
+
 
 $$
 2^2\times8^2 \times 3^2\times8^2 \times4^2\times8^2 \times5^2\times8^2 \times6^2\times8^2 \approx 5.6\times 10^{14}
 $$
 
+
 我们可以写一些规则来排除掉两个隐层状态的对称的情况，但即使排除掉对称的情况后，NASNet的搜索空间的大小仍然为$$10^{28}$$，PNASNet的搜索空间仍然为$$10^{12}$$。这两个值的具体计算比较复杂，且和本文主要要讲解的内容关系不大，感兴趣的读者自行推算。
 
 ### 1.2 SMBO
 
-尽管已经将优化搜索空间优化到了$$10^{12}$$的数量级，但是这个规模依然十分庞大，在其中进行搜索依旧非常耗时。这篇文章的核心便是提出了Sequential model-based optimization(SMBO)，它在模型的搜索空间中进行优化时会剪枝掉一些分支从而缩小模型的搜索空间。具体的讲SMBO的搜索是一种递进（Progressive）的形式，它的网络块的数目会从1个开始逐渐增加到$$B$$个。
+尽管已经将优化搜索空间优化到了$$10^{12}$$的数量级，但是这个规模依然十分庞大，在其中进行搜索依旧非常耗时。这篇文章的核心便是提出了Sequential model-based optimization\(SMBO\)，它在模型的搜索空间中进行优化时会剪枝掉一些分支从而缩小模型的搜索空间。具体的讲SMBO的搜索是一种递进（Progressive）的形式，它的网络块的数目会从1个开始逐渐增加到$$B$$个。
 
 当网络块数$$b=1$$时，它的搜索空间为$$2^2\times8^2 = 256$$（不考虑对称情况），也就是可以生成256个不同的网络块（$$\mathcal{B}_1$$），计构成网络的超参数为$$\mathcal{S}_1$$。这个搜索空间并不大，我们可以枚举出所有情况并训练由它们组成的网络（$$\mathcal{M}_1$$）。接着我们训练所有的$$\mathcal{M}_1$$个网络，接着得到训练后的模型（$$\mathcal{C}_1$$）。通过使用验证集我们可以得到每个模型的精度（$$\mathcal{A}_1$$）。有了网络超参数$$\mathcal{S}_1$$和它们对应的精度$$\mathcal{A}_1$$，我们希望有一个代理函数$$\pi$$能够计算参数（特征）和精度（标签）额关系，这样我们就可以省去非常耗时的模型训练的过程了。代理函数的细节我们会在1.3节详细分析，在这你只需要把它看做从网络超参$$\mathcal{S}_1$$到它对应的精度$$\mathcal{A}_1$$的映射即可。
 
@@ -60,12 +64,15 @@ $$
 
 仿照上一段的过程，我们可以使用$$b\geq2$$更新的代理函数$$\pi$$得到$$b+1$$的top-K的扩展结构并更新得到新的代理函数$$\pi$$。以此类推直到$$b=B$$，如Algorithm1和图1。
 
+![](/assets/PNASNet_a1.png)
 
+![](/assets/PNASNet_1.png)
 
 ## Reference
 
-[1] Liu C, Zoph B, Shlens J, et al. Progressive neural architecture search[J]. arXiv preprint arXiv:1712.00559, 2017.
+\[1\] Liu C, Zoph B, Shlens J, et al. Progressive neural architecture search\[J\]. arXiv preprint arXiv:1712.00559, 2017.
 
-[2] Zoph B, Le Q V. Neural architecture search with reinforcement learning[J]. arXiv preprint arXiv:1611.01578, 2016.
+\[2\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
 
-[3] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition[J]. arXiv preprint arXiv:1707.07012, 2017, 2(6).
+\[3\] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition\[J\]. arXiv preprint arXiv:1707.07012, 2017, 2\(6\).
+
