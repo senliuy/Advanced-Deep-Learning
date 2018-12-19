@@ -58,6 +58,7 @@
 * 2018-12-11：PolyNet: A Pursuit of Structural Diversity in Very Deep Networks
 * 2018-12-15：Neural Architecture Search with Reinforecement Learning
 * 2018-12-17：Learning Transferable Architectures for Scalable Image Recognition
+* 2018-12-19：Progressive Neural Architecture Search
 
 
 
