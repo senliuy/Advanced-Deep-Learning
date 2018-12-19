@@ -4,7 +4,7 @@ tags: NAS, NASNet, PNAS
 
 ## 前言
 
-
+在[NAS]()[2]和[NASNet]()[3]中我们介绍了如何使用强化学习训练卷积网络的超参，NAS是该系列的第一篇，
 
 ## Reference
 
