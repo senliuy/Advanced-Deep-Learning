@@ -66,7 +66,10 @@ $$
 
 ![](/assets/PNASNet_a1.png)
 
-![](/assets/PNASNet_1.png)
+<figure>
+<img src="/assets/PNASNet_1.png" alt="图1：SMBO流程图（B=3）"/>
+<figcaption>图1：SMBO流程图（B=3）</figcaption>
+</figure>
 
 SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)中介绍的宽度为K的Beam Search。
 
