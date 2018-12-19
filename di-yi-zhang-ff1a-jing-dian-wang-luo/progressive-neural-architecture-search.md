@@ -4,7 +4,7 @@ tags: NAS, NASNet, PNASNet
 
 ## 前言
 
-在[NAS]()\[2\]和[NASNet]()\[3\]中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
+在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)\[2\]和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html)\[3\]中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
 
 本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNASNet，其训练时间降为NASNet的1/8并且取得了目前在ImageNet上最优的效果。其主要的优化策略为：
 
@@ -12,7 +12,7 @@ tags: NAS, NASNet, PNASNet
 2. Sequential model-based optimization\(SMBO\)：一种启发式搜索的策略，训练的模型从简单到复杂，从剪枝的空间中进行搜索；
 3. 代理函数：使用代理函数预测模型的精度，省去了耗时的训练过程。
 
-在阅读本文之前，确保你已经读懂了[NAS]()和[NASNet]()两篇文章。
+在阅读本文之前，确保你已经读懂了[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html)两篇文章。
 
 ## 1. PNASNet详解
 
@@ -68,7 +68,7 @@ $$
 
 ![](/assets/PNASNet_1.png)
 
-SMBO像极了我们在[CTC]()中介绍的宽度为K的Beam Search。
+SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)中介绍的宽度为K的Beam Search。
 
 ### 1.3 代理函数
 
