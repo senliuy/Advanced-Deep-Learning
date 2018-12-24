@@ -52,7 +52,10 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 ![](/assets/NASNet_2.png)
 
-[PNASNet]()[21]则是一个性能更高的强化学习方法，其比NASNet具有更小的搜索空间，而且使用了启发式搜索，策略函数等强化学习领域的方法又花了网络超参的学习过程，其得到的网络也是目前ImageNet数据集上效果最好的网络。
+[PNASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.html)[21]则是一个性能更高的强化学习方法，其比NASNet具有更小的搜索空间，而且使用了启发式搜索，策略函数等强化学习领域的方法又花了网络超参的学习过程，其得到的网络也是目前ImageNet数据集上效果最好的网络。网络结构见图10。
+
+
+![](/assets/PNASNet_2.png)
 
 ## Reference
 
