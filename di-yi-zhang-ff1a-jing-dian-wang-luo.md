@@ -24,7 +24,7 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 ![](/assets/ResNet_8.jpg)
 
-2016年的冠军是商汤可以和港中文联合推出的CUImage，它是6个模型的模型集成，并无创新性，此处不再赘述。
+2016年ILSVRC的前几名都是模型集成，冠军是商汤可以和港中文联合推出的CUImage，它是6个模型的模型集成，并无创新性，此处不再赘述。
 
 
 
@@ -38,3 +38,4 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 [4] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
 
+[5] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition[C]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
