@@ -40,7 +40,9 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 轻量级网络的第一个尝试是[SqueezeNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeezenet-alexnet-level-accuracy-with-50x-fewer-parameters-and-05mb-model-size.html)[12]，SqueezeNet的策略是使用一部分$$1\times1$$卷积代替$$3\times3$$卷积，它对标的模型是AlexNet。
 
-轻量级网络最经典的策略是深度可分离卷积的提出，经典算法包括[MobileNetv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[13]和[Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)[14]。深度可分离卷积由深度卷积和单位卷积组成，深度卷积一般是以通道为单位的$$3\times3$$卷积，在这个过程中不同通道之间没有消息交换。而信息交换则由单位卷积完成，单位卷积就是标准的$$1\times1$$卷积。
+轻量级网络最经典的策略是深度可分离卷积的提出，经典算法包括[MobileNetv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[13]和[Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)[14]。深度可分离卷积由深度卷积和单位卷积组成，深度卷积一般是以通道为单位的$$3\times3$$卷积，在这个过程中不同通道之间没有消息交换。而信息交换则由单位卷积完成，单位卷积就是标准的$$1\times1$$卷积。深度可分离卷积的一个比较新的方法是[MobileNetv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[15]，它将深度可分离卷积和残差结构进行了结合，并通过一些列理论分析和实验得出了一种更优的结合方式。
+
+轻量级网络的另外一种策略是在传统卷积和深度可分离卷积中的一个折中方案，是由[ShuffleNetv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/shuffnet-v1-and-shufflenet-v2.html)[16]中提出的，所谓分组卷积是指在深度卷积中以几个通道为一组的普通卷积。ShuffleNetv1提出了通道洗牌策略以加强不同通道之间的信息流通。
 
 ## Reference
 
@@ -67,3 +69,13 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 [11] Zhang X, Li Z, Loy C C, et al. Polynet: A pursuit of structural diversity in very deep networks[C]//Computer Vision and Pattern Recognition (CVPR), 2017 IEEE Conference on. IEEE, 2017: 3900-3908.
 
 [12] Iandola F N, Han S, Moskewicz M W, et al. Squeezenet: Alexnet-level accuracy with 50x fewer parameters and< 0.5 mb model size[J]. arXiv preprint arXiv:1602.07360, 2016.
+
+[13] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications[J]. arXiv preprint arXiv:1704.04861, 2017.
+
+[14] Chollet F. Xception: Deep learning with depthwise separable convolutions[J]. arXiv preprint, 2017: 1610.02357.
+
+[15] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
+
+[16] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 (2017)
+
+[17] Ma N, Zhang X, Zheng H T, et al. Shufflenet v2: Practical guidelines for efficient cnn architecture design[J]. arXiv preprint arXiv:1807.11164, 2018.
