@@ -38,6 +38,10 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 卷积网络的另外一个方向是轻量级的网络，即在不大程度损失模型精度的前提下，尽可能的压缩模型的大小，提升预测的速度。
 
+轻量级网络的第一个尝试是[SqueezeNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeezenet-alexnet-level-accuracy-with-50x-fewer-parameters-and-05mb-model-size.html)[12]，SqueezeNet的策略是使用一部分$$1\times1$$卷积代替$$3\times3$$卷积，它对标的模型是AlexNet。
+
+轻量级网络最经典的策略是深度可分离卷积的提出，经典算法包括[MobileNetv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[13]和[Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)[14]。深度可分离卷积由深度卷积和单位卷积组成，深度卷积一般是以通道为单位的$$3\times3$$卷积，在这个过程中不同通道之间没有消息交换。而信息交换则由单位卷积完成，单位卷积就是标准的$$1\times1$$卷积。
+
 ## Reference
 
 \[1\] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
@@ -59,3 +63,7 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 [9] Szegedy C, Vanhoucke V, Ioffe S, et al. Rethinking the inception architecture for computer vision[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2818-2826.
 
 [10] Szegedy C, Ioffe S, Vanhoucke V, et al. Inception-v4, inception-resnet and the impact of residual connections on learning[C]//AAAI. 2017, 4: 12.
+
+[11] Zhang X, Li Z, Loy C C, et al. Polynet: A pursuit of structural diversity in very deep networks[C]//Computer Vision and Pattern Recognition (CVPR), 2017 IEEE Conference on. IEEE, 2017: 3900-3908.
+
+[12] Iandola F N, Han S, Moskewicz M W, et al. Squeezenet: Alexnet-level accuracy with 50x fewer parameters and< 0.5 mb model size[J]. arXiv preprint arXiv:1602.07360, 2016.
