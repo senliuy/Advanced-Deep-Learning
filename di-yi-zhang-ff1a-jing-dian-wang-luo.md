@@ -44,9 +44,11 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 轻量级网络的另外一种策略是在传统卷积和深度可分离卷积中的一个折中方案，是由[ResNeXt](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/aggregated-residual-transformations-for-deep-neural-networks.html)[16]中提出的，所谓分组卷积是指在深度卷积中以几个通道为一组的普通卷积。[ShuffleNetv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/shuffnet-v1-and-shufflenet-v2.html)[17]提出了通道洗牌策略以加强不同通道之间的信息流通，[ShuffleNetv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/shuffnet-v1-and-shufflenet-v2.html)[18]则是通过分析整个测试时间，提出了对内存访问更高效的ShuffleNetv2。ShuffleNetv2得出的结构是一种和DenseNet非常近似的密集连接结构。
 
-目前在ImageNet上表现最好的是谷歌DeepMind团队提出的NAS[19,20,21]系列文章，他们的核心观点是使用强化学习来生成一个完整的网络或是一个网络节点。[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)[19]是该系列的第一篇文章，它使用了强化学习在CIFAR-10上学习到了一个完整的密集连接的网络，如图8。
+目前在ImageNet上表现最好的是谷歌DeepMind团队提出的NAS[19,20,21]系列文章，他们的核心观点是使用强化学习来生成一个完整的网络或是一个网络节点。[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)[19]是该系列的第一篇文章，它使用了强化学习在CIFAR-10上学习到了一个类似于DenseNet的完整的密集连接的网络，如图8。
 
+![](/assets/NAS_4.png)
 
+NASNet解决了NAS不能应用在ImageNet上的问题，它学习的不再是一个完整的网络而是一个网络单元。这种单元的结构往往比NAS网络要简答得多，因此学习起来效率更高；而且通过堆叠更多NASNet单元的形式可以非常方便的将其迁移到其它任何数据集，包括权威的ImageNet。
 
 ## Reference
 
