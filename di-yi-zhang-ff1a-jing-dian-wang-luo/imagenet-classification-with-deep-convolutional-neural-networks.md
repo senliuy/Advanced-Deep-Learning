@@ -106,7 +106,7 @@ model.summary()
 
 ###### 图4：根据keras的summary函数得到AlexNet网络参数统计图
 
-![](/assets/AlexNet_4.png)
+![1](/assets/AlexNet_4.png)
 
 ### 2.1 多GPU训练
 
