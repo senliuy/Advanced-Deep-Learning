@@ -30,7 +30,9 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 ![](/assets/SENet_1.png)
 
+另外一个非常重要的网络是黄高团队于CVPR2017中提出的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)，本质上是各个单元都有连接的密集连接结构（图7）。
 
+![](/assets/DenseNet_1.png)
 
 
 ## Reference
