@@ -101,4 +101,4 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 [21] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition[J]. arXiv preprint arXiv:1707.07012, 2017, 2(6).
 
-[22]
+[22] Huang G, Liu S, van der Maaten L, et al. CondenseNet: An Efficient DenseNet using Learned Group Convolutions[J]. group, 2017, 3(12): 11.
