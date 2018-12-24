@@ -36,6 +36,8 @@ GoogLeNet（图4）则从特征多样性的角度研究了卷积网络，GoogLeN
 
 除了ILSVRC的比赛中个冠军作品们之外，在提升网络精度中还有一些值得学习的算法。例如[Inception的几个变种](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)[8, 9, 10]。基于多项式提出的[PolyNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/polynet-a-pursuit-of-structural-diversity-in-very-deep-networks.html)[11]，PolyNet采用了更加多样性的特征。
 
+卷积网络的另外一个方向是轻量级的网络，即在不大程度损失模型精度的前提下，尽可能的压缩模型的大小，提升预测的速度。
+
 ## Reference
 
 \[1\] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
