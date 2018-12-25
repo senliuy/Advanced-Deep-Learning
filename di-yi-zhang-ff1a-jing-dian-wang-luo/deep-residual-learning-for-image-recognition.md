@@ -269,7 +269,7 @@ def resnet_v2(x):
 
 ###### 图7：残差网络展开成二叉树
 
-![](/assets/ResNet_8.png)
+![](/assets/ResNet_8.jpg)
 
 
 ## 3.残差网络与模型集成
