@@ -93,7 +93,7 @@ model_rand_VGG16.summary()
 
 ### 2.2 数据读取
 
-Keras提供了多种读取数据的方法，我们推荐使用**生成器**的方式。在生成器中，Keras在训练模型的同时把下一批要训练的数据预先读取到内存中，这样会节约内存，有利于大规模数据的训练。Keras的生成器的初始化是`ImageDataGenerator`类，它有一些自带的数据增强的方法，我们会在3.1节进行介绍。
+Keras提供了多种读取数据的方法，我们推荐使用**生成器**的方式。在生成器中，Keras在训练模型的同时把下一批要训练的数据预先读取到内存中，这样会节约内存，有利于大规模数据的训练。Keras的生成器的初始化是`ImageDataGenerator`类，它有一些自带的数据增强的方法，我们会在2.5节进行介绍。
 
 在这个实验中我们将不同的分类置于不同的目录之下，因此读取数据时使用的是`flow_from_directory()`函数，训练数据读取代码如下（验证和测试相同）：
 
@@ -119,9 +119,108 @@ history_simple = model_simple.fit_generator(train_generator,
                                             validation_data=val_generator)
 ```
 
-经过20个Epoch之后，模型会趋于收敛，损失值曲线和精度曲线见图2。从收敛情况我们可以分析到模型此时已经过拟合，我们需要一些策略来解决这个问题。
+经过20个Epoch之后，模型会趋于收敛，损失值曲线和精度曲线见图2，此时的测试集的准确率是0.8275。从收敛情况我们可以分析到模型此时已经过拟合，我们需要一些策略来解决这个问题。
 
+![](/assets/12306_2.png)
 
+### 2.4 Dropout
 
+Dropout[1]一直是解决过拟合非常有效的策略。在使用dropout时丢失率的设置是一个技术活，丢失率太小的话Dropout不能发挥其作用，丢失率太大的话模型会不容易收敛，甚至会一直震荡。在这里我在后面的全连接层和最后一层卷积层各加一个丢失率为0.25的Dropout。收敛曲线和精度曲线见图3，我们可以看出过拟合问题依旧存在，但是略有减轻，此时得到的测试集准确率是0.83375。
+
+![](/assets/12306_3.png)
+
+### 2.5 数据增强
+
+Keras提供在调用ImageDataGenerator类的时候根据它的参数添加数据增强策略，在进行数据扩充时，我有几点建议：
+
+1. 扩充策略的设置要建立在对数据集充分的观测和理解上；
+2. 正确的扩充策略能增加样本数量，大幅减轻过拟合的问题；
+3. 错误的扩充策略很有可能导致模型不好收敛，更严重的问题是使训练集和测试集的分布更加不一致，加剧过拟合的问题；
+4. 往往开发者需要根据业务场景自行实现扩充策略。
+
+下面代码是我使用的数据增强的几个策略。
+
+```py
+train_data_gen_aug = ImageDataGenerator(rescale=1./255,
+                                        horizontal_flip = True, 
+                                        zoom_range = 0.1,
+                                       width_shift_range= 0.1,
+                                       height_shift_range=0.1,
+                                       shear_range=0.1,
+                                       rotation_range=5)
+train_generator_aug = train_data_gen_aug.flow_from_directory(train_folder, 
+                                                     target_size=(66, 66), 
+                                                     batch_size=128, 
+                                                     class_mode='categorical')
+```
+
+其中```rescale=1./255```参数的作用是对图像做归一化，归一化是一个在几乎所有图像问题上均有用的策略；```horizontal_flip = True```，增加了水平翻转，这个是适用于当前数据集的，但是在OCR等方向水平翻转是不能用的；其它的包括缩放，平移，旋转等都是常见的数据增强的策略，此处不再赘述。
+
+结合Dropout，数据扩充可以进一步减轻过拟合的问题，它的收敛曲线和精度曲线见图4，此时得到的测试集准确率是0.84875。
+
+![](/assets/12306_4.png)
+
+### 2.6 迁移学习
+
+在2.1节中我们介绍了搭建模型中有自行搭建和使用经典模型两种策略，通过调用Keras的applications模块我们可以找到Keras中在ImageNet上训练过的几个模型，他们依次是：
+
+* [Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)
+* [VGG16](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)
+* [VGG19](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)
+* [ResNet50](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)
+* [InceptionV3](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)
+* [InceptionResNetV2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)
+* [MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)
+* [DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)
+* [NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)
+
+使用经典模型往往和迁移学习配合使用效果更好，所谓迁移学习是将训练好的任务A（最常用的是ImageNet）的模型用于当前任务的网络的初始化，然后在自己的数据上进行微调。该方法在数据集比较小的任务上往往效果很好。Keras提供用户自定义迁移学习时哪些层可以微调，哪些层不需要微调，通过layer.trainable设置。Keras使用迁移学习提供的模型往往比较深，容易产生梯度消失或者梯度爆炸的问题，建议添加BN层。最好的策略是选择好适合自己任务的网络后自己使用ImageNet数据集进行训练。
+
+以VGG-16为例，其使用迁移学习的代码如下。第一次运行这段代码时需要下载供迁移学习的模型，因此速度会比较慢，请耐心等待。
+
+```py
+model_trans_VGG16 = models.Sequential()
+trans_VGG16 = VGG16(weights='imagenet', include_top=False, input_shape=(224,224,3))
+model_trans_VGG16.add(trans_VGG16)
+model_trans_VGG16.add(layers.Flatten())
+model_trans_VGG16.add(layers.Dense(1024, activation='relu'))
+model_trans_VGG16.add(layers.BatchNormalization())
+model_trans_VGG16.add(layers.Dropout(0.25))
+model_trans_VGG16.add(layers.Dense(80, activation='softmax'))
+model_trans_VGG16.summary()
+```
+
+它的收敛曲线和精度曲线见图5，此时得到的测试集准确率是0.774375，此时迁移学习的效果反而不如我们前面随便搭建的网络。在这个问题上导致迁移学习模型表现效果不好的原因有两个：
+
+1. VGG-16的网络过深，在12306验证码这种简单的验证码上容易过拟合；
+2. 由于```include_top```的值为```False```，所以网络的全连接层是随机初始化的，导致开始训练时损失值过大，带偏已经训练好的表示层。
+
+![](/assets/12306_5.png)
+
+为了防止表示层被带偏，我们可以将Keras中的层的```trainable```值设为```False```来达到此目的。结合之前介绍的数据增强和Dropout，最终我们得到的收敛曲线和精度曲线见图6，此时得到的测试集准确率是0.91625。
+
+```py
+for layer in trans_VGG16.layers:
+    layer.trainable = False
+```
+
+![](/assets/12306_6.png)
+
+## 总结
+
+在这篇文章中，我们将12306网站验证码的破解工作转换成了一个经典的多分类问题，并通过深度学习和一些trick将识别率提高到了91.625%。也许这个精度不能让您满意，此时你需要自己做一些工作来提升精度，以下是可能有用的几点：
+
+1. 更合理的网络结构：网络层数，节点数量，卷积、池化、全连接的搭配；
+2. 更好的缓解过拟合的策略：Dropout数量和位置，正则项；
+3. 更合理的数据扩充策略；
+4. 更合适的迁移学习模型以及冻结策略；
+5. 者其它自己了解的其它优化方向的策略（例如自适应学习率，L1正则，Attention等）；
+6. 采集并标注更多的数据。
+
+91%的精度远远不是我们利用这批数据能达到的最高精度，写作这篇文章的目的是为了探讨深度学习在物体分类中的使用方法和针对训练日志优化模型的过程，如果你有更好的策略欢迎在评论区给出。
+
+## Reference
+
+[1] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors[J]. arXiv preprint arXiv:1207.0580, 2012.
 
 
