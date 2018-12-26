@@ -36,7 +36,44 @@
 
 ## 2. 破解过程
 
-### 2.1 Keras生成器
+物体分类的代码可以简单分成三个部分：
+
+1. 网络搭建；
+2. 数据读取；
+3. 模型训练。
+
+但是在上面的三步中每一步都存在一些超参数，怎么设置这些超参数是一个有经验的算法工程师必须掌握的技能。我们会在下面的章节中介绍每一步的细节，并给出我自己的经验和优化策略。
+
+### 2.1 网络搭建
+
+我们搭建一个分类网络时，可以使用上面几篇文章中介绍的经典的网络结构，也可以自行搭建。当自行搭建分类网络时，可以使用下面几步：
+
+1. 堆积卷积操作（Conv2D）和最大池化操作（MaxPooling2D），第一层需要指定输入图像的尺寸和通道数；
+2. Flatten()用于将Feature Map展开成特征向量；
+3. 之后接全连接层和激活层，注意多分类应该使用softmax激活函数。
+
+自行搭建网络时，我有几个经验：
+
+1. 通道数的数量取 $$2^n$$；
+2. 每次MaxPooling之后通道数乘2；
+3. 最后一层Feature Map的尺寸不宜太大也不宜太小(7-20直接是个不错的选择)；
+4. 输出层和Flatten()层往往需要加最少一个隐层用于过渡特征；
+5. 根据计算Flatten()层的节点数量设计隐层节点的个数。
+
+下面代码是我搭建的一个分类网络，结构非常简单。
+
+```py
+model_simple = models.Sequential()
+model_simple.add(layers.Conv2D(32, (3,3), padding='same', activation='relu', input_shape = (66,66,3)))
+model_simple.add(layers.MaxPooling2D((2,2)))
+model_simple.add(layers.Conv2D(64, (3,3), padding='same', activation='relu'))
+model_simple.add(layers.MaxPooling2D((2,2)))
+model_simple.add(layers.Conv2D(128, (3,3), padding='same', activation='relu'))
+model_simple.add(layers.MaxPooling2D((2,2)))
+model_simple.add(layers.Flatten())
+model_simple.add(layers.Dense(1024, activation='relu'))
+model_simple.add(layers.Dense(80, activation='softmax'))
+```
 
 
 
