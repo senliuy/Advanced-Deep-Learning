@@ -75,6 +75,21 @@ model_simple.add(layers.Dense(1024, activation='relu'))
 model_simple.add(layers.Dense(80, activation='softmax'))
 ```
 
+或者我们也可以使用之前提到的经典卷积网络，这里以VGG-16为例。Keras提供了VGG-16在ImageNet-2012（1000类）上的分类网络，由于输出节点数不一样，这里我们只取VGG-16的表示层，代码如下。
+
+```py
+model_rand_VGG16 = models.Sequential()
+rand_VGG16 = VGG16(weights=None, include_top=False, input_shape=(224,224,3))
+model_rand_VGG16.add(rand_VGG16)
+model_rand_VGG16.add(layers.Flatten())
+model_rand_VGG16.add(layers.Dense(1024, activation='relu'))
+model_rand_VGG16.add(layers.Dropout(0.25))
+model_rand_VGG16.add(layers.BatchNormalization()) # 梯度爆炸
+model_rand_VGG16.add(layers.Dense(80, activation='softmax'))
+model_rand_VGG16.summary()
+```
+
+
 
 
 
