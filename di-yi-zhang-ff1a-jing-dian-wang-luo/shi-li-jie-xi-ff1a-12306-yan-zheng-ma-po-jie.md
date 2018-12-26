@@ -119,5 +119,9 @@ history_simple = model_simple.fit_generator(train_generator,
                                             validation_data=val_generator)
 ```
 
+经过20个Epoch之后，模型会趋于收敛，损失值曲线和精度曲线见图2。从收敛情况我们可以分析到模型此时已经过拟合，我们需要一些策略来解决这个问题。
+
+
+
 
 
