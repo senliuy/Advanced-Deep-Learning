@@ -12,7 +12,11 @@
 
 12306的验证码是从8个图片中找到要求的物体，如图1所示。
 
-![](/assets/12306_1.png)
+<figure>
+<img src="/assets/12306_1.png" alt="图1：12306验证码样式"/>
+<figcaption>图1：12306验证码样式</figcaption>
+</figure>
+
 
 我统计了1000个样本，发现12306的类别数其实只有80类，它们的类别以及对应的统计个数如表1
 
@@ -121,13 +125,21 @@ history_simple = model_simple.fit_generator(train_generator,
 
 经过20个Epoch之后，模型会趋于收敛，损失值曲线和精度曲线见图2，此时的测试集的准确率是0.8275。从收敛情况我们可以分析到模型此时已经过拟合，我们需要一些策略来解决这个问题。
 
-![](/assets/12306_2.png)
+<figure>
+<img src="/assets/12306_2.png" alt="图2：自行搭建网络的损失曲线和精度曲线"/>
+<figcaption>图2：自行搭建网络的损失曲线和精度曲线</figcaption>
+</figure>
+
 
 ### 2.4 Dropout
 
 Dropout\[1\]一直是解决过拟合非常有效的策略。在使用dropout时丢失率的设置是一个技术活，丢失率太小的话Dropout不能发挥其作用，丢失率太大的话模型会不容易收敛，甚至会一直震荡。在这里我在后面的全连接层和最后一层卷积层各加一个丢失率为0.25的Dropout。收敛曲线和精度曲线见图3，我们可以看出过拟合问题依旧存在，但是略有减轻，此时得到的测试集准确率是0.83375。
 
-![](/assets/12306_3.png)
+<figure>
+<img src="/assets/12306_3.png" alt="图3：加入Dropout之后的损失曲线和精度曲线"/>
+<figcaption>图3：加入Dropout之后的损失曲线和精度曲线</figcaption>
+</figure>
+
 
 ### 2.5 数据增强
 
@@ -158,7 +170,11 @@ train_generator_aug = train_data_gen_aug.flow_from_directory(train_folder,
 
 结合Dropout，数据扩充可以进一步减轻过拟合的问题，它的收敛曲线和精度曲线见图4，此时得到的测试集准确率是0.84875。
 
-![](/assets/12306_4.png)
+<figure>
+<img src="/assets/12306_4.png" alt="图4：加入数据增强之后的损失曲线和精度曲线"/>
+<figcaption>图4：加入数据增强之后的损失曲线和精度曲线</figcaption>
+</figure>
+
 
 ### 2.6 迁移学习
 
@@ -195,7 +211,11 @@ model_trans_VGG16.summary()
 1. VGG-16的网络过深，在12306验证码这种简单的验证码上容易过拟合；
 2. 由于`include_top`的值为`False`，所以网络的全连接层是随机初始化的，导致开始训练时损失值过大，带偏已经训练好的表示层。
 
-![](/assets/12306_5.png)
+<figure>
+<img src="/assets/12306_5.png" alt="图5：VGG-16表示层可训练的损失曲线和精度曲线"/>
+<figcaption>图5：VGG-16表示层可训练的损失曲线和精度曲线</figcaption>
+</figure>
+
 
 为了防止表示层被带偏，我们可以将Keras中的层的`trainable`值设为`False`来达到此目的。结合之前介绍的数据增强和Dropout，最终我们得到的收敛曲线和精度曲线见图6，此时得到的测试集准确率是0.91625。
 
@@ -204,7 +224,10 @@ for layer in trans_VGG16.layers:
     layer.trainable = False
 ```
 
-![](/assets/12306_6.png)
+<figure>
+<img src="/assets/12306_6.png" alt="图6：VGG-16表示层不可训练的损失曲线和精度曲线"/>
+<figcaption>图6：VGG-16表示层不可训练的损失曲线和精度曲线</figcaption>
+</figure>
 
 ## 总结
 
