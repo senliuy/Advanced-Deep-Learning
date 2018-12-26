@@ -56,7 +56,7 @@
 
 1. 通道数的数量取 $$2^n$$；
 2. 每次MaxPooling之后通道数乘2；
-3. 最后一层Feature Map的尺寸不宜太大也不宜太小\(7-20直接是个不错的选择\)；
+3. 最后一层Feature Map的尺寸不宜太大也不宜太小\(7-20之间是个不错的选择\)；
 4. 输出层和Flatten\(\)层往往需要加最少一个隐层用于过渡特征；
 5. 根据计算Flatten\(\)层的节点数量设计隐层节点的个数。
 
@@ -125,7 +125,7 @@ history_simple = model_simple.fit_generator(train_generator,
 
 ### 2.4 Dropout
 
-Dropout[1]一直是解决过拟合非常有效的策略。在使用dropout时丢失率的设置是一个技术活，丢失率太小的话Dropout不能发挥其作用，丢失率太大的话模型会不容易收敛，甚至会一直震荡。在这里我在后面的全连接层和最后一层卷积层各加一个丢失率为0.25的Dropout。收敛曲线和精度曲线见图3，我们可以看出过拟合问题依旧存在，但是略有减轻，此时得到的测试集准确率是0.83375。
+Dropout\[1\]一直是解决过拟合非常有效的策略。在使用dropout时丢失率的设置是一个技术活，丢失率太小的话Dropout不能发挥其作用，丢失率太大的话模型会不容易收敛，甚至会一直震荡。在这里我在后面的全连接层和最后一层卷积层各加一个丢失率为0.25的Dropout。收敛曲线和精度曲线见图3，我们可以看出过拟合问题依旧存在，但是略有减轻，此时得到的测试集准确率是0.83375。
 
 ![](/assets/12306_3.png)
 
@@ -154,7 +154,7 @@ train_generator_aug = train_data_gen_aug.flow_from_directory(train_folder,
                                                      class_mode='categorical')
 ```
 
-其中```rescale=1./255```参数的作用是对图像做归一化，归一化是一个在几乎所有图像问题上均有用的策略；```horizontal_flip = True```，增加了水平翻转，这个是适用于当前数据集的，但是在OCR等方向水平翻转是不能用的；其它的包括缩放，平移，旋转等都是常见的数据增强的策略，此处不再赘述。
+其中`rescale=1./255`参数的作用是对图像做归一化，归一化是一个在几乎所有图像问题上均有用的策略；`horizontal_flip = True`，增加了水平翻转，这个是适用于当前数据集的，但是在OCR等方向水平翻转是不能用的；其它的包括缩放，平移，旋转等都是常见的数据增强的策略，此处不再赘述。
 
 结合Dropout，数据扩充可以进一步减轻过拟合的问题，它的收敛曲线和精度曲线见图4，此时得到的测试集准确率是0.84875。
 
@@ -193,11 +193,11 @@ model_trans_VGG16.summary()
 它的收敛曲线和精度曲线见图5，此时得到的测试集准确率是0.774375，此时迁移学习的效果反而不如我们前面随便搭建的网络。在这个问题上导致迁移学习模型表现效果不好的原因有两个：
 
 1. VGG-16的网络过深，在12306验证码这种简单的验证码上容易过拟合；
-2. 由于```include_top```的值为```False```，所以网络的全连接层是随机初始化的，导致开始训练时损失值过大，带偏已经训练好的表示层。
+2. 由于`include_top`的值为`False`，所以网络的全连接层是随机初始化的，导致开始训练时损失值过大，带偏已经训练好的表示层。
 
 ![](/assets/12306_5.png)
 
-为了防止表示层被带偏，我们可以将Keras中的层的```trainable```值设为```False```来达到此目的。结合之前介绍的数据增强和Dropout，最终我们得到的收敛曲线和精度曲线见图6，此时得到的测试集准确率是0.91625。
+为了防止表示层被带偏，我们可以将Keras中的层的`trainable`值设为`False`来达到此目的。结合之前介绍的数据增强和Dropout，最终我们得到的收敛曲线和精度曲线见图6，此时得到的测试集准确率是0.91625。
 
 ```py
 for layer in trans_VGG16.layers:
@@ -221,6 +221,5 @@ for layer in trans_VGG16.layers:
 
 ## Reference
 
-[1] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors[J]. arXiv preprint arXiv:1207.0580, 2012.
-
+\[1\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
 
