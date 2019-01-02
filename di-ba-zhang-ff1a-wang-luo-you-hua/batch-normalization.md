@@ -8,6 +8,10 @@ Batch Normalization(BN)是深度学习中非常好用的一个算法，加入BN�
 
 ## 1. BN详解
 
+### 1.1 内部协变量偏移
+
+BN的提出是基于小批量随机梯度下降（mini-batch SGD）的，mini-batch SGD是介于one-example SGD和full-batch SGD的一个折中方案，其优点是比full-batch SGD有更小的硬件需求，比one-example SGD有更好的收敛速度和并行能力。
+
 
 
 ## Reference
