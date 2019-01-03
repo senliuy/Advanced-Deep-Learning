@@ -154,6 +154,10 @@ BN除了可以应用在MLP上，其在CNN网络中的表现也非常好，但是
 
 在图2中，假设一个批量有$$m$$个样本，Feature Map的尺寸是$$p\times q$$，通道数是$$d$$。在卷积网络的中，BN的操作是以Feature Map为单位的，因此一个BN要统计的数据个数为$$m\times p \times q$$，每个Feature Map使用一组$$\gamma$$和$$\beta$$。
 
+### 1.6 BN的背后原理
+
+
+
 ## Reference
 
 \[1\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
