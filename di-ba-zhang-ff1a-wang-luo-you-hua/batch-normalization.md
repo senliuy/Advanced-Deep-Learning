@@ -88,6 +88,15 @@ $$
 
 在训练的时候，我们采用SGD算法可以获得该批量中样本的均值和方差。但是在测试的时候，数据都是以单个样本的形式输入到网络中的。在计算BN层的输出的时候，我们需要获取的均值和方差是通过训练集统计得到的。具体的讲，我们会从训练集中随机取多个批量的数据集，每个批量的样本数是$$m$$，测试的时候使用的均值和方差是这些批量的均值。
 
+$$
+\text{E}(x) \leftarrow \text{E}_{\mathcal{B}}[\mu_\mathcal{B}]
+$$
+
+$$
+\text{Var}(x) \leftarrow \frac{m}{m-1}\text{E}_{\mathcal{B}}[\sigma^2_\mathcal{B}]
+$$
+
+
 ## Reference
 
 \[1\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
