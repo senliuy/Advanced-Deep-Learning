@@ -56,6 +56,34 @@ BN的伪代码如算法1所示
 
 ![](/assets/BN_a1.png)
 
+在训练时，我们需要计算BN的反向传播过程，感兴趣的同学可以自行推导，这里直接给出结论（$$l$$表示损失函数）。
+
+$$
+\frac{\partial l}{\partial \hat{x}_i} = \frac{\partial l}{\partial y_i} \cdot \gamma
+$$
+
+$$
+\frac{\partial l}{\partial \sigma_\mathcal{B}^2} = \sum^m_{i=1} \frac{\partial l}{\partial \hat{x}_i} \cdot (x_i - \mu_\mathcal{B}) \cdot \frac{-1}{2} (\sigma_\mathcal{B}^2 + \epsilon)^{-\frac{3}{2}}
+$$
+
+$$
+\frac{\partial l}{\partial \mu_\mathcal{B}} = (\sum^m_{i=1}\frac{\partial l}{\partial \hat{x}_i} \cdot \frac{-1}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}) + \frac{\partial l}{\partial \sigma_\mathcal{B}^2} \cdot \frac{\sum_{i=1}^m -2(x_i - \mu_\mathcal{B})}{m}
+$$
+
+$$
+\frac{\partial l}{\partial x_i} = \frac{\partial l}{\partial \hat{x}_i} \cdot \frac{1}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}) + \frac{\partial l}{\partial \sigma_\mathcal{B}^2} \cdot \frac{2(x_i - \mu_\mathcal{B})}{m} + \frac{\partial l}{ \partial \mu_\mathcal{B}} \cdot \frac{1}{m}
+$$
+
+$$
+\frac{\partial l}{\partial \gamma} = \sum^m_{i=1} \frac{\partial l}{\partial y_i} \cdot \hat{x}_i
+$$
+
+$$
+\frac{\partial l}{\partial \beta} = \sum^m_{i=1} \frac{\partial l}{\partial y_i}
+$$
+
+
+
 ## Reference
 
 \[1\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
