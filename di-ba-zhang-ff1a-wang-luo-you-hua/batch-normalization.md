@@ -85,7 +85,6 @@ $$
 通过上面的式子中我们可以看出BN是处处可导的，因此可以直接作为层的形式加入到神经网络中。
 
 
-
 ### 1.4 BN的测试过程
 
 在训练的时候，我们采用SGD算法可以获得该批量中样本的均值和方差。但是在测试的时候，数据都是以单个样本的形式输入到网络中的。在计算BN层的输出的时候，我们需要获取的均值和方差是通过训练集统计得到的。具体的讲，我们会从训练集中随机取多个批量的数据集，每个批量的样本数是$$m$$，测试的时候使用的均值和方差是这些批量的均值。
@@ -113,6 +112,12 @@ $$
 其中$$\text{E}_{moving}(x)$$表示滑动均值，$$\text{E}_{sample}(x)$$表示采样均值，方差定义类似。$$m$$表示遗忘因子momentum，默认值是0.99。
 
 滑动均值和滑动方差，以及可学参数$$\beta$$，$$\gamma$$均是对输入特征的线性操作，因此可以这两个操作合并起来。
+
+$$
+y = \frac{\gamma}{\sqrt{\text{Var}[x] + \epsilon}} \cdot x + (\beta - \frac{\gamma \text{E}[x]}{\sqrt{\text{Var}[x] + \epsilon}}) 
+$$
+
+
 ## Reference
 
 \[1\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
