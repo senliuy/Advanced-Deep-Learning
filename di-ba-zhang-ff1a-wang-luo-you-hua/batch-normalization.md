@@ -82,6 +82,10 @@ $$
 \frac{\partial l}{\partial \beta} = \sum^m_{i=1} \frac{\partial l}{\partial y_i}
 $$
 
+通过上面的式子中我们可以看出BN是处处可导的，因此可以直接作为层的形式加入到神经网络中。
+
+### 1.4 BN的测试过程
+
 
 
 ## Reference
