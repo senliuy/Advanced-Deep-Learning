@@ -112,7 +112,7 @@ $$
 
 其中$$\text{E}_{moving}(x)$$表示滑动均值，$$\text{E}_{sample}(x)$$表示采样均值，方差定义类似。$$m$$表示遗忘因子momentum，默认值是0.99。
 
-
+滑动均值和滑动方差，以及可学参数$$\beta$$，$$\gamma$$均是对输入特征的线性操作，因此可以这两个操作合并起来。
 ## Reference
 
 \[1\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
