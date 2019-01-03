@@ -84,7 +84,7 @@ $$
 
 通过上面的式子中我们可以看出BN是处处可导的，因此可以直接作为层的形式加入到神经网络中。
 
-注意：因为如果想要计算所有样本的均值与方差，显然不太现实，所以每次计算每个batch的方差与均值，为了使得每个batch的方差与均值尽可能的接近整体分布方差与均值的估计值，这里采用一种指数移动平均。
+
 
 ### 1.4 BN的测试过程
 
@@ -97,6 +97,20 @@ $$
 $$
 \text{Var}(x) \leftarrow \frac{m}{m-1}\text{E}_{\mathcal{B}}[\sigma^2_\mathcal{B}]
 $$
+
+上面的过程明显非常耗时，更多的开源框架是在训练的时候，顺便就把采样到的样本的均值和方差保留了下来。在Keras中，这个变量叫做滑动平均（moving average），对应的均值叫做滑动均值（moving mean），方差叫做滑动方差（moving variance）。它们均使用```moving_average_update```进行更新。在测试的时候则使用滑动均值和滑动方差代替上面的$$\text{E}(x)$$和$$\text{Var}(x)$$。
+
+滑动均值和滑动方差的更新如下：
+
+$$
+\text{E}_{moving}(x) = m \times \text{E}_{moving}(x) + (1-m) \times \text{E}_{sample}(x)
+$$
+
+$$
+\text{Var}_{moving}(x) = m \times \text{Var}_{moving}(x) + (1-m) \times \text{Var}_{sample}(x)
+$$
+
+其中$$\text{E}_{moving}(x)$$表示滑动均值，$$\text{E}_{sample}(x)$$表示采样均值，方差定义类似。$$m$$表示遗忘因子momentum，默认值是0.99。
 
 
 ## Reference
