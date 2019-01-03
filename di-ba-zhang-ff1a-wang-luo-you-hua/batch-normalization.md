@@ -14,7 +14,7 @@ BN的提出是基于小批量随机梯度下降（mini-batch SGD）的，mini-ba
 
 在Sergey Ioffe的文章中，他们认为BN的主要贡献是减弱了内部协变量偏移（ICS）的问题，论文中对ICS的定义是：as the change in the distribution of network activations due to the change in network parameters during training。作者认为ICS是导致网络收敛的慢的罪魁祸首，因为模型需要学习在训练过程中会不断变化的隐层输入分布。作者提出BN的动机是企图在训练过程中将每一层的隐层节点的输入固定下来，这样就可以避免ICS的问题了。
 
-
+在深度学习训练中，白化（Whiten）是加速收敛的一个小Trick，所谓白化是指将图像像素点变化到均值为0，方差为1的正态分布。我们知道在深度学习中，第$$i$$层的输出会直接作为第$$i+1$$层的输入，所以我们能不能对神经网络的每一层的输入都做一次白化呢？其实BN就是这么做的。
 
 ## Reference
 
