@@ -174,7 +174,35 @@ $$
 G'_{t,i} = \nabla_{w_i^{(t)}} \mathcal{L}(W_1^{(t+1)}, ..., W_{i-1}^{(t+1)}, W_i^{(t)}, W_{i+1}^{(t)}..., W_k^{(t)};x^{(t)}, y^{(t)})
 $$
 
-两个变量的区别在于$$W_1, ..., W_{i-1}$$是$$t$$时刻的还是
+两个变量的区别在于$$W_1, ..., W_{i-1}$$是$$t$$时刻的还是$$t+1$$时刻的，其中$$G_{t,i}$$表示更新梯度时使用的参数，$$G'_{t,i}$$表示使用这批样本更新后的新的参数。在上面提到的欧氏距离中，值越接近0说明ICS越小。另外一个相似度指标是cosine夹角，值越接近于1说明ICS越小。图4的实验结果（25层的DLN）表明BN和ICS的关系并不是很大。
+
+![](/assets/BN_4.png)
+
+通过上面两个实验，作者认为BN和ICS的关系不大，那么BN为什么效果好呢，作者认为BN的作用是平滑了损失平面（loss landscape），关于损失平面的介绍，参考文章[3]，这篇文章中介绍了损失平面的概念，并指出残差网络和DenseNet均起到了平滑损失平面的作用，因此他们具有较快的收敛速度。
+
+作者证明了BN处理之后的损失函数满足Lipschitz连续[4]，即损失函数的梯度小于一个常量，因此网络的损失平面不会震荡的过于严重。
+
+$$
+||f(x_1) - f(x_2)|| \leq L||x_1 - x_2||
+$$
+
+而且损失函数的梯度也满足Lipschitz连续，这里叫做$$\beta$$-平滑，即斜率的斜率也不会超过一个常量。
+
+$$
+||\nabla f(x_1) - \nabla f(x_2)|| \leq \beta ||x_1 - x_2||
+$$
+
+作者认为当着两个常量的值均比较小的时候，损失平面就可以看做是平滑的。图5是加入没有跳跃连接的网络和加入跳跃连接（残差网络）的网络的损失平面的可视化，作者认为BN和残差网络对损失平面平滑的效果类似。
+
+![](/assets/BN_5.png)
+
+作者对于自己的猜想，给出了5个定理，引理以及观察并在附录中给出了证明，由于本人的数学能力有限，这些证明有些看不懂，有需要的同学自行查看证明过程。
+
+* 定理4.1证明了BN可以使神经网络满足Lipschitz连续；
+* 定理4.2证明了BN是神经网络的损失函数的梯度也满足Lipschitz连续；
+* 观察4.3证明了BN的作用不仅仅只是归一化；
+* 定理4.4证明了BN可以降低损失函数梯度的上界；
+* 定理4.5证明了BN对参数的不同初始化更加不敏感。
 
 
 ## Reference
@@ -183,3 +211,6 @@ $$
 
 \[2\] Santurkar S, Tsipras D, Ilyas A, et al. How Does Batch Normalization Help Optimization?\(No, It Is Not About Internal Covariate Shift\)\[J\]. arXiv preprint arXiv:1805.11604, 2018.
 
+[3] Hao Li, Zheng Xu, Gavin Taylor, and Tom Goldstein. Visualizing the loss landscape of neural nets. arXiv preprint arXiv:1712.09913, 2017.
+
+[4] https://en.wikipedia.org/wiki/Lipschitz_continuity
