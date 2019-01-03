@@ -117,6 +117,8 @@ $$
 y = \frac{\gamma}{\sqrt{\text{Var}[x] + \epsilon}} \cdot x + (\beta - \frac{\gamma \text{E}[x]}{\sqrt{\text{Var}[x] + \epsilon}}) 
 $$
 
+## 卷积网络中的BN
+
 
 ## Reference
 
