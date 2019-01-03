@@ -20,9 +20,12 @@ BN的提出是基于小批量随机梯度下降（mini-batch SGD）的，mini-ba
 
 我们知道sigmoid激活函数和tanh激活函数存在梯度饱和的区域，其原因是激活函数的输入值过大或者过小，其得到的激活函数的梯度值会非常接近于0，使得网络的收敛速度减慢。传统的方法是使用不存在梯度饱和区域的激活函数，例如ReLU等。BN也可以缓解梯度饱和的问题，它的策略是在调用激活函数之前将$$WX+b$$的值归一化到梯度值比较大的区域。假设激活函数为$$g$$，BN应在g之前使用：
 
+
 $$
 z = g(\text{BN}(Wx+b))
 $$
+
+
 ### 1.3 BN的训练过程
 
 如果按照传统白化的方法，整个数据集都会参与归一化的计算，但是这种过程无疑是非常耗时的。BN的归一化过程是以批量为单位的。如图1所示，假设一个批量有$$n$$个样本 $$\mathcal{B} = \{x_1, x_2, ..., x_m\}$$，每个样本有$$d$$个特征，那么这个批量的每个样本第$$k$$个特征的归一化后的值为
@@ -61,70 +64,93 @@ BN的伪代码如算法1所示
 
 在训练时，我们需要计算BN的反向传播过程，感兴趣的同学可以自行推导，这里直接给出结论（$$l$$表示损失函数）。
 
+
 $$
 \frac{\partial l}{\partial \hat{x}_i} = \frac{\partial l}{\partial y_i} \cdot \gamma
 $$
+
+
 
 $$
 \frac{\partial l}{\partial \sigma_\mathcal{B}^2} = \sum^m_{i=1} \frac{\partial l}{\partial \hat{x}_i} \cdot (x_i - \mu_\mathcal{B}) \cdot \frac{-1}{2} (\sigma_\mathcal{B}^2 + \epsilon)^{-\frac{3}{2}}
 $$
 
+
+
 $$
 \frac{\partial l}{\partial \mu_\mathcal{B}} = (\sum^m_{i=1}\frac{\partial l}{\partial \hat{x}_i} \cdot \frac{-1}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}) + \frac{\partial l}{\partial \sigma_\mathcal{B}^2} \cdot \frac{\sum_{i=1}^m -2(x_i - \mu_\mathcal{B})}{m}
 $$
+
+
 
 $$
 \frac{\partial l}{\partial x_i} = \frac{\partial l}{\partial \hat{x}_i} \cdot \frac{1}{\sqrt{\sigma_\mathcal{B}^2 + \epsilon}}) + \frac{\partial l}{\partial \sigma_\mathcal{B}^2} \cdot \frac{2(x_i - \mu_\mathcal{B})}{m} + \frac{\partial l}{ \partial \mu_\mathcal{B}} \cdot \frac{1}{m}
 $$
 
+
+
 $$
 \frac{\partial l}{\partial \gamma} = \sum^m_{i=1} \frac{\partial l}{\partial y_i} \cdot \hat{x}_i
 $$
+
+
 
 $$
 \frac{\partial l}{\partial \beta} = \sum^m_{i=1} \frac{\partial l}{\partial y_i}
 $$
 
-通过上面的式子中我们可以看出BN是处处可导的，因此可以直接作为层的形式加入到神经网络中。
 
+通过上面的式子中我们可以看出BN是处处可导的，因此可以直接作为层的形式加入到神经网络中。
 
 ### 1.4 BN的测试过程
 
 在训练的时候，我们采用SGD算法可以获得该批量中样本的均值和方差。但是在测试的时候，数据都是以单个样本的形式输入到网络中的。在计算BN层的输出的时候，我们需要获取的均值和方差是通过训练集统计得到的。具体的讲，我们会从训练集中随机取多个批量的数据集，每个批量的样本数是$$m$$，测试的时候使用的均值和方差是这些批量的均值。
 
+
 $$
 \text{E}(x) \leftarrow \text{E}_{\mathcal{B}}[\mu_\mathcal{B}]
 $$
+
+
 
 $$
 \text{Var}(x) \leftarrow \frac{m}{m-1}\text{E}_{\mathcal{B}}[\sigma^2_\mathcal{B}]
 $$
 
-上面的过程明显非常耗时，更多的开源框架是在训练的时候，顺便就把采样到的样本的均值和方差保留了下来。在Keras中，这个变量叫做滑动平均（moving average），对应的均值叫做滑动均值（moving mean），方差叫做滑动方差（moving variance）。它们均使用```moving_average_update```进行更新。在测试的时候则使用滑动均值和滑动方差代替上面的$$\text{E}(x)$$和$$\text{Var}(x)$$。
+
+上面的过程明显非常耗时，更多的开源框架是在训练的时候，顺便就把采样到的样本的均值和方差保留了下来。在Keras中，这个变量叫做滑动平均（moving average），对应的均值叫做滑动均值（moving mean），方差叫做滑动方差（moving variance）。它们均使用`moving_average_update`进行更新。在测试的时候则使用滑动均值和滑动方差代替上面的$$\text{E}(x)$$和$$\text{Var}(x)$$。
 
 滑动均值和滑动方差的更新如下：
+
 
 $$
 \text{E}_{moving}(x) = m \times \text{E}_{moving}(x) + (1-m) \times \text{E}_{sample}(x)
 $$
 
+
+
 $$
 \text{Var}_{moving}(x) = m \times \text{Var}_{moving}(x) + (1-m) \times \text{Var}_{sample}(x)
 $$
+
 
 其中$$\text{E}_{moving}(x)$$表示滑动均值，$$\text{E}_{sample}(x)$$表示采样均值，方差定义类似。$$m$$表示遗忘因子momentum，默认值是0.99。
 
 滑动均值和滑动方差，以及可学参数$$\beta$$，$$\gamma$$均是对输入特征的线性操作，因此可以这两个操作合并起来。
 
+
 $$
-y = \frac{\gamma}{\sqrt{\text{Var}[x] + \epsilon}} \cdot x + (\beta - \frac{\gamma \text{E}[x]}{\sqrt{\text{Var}[x] + \epsilon}}) 
+y = \frac{\gamma}{\sqrt{\text{Var}[x] + \epsilon}} \cdot x + (\beta - \frac{\gamma \text{E}[x]}{\sqrt{\text{Var}[x] + \epsilon}})
 $$
+
 
 ### 1.5 卷积网络中的BN
 
 BN除了可以应用在MLP上，其在CNN网络中的表现也非常好，但是在RNN上的表现并不好，具体原因后面解释，这里详细介绍BN在卷积网络中的使用方法。
 
-卷积网络和MLP的不同点是卷积网络中每个样本的隐层节点的输出是三维的，而MLP是一维的，如图2所示。
+卷积网络和MLP的不同点是卷积网络中每个样本的隐层节点的输出是三维（宽度，高度，维度）的，而MLP是一维的，如图2所示。
+
+![](/assets/NB_2.png)
 
 ## Reference
 
