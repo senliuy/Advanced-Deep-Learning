@@ -198,8 +198,15 @@ $$
 
 作者对于自己的猜想，给出了5个定理，引理以及观察并在附录中给出了证明，由于本人的数学能力有限，这些证明有些看不懂，有需要的同学自行查看证明过程。
 
-* 定理4.1证明了BN可以使神经网络满足Lipschitz连续；
-* 定理4.2证明了BN是神经网络的损失函数的梯度也满足Lipschitz连续；
+* **定理4.1**: 设$$\hat{\mathcal{L}}$$为BN网络的损失函数，$$\mathcal{L}$$为普通网络的损失函数，它们满足：
+
+$$
+||\nabla_{\mathbf{y}_j} \hat{\mathcal{L}}||^2 \leq \frac{\gamma^2}{\sigma_j^2}(||\nabla_{\mathbf{y}_j} \mathcal{L}||^2 - \frac{1}{m} \langle \mathbf{1}, \nabla_{\mathbf{y}_j} \mathcal{L} \rangle^2 - \frac{1}{\sqrt{m}}\langle \nabla_{\mathbf{y}_j}\mathcal{L},\hat{\mathbf{y}_j} \rangle^2)
+$$
+在绝大多数场景中，$$\sigma$$作为不可控的项往往值是要大于$$\gamma$$的，因此证明了BN可以使神经网络满足Lipschitz连续；
+
+* **定理4.2**：
+证明了BN是神经网络的损失函数的梯度也满足Lipschitz连续；
 * 观察4.3证明了BN的作用不仅仅只是归一化；
 * 定理4.4证明了BN可以降低损失函数梯度的上界；
 * 引理4.5证明了BN对参数的不同初始化更加不敏感。
