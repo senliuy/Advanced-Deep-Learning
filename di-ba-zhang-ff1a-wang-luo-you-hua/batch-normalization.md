@@ -205,13 +205,14 @@ $$
 $$
 在绝大多数场景中，$$\sigma$$作为不可控的项往往值是要大于$$\gamma$$的，因此证明了BN可以使神经网络满足Lipschitz连续；
 
-**定理4.2**：假设$$\hat{\mathbf{g}}_j = \nabla_{\mathbf{y}_j} \mathcal{L}$$，$$\mathbf{H}_{jj} = \frac{\partial \mathcal{L}}{\partial \mathbf{y}_j \partial \mathbf{y}_j} $$
+**定理4.2**：假设$$\hat{\mathbf{g}}_j = \nabla_{\mathbf{y}_j} \mathcal{L}$$，$$\mathbf{H}_{jj} = \frac{\partial \mathcal{L}}{\partial \mathbf{y}_j \partial \mathbf{y}_j}$$是Hessian矩阵：
 
 $$
 (\nabla_{\mathbf{y}_j} \hat{\mathcal{L}})^T \frac{\partial \hat{\mathcal{L}}}{\partial \mathbf{y}_j \partial \mathbf{y}_j} (\nabla_{\mathbf{y}_j} \hat{\mathcal{L}}) \leq
  \frac{\gamma^2}{\sigma_j^2} (\hat{\mathbf{g}}_j^T \mathbf{H}_{jj} \hat{\mathbf{g}}_j - \frac{1}{m\gamma}\langle\hat{\mathbf{g}}_j\hat{\mathbf{y}}_j \rangle||\frac{\partial\hat{\mathcal{L}}}{\partial \mathbf{y}_j}||^2)
 $$
-证明了BN是神经网络的损失函数的梯度也满足Lipschitz连续；
+同理，4.2证明了BN是神经网络的损失函数的梯度也满足Lipschitz连续；
+
 * 观察4.3证明了BN的作用不仅仅只是归一化；
 * 定理4.4证明了BN可以降低损失函数梯度的上界；
 * 引理4.5证明了BN对参数的不同初始化更加不敏感。
