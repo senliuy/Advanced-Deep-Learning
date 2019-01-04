@@ -215,7 +215,13 @@ $$
 
 **观察4.3**：由于BN可以还原为直接映射，所以普通神经网络的最优损失平面也一定存在于带BN的网络中。
 
-* 定理4.4证明了BN可以降低损失函数梯度的上界；
+**定理4.4**：设带有BN的网络的损失为$$\hat{\mathcal{L}}$$，与之等价的无BN的损失为$$\mathcal{L}$$，它们满足如果$$g_j = \max_{||X||\leq \lambda} ||\nabla_w \mathcal{L}||^2$$，$$\hat{g}_j = \max_{||X|| < \lambda} ||\nabla_w \hat{\mathcal{L}}||^2$$，我们可以推出：
+
+$$
+\hat{g}_j \leq \frac{\gamma^2}{\sigma^2}(g_j^2 - m \mu_{g_j}^2 - \lambda^2\langle \nabla_{\mathbf{y}_j}, \hat{\mathbf{y}_j}\rangle^2)
+$$
+定理4.3证明了BN可以降低损失函数梯度的上界；
+
 * 引理4.5证明了BN对参数的不同初始化更加不敏感。
 
 
