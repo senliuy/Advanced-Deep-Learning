@@ -216,6 +216,7 @@ $$
 $$
 ||\nabla_{\mathbf{y}_j} \hat{\mathcal{L}}||^2 \leq \frac{\gamma^2}{\sigma_j^2}(||\nabla_{\mathbf{y}_j} \mathcal{L}||^2 - \frac{1}{m} \langle \mathbf{1}, \nabla_{\mathbf{y}_j} \mathcal{L} \rangle^2 - \frac{1}{\sqrt{m}}\langle \nabla_{\mathbf{y}_j}\mathcal{L},\hat{\mathbf{y}_j} \rangle^2)
 $$
+
 在绝大多数场景中，$$\sigma$$作为不可控的项往往值是要大于$$\gamma$$的，因此证明了BN可以使神经网络满足Lipschitz连续；
 
 **定理4.2**：假设$$\hat{\mathbf{g}}_j = \nabla_{\mathbf{y}_j} \mathcal{L}$$，$$\mathbf{H}_{jj} = \frac{\partial \mathcal{L}}{\partial \mathbf{y}_j \partial \mathbf{y}_j}$$是Hessian矩阵：
@@ -233,6 +234,7 @@ $$
 $$
 \hat{g}_j \leq \frac{\gamma^2}{\sigma^2}(g_j^2 - m \mu_{g_j}^2 - \lambda^2\langle \nabla_{\mathbf{y}_j}, \hat{\mathbf{y}_j}\rangle^2)
 $$
+
 定理4.3证明了BN可以降低损失函数梯度的上界。
 
 **引理4.5**：假设$$W^*$$和$$\hat{W}^*$$分别是普通神经网络和带BN的神经网络的局部最优解的权值，对于任意的初始化$$W_0$$，我们有：
@@ -240,6 +242,7 @@ $$
 $$
 ||W_0 - \hat{W}^*||^2 \leq ||W_0 - W^*||^2 - \frac{1}{||W^*||^2}(||W^*||^2 - \langle W^*, W_0\rangle)^2
 $$
+
 引理4.5证明了BN对参数的不同初始化更加不敏感。
 
 
