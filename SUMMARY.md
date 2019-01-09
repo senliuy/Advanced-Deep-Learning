@@ -61,10 +61,10 @@
   * [人脸检测](di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce.md)
     * [DenseBox: Unifying Landmark Localization with End to End Object Detection](di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.md)
     * [UnitBox: An Advanced Object Detection Network](di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/unitbox-an-advanced-object-detection-network.md)
-* [其它应用](qi-ta-ying-yong.md)
-  * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
 * [第八章：网络优化](di-ba-zhang-ff1a-wang-luo-you-hua.md)
   * [Batch Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/batch-normalization.md)
   * [Layer Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.md)
+* [其它应用](qi-ta-ying-yong.md)
+  * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
 * [Tags](tags.md)
 
