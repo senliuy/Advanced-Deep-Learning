@@ -1,5 +1,7 @@
 # Layer Normalization
 
+## 前言
+
 ## Reference
 
 [1] Ba J L, Kiros J R, Hinton G E. Layer normalization[J]. arXiv preprint arXiv:1607.06450, 2016.
