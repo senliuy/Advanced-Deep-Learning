@@ -80,6 +80,15 @@ $$
 
 LN能减轻ICS吗？当然可以，至少LN将每个训练样本都归一化到了相同的分布上。而在BN的文章中介绍过几乎所有的归一化方法都能起到平滑损失平面的作用。所以从原理上讲，LN能加速收敛速度的。
 
+## 3. 对照实验
+
+这里我们设置了一组对照试验来对比普通网络，BN以及LN在MLP和RNN上的表现。这里使用的框架是Keras，代码见：
+
+### 3.1 MNIST上的实验
+
+
+
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
