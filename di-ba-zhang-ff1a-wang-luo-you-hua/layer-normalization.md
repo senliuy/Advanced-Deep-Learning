@@ -24,15 +24,15 @@ RNN可以展开成一个隐藏层共享参数的MLP，随着时间片的增多�
 
 ## 2. LN详解
 
+### 2.1 MLP中的LN
+
 通过第一节的分析，我们知道BN的两个缺点的产生原因均是因为计算归一化统计量时计算的样本数太少。LN是一个独立于batch size的算法，所以无论样本数多少都不会影响参与LN计算的数据量，从而解决BN的两个问题。LN的做法如图1左侧所示：根据样本的特征数做归一化。
 
 先看MLP中的LN。设$$H$$是一层中隐层节点的数量，$$l$$是MLP的层数，我们可以计算LN的归一化统计量$$\mu$$和$$\sigma$$：
 
 $$
 \mu^l = \frac{1}{H}\sum_{i=1}^H a_i^l
-$$
-
-$$
+\qquad
 \sigma^l = \sqrt{\frac{1}{H} \sum_{i=1}^H(a_i^l
  - \mu^l)^2}
 $$
@@ -40,12 +40,41 @@ $$
 注意上面统计量的计算是和样本数量没有关系的，它的数量只取决于隐层节点的数量，所以只要隐层节点的数量足够多，我们就能保证LN的归一化统计量足够具有代表性。通过$$\mu^l$$和$$\sigma^l$$可以得到归一化后的值$$\hat{a}^l$$：
 
 $$
-\hat{a}_i^l = \frac{a_i^l - \mu^l}{\sqrt{{\sigma^l}^2 + \epsilon}}
+\hat{\mathbf{a}}^l = \frac{\mathbf{a}^l - \mu^l}{\sqrt{{\sigma^l}^2 + \epsilon}}
 $$
 
-其中$$\epsilon$$是一个很小的小数，防止除0。
+其中$$\epsilon$$是一个很小的小数，防止除0（论文中忽略了这个参数）。
 
-在LN中我们也需要一组参数来保证归一化操作不会破坏之前的信息，在LN中这组参数叫做增益（gain）$$g$$和偏置（bias）$$b$$（等同于BN中的$$\gamma$$和$$\beta$$）。
+在LN中我们也需要一组参数来保证归一化操作不会破坏之前的信息，在LN中这组参数叫做增益（gain）$$g$$和偏置（bias）$$b$$（等同于BN中的$$\gamma$$和$$\beta$$）。假设激活函数为$$f$$，最终LN的输出为：
+
+$$
+\mathbf{h}^l = f(\mathbf{g}^l \odot \hat{\mathbf{a}}^l + \mathbf{b}^l)
+$$
+
+合并公式(2)，(3)并忽略参数$$l$$，我们有：
+
+$$
+\mathbf{h} = f(\frac{\mathbf{g}}{\sqrt{{\sigma}^2 + \epsilon}} \odot (\mathbf{a} - \mu)+ \mathbf{b})
+$$
+
+### 2.2 RNN中的LN
+
+在RNN中，我们可以非常简单的在每个时间片中使用LN，而且在任何时间片我们都能保证归一化统计量统计的是$$H$$个节点的信息。对于RNN时刻$$t$$时的节点，其输入是$$t-1$$时刻的隐层状态$$h^{t-1}$$和$$t$$时刻的输入数据$$\mathbf{x}_t$$，可以表示为：
+
+$$
+\mathbf{a}^t = W_{hh}h^{t-1} + W_{xh}\mathbf{x}^t
+$$
+
+接着我们便可以在$$\mathbf{a}^t$$上采取和1.1节中完全相同的归一化过程：
+
+$$
+\mathbf{h}^t = f(\frac{\mathbf{g}}{\sqrt{{\sigma^t}^2 + \epsilon}} \odot (\mathbf{a}^t - \mu^t)+ \mathbf{b})
+\qquad
+\mu^t = \frac{1}{H}\sum_{i=1}^H a^t_i
+\qquad
+\sigma^t = \sqrt{\frac{1}{H} \sum_{i=1}^H(a_i^t
+ - \mu^t)^2}
+$$
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
