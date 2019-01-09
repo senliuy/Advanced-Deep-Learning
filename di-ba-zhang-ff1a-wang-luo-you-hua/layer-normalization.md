@@ -22,6 +22,9 @@ RNN可以展开成一个隐藏层共享参数的MLP，随着时间片的增多�
 
 ![](/assets/LN_2.png)
 
+## 2. LN详解
+
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
