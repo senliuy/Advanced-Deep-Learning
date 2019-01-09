@@ -10,6 +10,9 @@
 
 ![](/assets/LN_1.png)
 
+### 1.1 RNN与BN
+
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
