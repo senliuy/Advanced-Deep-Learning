@@ -121,6 +121,10 @@ model_ln.add(Dense(10, activation='softmax'))
 
 ![](/assets/LN_3.png)
 
+### 3.2 LSTM上的归一化
+
+
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
