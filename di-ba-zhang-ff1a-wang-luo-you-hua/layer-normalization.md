@@ -30,6 +30,7 @@ RNN可以展开成一个隐藏层共享参数的MLP，随着时间片的增多�
 
 先看MLP中的LN。设$$H$$是一层中隐层节点的数量，$$l$$是MLP的层数，我们可以计算LN的归一化统计量$$\mu$$和$$\sigma$$：
 
+
 $$
 \mu^l = \frac{1}{H}\sum_{i=1}^H a_i^l
 \qquad
@@ -37,35 +38,45 @@ $$
  - \mu^l)^2}
 $$
 
+
 注意上面统计量的计算是和样本数量没有关系的，它的数量只取决于隐层节点的数量，所以只要隐层节点的数量足够多，我们就能保证LN的归一化统计量足够具有代表性。通过$$\mu^l$$和$$\sigma^l$$可以得到归一化后的值$$\hat{a}^l$$：
+
 
 $$
 \hat{\mathbf{a}}^l = \frac{\mathbf{a}^l - \mu^l}{\sqrt{{\sigma^l}^2 + \epsilon}}
 $$
 
+
 其中$$\epsilon$$是一个很小的小数，防止除0（论文中忽略了这个参数）。
 
 在LN中我们也需要一组参数来保证归一化操作不会破坏之前的信息，在LN中这组参数叫做增益（gain）$$g$$和偏置（bias）$$b$$（等同于BN中的$$\gamma$$和$$\beta$$）。假设激活函数为$$f$$，最终LN的输出为：
+
 
 $$
 \mathbf{h}^l = f(\mathbf{g}^l \odot \hat{\mathbf{a}}^l + \mathbf{b}^l)
 $$
 
-合并公式(2)，(3)并忽略参数$$l$$，我们有：
+
+合并公式\(2\)，\(3\)并忽略参数$$l$$，我们有：
+
 
 $$
 \mathbf{h} = f(\frac{\mathbf{g}}{\sqrt{{\sigma}^2 + \epsilon}} \odot (\mathbf{a} - \mu)+ \mathbf{b})
 $$
 
+
 ### 2.2 RNN中的LN
 
 在RNN中，我们可以非常简单的在每个时间片中使用LN，而且在任何时间片我们都能保证归一化统计量统计的是$$H$$个节点的信息。对于RNN时刻$$t$$时的节点，其输入是$$t-1$$时刻的隐层状态$$h^{t-1}$$和$$t$$时刻的输入数据$$\mathbf{x}_t$$，可以表示为：
+
 
 $$
 \mathbf{a}^t = W_{hh}h^{t-1} + W_{xh}\mathbf{x}^t
 $$
 
+
 接着我们便可以在$$\mathbf{a}^t$$上采取和1.1节中完全相同的归一化过程：
+
 
 $$
 \mathbf{h}^t = f(\frac{\mathbf{g}}{\sqrt{{\sigma^t}^2 + \epsilon}} \odot (\mathbf{a}^t - \mu^t)+ \mathbf{b})
@@ -76,6 +87,7 @@ $$
  - \mu^t)^2}
 $$
 
+
 ### 2.3 LN与ICS和损失平面平滑
 
 LN能减轻ICS吗？当然可以，至少LN将每个训练样本都归一化到了相同的分布上。而在BN的文章中介绍过几乎所有的归一化方法都能起到平滑损失平面的作用。所以从原理上讲，LN能加速收敛速度的。
@@ -84,11 +96,28 @@ LN能减轻ICS吗？当然可以，至少LN将每个训练样本都归一化到�
 
 这里我们设置了一组对照试验来对比普通网络，BN以及LN在MLP和RNN上的表现。这里使用的框架是Keras，代码见：
 
-### 3.1 MNIST上的实验
+### 3.1 MLP上的归一化
 
+这里使用的是MNIST数据集，但是归一化操作只添加到了后面的MLP部分。Keras官方源码中没有LN的实现，我们可以通过`pip install keras-layer-normalization`进行安装，使用方法见下面代码
 
+```py
+from keras_layer_normalization import LayerNormalization
 
+# 构建LN LeNet-5网络
+model_ln = Sequential()
+model_ln.add(Conv2D(input_shape = (28,28,1), filters=6, kernel_size=(5,5), padding='valid', activation='tanh'))
+model_ln.add(MaxPool2D(pool_size=(2,2), strides=2))
+model_ln.add(Conv2D(input_shape=(14,14,6), filters=16, kernel_size=(5,5), padding='valid', activation='tanh'))
+model_ln.add(MaxPool2D(pool_size=(2,2), strides=2))
+model_ln.add(Flatten())
+model_ln.add(Dense(120, activation='tanh'))
+model_ln.add(LayerNormalization()) # 添加LN运算
+model_ln.add(Dense(84, activation='tanh'))
+model_ln.add(LayerNormalization())
+model_ln.add(Dense(10, activation='softmax'))
+```
 
+另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
