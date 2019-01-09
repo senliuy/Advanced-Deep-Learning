@@ -117,7 +117,10 @@ model_ln.add(LayerNormalization())
 model_ln.add(Dense(10, activation='softmax'))
 ```
 
-另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。
+另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。
+
+![](/assets/LN_3.png)
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
