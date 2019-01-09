@@ -75,6 +75,10 @@ $$
 \sigma^t = \sqrt{\frac{1}{H} \sum_{i=1}^H(a_i^t
  - \mu^t)^2}
 $$
+
+### 2.3 LN与ICS和损失平面平滑
+
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
