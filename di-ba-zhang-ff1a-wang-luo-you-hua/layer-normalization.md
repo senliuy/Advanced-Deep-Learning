@@ -23,7 +23,11 @@ RNN可以展开成一个隐藏层共享参数的MLP，随着时间片的增多�
 
 另外如果在测试时我们遇到了长度大于任何一个训练样本的测试样本，我们无法找到保存的归一化统计量，所以BN无法运行。
 
-![](/assets/LN_2.png)
+<figure>
+<img src="/assets/LN_2.png" alt="图2：RNN中使用BN会导致batchsize过小的问题" />
+<figcaption>图2：RNN中使用BN会导致batchsize过小的问题</figcaption>
+</figure>
+
 
 ## 2. LN详解
 
@@ -122,7 +126,11 @@ model_ln.add(Dense(10, activation='softmax'))
 
 另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。图3的完整代码见连接：
 
-![](/assets/LN_3.png)
+<figure>
+<img src="/assets/LN_3.png" alt="图3：batchsize=128(左)和batchsize=8(右)损失收敛曲线示意图" />
+<figcaption>图3：batchsize=128(左)和batchsize=8(右)损失收敛曲线示意图</figcaption>
+</figure>
+
 
 ### 3.2 LSTM上的归一化
 
@@ -146,7 +154,11 @@ model_ln.summary()
 
 至于论文中所说的加速收敛的效果，从我的实验上结果上看不到明显的加速。
 
-![](/assets/LN_4.png)
+<figure>
+<img src="/assets/LN_4.png" alt="图4：训练集损失值(左)验证集准确率(右)示意图" />
+<figcaption>图4：训练集损失值(左)验证集准确率(右)示意图</figcaption>
+</figure>
+
 
 ### 3.3 CNN上的归一化
 
