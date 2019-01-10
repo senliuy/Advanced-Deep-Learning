@@ -59,6 +59,8 @@
 * 2018-12-15：Neural Architecture Search with Reinforecement Learning
 * 2018-12-17：Learning Transferable Architectures for Scalable Image Recognition
 * 2018-12-19：Progressive Neural Architecture Search
+* 2019-01-06：Batch Normalization
+* 2019-01-10：Layer Normalization
 
 
 
