@@ -94,7 +94,7 @@ LN能减轻ICS吗？当然可以，至少LN将每个训练样本都归一化到�
 
 ## 3. 对照实验
 
-这里我们设置了一组对照试验来对比普通网络，BN以及LN在MLP和RNN上的表现。这里使用的框架是Keras，代码见：
+这里我们设置了一组对照试验来对比普通网络，BN以及LN在MLP和RNN上的表现。这里使用的框架是Keras：
 
 ### 3.1 MLP上的归一化
 
@@ -103,7 +103,7 @@ LN能减轻ICS吗？当然可以，至少LN将每个训练样本都归一化到�
 ```py
 from keras_layer_normalization import LayerNormalization
 
-# 构建LN LeNet-5网络
+# 构建LN CNN网络
 model_ln = Sequential()
 model_ln.add(Conv2D(input_shape = (28,28,1), filters=6, kernel_size=(5,5), padding='valid', activation='tanh'))
 model_ln.add(MaxPool2D(pool_size=(2,2), strides=2))
@@ -117,13 +117,37 @@ model_ln.add(LayerNormalization())
 model_ln.add(Dense(10, activation='softmax'))
 ```
 
-另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。
+另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。图3的完整代码见连接：
 
 ![](/assets/LN_3.png)
 
 ### 3.2 LSTM上的归一化
 
+另外一组对照实验是基于imdb的二分类任务，使用了glove作为词嵌入。这里设置了无LN的LSTM和带LN的LSTM的作为对照试验。LN\_LSTM源码参考 [https://github.com/cleemesser/keras-layer-norm-work](https://github.com/cleemesser/keras-layer-norm-work) 其网络结构如下面代码：
 
+```py
+# https://github.com/cleemesser/keras-layer-norm-work
+from lstm_ln import LSTM_LN
+model_ln = Sequential()
+
+model_ln.add(Embedding(max_features,100))
+model_ln.add(LSTM_LN(128))
+model_ln.add(Dense(1, activation='sigmoid'))
+model_ln.summary()
+```
+
+从图4的实验结果我我们可以看出LN对于RNN系列动态网络的收敛加速上的效果是略有帮助的。LN的有点主要体现在两个方面：
+
+1. LN得到的模型更稳定；
+2. LN有正则化的作用，得到的模型更不容易过拟合。
+
+至于论文中所说的加速收敛的效果，从我的实验上结果上看不到明显的加速。
+
+![](/assets/LN_4.png)
+
+### 3.3 CNN上的归一化
+
+我们也尝试了将LN添加到CNN之后，实验结果发现LN破坏了卷积学习到的特征，模型无法收敛，所以在CNN之后使用BN是一个更好的选择。
 
 ## Reference
 
