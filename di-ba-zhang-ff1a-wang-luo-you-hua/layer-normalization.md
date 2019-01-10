@@ -2,7 +2,7 @@
 
 ## 前言
 
-在上一篇的文章中我们介绍了BN\[2\]的计算方法并且讲解了BN如何应用在MLP以及CNN中如何使用BN。在文章的最后，我们指出BN并不适用于RNN等动态网络和batchsize较小的时候效果不好。Layer Normalization（LN）\[1\]的提出有效的解决BN的这两个问题。LN和BN不同点是归一化的维度是互相垂直的，如图1所示。在图1中$$N$$表示样本轴，C表示通道轴，F是每个通道的特征数量。BN如右侧所示，它是取不同样本的同一个通道的特征做归一化；LN则是如左侧所示，它取的是同一个样本的不同通道做归一化。
+在上一篇的文章中我们介绍了BN\[2\]的计算方法并且讲解了BN如何应用在MLP以及CNN中如何使用BN。在文章的最后，我们指出BN并不适用于RNN等动态网络和batchsize较小的时候效果不好。Layer Normalization（LN）\[1\]的提出有效的解决BN的这两个问题。LN和BN不同点是归一化的维度是互相垂直的，如图1所示。在图1中$$N$$表示样本轴，$$C$$表示通道轴，$$F$$是每个通道的特征数量。BN如右侧所示，它是取不同样本的同一个通道的特征做归一化；LN则是如左侧所示，它取的是同一个样本的不同通道做归一化。
 
 <figure>
 <img src="/assets/LN_1.png" alt="图1：LN(左)和BN(右)对比示意图" />
@@ -124,7 +124,7 @@ model_ln.add(LayerNormalization())
 model_ln.add(Dense(10, activation='softmax'))
 ```
 
-另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。图3的完整代码见连接：
+另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。图3的完整代码见连接：https://github.com/senliuy/keras_layerNorm_mlp_lstm/blob/master/mnist.ipynb 。
 
 <figure>
 <img src="/assets/LN_3.png" alt="图3：batchsize=128(左)和batchsize=8(右)损失收敛曲线示意图" />
@@ -152,7 +152,7 @@ model_ln.summary()
 1. LN得到的模型更稳定；
 2. LN有正则化的作用，得到的模型更不容易过拟合。
 
-至于论文中所说的加速收敛的效果，从我的实验上结果上看不到明显的加速。
+至于论文中所说的加速收敛的效果，从我的实验上结果上看不到明显的加速。源码见：https://github.com/senliuy/keras_layerNorm_mlp_lstm/blob/master/imdb.ipynb 。
 
 <figure>
 <img src="/assets/LN_4.png" alt="图4：训练集损失值(左)验证集准确率(右)示意图" />
