@@ -149,6 +149,10 @@ model_ln.summary()
 
 我们也尝试了将LN添加到CNN之后，实验结果发现LN破坏了卷积学习到的特征，模型无法收敛，所以在CNN之后使用BN是一个更好的选择。
 
+## 4. 总结
+
+
+
 ## Reference
 
 \[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
