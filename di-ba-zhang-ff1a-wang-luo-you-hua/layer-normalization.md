@@ -43,7 +43,8 @@ $$
 
 
 $$
-\hat{\mathbf{a}}^l 
+\hat{\mathbf{a}}^l = \frac{\mathbf{a}^l - \mu^l}{\sqrt{\epsilon}}
+
 $$
 
 
