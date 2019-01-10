@@ -1,5 +1,7 @@
 # Batch Normalization
 
+tags: Normalization
+
 ## 前言
 
 Batch Normalization\(BN\)是深度学习中非常好用的一个算法，加入BN层的网络往往更加稳定并且BN还起到了一定的正则化的作用。在这篇文章中，我们将详细介绍BN的技术细节\[1\]以及其能工作的原因\[2\]。
