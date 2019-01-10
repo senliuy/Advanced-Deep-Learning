@@ -79,7 +79,7 @@ $$
 
 
 $$
-\mathbf{h}^t = f(\frac{\mathbf{g}}{\sqrt{{\sigma^t}^2 + \epsilon}} \odot (\mathbf{a}^t - \mu^t)+ \mathbf{b})
+\mathbf{h}^t = f(\frac{\mathbf{g}}{\sqrt{\sigma^t^2 + \epsilon}} \odot (\mathbf{a}^t - \mu^t)+ \mathbf{b})
 \qquad
 \mu^t = \frac{1}{H}\sum_{i=1}^H a^t_i
 \qquad
