@@ -43,7 +43,7 @@ $$
 
 
 $$
-\hat{\mathbf{a}}^l = \frac{\mathbf{a}^l - \mu^l}{\sqrt{{\sigma^l}^2 + \epsilon}}
+\hat{\mathbf{a}}^l 
 $$
 
 
