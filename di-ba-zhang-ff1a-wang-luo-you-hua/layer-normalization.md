@@ -61,7 +61,7 @@ $$
 
 
 $$
-\mathbf{h} = f(\frac{\mathbf{g}}{\sqrt{{\sigma}^2 + \epsilon}} \odot (\mathbf{a} - \mu)+ \mathbf{b})
+\mathbf{h} = f(\frac{\mathbf{g}}{\sqrt{\sigma^2 + \epsilon}} \odot (\mathbf{a} - \mu)+ \mathbf{b})
 $$
 
 
