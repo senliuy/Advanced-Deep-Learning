@@ -40,7 +40,7 @@ $$
 
 $$
 \nabla_{\mathbf{v}} L = \frac{g}{||\mathbf{v}||} M_{\mathbf{w}} \nabla_{\mathbf w}L
-\\
+\quad
 \text{with}
 \quad
 M_{\mathbf{w}} = I - \frac{\mathbf{w}\mathbf{w}'}{||\mathbf{w}||^2}
