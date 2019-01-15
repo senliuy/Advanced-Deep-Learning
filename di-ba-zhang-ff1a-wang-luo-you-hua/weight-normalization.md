@@ -10,6 +10,8 @@ WN没有一如额外参数，这样更节约显存。同时WN的计算效率也�
 
 ## 1. WN详解
 
+### 1.1 WN的计算
+
 神经网络的一个节点计算可以表示为：
 
 
@@ -42,8 +44,11 @@ $$
 $$
 
 
-其中$$L$$为损失函数，$$\nabla_{\mathbf{w}}L$$为$$\mathbf{w}$$在$$L$$下的梯度值，上式也可以写作：
+其中$$L$$为损失函数，$$\nabla_{\mathbf{w}}L$$为$$\mathbf{w}$$在$$L$$下的梯度值。
 
+### 1.2 WN的原理
+
+1.1节的梯度更新公式也可以写作：
 
 $$
 \nabla_{\mathbf{v}} L = \frac{g}{||\mathbf{v}||} M_{\mathbf{w}} \nabla_{\mathbf w}L
@@ -64,6 +69,8 @@ $$
 2. $$M_{\mathbf{w}} \nabla_{\mathbf w}L$$表明WN会将梯度投影到一个远离于$$\nabla_{\mathbf w}L$$的方向。
 
 这两个特征都会加速模型的收敛。
+
+
 
 ## Reference
 
