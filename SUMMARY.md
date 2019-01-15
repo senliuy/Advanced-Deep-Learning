@@ -64,6 +64,7 @@
 * [第八章：网络优化](di-ba-zhang-ff1a-wang-luo-you-hua.md)
   * [Batch Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/batch-normalization.md)
   * [Layer Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.md)
+  * [Weight Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/weight-normalization.md)
 * [其它应用](qi-ta-ying-yong.md)
   * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
 * [Tags](tags.md)
