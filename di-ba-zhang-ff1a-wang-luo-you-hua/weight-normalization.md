@@ -58,7 +58,12 @@ $$
 
 ![](/assets/WN_1.png)
 
-倒数第二步的推导是因为$$\mathbf{v}$$是$$\mathbf{w}$$的方向向量。
+倒数第二步的推导是因为$$\mathbf{v}$$是$$\mathbf{w}$$的方向向量。上面公式反应了WN两个重要特征：
+
+1. $$\frac{g}{||\mathbf{v}||}$$表明WN会对权值梯度进行$$\frac{g}{||\mathbf{v}||}$$的缩放；
+2. $$M_{\mathbf{w}} \nabla_{\mathbf w}L$$表明WN会将梯度投影到一个远离于$$\nabla_{\mathbf w}L$$的方向。
+
+这两个特征都会加速模型的收敛。
 
 ## Reference
 
