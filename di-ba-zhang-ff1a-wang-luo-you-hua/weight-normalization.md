@@ -80,7 +80,15 @@ $$
 
 另一个角度从新权值的协方差矩阵出发的，假设$$\mathbf{w}$$的协方差矩阵是$$\mathbf{C}$$，那么$$\mathbf{v}$$的协方差矩阵$$\mathbf{D} = (g^2/||\mathbf{v}||^2)M_{\mathbf{w}}\mathbf{C}M_{\mathbf{w}}$$，当去掉$$\mathbf{D}$$中的特征值后我们发现新的$$\mathbf{D}$$非常趋近于一个单位矩阵，这说明了$$\mathbf{w}$$是$$\mathbf{C}$$的主特征向量（dominant eigenvector），说明WN有助于提升收敛速度。
 
+### 1.3 BN和WN的关系
 
+假设$$t = \mathbf{v} \mathbf{x}$$，$$\mu[t]$$和$$\sigma[t]$$分别为$$t$$的均值和方差，BN可以表示为：
+
+$$
+t' = \frac{t-\mu[t]}{\sigma[t]} = \frac{\mathbf{v}}{\sigma[t]}\mathbf{x} - \frac{\mu[t]}{\sigma[t]}
+$$
+
+当网络只有一层且输入样本服从均值为0，方差为1的独立分布时，我们有$$\mu[t]=0$$且$$\sigma[t] = ||\mathbf{v}||$$，此时WN和BN等价。
 
 ## Reference
 
