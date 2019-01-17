@@ -90,6 +90,10 @@ $$
 
 当网络只有一层且输入样本服从均值为0，方差为1的独立分布时，我们有$$\mu[t]=0$$且$$\sigma[t] = ||\mathbf{v}||$$，此时WN和BN等价。
 
+### 1.4 BN的参数初始化
+
+
+
 ## Reference
 
 \[1\] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks\[C\]//Advances in Neural Information Processing Systems. 2016: 901-909.
