@@ -78,6 +78,10 @@ $$
 
 具体原因论文的说法比较复杂，其核心思想有两点：1.由于$$\mathbf{w}$$垂直于$$M_{\mathbf{w}}$$，所以$$\nabla_{\mathbf{v}}L$$非常接近于垂直参数方向$$\mathbf{w}$$，这样对于矫正梯度更新方向是非常有效的；2.$$\mathbf{v}$$和梯度更新值中的噪声量成正比，而$$\mathbf{v}$$是和更新量成反比，所以当更新值中噪音较多时，更新值会变小，这说明WN有自稳定（self-stablize）的作用。这个特点使得我们可以在WN中使用比较大的学习率。[^1]
 
+另一个角度从新权值的协方差矩阵出发的，假设$$\mathbf{w}$$的协方差矩阵是$$\mathbf{C}$$，那么$$\mathbf{v}$$的协方差矩阵$$\mathbf{D} = (g^2/||\mathbf{v}||^2)M_{\mathbf{w}}\mathbf{C}M_{\mathbf{w}}$$，当去掉$$\mathbf{D}$$中的特征值后我们发现新的$$\mathbf{D}$$非常趋近于一个单位矩阵，这说明了$$\mathbf{w}$$是$$\mathbf{C}$$的主特征向量（dominant eigenvector），说明WN有助于提升收敛速度。
+
+
+
 ## Reference
 
 \[1\] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks\[C\]//Advances in Neural Information Processing Systems. 2016: 901-909.
