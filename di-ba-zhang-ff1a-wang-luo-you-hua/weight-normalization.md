@@ -103,6 +103,11 @@ g \leftarrow \frac{1}{\sigma[t]}
 b \leftarrow \frac{-\mu[t]}{\sigma[t]}
 $$
 
+由于使用了样本进行初始化，所以这种初始化方法不适用于RNN等动态网络。
+
+### 1.5 Mean-Only BN
+
+基于WN的动机，文章提出了Mean-Only BN。这种方法是一个只进行减均值而不进行除方差的BN，动机是考虑到BN的除方差操作会引入额外的噪声，实验结果表明WN+Mean-Only BN虽然比标准BN收敛得慢，但它们在测试集的精度要高于BN。
 
 ## Reference
 
