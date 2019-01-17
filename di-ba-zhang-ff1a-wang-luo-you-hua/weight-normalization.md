@@ -47,9 +47,11 @@ $$
 其中$$L$$为损失函数，$$\nabla_{\mathbf{w}}L$$为$$\mathbf{w}$$在$$L$$下的梯度值。
 
 从上面WN的计算公式中我们可以看出WN并没有引入新的参数，
+
 ### 1.2 WN的原理
 
 1.1节的梯度更新公式也可以写作：
+
 
 $$
 \nabla_{\mathbf{v}} L = \frac{g}{||\mathbf{v}||} M_{\mathbf{w}} \nabla_{\mathbf w}L
@@ -71,10 +73,11 @@ $$
 
 这两个特征都会加速模型的收敛。
 
-
+具体原因论文的说法比较复杂，其核心思想有两点：1.由于$$\mathbf{w}$$垂直于$$M_{\mathbf{w}}$$，所以$$\nabla_{\mathbf{v}}L$$非常接近于垂直参数方向$$\mathbf{w}$$，这样对于矫正梯度更新方向是非常有效的；2.$$\mathbf{v}$$和梯度更新值中的噪声量成正比，而$$\mathbf{v}$$是和更新量成反比，所以当更新值中噪音较多时，更新值会变小，这说明WN有自稳定（self-stablize）的作用。这个特点使得我们可以在WN中使用比较大的学习率。[^1]
 
 ## Reference
 
-[1] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks[C]//Advances in Neural Information Processing Systems. 2016: 901-909.
+\[1\] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks\[C\]//Advances in Neural Information Processing Systems. 2016: 901-909.
 
+[^1]: 这是我对于论文的2.1节的比较主观的个人理解，当初看的时候就非常头疼，理解可能有偏差，希望各位读者给出正确的批评指正。
 
