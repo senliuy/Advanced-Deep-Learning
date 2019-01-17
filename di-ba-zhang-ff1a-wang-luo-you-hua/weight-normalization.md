@@ -94,7 +94,15 @@ $$
 
 由于WN不像BN有规范化特征尺度的作用，所以WN的初始化需要慎重。作者建议的初始化策略是：
 
-* $$\mathbf{v}$$
+* $$\mathbf{v}$$使用均值为0，标准差为0.05的正态分布进行初始化；
+* $$g$$和偏置$$b$$使用第一批训练样本的统计量进行初始化：
+
+$$
+g \leftarrow \frac{1}{\sigma[t]}
+\qquad
+b \leftarrow \frac{-\mu[t]}{\sigma[t]}
+$$
+
 
 ## Reference
 
