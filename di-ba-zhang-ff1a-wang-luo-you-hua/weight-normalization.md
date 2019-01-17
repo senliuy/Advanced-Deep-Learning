@@ -1,5 +1,7 @@
 # Weight Normalization
 
+tags：WN
+
 ## 前言
 
 之前介绍的BN[2]和LN[3]都是在数据的层面上做的归一化，而这篇文章介绍的Weight Normalization（WN\)是在权值的维度上做的归一化。WN的做法是将权值向量$$W$$在其欧氏范数和其方向上解耦成了参数向量$$\mathbf{v}$$和参数标量$$g$$后使用SGD分别优化这两个参数。
