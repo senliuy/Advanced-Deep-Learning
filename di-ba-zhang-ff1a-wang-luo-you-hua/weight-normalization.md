@@ -2,7 +2,7 @@
 
 ## 前言
 
-之前介绍的BN和LN都是在数据的层面上做的归一化，而这篇文章介绍的Weight Normalization（WN\)是在权值的维度上做的归一化。WN的做法是将权值向量$$W$$在其欧氏范数和其方向上解耦成了参数向量$$\mathbf{v}$$和参数标量$$g$$后使用SGD分别优化这两个参数。
+之前介绍的BN[2]和LN[3]都是在数据的层面上做的归一化，而这篇文章介绍的Weight Normalization（WN\)是在权值的维度上做的归一化。WN的做法是将权值向量$$W$$在其欧氏范数和其方向上解耦成了参数向量$$\mathbf{v}$$和参数标量$$g$$后使用SGD分别优化这两个参数。
 
 WN也是和样本量无关的，所以可以应用在batchsize较小以及RNN等动态网络中；另外BN使用的基于mini-batch的归一化统计量代替全局统计量，相当于在梯度计算中引入了噪声。而WN则没有这个问题，所以在生成模型，强化学习等噪声敏感的环境中WN的效果也要优于BN。
 
@@ -109,9 +109,24 @@ $$
 
 基于WN的动机，文章提出了Mean-Only BN。这种方法是一个只进行减均值而不进行除方差的BN，动机是考虑到BN的除方差操作会引入额外的噪声，实验结果表明WN+Mean-Only BN虽然比标准BN收敛得慢，但它们在测试集的精度要高于BN。
 
+## 2. 总结
+
+和目前主流归一化方法不同的是，WN的归一化操作作用在了权值矩阵之上。从其计算方法上来看，WN完全不像是一个归一化方法，更像是基于矩阵分解的一种优化策略，它带来了四点好处：
+
+1. 更快的收敛速度；
+2. 更强的学习率鲁棒性；
+3. 可以应用在RNN等动态网络中；
+4. 对噪声更不敏感，更适用在GAN，RL等场景中。
+
+说WN不像归一化的原因是它并没有对得到的特征范围进行约束的功能，所以WN依旧对参数的初始值非常敏感，这也是WN一个比较严重的问题。
+
 ## Reference
 
 \[1\] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks\[C\]//Advances in Neural Information Processing Systems. 2016: 901-909.
+
+[2]  Ba J L, Kiros J R, Hinton G E. Layer normalization[J]. arXiv preprint arXiv:1607.06450, 2016.
+
+[3] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift[J]. arXiv preprint arXiv:1502.03167, 2015.
 
 [^1]: 这是我对于论文的2.1节的比较主观的个人理解，当初看的时候就非常头疼，理解可能有偏差，希望各位读者给出正确的批评指正。
 
