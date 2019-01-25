@@ -20,6 +20,7 @@
   * [Progressive Neural Architecture Search](di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.md)
   * [实例解析：12306验证码破解](di-yi-zhang-ff1a-jing-dian-wang-luo/shi-li-jie-xi-ff1a-12306-yan-zheng-ma-po-jie.md)
 * [第二章：序列模型](di-er-zhang-ff1a-xu-lie-mo-xing.md)
+  * [Recurrent Neural Network based Language Model](di-er-zhang-ff1a-xu-lie-mo-xing/recurrent-neural-network-based-languaged-model.md)
   * [Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation](di-er-zhang-ff1a-xu-lie-mo-xing/learning-phrase-representations-using-rnn-encoder-decoder-for-statistical-machine-translation.md)
   * [Neural Machine Translation by Jointly Learning to Align and Translate ](di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.md)
   * [Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Network](di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.md)
