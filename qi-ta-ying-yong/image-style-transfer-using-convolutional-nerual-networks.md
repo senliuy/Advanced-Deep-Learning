@@ -67,6 +67,33 @@ $$
 212                                       combination_features)
 ```
 
+上式中的```content_weight```是内容损失函数的比重，源码中给出的值是0.025，内容损失函数的定义见185-186行：
+
+```py
+185 def content_loss(base, combination):
+186     return K.sum(K.square(combination - base))
+
+```
+
+有了损失函数的定义之后，我们便可以根据损失函数的值计算其关于$$F_{i,j}$$的梯度值，从而实现从后向前的梯度更新。
+
+$$
+\frac{\partial \mathcal{L}_{content}}{\partial F_{i,j^l}} = 
+\left\{
+\begin{array}{}
+(F^l - P^l)_{i,j} & \text{if } F_{i,j} > 0\\
+0 & \text{if } F_{i,j} < 0
+\end{array}
+\right.
+$$
+
+如果损失函数只包含内容损失，当模型收敛时，我们得到的$$\vec{x}’$$应该非常接近$$\vec{p}$$的内容。但是它很难还原到和$$\vec{p}$$一模一样，因为即使损失值为0时，我们得到的$$\vec{x}'$$值也有多种的形式。
+
+为什么说$$\vec{x}’$$具有$$\vec{p}$$的内容呢，因为当$$\vec{x}’$$经过VGG19的处理后，它的conv5_2层的输出了$$\vec{p}$$几乎一样，而较深的层具有较高的内容信息，这也就说明了$$\vec{x}’$$和$$\vec{p}$$具有非常类似的内容信息。
+
+### 1.3 样式表示
+
+
 ## Reference
 
 \[1\] Gatys L A, Ecker A S, Bethge M. Image style transfer using convolutional neural networks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2414-2423.
