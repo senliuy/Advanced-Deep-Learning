@@ -162,6 +162,22 @@ $$
 178     return K.sum(K.square(S - C)) / (4.0 * (channels ** 2) * (size ** 2))
 ```
 
+从174-175行我们可以看出损失函数的计算使用的是两个Feature Map的Gram矩阵，Gram矩阵的定义见155-162行：
+
+```py
+155 def gram_matrix(x):
+156     assert K.ndim(x) == 3
+157     if K.image_data_format() == 'channels_first':
+158         features = K.batch_flatten(x)
+159     else:
+160         features = K.batch_flatten(K.permute_dimensions(x, (2, 0, 1)))
+161     gram = K.dot(features, K.transpose(features))
+162     return gram
+```
+
+第158或者160行的```batch_flatten```验证了Feature Map要先展开成向量，第161行则是Gram矩阵的计算公式。
+
+还有一些超餐在配置文件中进行了指定，```style_weight```和```total_variation_weight```的默认值都是1。 
 ## Reference
 
 \[1\] Gatys L A, Ecker A S, Bethge M. Image style transfer using convolutional neural networks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2414-2423.
