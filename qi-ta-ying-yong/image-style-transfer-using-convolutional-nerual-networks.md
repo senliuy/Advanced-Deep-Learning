@@ -178,6 +178,7 @@ $$
 第158或者160行的```batch_flatten```验证了Feature Map要先展开成向量，第161行则是Gram矩阵的计算公式。
 
 还有一些超餐在配置文件中进行了指定，```style_weight```和```total_variation_weight```的默认值都是1。 
+
 ## Reference
 
 \[1\] Gatys L A, Ecker A S, Bethge M. Image style transfer using convolutional neural networks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2414-2423.
