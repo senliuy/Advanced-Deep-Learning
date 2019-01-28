@@ -14,7 +14,7 @@ Leon A.Gatys是最早使用CNN做图像风格迁移的先驱之一，这篇文�
 
 ## 1. Image Style Transfer（IST）算法详解
 
-### 1.1 s
+### 1.1 算法概览
 
 IST的原理基于上面提到的网络的不同层会响应不同的类型特征的特点实现的。给定一个训练好的网络，源码中使用的是[VGG19](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html) \[3\]，下面是源码第142-143行，因此在运行该源码时如果你之前没有下载过训练好的VGG19模型文件，第一次运行会有下载该文件的过程，文件名为'vgg19\_weights\_tf\_dim\_ordering\_tf\_kernels\_notop.h5'。
 
@@ -33,7 +33,7 @@ IST的原理基于上面提到的网络的不同层会响应不同的类型特�
 
 ### 1.2 内容表示
 
-内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为_$$l$$_，_$$N_l$$_是Feature Map的数量，也就是通道数，_$$M_l$$_是Feature Map的像素点的个数。那么我们得到Feature Map _$$F^l$$_可以表示为_$$F^l \in \mathcal{R}^{N_l \times M_l}$$_，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4_2处的Feature Map $$P^l$$。
+内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为_$$l$$_，_$$N_l$$_是Feature Map的数量，也就是通道数，_$$M_l$$_是Feature Map的像素点的个数。那么我们得到Feature Map _$$F^l$$_可以表示为_$$F^l \in \mathcal{R}^{N_l \times M_l}$$，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4_2处的Feature Map $$P^l$$。
 
 如果$$\vec{x}$$的$$F_l$$和$$\vec{p}$$的$$P^l$$非常接近，那么我们可以认为$$\vec{x}$$和$$\vec{p}$$在内容上比较接近，因为越接近输出的层包含有越多的内容信息。这里我们可以定义IST的内容损失函数为：
 
@@ -92,6 +92,13 @@ $$
 为什么说$$\vec{x}’$$具有$$\vec{p}$$的内容呢，因为当$$\vec{x}’$$经过VGG19的处理后，它的conv5_2层的输出了$$\vec{p}$$几乎一样，而较深的层具有较高的内容信息，这也就说明了$$\vec{x}’$$和$$\vec{p}$$具有非常类似的内容信息。
 
 ### 1.3 样式表示
+
+和计算$$F^l$$相同，我们将$$\vec{a}$$输入到模型中便可得到它对应的Feature Map $$S^l$$。不同于内容表示的直接运算，样式表示使用的是Feature Map展开成1维向量的Gram矩阵的形式。使用Gram矩阵的原因是因为考虑到纹理特征是和图像的具体位置没有关系的，所以通过打乱纹理的位置信息来保证这个特征，Gram矩阵的定义如下：
+
+$$
+G_{i,j}^l = \sum_k F_{i,k}^l F_{j,k}^l
+$$
+
 
 
 ## Reference
