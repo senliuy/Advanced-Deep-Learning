@@ -9,6 +9,8 @@ Leon A.Gatys是最早使用CNN做图像风格迁移的先驱之一，这篇文�
 
 具体的讲，当我们要在图片C（content）的内容之上应用图片S（style）的风格时，我们会使用梯度下降等算法更新目标图像T（target）的内容，使其在较浅的层有和图片S类似的响应值，同时在较深的层和C也有类似的响应，这样就保证了T和S有类似的风格而且和C有类似的内容，这样生成的图片T就是我们要得到的风格迁移的图片。如图1所示。
 
+在Keras官方源码中，作者提供了神经风格迁移的[源码](https://github.com/keras-team/keras/blob/fcf2ed7831185a282895dda193217c2a97e1e41d/examples/neural_style_transfer.py)，这里对算法的讲解将结合源码进行分析。
+
 ## 1. Image Style Transfer算法详解
 
 
