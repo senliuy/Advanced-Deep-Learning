@@ -149,18 +149,19 @@ $$
 223 loss += total_variation_weight * total_variation_loss(combination_image)
 ```
 
-从上面的代码中我们可以看出，样式表示使用了```feature_layers```中所包含的Feature Map，并且最后loss的计算把它们进行了相加。第221行的```style_loss```的定义见源码的171-178行：
+从上面的代码中我们可以看出，样式表示使用了`feature_layers`中所包含的Feature Map，并且最后loss的计算把它们进行了相加。第221行的`style_loss`的定义见源码的171-178行：
 
 ```py
-def style_loss(style, combination):
-    assert K.ndim(style) == 3
-    assert K.ndim(combination) == 3
-    S = gram_matrix(style)
-    C = gram_matrix(combination)
-    channels = 3
-    size = img_nrows * img_ncols
-    return K.sum(K.square(S - C)) / (4.0 * (channels ** 2) * (size ** 2))
+171 def style_loss(style, combination):
+172     assert K.ndim(style) == 3
+173     assert K.ndim(combination) == 3
+174     S = gram_matrix(style)
+175     C = gram_matrix(combination)
+176     channels = 3
+177     size = img_nrows * img_ncols
+178     return K.sum(K.square(S - C)) / (4.0 * (channels ** 2) * (size ** 2))
 ```
+
 ## Reference
 
 \[1\] Gatys L A, Ecker A S, Bethge M. Image style transfer using convolutional neural networks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2414-2423.
