@@ -193,12 +193,21 @@ $$
 
 另外对于$$\vec{x}$$的初始化，论文中推荐使用白噪音进行初始化，这样虽然计算的时间要更长一些，但是得到的图像的样式具有更强的随机性。而论文使用的是使用$$\vec{p}$$初始化$$\vec{x}$$，这样得到的生成图像更加稳定。
 
-下面继续学习这一部分的源码。在第287-288行说明了计算梯度使用了L-BFGS算法：
+下面继续学习这一部分的源码。在第287-288行的`fmin_l_bfgs_b`说明了计算梯度使用了L-BFGS算法，它是scipy提供：
 
 ```py
 287 x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(),
 288                                  fprime=evaluator.grads, maxfun=20)
 ```
+
+`fmin_l_bfgs_b`是scipy包中一个函数。第一个参数是定义的损失函数，第二个参数是输入数据，`fprime`也是传入一个函数，并返回这个函数的值，`maxfun`是函数执行的次数。它的第一个返回值是更新之后的x的值，这里使用了递归的方式反复更新x，第二个返回值是损失值。
+
+其中`x`的初始化使用的是内容图片$$\vec{p}$$:
+
+```py
+282 x = preprocess_image(base_image_path)
+```
+
 
 ## Reference
 
