@@ -14,6 +14,8 @@ Leon A.Gatys是最早使用CNN做图像风格迁移的先驱之一，这篇文�
 
 ## 1. Image Style Transfer（IST）算法详解
 
+### 1.1 s
+
 IST的原理基于上面提到的网络的不同层会响应不同的类型特征的特点实现的。给定一个训练好的网络，源码中使用的是[VGG19](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html) \[3\]，下面是源码第142-143行，因此在运行该源码时如果你之前没有下载过训练好的VGG19模型文件，第一次运行会有下载该文件的过程，文件名为'vgg19\_weights\_tf\_dim\_ordering\_tf\_kernels\_notop.h5'。
 
 ```py
@@ -27,11 +29,43 @@ IST的原理基于上面提到的网络的不同层会响应不同的类型特�
 
 ![](/assets/IST_2.png)
 
-传统的深度学习方法是根据输入数据更新网络的权值。而IST的算法是固定网络的参数，更新输入的数据。固定权值更新数据还有几个经典案例，例如材质学习[5]，卷积核可视化等。
+传统的深度学习方法是根据输入数据更新网络的权值。而IST的算法是固定网络的参数，更新输入的数据。固定权值更新数据还有几个经典案例，例如材质学习\[5\]，卷积核可视化等。
 
-### 1.1 内容表示
+### 1.2 内容表示
 
-内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5_2）。假设其层数为$$l$$，$$N_l$$是Feature Map的数量，也就是通道数，$$M_l$$是Feature Map的像素点的个数。那么
+内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为_$$l$$_，_$$N_l$$_是Feature Map的数量，也就是通道数，_$$M_l$$_是Feature Map的像素点的个数。那么我们得到Feature Map _$$F^l$$_可以表示为_$$F^l \in \mathcal{R}^{N_l \times M_l}$$_，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4_2处的Feature Map $$P^l$$。
+
+如果$$\vec{x}$$的$$F_l$$和$$\vec{p}$$的$$P^l$$非常接近，那么我们可以认为$$\vec{x}$$和$$\vec{p}$$在内容上比较接近，因为越接近输出的层包含有越多的内容信息。这里我们可以定义IST的内容损失函数为：
+
+
+$$
+\mathcal{L}_{\text{content}}(\vec{p},\vec{x},l)=\frac{1}{2}\sum_{i,j}(F_{i,j}^l - P_{i,j}^l)^2
+$$
+
+
+下面我们来看一下源码，上面142行的`input_tensor`的是由$$\vec{p}, \vec{a}, \vec{x}$$一次拼接而成的，见136-138行。
+
+```py
+136 input_tensor = K.concatenate([base_image,
+137                               style_reference_image,
+138                               combination_image], axis=0)
+```
+
+通过对142行的`model`的遍历我们可以得到每一层的Feature Map的名字以及内容，然后将其保存在字典中，见147行。
+
+```py
+147 outputs_dict = dict([(layer.name, layer.output) for layer in model.layers])
+```
+
+这样我们可以根据关键字提取我们想要的Feature Map，例如我们提取两个图像在conv5\_2处的Feature Map $$P^l$$（源码中的`base_image_features`）和$$F^l$$源码中的`combination_features`），然后使用这两个Feature Map计算损失值，见208-212行：
+
+```py
+208 layer_features = outputs_dict['block5_conv2']
+209 base_image_features = layer_features[0, :, :, :]
+210 combination_features = layer_features[2, :, :, :]
+211 loss += content_weight * content_loss(base_image_features,
+212                                       combination_features)
+```
 
 ## Reference
 
@@ -43,5 +77,5 @@ IST的原理基于上面提到的网络的不同层会响应不同的类型特�
 
 \[4\] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks\[C\]//Advances in Neural Information Processing Systems. 2016: 901-909.
 
-[5] Gatys L, Ecker A S, Bethge M. Texture synthesis using convolutional neural networks[C]//Advances in Neural Information Processing Systems. 2015: 262-270.
+\[5\] Gatys L, Ecker A S, Bethge M. Texture synthesis using convolutional neural networks\[C\]//Advances in Neural Information Processing Systems. 2015: 262-270.
 
