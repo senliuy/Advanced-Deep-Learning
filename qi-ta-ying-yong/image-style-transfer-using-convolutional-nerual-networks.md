@@ -12,10 +12,14 @@ Leon A.Gatys是最早使用CNN做图像风格迁移的先驱之一，这篇文�
 
 在Keras官方源码中，作者提供了神经风格迁移的[源码](https://github.com/keras-team/keras/blob/fcf2ed7831185a282895dda193217c2a97e1e41d/examples/neural_style_transfer.py)，这里对算法的讲解将结合源码进行分析。
 
-## 1. Image Style Transfer算法详解
+## 1. Image Style Transfer（IST）算法详解
 
+IST的原理基于上面提到的网络的不同层会响应不同的类型特征的特点实现的。给定一个训练好的网络，源码中使用的是[VGG19](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/very-deep-convolutional-networks-for-large-scale-image-recognition.html)，下面是源码第142-143行，因此在运行该源码时如果你之前没有下载过训练好的VGG19模型文件，第一次运行会有下载该文件的过程，文件名为'vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5'。
 
-
+```py
+142 model = vgg19.VGG19(input_tensor=input_tensor,
+143                     weights='imagenet', include_top=False)
+```
 ## Reference
 
 [1] Gatys L A, Ecker A S, Bethge M. Image style transfer using convolutional neural networks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2414-2423.
