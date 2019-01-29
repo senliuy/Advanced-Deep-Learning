@@ -64,11 +64,6 @@
 * 2019-01-10：Layer Normalization
 * 2019-01-17：Weight Normalization
 * 2019-01-28：Recurrent Neural Network based Language Model
-
-
-
-
-
-
+* 2019-01-29：Image Style Transfer Using Convolutional Nerual Networks
 
 
