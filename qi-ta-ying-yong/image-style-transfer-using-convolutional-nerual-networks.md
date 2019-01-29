@@ -41,7 +41,7 @@ IST的原理基于上面提到的网络的不同层会响应不同的类型特�
 
 ### 1.2 内容表示
 
-内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为_$$l$$，$$N_l$$是Feature Map的数量，也就是通道数，$$M_l$$_是Feature Map的像素点的个数。那么我们得到Feature Map $$F^l$$可以表示为$$F^l \in \mathcal{R}^{N_l \times M_l}$$，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4\_2处的Feature Map $$P^l$$。
+内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为$$l$$，$$N_l$$是Feature Map的数量，也就是通道数，$$M_l$$是Feature Map的像素点的个数。那么我们得到Feature Map $$F^l$$可以表示为$$F^l \in \mathcal{R}^{N_l \times M_l}$$，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4\_2处的Feature Map $$P^l$$。
 
 如果$$\vec{x}$$的$$F_l$$和$$\vec{p}$$的$$P^l$$非常接近，那么我们可以认为$$\vec{x}$$和$$\vec{p}$$在内容上比较接近，因为越接近输出的层包含有越多的内容信息。这里我们可以定义IST的内容损失函数为：
 
