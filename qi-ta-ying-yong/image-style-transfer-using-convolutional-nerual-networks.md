@@ -12,6 +12,11 @@ Leon A.Gatys是最早使用CNN做图像风格迁移的先驱之一，这篇文�
 
 在Keras官方源码中，作者提供了神经风格迁移的[源码](https://github.com/keras-team/keras/blob/fcf2ed7831185a282895dda193217c2a97e1e41d/examples/neural_style_transfer.py)，这里对算法的讲解将结合源码进行分析。
 
+<figure>
+<img src="/assets/IST_1.png" alt="图1：图像风格迁移效果图" />
+<figcaption>图1：图像风格迁移效果图</figcaption>
+</figure>
+
 ## 1. Image Style Transfer（IST）算法详解
 
 ### 1.1 算法概览
@@ -27,13 +32,16 @@ IST的原理基于上面提到的网络的不同层会响应不同的类型特�
 
 图2有三个部分，最左侧的输入是风格图片$$\vec{a}$$，将其输入到训练好的VGG19中，会得到一批它对应的Feature Map；最右侧则是内容图片$$\vec{p}$$，它也会输入到这个网络中得到它对应的Feature Map；中间是目标图片$$\vec{x}$$，它的初始值是白噪音图片，它的值会通过SGD进行更新，SGD的损失函数时通过$$\vec{x}$$在这个网络中得到的Feature Map和$$\vec{a}$$的Feature Map以及$$\vec{p}$$的Feature Map计算得到的。图2中所有的细节会在后面的章节中进行介绍。
 
-![](/assets/IST_2.png)
+<figure>
+<img src="/assets/IST_2.png" alt="图2：图像风格迁移算法流程图" />
+<figcaption>图2：图像风格迁移算法流程图</figcaption>
+</figure>
 
 传统的深度学习方法是根据输入数据更新网络的权值。而IST的算法是固定网络的参数，更新输入的数据。固定权值更新数据还有几个经典案例，例如材质学习\[5\]，卷积核可视化等。
 
 ### 1.2 内容表示
 
-内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为_$$l$$_，_$$N_l$$_是Feature Map的数量，也就是通道数，_$$M_l$$_是Feature Map的像素点的个数。那么我们得到Feature Map _$$F^l$$_可以表示为_$$F^l \in \mathcal{R}^{N_l \times M_l}$$，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4\_2处的Feature Map $$P^l$$。
+内容表示是图2中右侧的两个分支所示的过程。我们先看最右侧，$$\vec{p}$$输入VGG19中，我们提取其在第四个block中第二层的Feature Map，表示为conv4_2（源码中提取的是conv5\_2）。假设其层数为_$$l$$，$$N_l$$是Feature Map的数量，也就是通道数，$$M_l$$_是Feature Map的像素点的个数。那么我们得到Feature Map $$F^l$$可以表示为$$F^l \in \mathcal{R}^{N_l \times M_l}$$，$$F^l_{ij}$$则是第$$l$$层的第$$i$$个Feature Map在位置$$j$$处的像素点的值。根据同样的定义，我们可以得到$$\vec{x}$$在conv4\_2处的Feature Map $$P^l$$。
 
 如果$$\vec{x}$$的$$F_l$$和$$\vec{p}$$的$$P^l$$非常接近，那么我们可以认为$$\vec{x}$$和$$\vec{p}$$在内容上比较接近，因为越接近输出的层包含有越多的内容信息。这里我们可以定义IST的内容损失函数为：
 
@@ -78,7 +86,7 @@ $$
 
 
 $$
-\frac{\partial \mathcal{L}_{content}}{\partial F_{i,j^l}} = 
+\frac{\partial \mathcal{L}_{content}}{\partial F_{i,j}^l} = 
 \left\{
 \begin{array}{}
 (F^l - P^l)_{i,j} & \text{if } F_{i,j} > 0\\
@@ -88,9 +96,9 @@ $$
 $$
 
 
-如果损失函数只包含内容损失，当模型收敛时，我们得到的$$\vec{x}’$$应该非常接近$$\vec{p}$$的内容。但是它很难还原到和$$\vec{p}$$一模一样，因为即使损失值为0时，我们得到的$$\vec{x}'$$值也有多种的形式。
+如果损失函数只包含内容损失，当模型收敛时，我们得到的$$\vec{x}'$$应该非常接近$$\vec{p}$$的内容。但是它很难还原到和$$\vec{p}$$一模一样，因为即使损失值为0时，我们得到的$$\vec{x}'$$值也有多种的形式。
 
-为什么说$$\vec{x}’$$具有$$\vec{p}$$的内容呢，因为当$$\vec{x}’$$经过VGG19的处理后，它的conv5\_2层的输出了$$\vec{p}$$几乎一样，而较深的层具有较高的内容信息，这也就说明了$$\vec{x}’$$和$$\vec{p}$$具有非常类似的内容信息。
+为什么说$$\vec{x}'$$具有$$\vec{p}$$的内容呢，因为当$$\vec{x}'$$经过VGG19的处理后，它的conv5\_2层的输出了$$\vec{p}$$几乎一样，而较深的层具有较高的内容信息，这也就说明了$$\vec{x}'$$和$$\vec{p}$$具有非常类似的内容信息。
 
 ### 1.3 风格表示
 
@@ -200,13 +208,63 @@ $$
 288                                  fprime=evaluator.grads, maxfun=20)
 ```
 
-`fmin_l_bfgs_b`是scipy包中一个函数。第一个参数是定义的损失函数，第二个参数是输入数据，`fprime`也是传入一个函数，并返回这个函数的值，`maxfun`是函数执行的次数。它的第一个返回值是更新之后的x的值，这里使用了递归的方式反复更新x，第二个返回值是损失值。
+`fmin_l_bfgs_b`是scipy包中一个函数。第一个参数是定义的损失函数，第二个参数是输入数据，`fprime`通常用于计算第一个损失函数的梯度，`maxfun`是函数执行的次数。它的第一个返回值是更新之后的x的值，这里使用了递归的方式反复更新x，第二个返回值是损失值。
 
 其中`x`的初始化使用的是内容图片$$\vec{p}$$:
 
 ```py
 282 x = preprocess_image(base_image_path)
 ```
+
+287行的损失函数定义在264-269行：
+
+```py
+264 def loss(self, x):
+265     assert self.loss_value is None
+266     loss_value, grad_values = eval_loss_and_grads(x)
+267     self.loss_value = loss_value
+268     self.grad_values = grad_values
+269     return self.loss_value
+```
+
+其中最重要的函数是`eval_loss_and_grads()`函数，它定义在了237-248行：
+
+```py
+237 def eval_loss_and_grads(x):
+238     if K.image_data_format() == 'channels_first':
+239         x = x.reshape((1, 3, img_nrows, img_ncols))
+240     else:
+241         x = x.reshape((1, img_nrows, img_ncols, 3))
+242     outs = f_outputs([x])
+243     loss_value = outs[0]
+244     if len(outs[1:]) == 1:
+245         grad_values = outs[1].flatten().astype('float64')
+246     else:
+247         grad_values = np.array(outs[1:]).flatten().astype('float64')
+248     return loss_value, grad_values
+```
+
+其中`f_outputs()`是实例化的Keras函数，作用是使用梯度更新$$\vec{x}$$的内容，见226-234行：
+
+```py
+226 grads = K.gradients(loss, combination_image)
+227 
+228 outputs = [loss]
+229 if isinstance(grads, (list, tuple)):
+230     outputs += grads
+231 else:
+232     outputs.append(grads)
+233 
+234 f_outputs = K.function([combination_image], outputs)
+```
+
+## 2. 总结
+
+图像风格迁移是一个非常好玩但是无法对齐效果量化的算法，我们可以得到和一些著名画家风格看起来非常类似的画作，但是很难从数学的角度去衡量一个画作的风格，得出的结论是非常主观的。但是算法的设计动机是出于CNN的**底层Feature Map接近图像纹理而高层Feature Map接近图像内容**的天然特性，也是对神经网络这个黑盒子从另外一个角度给与了解释。IST产生的结果非常有趣，由此诞生了一批商用的软件，例如Prisma等。
+
+IST如果能迁移到音频领域也许会有帮助，例如在TTS中如果可以将合成的语音的内容应用到真实人类语音的风格上，这样也许可以得到更为平滑的语音。或者如果我们将音频内容应用到某个人说话的风格中，也许我们可以得到和这个人说话风格非常类似的音频输出。
+
+算法另外一个缺点是对噪音比较敏感，尤其是当参与合成的风格图片和内容图片都是真实照片的时候。
 
 
 ## Reference
