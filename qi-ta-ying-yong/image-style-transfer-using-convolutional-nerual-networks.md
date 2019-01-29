@@ -13,7 +13,7 @@ Leon A.Gatys是最早使用CNN做图像风格迁移的先驱之一，这篇文�
 在Keras官方源码中，作者提供了神经风格迁移的[源码](https://github.com/keras-team/keras/blob/fcf2ed7831185a282895dda193217c2a97e1e41d/examples/neural_style_transfer.py)，这里对算法的讲解将结合源码进行分析。
 
 <figure>
-<img src="/assets/IST_1.png" alt="图1：图像风格迁移效果图" />
+<img src="/assets/IST_1.jpg" alt="图1：图像风格迁移效果图" />
 <figcaption>图1：图像风格迁移效果图</figcaption>
 </figure>
 
