@@ -8,7 +8,11 @@ tags: Normalization
 
 所以这篇文章提出了Instance Normalization（IN），一种更适合对单个像素有更高要求的场景的归一化算法（IST，GAN等）。IN的算法非常简单，计算归一化统计量时考虑单个样本，单个通道的所有元素。IN（右）和BN（中）以及LN（左）的不同从图1中可以非常明显的看出。
 
-![](/assets/IN_1.png)
+<figure>
+<img src="/assets/IN_1.png" alt="图1：LN（左），BN（中），IN（右）" />
+<figcaption>图2：Texture Networks的网络结</figcaption>
+</figure>
+
 
 ## 1.IN详解
 
@@ -16,7 +20,10 @@ tags: Normalization
 
 在Gatys等人的IST算法中，他们提出的策略是通过L-BFGS算法优化生成图片，风格图片以及内容图片再VGG-19上生成的Feature Map的均方误差。这种策略由于Feature Map的像素点数量过于多导致了优化起来非常消耗时间以及内存。IN的作者Ulyanov等人同在2016年提出了Texture network\[5\]（图2），
 
-![](/assets/IN_2.png)
+<figure>
+<img src="/assets/IN_2.png" alt="图2：Texture Networks的网络结构" />
+<figcaption>图2：Texture Networks的网络结</figcaption>
+</figure>
 
 图2中的生成器网络（Generator Network）是一个由卷积操作构成的全卷积网络，在原始的Texture Network中，生成器使用的操作包括卷积，池化，上采样以及**BN**。但是作者发现当训练生成器网络网络时，使用的样本数越少（例如16个），得到的效果越好。但是我们知道BN并不适用于样本数非常少的环境中，因此作者提出了IN，一种不受限于批量大小的算法专门用于Texture Network中的生成器网络。
 
