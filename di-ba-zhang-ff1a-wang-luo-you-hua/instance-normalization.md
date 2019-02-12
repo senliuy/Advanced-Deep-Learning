@@ -10,7 +10,7 @@ tags: Normalization
 
 <figure>
 <img src="/assets/IN_1.png" alt="图1：LN（左），BN（中），IN（右）" />
-<figcaption>图2：Texture Networks的网络结</figcaption>
+<figcaption>图1：LN（左），BN（中），IN（右）</figcaption>
 </figure>
 
 
