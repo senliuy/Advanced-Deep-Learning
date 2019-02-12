@@ -22,7 +22,59 @@ tags: Normalization
 
 ## 1.2 IN vs BN
 
+BN的详细算法我们已经分析过，这里再重复一下它的计算方式：
 
+
+$$
+\mu_i = \frac{1}{HWT}\sum_{t=1}^T\sum_{l=1}^W\sum_{m=1}^H x_{tilm}
+\quad
+\sigma_i^2 = \frac{1}{HWT}\sum_{t=1}^T\sum_{l=1}^W\sum_{m=1}^H (x_{tilm} -\mu_i)^2
+\quad
+y_{tijk} = \frac{x_{tijk}-\mu_{i}}{\sqrt{\sigma_{i}^2+ \epsilon}}
+$$
+
+
+正如我们之前所分析的，IN在计算归一化统计量时并没有像BN那样跨样本、单通道，也没有像LN那样单样本、跨通道。它是取的单通道，单样本上的数据进行计算，如图1最右侧所示。所以对比BN的公式，它只需要它只需要去掉批量维的求和即可：
+
+
+$$
+\mu_{ti} = \frac{1}{HW}\sum_{l=1}^W\sum_{m=1}^H x_{tilm}
+\quad
+\sigma_{ti}^2 = \frac{1}{HW}\sum_{l=1}^W\sum_{m=1}^H (x_{tilm} -\mu_{ti})^2
+\quad
+y_{tijk} = \frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma_{ti}^2+ \epsilon}}
+$$
+
+
+对于是否使用BN中的可学习参数$$\beta$$和$$\gamma$$，从LN的TensorFlow中源码中我们可以看出这两个参数是要使用的。但是我们也可以通过将其值置为False来停用它们，这一点和其它归一化方法在TensorFlow中的实现是相同的。
+
+## 1.3 TensorFlow 中的IN
+
+IN在TensorFlow中的实现见[链接](https://github.com/tensorflow/tensorflow/blob/r1.12/tensorflow/contrib/layers/python/layers/normalization.py)，其函数声明如下：
+
+```py
+def instance_norm(inputs,
+                  center=True,
+                  scale=True,
+                  epsilon=1e-6,
+                  activation_fn=None,
+                  param_initializers=None,
+                  reuse=None,
+                  variables_collections=None,
+                  outputs_collections=None,
+                  trainable=True,
+                  data_format=DATA_FORMAT_NHWC,
+                  scope=None)
+```
+
+其中的`center`和`scale`便是分别对应BN中的参数$$\beta$$和$$\gamma$$。
+
+归一化统计量是通过`nn.moments`函数计算的，决定如何从inputs取值的是`axes`参数，对应源码中的`moments_axes`
+
+```py
+    # Calculate the moments (instance activations).
+    mean, variance = nn.moments(inputs, moments_axes, keep_dims=True)
+```
 
 ## Reference
 
