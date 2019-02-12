@@ -14,7 +14,7 @@ tags: Normalization
 </figure>
 
 
-## 1.IN详解
+## 1. IN详解
 
 ## 1.1 IST中的IN
 
