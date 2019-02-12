@@ -27,9 +27,9 @@ BN的详细算法我们已经分析过，这里再重复一下它的计算方式
 
 $$
 \mu_i = \frac{1}{HWT}\sum_{t=1}^T\sum_{l=1}^W\sum_{m=1}^H x_{tilm}
-\quad
+\qquad
 \sigma_i^2 = \frac{1}{HWT}\sum_{t=1}^T\sum_{l=1}^W\sum_{m=1}^H (x_{tilm} -\mu_i)^2
-\quad
+\qquad
 y_{tijk} = \frac{x_{tijk}-\mu_{i}}{\sqrt{\sigma_{i}^2+ \epsilon}}
 $$
 
@@ -39,9 +39,9 @@ $$
 
 $$
 \mu_{ti} = \frac{1}{HW}\sum_{l=1}^W\sum_{m=1}^H x_{tilm}
-\quad
+\qquad
 \sigma_{ti}^2 = \frac{1}{HW}\sum_{l=1}^W\sum_{m=1}^H (x_{tilm} -\mu_{ti})^2
-\quad
+\qquad
 y_{tijk} = \frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma_{ti}^2+ \epsilon}}
 $$
 
@@ -69,12 +69,31 @@ def instance_norm(inputs,
 
 其中的`center`和`scale`便是分别对应BN中的参数$$\beta$$和$$\gamma$$。
 
-归一化统计量是通过`nn.moments`函数计算的，决定如何从inputs取值的是`axes`参数，对应源码中的`moments_axes`
+归一化统计量是通过`nn.moments`函数计算的，决定如何从inputs取值的是`axes`参数，对应源码中的`moments_axes`参数。
 
 ```py
     # Calculate the moments (instance activations).
     mean, variance = nn.moments(inputs, moments_axes, keep_dims=True)
 ```
+
+下面我们提取源码中的核心部分，并通过注释的方法对齐进行解释（假设输入的Tensor是按NHWC排列的）：
+
+```py
+inputs_rank = inputs.shape.ndims # 取Tensor的维度数，这里值是4
+reduction_axis = inputs_rank - 1 # 取Channel维的位置，值为3
+moments_axes = list(range(inputs_rank)) # 初始化moments_axes链表，值为[0,1,2,3]
+del moments_axes[reduction_axis] # 删除第3个值（Channel维），moments_axes变为[0,1,2]
+del moments_axes[0] # 删除第一个值（Batch维），moments_axes变为[1,2]
+```
+
+## 总结
+
+IN本身是一个非常简单的算法，尤其适用于批量较小且单独考虑每个像素点的场景中，因为其计算归一化统计量时没有混合批量和通道之间的数据，对于这种场景下的应用，我们可以考虑使用IN。
+
+另外需要注意的一点是在图像这类应用中，每个通道上的值是比较大的，因此也能够取得比较合适的归一化统计量。但是有两个场景建议不要使用IN:
+
+1. MLP或者RNN中：因为在MLP或者RNN中，每个通道上只有一个数据，这时会自然不能使用IN；
+2. Feature Map比较小时：因为此时IN的采样数据非常少，得到的归一化统计量将不再具有代表性。
 
 ## Reference
 
