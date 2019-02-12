@@ -18,6 +18,12 @@ tags: Normalization
 
 ![](/assets/IN_2.png)
 
+图2中的生成器网络（Generator Network）是一个由卷积操作构成的全卷积网络，在原始的Texture Network中，生成器使用的操作包括卷积，池化，上采样以及**BN**。但是作者发现当训练生成器网络网络时，使用的样本数越少（例如16个），得到的效果越好。但是我们知道BN并不适用于样本数非常少的环境中，因此作者提出了IN，一种不受限于批量大小的算法专门用于Texture Network中的生成器网络。
+
+## 1.2 IN vs BN
+
+
+
 ## Reference
 
 \[1\] Vedaldi V L D U A. Instance Normalization: The Missing Ingredient for Fast Stylization\[J\]. arXiv preprint arXiv:1607.08022, 2016.
