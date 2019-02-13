@@ -4,7 +4,13 @@
 
 Group Normalization（GN）是何恺明提出的一种归一化策略，它是介于Layer Normalization（LN）\[2\]和 Instance Normalization（IN）\[3\]之间的一种折中方案，图1最右。它通过将**通道**数据分成几组计算归一化统计量，因此GN也是和批量大小无关的算法，因此可以用在batchsize比较小的环境中。作者在论文中指出GN要比LN和IN的效果要好。
 
-![](/assets/GN_1.png)
+<figure>
+<img src="/assets/GN_1.png" alt="图1：从左到右依次是BN，LN，IN以及GN" />
+<figcaption>图1：从左到右依次是BN，LN，IN以及GN</figcaption>
+</figure>
+
+
+
 
 ## 1. GN详解
 
