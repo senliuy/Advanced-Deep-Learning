@@ -67,6 +67,7 @@
   * [Layer Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.md)
   * [Weight Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/weight-normalization.md)
   * [Instance Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.md)
+  * [Group Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/group-normalization.md)
 * [其它应用](qi-ta-ying-yong.md)
   * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
   * [Image Style Transfer Using Convolutional Nerual Networks](qi-ta-ying-yong/image-style-transfer-using-convolutional-nerual-networks.md)
