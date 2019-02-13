@@ -55,6 +55,7 @@ $$
 \mathcal{S}_i = \{k | k_N = i_N, \lfloor \frac{k_C}{C/G}\rfloor = \lfloor \frac{i_C}{C/G}\rfloor\}
 $$
 
+我们可以看出，当GN的组数为1时，此时GN和LN等价；当GN的组数为通道数时，GN和IN等价。
 
 GN和其它算法一样也可以添加参数$$\gamma$$和$$\beta$$来保证网络的容量。
 
@@ -75,7 +76,12 @@ GN和其它算法一样也可以添加参数$$\gamma$$和$$\beta$$来保证网�
 10    return x * gamma + beta
 ```
 
-第6行代码将Tensor中添加一个组
+第6行代码将Tensor中添加一个’组‘的维度，形成一个五维张量。第7行的`axes`的值为[2,3,4]表明计算归一化统计量时即不会跨batch，也不会跨组。
+
+### 1.2 GN的原理
+
+在深度学习之前，传统的SIFT，HOG等算法均由按组统计特征的特性，它们一般将同一个种类的特征归为一组，然后
+
 ## Reference
 
 \[1\] Wu Y, He K. Group normalization\[J\]. arXiv preprint arXiv:1803.08494, 2018.
