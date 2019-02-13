@@ -63,18 +63,19 @@ GN和其它算法一样也可以添加参数$$\gamma$$和$$\beta$$来保证网�
 论文中给出了基于TensorFlow的GN额源码：
 
 ```py
-def GroupNorm(x, gamma, beta, G, eps=1e−5):
-    # x: input features with shape [N,C,H,W]
-    # gamma, beta: scale and offset, with shape [1,C,1,1]
-    # G: number of groups for GN
-    N, C, H, W = x.shape
-    x = tf.reshape(x, [N, G, C // G, H, W])
-    mean, var = tf.nn.moments(x, [2, 3, 4], keep dims=True) 
-    x = (x − mean) / tf.sqrt(var + eps)
-    x = tf.reshape(x, [N, C, H, W]) 
-    return x ∗ gamma + beta
+1 def GroupNorm(x, gamma, beta, G, eps=1e−5):
+2     # x: input features with shape [N,C,H,W]
+3     # gamma, beta: scale and offset, with shape [1,C,1,1]
+4     # G: number of groups for GN
+5     N, C, H, W = x.shape
+6     x = tf.reshape(x, [N, G, C // G, H, W])
+7     mean, var = tf.nn.moments(x, [2, 3, 4], keep dims=True) 
+8     x = (x − mean) / tf.sqrt(var + eps)
+9     x = tf.reshape(x, [N, C, H, W]) 
+10    return x * gamma + beta
 ```
 
+第6行代码将Tensor中添加一个组
 ## Reference
 
 \[1\] Wu Y, He K. Group normalization\[J\]. arXiv preprint arXiv:1803.08494, 2018.
