@@ -6,6 +6,45 @@ Group Normalization（GN）是何恺明提出的一种归一化策略，它是�
 
 ![](/assets/GN_1.png)
 
+## 1. GN详解
+
+### 1.1 GN算法
+
+和之前所有介绍过的归一化算法相同，GN也是根据该层的输入数据计算均值和方差，然后使用这两个值更新输入数据：
+
+$$
+\mu_i = \frac{1}{m}\sum_{k \in \mathcal{S}_i} x_k
+\qquad
+\sigma_i = \sqrt{\frac{1}{m}\sum_{k \in \mathcal{S}_i}(x_k-\mu_i)^2 + \epsilon} 
+\qquad
+\hat{x}_i = \frac{1}{\sigma_i} (x_i-\mu_i)
+$$
+
+之前所介绍的所有归一化方法均可以使用上面式子进行概括，区别它们的是$$\mathcal{S}_i$$是如何取得的：
+
+对于BN来说，它是取不同batch的同一个channel上的所有的值：
+
+$$
+\mathcal{S}_i = \{k | k_C = i_C\}
+$$
+
+而LN是从同一个batch的不同的channel上取所有的值：
+
+$$
+\mathcal{S}_i = \{k | k_N = i_N\}
+$$
+
+IN即不跨batch，也不跨channel：
+
+$$
+\mathcal{S}_i = \{k | k_N = i_N，k_C = i_C\}
+$$
+
+GN是将Channel分成若干组，只使用组内的数据计算均值和方差。通常组数$$G$$是一个超参数，TensorFlow中的默认值是32。
+
+$$
+\mathcal{S}_i = \{k | k_N = i_N, \lfloor \frac{k_C}{C/G}\rfloor = \lfloor \frac{i_C}{C/G}\rfloor\}
+$$
 ## Reference
 
 \[1\] Wu Y, He K. Group normalization\[J\]. arXiv preprint arXiv:1803.08494, 2018.
