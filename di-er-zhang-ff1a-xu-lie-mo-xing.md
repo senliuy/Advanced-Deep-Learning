@@ -4,7 +4,7 @@ tags: Attention
 
 ## 前言
 
-
+本文提出了一个层次的Attention模型用来做文档分类的任务，
 
 ## Reference
 
