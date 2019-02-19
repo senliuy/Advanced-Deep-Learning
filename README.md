@@ -67,6 +67,7 @@
 * 2019-01-29：Image Style Transfer Using Convolutional Nerual Networks
 * 2019-02-12：Instance Normalization
 * 2019-02-13：Group Normalization
+* 2019-02-19：Hierarchical Attention Networks for Document Classification
 
 
 
