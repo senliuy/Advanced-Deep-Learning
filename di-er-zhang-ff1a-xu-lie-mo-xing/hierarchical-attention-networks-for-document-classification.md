@@ -24,7 +24,7 @@ $$
 x_{it} = W_e w_{it}, t\in[1,T]
 $$
 
-之后使用一个单层的双向GRU对$$x_{it}$$进行编码：
+之后使用一个单层的双向[GRU]()[2]对$$x_{it}$$进行编码：
 
 $$
 \overrightarrow{h}_{it} = \overrightarrow{GRU}(x_{it}),t\in[1,T]
@@ -34,9 +34,15 @@ $$
 \overleftarrow{h}_{it} = \overleftarrow{GRU}(x_{it}), \quad t\in[T,1]
 $$
 
-
+$$
+h_{it} = [\overrightarrow{h}_{it}; \overleftarrow{h}_{it}]
+$$
 
 ## Reference
 
 \[1\] Yang Z, Yang D, Dyer C, et al. Hierarchical attention networks for document classification\[C\]//Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. 2016: 1480-1489.
+
+[2] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
+
+
 
