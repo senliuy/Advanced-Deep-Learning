@@ -76,13 +76,38 @@ $$
 h_{i} = [\overrightarrow{h}_{i}; \overleftarrow{h}_{i}]
 $$
 
-### 1.4 句子Attention
+### 1.5 句子Attention
 
 HAN的句子Attention部分也是使用了Memory Network带上下文向量的Attention结构，它的输入是句子编码器得到的特征向量，输出的是整个文本的特征向量$$v$$。
 
 $$
+u_{i} = \text{tanh}(W_s h_{i} + b_s)
+$$
 
 $$
+\alpha_{i} = \frac{\text{exp}(u_{i}^\top u_s)}{\sum_i \text{exp} (u_{i}^\top u_s)}
+$$
+
+$$
+v = \sum_i \alpha_{i} h_{i}
+$$
+
+### 1.5 句子分类
+
+使用softmax激活函数我们可以根据文本向量$$v$$得到其每个类别的预测概率$$p$$：
+
+$$
+p = \text{softmax}(W_c v + b_c) 
+$$
+
+由于使用了softmax激活函数，那么它的损失函数则应该是负log似然：
+
+$$
+L = -\sum_d \text{log} p_{dj}
+$$
+
+其中$$d$$是批量中样本的下标，$$j$$是分类任务中类别的下标。
+
 
 ## Reference
 
