@@ -10,8 +10,11 @@ tags: Attention
 
 ### 1.1 网络结构
 
-HAN
+HAN的网络结构如图1所示，
+
+![](/assets/HAN_1.png)
 
 ## Reference
 
-[1] Yang Z, Yang D, Dyer C, et al. Hierarchical attention networks for document classification[C]//Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. 2016: 1480-1489.
+\[1\] Yang Z, Yang D, Dyer C, et al. Hierarchical attention networks for document classification\[C\]//Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. 2016: 1480-1489.
+
