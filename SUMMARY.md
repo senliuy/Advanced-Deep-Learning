@@ -18,6 +18,7 @@
   * [Neural Architecture Search with Reinforecement Learning](di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.md)
   * [Learning Transferable Architectures for Scalable Image Recognition](di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.md)
   * [Progressive Neural Architecture Search](di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.md)
+  * [Regularized Evolution for Image Classifier Architecture Search](di-yi-zhang-ff1a-jing-dian-wang-luo/regularized-evolution-for-image-classifier-architecture-search.md)
   * [实例解析：12306验证码破解](di-yi-zhang-ff1a-jing-dian-wang-luo/shi-li-jie-xi-ff1a-12306-yan-zheng-ma-po-jie.md)
 * [第二章：自然语言处理](di-er-zhang-ff1a-xu-lie-mo-xing.md)
   * [Recurrent Neural Network based Language Model](di-er-zhang-ff1a-xu-lie-mo-xing/recurrent-neural-network-based-languaged-model.md)
