@@ -16,15 +16,15 @@ HAN的网络结构如图1所示，它的核心结构由两个部分组成，下�
 
 在详细介绍网络结构之前我们先给出几个重要参数的定义。假设一篇文章由$$L$$个句子组成，第$$s_i(i\in[1,L])$$个句子包含$$T_i$$个单词，$$w_{it}$$是第$$i$$个句子中的第$$t(t\in[1,T_i])$$个单词。
 
-## 1.2 单词编码器
+### 1.2 单词编码器
 
-给定一个由单词$$w_{it}$$组成的句子$$T_i$$，它首先会经过一个嵌入矩阵编码成一个特征向量，例如word2vec等方法：
+图1中最底下的部分是个单词编码器，它的输入是一个句子。给定一个由单词$$w_{it}$$组成的句子$$T_i$$，它首先会经过一个嵌入矩阵编码成一个特征向量，例如word2vec等方法：
 
 $$
 x_{it} = W_e w_{it}, t\in[1,T]
 $$
 
-之后使用一个单层的双向[GRU]()[2]对$$x_{it}$$进行编码：
+之后使用一个单层的双向[GRU](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)[2]对$$x_{it}$$进行编码：
 
 $$
 \overrightarrow{h}_{it} = \overrightarrow{GRU}(x_{it}),t\in[1,T]
@@ -34,9 +34,15 @@ $$
 \overleftarrow{h}_{it} = \overleftarrow{GRU}(x_{it}), \quad t\in[T,1]
 $$
 
+双向GRU的输出是通过拼接前向GRU和反向GRU的方式得到的。
+
 $$
 h_{it} = [\overrightarrow{h}_{it}; \overleftarrow{h}_{it}]
 $$
+
+### 1.3 单词Attention
+
+单词编码器之上是一个单词Attention模块，
 
 ## Reference
 
@@ -44,5 +50,6 @@ $$
 
 [2] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
 
+[3] 
 
 
