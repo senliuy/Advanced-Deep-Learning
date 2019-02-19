@@ -27,7 +27,7 @@
   * [About Long Short Term Memory](di-er-zhang-ff1a-xu-lie-mo-xing/about-long-short-term-memory.md)
   * [Attention Is All you Need](di-er-zhang-ff1a-xu-lie-mo-xing/attention-is-all-you-need.md)
   * [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](di-er-zhang-ff1a-xu-lie-mo-xing/bert-pre-training-of-deep-bidirectional-transformer-for-language-understanding.md)
-  * Hierarchical Attention Networks for Document Classification
+  * [Hierarchical Attention Networks for Document Classification](di-er-zhang-ff1a-xu-lie-mo-xing/hierarchical-attention-networks-for-document-classification.md)
 * [第三章：语音识别](di-san-zhang-ff1a-yu-yin-shi-bie.md)
   * [Speech Recognition with Deep Recurrent Neural Network](di-san-zhang-ff1a-yu-yin-shi-bie/speech-recognition-with-deep-recurrent-neural-network.md)
 * [第四章：物体检测](chapter1.md)
