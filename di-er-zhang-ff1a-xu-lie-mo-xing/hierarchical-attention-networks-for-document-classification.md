@@ -48,7 +48,7 @@ $$
 u_{it} = \text{tanh}(W_w h_{it} + b_w)
 $$
 
-接着便是Attention部分，首先需要使用softmax计算每个特征的权值。在论文中使用了Memory Network[3]，Memory Network是于2014年有FAIR提出的一种类似于神经图灵机的结构，它的核心部件是一个叫做记忆单元的部分，用来长期保存特征向量，也就是论文中的$$u_w$$，它的值也会随着训练的进行而更新。Memory Network经过几年的发展也有了很多性能更优的版本，但是由于坑比较深且业内没有广泛使用，暂时没有学习它的计划，感兴趣的同学请自行学习相关论文和代码。结合了Memory Network的权值的计算方式为：
+接着便是Attention部分，首先需要使用softmax计算每个特征的权值。在论文中使用了Memory Network[3]，Memory Network是于2014年有FAIR提出的一种类似于神经图灵机的结构，它的核心部件是一个叫做记忆单元的部分，用来长期保存特征向量，也就是论文中的上下文向量$$u_w$$，它的值也会随着训练的进行而更新。Memory Network经过几年的发展也有了很多性能更优的版本，但是由于坑比较深且业内没有广泛使用，暂时没有学习它的计划，感兴趣的同学请自行学习相关论文和代码。结合了Memory Network的权值的计算方式为：
 
 $$
 \alpha_{it} = \frac{\text{exp}(u_{it}^\top u_w)}{\sum_t \text{exp} (u_{it}^\top u_w)}
@@ -74,6 +74,14 @@ $$
 
 $$
 h_{i} = [\overrightarrow{h}_{i}; \overleftarrow{h}_{i}]
+$$
+
+### 1.4 句子Attention
+
+HAN的句子Attention部分也是使用了Memory Network带上下文向量的Attention结构，它的输入是句子编码器得到的特征向量，输出的是整个文本的特征向量$$v$$。
+
+$$
+
 $$
 
 ## Reference
