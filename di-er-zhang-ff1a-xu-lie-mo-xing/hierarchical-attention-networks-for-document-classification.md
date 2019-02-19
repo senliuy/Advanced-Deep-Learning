@@ -42,7 +42,39 @@ $$
 
 ### 1.3 单词Attention
 
-单词编码器之上是一个单词Attention模块，
+单词编码器之上是一个单词Attention模块，它首先会将上一层得到的$$h_{it}$$输入一个MLP中得到它的非线性表示：
+
+$$
+u_{it} = \text{tanh}(W_w h_{it} + b_w)
+$$
+
+接着便是Attention部分，首先需要使用softmax计算每个特征的权值。在论文中使用了Memory Network[3]，Memory Network是于2014年有FAIR提出的一种类似于神经图灵机的结构，它的核心部件是一个叫做记忆单元的部分，用来长期保存特征向量，也就是论文中的$$u_w$$，它的值也会随着训练的进行而更新。Memory Network经过几年的发展也有了很多性能更优的版本，但是由于坑比较深且业内没有广泛使用，暂时没有学习它的计划，感兴趣的同学请自行学习相关论文和代码。结合了Memory Network的权值的计算方式为：
+
+$$
+\alpha_{it} = \frac{\text{exp}(u_{it}^\top u_w)}{\sum_t \text{exp} (u_{it}^\top u_w)}
+$$
+
+最后得到的这个句子的编码$$s_i$$便是以$$h_{it}$$作为向量值，$$\alpha_{it}$$作为权值的加权和：
+
+$$
+s_i = \sum_t \alpha_{it} h_{it}
+$$
+
+### 1.4 句子编码器
+
+句子编码器的也是使用了一个双向GRU，它的结构和单词编码器非常相似，数学表达式为：
+
+$$
+\overrightarrow{h}_{i} = \overrightarrow{GRU}(s_{i}),t\in[1,T]
+$$
+
+$$
+\overleftarrow{h}_{i} = \overleftarrow{GRU}(s_{i}),t\in[T,1]
+$$
+
+$$
+h_{i} = [\overrightarrow{h}_{i}; \overleftarrow{h}_{i}]
+$$
 
 ## Reference
 
@@ -50,6 +82,6 @@ $$
 
 [2] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
 
-[3] 
+[3] Weston J, Chopra S, Bordes A. Memory networks[J]. arXiv preprint arXiv:1410.3916, 2014.
 
 
