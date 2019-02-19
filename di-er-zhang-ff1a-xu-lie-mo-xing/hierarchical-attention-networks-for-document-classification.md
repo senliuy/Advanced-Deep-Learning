@@ -27,17 +27,17 @@ $$
 之后使用一个单层的双向[GRU](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)[2]对$$x_{it}$$进行编码：
 
 $$
-\vec{h}_{it} = \vec{GRU}(x_{it}),t\in[1,T]
+\vec{h}_{it} = \text{GRU}(x_{it}),t\in[1,T]
 $$
 
 $$
-\overleftarrow{h}_{it} = \overleftarrow{GRU}(x_{it}), \quad t\in[T,1]
+\vec{h}'_{it} = \text{GRU}(x_{it}),t\in[T,1]
 $$
 
 双向GRU的输出是通过拼接前向GRU和反向GRU的方式得到的。
 
 $$
-h_{it} = [\vec{h}_{it}; \overleftarrow{h}_{it}]
+h_{it} = [\vec{h}_{it}; \vec{h}'_{it}]
 $$
 
 ### 1.3 单词Attention
@@ -65,15 +65,15 @@ $$
 句子编码器的也是使用了一个双向GRU，它的结构和单词编码器非常相似，数学表达式为：
 
 $$
-\vec{h}_{i} = \vec{GRU}(s_{i}),t\in[1,T]
+\vec{h}_{i} = \text{GRU}(s_{i}),t\in[1,T]
 $$
 
 $$
-\overleftarrow{h}_{i} = \overleftarrow{GRU}(s_{i}),t\in[T,1]
+\vec{h}'_{i} = \text{GRU}(s_{i}),t\in[T,1]
 $$
 
 $$
-h_{i} = [\vec{h}_{i}; \overleftarrow{h}_{i}]
+h_{i} = [\vec{h}_{i}; \vec{h}'_{i}]
 $$
 
 ### 1.5 句子Attention
