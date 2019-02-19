@@ -12,7 +12,10 @@ tags: Attention
 
 HAN的网络结构如图1所示，它的核心结构由两个部分组成，下面是一个单词编码器加上基于单词编码的Attention层，上面是一个句子编码器和一个基于句子编码的Attention层。
 
-![](/assets/HAN_1.png)
+<figure>
+<img src="/assets/HAN_1.png" alt="图1：HAN网络结构图" />
+<figcaption>图1：HAN网络结构图</figcaption>
+</figure>
 
 在详细介绍网络结构之前我们先给出几个重要参数的定义。假设一篇文章由$$L$$个句子组成，第$$s_i(i\in[1,L])$$个句子包含$$T_i$$个单词，$$w_{it}$$是第$$i$$个句子中的第$$t(t\in[1,T_i])$$个单词。
 
