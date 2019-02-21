@@ -8,8 +8,12 @@
 
 ### 1.1 搜索空间
 
-
+AmoebaNet使用的是和[NASNet]()[2]相同的搜索空间
 
 ## Reference
 
 [1] Real E, Aggarwal A, Huang Y, et al. Regularized evolution for image classifier architecture search[J]. arXiv preprint arXiv:1802.01548, 2018.
+
+[2] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition\[J\]. arXiv preprint arXiv:1707.07012, 2017, 2\(6\).
+
+ 
