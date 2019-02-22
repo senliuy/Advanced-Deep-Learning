@@ -12,6 +12,7 @@ AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learn
 
 ![](/assets/AmoebaNet_1.png)
 
+每个Cell是由若干个卷积操作构成，可以选择的卷积的种类参考NASNet。在每个卷积操作中，
 ## Reference
 
 \[1\] Real E, Aggarwal A, Huang Y, et al. Regularized evolution for image classifier architecture search\[J\]. arXiv preprint arXiv:1802.01548, 2018.
