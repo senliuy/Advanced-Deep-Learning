@@ -19,6 +19,8 @@ AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learn
 
 最终AmoebaNet仅仅有两个变量需要决定，一个是每个Feature Map的卷积核数量$$F$$，另一个是堆叠的Normal Cell的个数$$N$$，这两个参数作为了人工设定的超参数，作者也实验了$$N$$和$$F$$的各种组合。
 
+### 1.2 Aging Evolution
+
 
 
 ## Reference
