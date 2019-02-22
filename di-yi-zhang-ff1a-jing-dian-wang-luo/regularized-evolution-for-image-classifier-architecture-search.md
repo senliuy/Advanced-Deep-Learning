@@ -23,10 +23,11 @@ AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learn
 
 AmoebaNet的进化算法如图2所示，我们来逐行分析这段代码。
 
-
+![](/assets/AmoebaNet_2.png)
 
 ## Reference
 
 \[1\] Real E, Aggarwal A, Huang Y, et al. Regularized evolution for image classifier architecture search\[J\]. arXiv preprint arXiv:1802.01548, 2018.
 
 \[2\] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition\[J\]. arXiv preprint arXiv:1707.07012, 2017, 2\(6\).
+
