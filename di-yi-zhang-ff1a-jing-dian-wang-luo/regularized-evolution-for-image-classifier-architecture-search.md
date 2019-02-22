@@ -15,7 +15,7 @@ AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learn
 在每个卷积操作中，我们需要学习两个参数：
 
 1. 卷积操作的类型：类型空间参考NASNet。
-2. 卷积核的输入：从该Cell中所有可以选择的Feature Map选择两个，每个Feature Map选择一个操作，通过合并这两个Feature Map得到新的Feature Map。最后将所有没有扇出的Feature Map作为最终的输出。
+2. 卷积核的输入：从该Cell中所有可以选择的Feature Map选择两个，每个Feature Map选择一个操作，通过合并这两个Feature Map得到新的Feature Map。最后将所有没有扇出的Feature Map合并作为最终的输出。上面所说的合并是单位加操作，因此Feature Map的个数不会改变。
 
 ## Reference
 
