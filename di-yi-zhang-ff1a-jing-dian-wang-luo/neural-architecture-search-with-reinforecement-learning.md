@@ -1,6 +1,6 @@
 # Neural Architecture Search with Reinforecement Learning
 
-tags: Reinforcement Learning, CNN, RNN
+tags: Reinforcement Learning, CNN, RNN, AutoML
 
 ## 前言
 

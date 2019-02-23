@@ -1,6 +1,6 @@
 # Learning Transferable Architectures for Scalable Image Recognition
 
-tags: NAS, NASNet
+tags: NAS, NASNet, AutoML
 
 ## 前言
 
