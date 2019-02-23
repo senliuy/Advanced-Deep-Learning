@@ -75,8 +75,8 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 通过上面的进化策略，产生的网络结构如图4所示，作者将其命名为AmoebaNet-A：
 
 <figure>
-<img src="/assets/AmoebaNet_4.png" alt="图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(下)Reduction Celll"/>
-<figcaption>图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(下)Reduction Celll</figcaption>
+<img src="/assets/AmoebaNet_4.png" alt="图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(下)Reduction Cell"/>
+<figcaption>图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(右)Reduction Cell</figcaption>
 </figure>
 
 在图4中还有两个要手动设置的参数，一个参数是连续堆叠的Normal Cell的个数$$N$$，另外一个是卷积核的数量。在第一个Reduction之前卷积核的数量是$$F$$，后面每经过一次Reduction，卷积核的数量$$\times$$2。这两个参数是需要人工设置的超参数。
@@ -89,7 +89,11 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 从模型的精度上来看Aging Evolution（AE）和RL（Reinfrocement Learning）得到的同等量级参数的架构在ImageNet上的表现是几乎相同的，因此我们无法冒然的下结论说AE得到的模型要优于AL。但是AE的收敛速度快于RL是非常容易从实验结果中看到的。另外作者也添加了一个Random Search（RS）做对照实验，三个方法的收敛曲线图如图5所示：
 
-![](/assets/AmoebaNet_5.png)
+<figure>
+<img src="/assets/AmoebaNet_5.png" alt="图5：AE，RL及RS在收敛速度上的对比曲线"/>
+<figcaption>图5：AE，RL及RS在收敛速度上的对比曲线</figcaption>
+</figure>
+
 
 ## 2. 总结
 
