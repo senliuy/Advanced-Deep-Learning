@@ -71,7 +71,7 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 实验结果表明，当AmoebaNet的参数数量（$$N=6$$，$$F=190$$）达到了NASNet以及[PNASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.html)[3]的量级（80MB+）时，AmoebaNet和其它两个网络在ImageNet上的精度是非常接近的。虽然AmoebaNet得到的网络和NASNet以及PNASNet非常接近，但是其基于AE的收敛速度是要明显快于基于强化学习的收敛速度的。
 
-而最好的AmoebaNet的参数数量达到了469M时，AmoebaNet-A取得了目前在ImageNet上最优的测试结果。但是不知道
+而最好的AmoebaNet的参数数量达到了469M时，AmoebaNet-A取得了目前在ImageNet上最优的测试结果。但是不知道是得益于AmoebaNet的网络结构还是其巨大的参数数量带来的模型容量的巨大提升。
 
 ## Reference
 
