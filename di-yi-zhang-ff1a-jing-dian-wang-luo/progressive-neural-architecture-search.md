@@ -1,6 +1,6 @@
 # Progressive Neural Architecture Search
 
-tags: NAS, NASNet, PNASNet
+tags: NAS, NASNet, PNASNet, AutoML
 
 ## 前言
 
