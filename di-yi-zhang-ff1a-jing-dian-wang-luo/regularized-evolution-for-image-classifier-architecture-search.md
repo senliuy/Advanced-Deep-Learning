@@ -41,7 +41,7 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 第3行的作用是使用随机初始化的形式产生第一代存活的模型，个数正是循环的终止条件$$P$$。$$P$$的值在实验中给出的个数有20，64，100三个，其中$$P=100$$的时候得到了最优解。
 
-`while` 循环中（4-7行）便是随机初始化一个网络，然后训练并在验证集上测试这个网络的精度，最后将网络的架构和精度保存到`population`和`history`变量中。首先注意保存的是**架构**而不是模型，所以保存的变量的内容不会很多，因此并不会占用特别多的内存。其次由于`population`是一个队列，所以需要从右侧插入。而`history`插入变量时则没有这个要求。
+`while` 循环中（4-7行）便是随机初始化一个网络，然后训练并在验证集上测试这个网络的精度，最后将网络的架构和精度保存到`population`和`history`变量中。这里所有的模型评估都是在CIFAR-10上完成的。首先注意保存的是**架构**而不是模型，所以保存的变量的内容不会很多，因此并不会占用特别多的内存。其次由于`population`是一个队列，所以需要从右侧插入。而`history`插入变量时则没有这个要求。
 
 第9行的第二个`while`循环表示的是进化的时长，即不停的向`history`中添加产生的优秀模型，直到`history`中模型的数量达到$$C$$个。$$C$$的值越大就越有可能进化出一个性能更为优秀的模型，我们也可以选择在模型开始收敛的结束进化。在作者的实验中$$C=20,000$$。
 
@@ -73,7 +73,9 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 而最好的AmoebaNet的参数数量达到了469M时，AmoebaNet-A取得了目前在ImageNet上最优的测试结果。但是不知道是得益于AmoebaNet的网络结构还是其巨大的参数数量带来的模型容量的巨大提升。
 
-最后作者通过一些传统的进化算法得到了AmoebaNet-B，AmoebaNet-C，AmoebaNet-D三个模型。由于它们的效果并不如AmoebaNet-A，所以这里不再过多介绍，感兴趣的同学去读论文的附录D不分。
+最后作者通过一些传统的进化算法得到了AmoebaNet-B，AmoebaNet-C，AmoebaNet-D三个模型。由于它们的效果并不如AmoebaNet-A，所以这里不再过多介绍，感兴趣的同学去读论文的附录D部分。
+
+
 ## Reference
 
 \[1\] Real E, Aggarwal A, Huang Y, et al. Regularized evolution for image classifier architecture search\[J\]. arXiv preprint arXiv:1802.01548, 2018.
