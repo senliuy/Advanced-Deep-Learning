@@ -75,16 +75,15 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 最后作者通过一些传统的进化算法得到了AmoebaNet-B，AmoebaNet-C，AmoebaNet-D三个模型。由于它们的效果并不如AmoebaNet-A，所以这里不再过多介绍，感兴趣的同学去读论文的附录D部分。
 
-## 2. 实验
-
-### 2.1 AE vs RL
-
 从模型的精度上来看Aging Evolution（AE）和RL（Reinfrocement Learning）得到的同等量级参数的架构在ImageNet上的表现是几乎相同的，因此我们无法冒然的下结论说AE得到的模型要优于AL。但是AE的收敛速度快于RL是非常容易从实验结果中看到的。另外作者也添加了一个Random Search（RS）做对照实验，三个方法的收敛曲线图如图5所示：
 
 ![](/assets/AmoebaNet_5.png)
 
-### 2.2 AE vs NAE
+## 2. 总结
 
+这篇文章在NASNet的搜索空间的基础上尝试着使用进化策略来搜索网络的架构，并提出了一个叫做Aging Evolution（AE）的进化策略。AE可以看做一个带有正则项的进化策略，它使得训练过程可以更加关注于网络架构而非模型参数。无论是拿强化学习和AE对比还是拿NAE和AE对比，AE在收敛速度上均有明显的优势。同时AE的算法非常简单，正如我们在图2中的伪代码所示的它只有$$P,C,S$$三个参数，对比之下RL需要构建一个由LSTM构成的控制器，AE的超参数明显少了很多。
+
+最后，作者得到了一个目前为止在ImageNet上分类效果最好的AmoebaNet-A，虽然它的参数到达了4.69亿个。
 
 
 ## Reference
