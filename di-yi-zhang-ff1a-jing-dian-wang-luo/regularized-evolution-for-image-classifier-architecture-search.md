@@ -57,7 +57,10 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 第17行是使用变异（mutation）操作产生父代的子代，变量名是`child`。变异的操作包括随机替换卷积操作（op mutation）和随机替换输入Feature Map（hidden state mutation），如图3所示。在每次变异中，只会进行一次变异操作，亦或是操作变异，亦或是输入变异。
 
-![](/assets/AmoebaNet_3.png)
+<figure>
+<img src="/assets/AmoebaNet_3.png" alt="图3：AmoebaNet的变异操作：(上)Hidden State Mutation改变模型的输入Feature Map；(下)Op Mutation改变一个卷积操作"/>
+<figcaption>图3：AmoebaNet的变异操作：(上)Hidden State Mutation改变模型的输入Feature Map；(下)Op Mutation改变一个卷积操作</figcaption>
+</figure>
 
 第18-20行依次是训练这个子代网络架构并将它依次插入`population`和`history`中。
 
@@ -71,7 +74,10 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 通过上面的进化策略，产生的网络结构如图4所示，作者将其命名为AmoebaNet-A：
 
-![](/assets/AmoebaNet_4.png)
+<figure>
+<img src="/assets/AmoebaNet_4.png" alt="图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(下)Reduction Celll"/>
+<figcaption>图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(下)Reduction Celll</figcaption>
+</figure>
 
 在图4中还有两个要手动设置的参数，一个参数是连续堆叠的Normal Cell的个数$$N$$，另外一个是卷积核的数量。在第一个Reduction之前卷积核的数量是$$F$$，后面每经过一次Reduction，卷积核的数量$$\times$$2。这两个参数是需要人工设置的超参数。
 
