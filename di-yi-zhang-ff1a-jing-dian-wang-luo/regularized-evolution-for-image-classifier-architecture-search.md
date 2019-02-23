@@ -73,6 +73,7 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 而最好的AmoebaNet的参数数量达到了469M时，AmoebaNet-A取得了目前在ImageNet上最优的测试结果。但是不知道是得益于AmoebaNet的网络结构还是其巨大的参数数量带来的模型容量的巨大提升。
 
+最后作者通过一些传统的进化算法得到了AmoebaNet-B，AmoebaNet-C，AmoebaNet-D三个模型。由于
 ## Reference
 
 \[1\] Real E, Aggarwal A, Huang Y, et al. Regularized evolution for image classifier architecture search\[J\]. arXiv preprint arXiv:1802.01548, 2018.
