@@ -69,11 +69,22 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 在图4中还有两个要手动设置的参数，一个参数是连续堆叠的Normal Cell的个数$$N$$，另外一个是卷积核的数量。在第一个Reduction之前卷积核的数量是$$F$$，后面每经过一次Reduction，卷积核的数量$$\times$$2。这两个参数是需要人工设置的超参数。
 
-实验结果表明，当AmoebaNet的参数数量（$$N=6$$，$$F=190$$）达到了NASNet以及[PNASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.html)[3]的量级（80MB+）时，AmoebaNet和其它两个网络在ImageNet上的精度是非常接近的。虽然AmoebaNet得到的网络和NASNet以及PNASNet非常接近，但是其基于AE的收敛速度是要明显快于基于强化学习的收敛速度的。
+实验结果表明，当AmoebaNet的参数数量（$$N=6$$，$$F=190$$）达到了NASNet以及[PNASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.html)\[3\]的量级（80MB+）时，AmoebaNet和其它两个网络在ImageNet上的精度是非常接近的。虽然AmoebaNet得到的网络和NASNet以及PNASNet非常接近，但是其基于AE的收敛速度是要明显快于基于强化学习的收敛速度的。
 
 而最好的AmoebaNet的参数数量达到了469M时，AmoebaNet-A取得了目前在ImageNet上最优的测试结果。但是不知道是得益于AmoebaNet的网络结构还是其巨大的参数数量带来的模型容量的巨大提升。
 
 最后作者通过一些传统的进化算法得到了AmoebaNet-B，AmoebaNet-C，AmoebaNet-D三个模型。由于它们的效果并不如AmoebaNet-A，所以这里不再过多介绍，感兴趣的同学去读论文的附录D部分。
+
+## 2. 实验
+
+### 2.1 AE vs RL
+
+从模型的精度上来看Aging Evolution（AE）和RL（Reinfrocement Learning）得到的同等量级参数的架构在ImageNet上的表现是几乎相同的，因此我们无法冒然的下结论说AE得到的模型要优于AL。但是AE的收敛速度快于RL是非常容易从实验结果中看到的。另外作者也添加了一个Random Search（RS）做对照实验，三个方法的收敛曲线图如图5所示：
+
+![](/assets/AmoebaNet_5.png)
+
+### 2.2 AE vs NAE
+
 
 
 ## Reference
@@ -82,6 +93,5 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 \[2\] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition\[J\]. arXiv preprint arXiv:1707.07012, 2017, 2\(6\).
 
-[3] Liu C, Zoph B, Shlens J, et al. Progressive neural architecture search\[J\]. arXiv preprint arXiv:1712.00559, 2017.
-
+\[3\] Liu C, Zoph B, Shlens J, et al. Progressive neural architecture search\[J\]. arXiv preprint arXiv:1712.00559, 2017.
 
