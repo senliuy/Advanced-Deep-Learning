@@ -61,7 +61,7 @@ $$
 w_k = \frac{e^{\lambda_k}}{\sum_{z\in\{in,ln,bn\}}e^{\lambda_z}}\quad \text{and} \quad k\in\{in,ln,bn\}
 $$
 
-其中$$\{\lambda_{in}, \lambda_{bn}, \lambda_{ln}\}$$是需要优化的3个参数，可以通过BP调整它们的值。同理我们也可以计算$$w'$$对应的参数值$$\{\lambda'_{in}, \lambda'_{bn}, \lambda'_{ln}\}$$
+其中$$\{\lambda_{in}, \lambda_{bn}, \lambda_{ln}\}$$是需要优化的3个参数，可以通过BP调整它们的值。同理我们也可以计算$$w'$$对应的参数值$$\{\lambda'_{in}, \lambda'_{bn}, \lambda'_{ln}\}$$。
 ## Reference
 
 \[1\] Luo P, Ren J, Peng Z. Differentiable Learning-to-Normalize via Switchable Normalization. arXiv:1806.10779, 2018.
