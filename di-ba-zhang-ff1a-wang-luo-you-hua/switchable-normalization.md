@@ -96,6 +96,9 @@ SN也能根据batchsize的大小自动调整不同归一化策略的比重，如
 
 ![](/assets/SN_3.png)
 
+上图中括号的意思是(#GPU, batchsize)。
+
+
 ## Reference
 
 \[1\] Luo P, Ren J, Peng Z. Differentiable Learning-to-Normalize via Switchable Normalization. arXiv:1806.10779, 2018.
