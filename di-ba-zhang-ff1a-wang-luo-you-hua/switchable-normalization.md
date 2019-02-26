@@ -96,7 +96,7 @@ SN也能根据batchsize的大小自动调整不同归一化策略的比重，如
 
 ![](/assets/SN_3.png)
 
-上图中括号的意思是(#GPU, batchsize)。
+图3中括号的意思是(#GPU, batchsize)。
 
 
 ## Reference
