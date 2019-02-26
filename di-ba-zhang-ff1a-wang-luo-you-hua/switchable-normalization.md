@@ -34,7 +34,7 @@ $$
 SN算法是为三组不同的$$\mu_{k}$$以及$$\sigma_{k}$$分别学习三个总共6个标量值（$$w_k$$和$$w'_k$$），$$\hat{h}_{ncij}$$的计算使用的是它们的加权和：
 
 $$
-\hat{h}_{ncij} = \gamma \frac{h_{ncij} - \sum_{k\in\Omega}w_k \mu_k}{\sqrt{\sum_{k\in\Omega} w’_k \sigma_k^2 + \epsilon}} + \beta
+\hat{h}_{ncij} = \gamma \frac{h_{ncij} - \sum_{k\in\Omega}w_k \mu_k}{\sqrt{\sum_{k\in\Omega} w'_k \sigma_k^2 + \epsilon}} + \beta
 $$
 
 其中$$\Omega = \{in,ln,bn\}$$。在计算$$(\mu_{ln},\sigma_{ln})$$和$$(\mu_{bn},\sigma_{bn})$$时，我们可以使用$$(\mu_{in},\sigma_{in})$$作为中间变量以减少计算量。
