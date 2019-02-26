@@ -8,7 +8,7 @@
 
 ## 1. SN详解
 
-### 1.SN算法介绍
+### 1.1 SN算法介绍
 
 SN实现了对BN，LN以及IN的统一。以CNN为例，假设一个4D Feature Map的尺寸为$$(N,C,W,H)$$，假设$$h_{ncij}$$和$$\hat{h}_{ncij}$$分别是归一化前后的像素点的值，其中$$n\in[1,N]$$，$$c\in[1,C]$$，$$i\in[1,H]$$，$$j\in[1,W]$$。假设$$\mu$$和$$\sigma$$分别是均值和方差，上面所介绍的所有归一化方法均可以表示为：
 
@@ -62,6 +62,12 @@ w_k = \frac{e^{\lambda_k}}{\sum_{z\in\{in,ln,bn\}}e^{\lambda_z}}\quad \text{and}
 $$
 
 其中$$\{\lambda_{in}, \lambda_{bn}, \lambda_{ln}\}$$是需要优化的3个参数，可以通过BP调整它们的值。同理我们也可以计算$$w'$$对应的参数值$$\{\lambda'_{in}, \lambda'_{bn}, \lambda'_{ln}\}$$。
+
+从上面的分析中我们可以看出，SN只增加了6个参数$$\Phi = \{\lambda_{in}, \lambda_{bn}, \lambda_{ln}, \lambda'_{in}, \lambda'_{bn}, \lambda'_{ln}\}$$。假设原始网络的参数集为$$\Theta$$，带有SN的网络的损失函数可以表示为$$\mathcal{L}(\Theta, \Phi)$$，他可以通过BP联合优化$$\Theta$$和$$\Phi$$。对SN的反向推导感兴趣的同学参考论文附件H。
+
+### 1.2 SN的原理
+
+
 ## Reference
 
 \[1\] Luo P, Ren J, Peng Z. Differentiable Learning-to-Normalize via Switchable Normalization. arXiv:1806.10779, 2018.
