@@ -25,10 +25,11 @@ $$
 \mu_k = \frac{1}{I_k} \sum_{(n,c,i,j)\in I_k}
  h_{ncij},
  \quad
- \sigma_
+ \sigma_k^2 = \frac{1}{I_k} \sum_{(n,c,i,j)\in I_k}
+(h_{ncij} - \mu_k)^2
 $$
 
-
+其中$$k \in \{in,ln,bn\}$$
 ## Reference
 
 \[1\] Luo P, Ren J, Peng Z. Differentiable Learning-to-Normalize via Switchable Normalization. arXiv:1806.10779, 2018.
