@@ -80,7 +80,7 @@ $$
 
 从上面的分析中我们可以看出，SN只增加了6个参数$$\Phi = \{\lambda_{in}, \lambda_{bn}, \lambda_{ln}, \lambda'_{in}, \lambda'_{bn}, \lambda'_{ln}\}$$。假设原始网络的参数集为$$\Theta$$，带有SN的网络的损失函数可以表示为$$\mathcal{L}(\Theta, \Phi)$$，他可以通过BP联合优化$$\Theta$$和$$\Phi$$。对SN的反向推导感兴趣的同学参考论文附件H。
 
-## 2 SN的原理
+## 2 SN的优点
 
 ### 2.1 SN的普遍适用性
 
