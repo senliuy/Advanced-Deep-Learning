@@ -29,7 +29,39 @@ $$
 (h_{ncij} - \mu_k)^2
 $$
 
-其中$$k \in \{in,ln,bn\}$$
+其中$$k \in \{in,ln,bn\}$$。IN是统计的是单个批量，单个通道的所有像素点，如图1绿色部分。BN统计的是单个通道上所有像素点，如图1红色部分。LN统计的是单个批量上的所有像素点，如图1黄色部分。它们依次可以表示为$$I_{in} = \{(i,j)|i\in[1,H], j\in[1,W]\}$$，$$I_{bn} = \{(i,j)|n\in[1,N], i\in[1,H], j\in[1,W]\}$$，$$I_{ln} = \{(i,j)|c\in[1,C], i\in[1,H], j\in[1,W]\}$$。
+
+SN算法是为三组不同的$$\mu_{k}$$以及$$\sigma_{k}$$分别学习三个总共6个权值（$$w_k$$和$$w'_k$$，$$\hat{h}_{ncij}$$的计算使用的是它们的加权和：
+
+$$
+\hat{h}_{ncij} = \gamma \frac{h_{ncij} - \sum_{k\in\Omega}w_k \mu_k}{\sqrt{\sum_{k\in\Omega} w’_k \sigma_k^2 + \epsilon}} + \beta
+$$
+
+其中$$\Omega = \{in,ln,bn\}$$。在计算$$(\mu_{ln},\sigma_{ln})$$和$$(\mu_{bn},\sigma_{bn})$$时，我们可以使用$$(\mu_{in},\sigma_{in})$$作为中间变量以减少计算量。
+
+$$
+\mu_{in} = \frac{1}{HW} \sum_{i,j}^{H,W}h_{ncij}
+\quad
+\sigma_{in}^2 = \frac{1}{HW}\sum_{i,j}^{H,W}(h_{ncij}- \mu_{in})^2
+$$
+$$
+\mu_{ln} = \frac{1}{C} \sum_{c=1}^{C}\mu_{in}
+\quad
+\sigma_{ln}^2 = \frac{1}{C}\sum_{c=1}^{C}(\sigma_{in}^2 + \mu_{in}^2) - \mu_{ln}^2
+$$
+$$
+\mu_{bn} = \frac{1}{N} \sum_{n=1}^{N}\mu_{in}
+\quad
+\sigma_{bn}^2 = \frac{1}{N}\sum_{n=1}^{N}(\sigma_{in}^2 + \mu_{in}^2) - \mu_{bn}^2
+$$
+
+$$w_k$$是通过softmax计算得到的激活函数：
+
+$$
+w_k = \frac{e^{\lambda_k}}{\sum_{z\in\{in,ln,bn\}}e^{\lambda_z}}\quad \text{and} \quad k\in\{in,ln,bn\}
+$$
+
+其中$${\lambda_{in}, \lambda_{bn}, \lambda_{ln}}$$
 ## Reference
 
 \[1\] Luo P, Ren J, Peng Z. Differentiable Learning-to-Normalize via Switchable Normalization. arXiv:1806.10779, 2018.
