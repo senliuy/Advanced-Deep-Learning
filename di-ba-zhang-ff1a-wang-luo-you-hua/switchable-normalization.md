@@ -92,7 +92,9 @@ SN通过根据不同的任务调整不同归一化策略的权值使其可以直
 
 ### 2.2 SN与BatchSize
 
-  
+SN也能根据batchsize的大小自动调整不同归一化策略的比重，如果batchsize的值比较小，SN学到的BN的权重就会很小，反之BN的权重就会很大，如图3所示：
+
+![](/assets/SN_3.png)
 
 ## Reference
 
