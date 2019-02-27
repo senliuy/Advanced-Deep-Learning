@@ -4,7 +4,8 @@
     "katex",
     "splitter",
     "tags",
-    "image-captions"],
+    "image-captions",
+    "bibtex-indexed-cite"],
 
   "pluginsConfig": {
     "disqus": {
