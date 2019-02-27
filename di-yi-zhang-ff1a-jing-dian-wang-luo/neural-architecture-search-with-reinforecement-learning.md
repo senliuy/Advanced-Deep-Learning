@@ -41,7 +41,7 @@ J(\theta_c) = E_{P(a_{1:T};\theta_c)}[R]
 $$
 
 
-由于$$R$$是不可导的，所以我们需要一种可以更新$$\theta_c$$的策略，NAS中采用的是Williams等人提出的REINFORCE rule {{"huang2017densely"|cite}}：
+由于$$R$$是不可导的，所以我们需要一种可以更新$$\theta_c$$的策略，NAS中采用的是Williams等人提出的REINFORCE rule {{"williams1992simple"|cite}}：
 
 
 $$
@@ -69,7 +69,7 @@ $$
 
 基线b是以前架构精度的指数移动平均值。
 
-上面得到的控制器的搜索空间是不包含跳跃连接（skip connection）的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html)\[4\]来添加跳跃连接的，如图3。
+上面得到的控制器的搜索空间是不包含跳跃连接（skip connection）的，所以不能产生类似于[ResNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)或者[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)之类的网络。NAS-CNN是通过在上面的控制器中添加[注意力机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html){{"williams1992simple"|cite}}来添加跳跃连接的，如图3。
 
 <figure>
 <img src="/assets/NAS_3.png" alt="图3：NAS-CNN中加入跳跃连接的控制器结构图"/>
