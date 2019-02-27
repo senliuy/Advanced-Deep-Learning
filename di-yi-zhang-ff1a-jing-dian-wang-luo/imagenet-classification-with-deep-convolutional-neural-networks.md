@@ -178,17 +178,6 @@ $$
 
 ![](/assets/AlexNet_8.png)
 
-## Reference
-
-\[1\] LeCun Y, Bottou L, Bengio Y, et al. Gradient-based learning applied to document recognition\[J\]. Proceedings of the IEEE, 1998, 86\(11\): 2278-2324.
-
-\[2\] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks\[C\]//Advances in neural information processing systems. 2012: 1097-1105.
-
-\[3\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
-
-\[4\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
-
-\[5\] Ciresan D C, Meier U, Masci J, et al. Flexible, high performance convolutional neural networks for image classification\[C\]//IJCAI Proceedings-International Joint Conference on Artificial Intelligence. 2011, 22\(1\): 1237.
 
 [^1]: Such normalisation does not improve the performance on the ILSVRC dataset, but leads to increased memory con- sumption and computation time. Where applicable, the parameters for the LRN layer are those of \(Krizhevsky et al., 2012\).
 
