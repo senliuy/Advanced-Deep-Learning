@@ -64,7 +64,7 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 
 NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一下：
 
-1. NASNet进行迁移学习时使用的优化策略是Proximal Policy Optimization（PPO）{{"zoph2018learning"|cite}}；
+1. NASNet进行迁移学习时使用的优化策略是Proximal Policy Optimization（PPO）{{"schulman2017proximal"|cite}}；
 2. 作者尝试了均匀分布的搜索策略，效果略差于策略搜索。
 
 ### 1.3 Scheduled Drop Path
