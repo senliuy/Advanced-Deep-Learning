@@ -65,7 +65,7 @@ VGG A-LRN 比 VGG A多了一个AlexNet介绍的LRN层，但是实验数据表明
 
 ### 2.4 VGG-B vs VGG-C
 
-VGG-C在VGG-B的基础上添加了3个$$1\times1$$的卷积层，$$1\times1$$的卷积是在NIN\[3\]中率先使用的，由于$$1\times1$$卷积在不影响感受野的前提提升了决策函数的非线性性，由此带来了错误率的下降。
+VGG-C在VGG-B的基础上添加了3个$$1\times1$$的卷积层，$$1\times1$$的卷积是在NIN{{"lin2013network"|cite}}中率先使用的，由于$$1\times1$$卷积在不影响感受野的前提提升了决策函数的非线性性，由此带来了错误率的下降。
 
 ### 2.5 VGG-C vs VGG-D
 
@@ -85,7 +85,7 @@ VGG的训练分为单尺度训练（single-scale training）和多尺度训练�
 
 测试时可以使用和训练相同的图片裁剪方法，然后通过若干不同裁剪的图片的投票的方式选择最后的分类。
 
-但测试的时候图片是单张输入的，使用裁剪的方式可能会漏掉图片的重要信息，在OverFeat \[4\]的论文中，提出了将整幅图做为输入的方式，过程如下：
+但测试的时候图片是单张输入的，使用裁剪的方式可能会漏掉图片的重要信息，在OverFeat {{"sermanet2013overfeat"|cite}}的论文中，提出了将整幅图做为输入的方式，过程如下：
 
 1. 将测试图片的短边固定为Q，Q可以不等于S；
 2. 将Q输入VGG，在conv5层，得到$$W\times H\times512$$的特征向量，W和H一般不等于7；
@@ -93,15 +93,6 @@ VGG的训练分为单尺度训练（single-scale training）和多尺度训练�
 4. 将第二、三全连接层看成$$1\times1\times4096\times4096$$与$$1\times1\times4096\times numClasses$$的卷积层
 5. 如果输入图片大小为 $$224\times224$$，则输出为$$1\times1\times numClasses$$，因为图片大小可以不一致，可以看作某张图片多个切片[^1]的预测结果。最终经过sum-pool，每个通道求和，得到$$1\times1\times numClasses$$的结果。作为最终输出，即取所有平均数作为最终输出。
 
-## Reference
-
-\[1\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
-
-\[2\] Szegedy C, Liu W, Jia Y, et al. Going deeper with convolutions\[C\]. Cvpr, 2015.
-
-\[3\] Lin, M., Chen, Q., and Yan, S. Network in network. InProc. ICLR, 2014.
-
-\[4\] Sermanet P, Eigen D, Zhang X, et al. Overfeat: Integrated recognition, localization and detection using convolutional networks\[J\]. arXiv preprint arXiv:1312.6229, 2013.
 
 ## 附件A
 
