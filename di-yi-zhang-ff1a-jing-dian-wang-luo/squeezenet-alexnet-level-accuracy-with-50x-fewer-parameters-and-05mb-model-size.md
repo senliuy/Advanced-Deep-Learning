@@ -17,7 +17,7 @@ tags: AlexNet, SqueezeNet
 2. 减小模型文件的大小，更利于模型的保存和传输；
 3. 可学习参数更少，网络占用的显存更小。
 
-SqueezeNet正是诞生在这个环境下的一个精度的网络，它能够在ImageNet数据集上达到[AlexNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.html){{"NIPS2012_4824"|cite}}近似的效果，但是参数比AlexNet少50倍，结合他们的模型压缩技术 Deep Compression{{"NIPS2012_4824"|cite}}，模型文件可比AlexNet小510倍。
+SqueezeNet{{"iandola2016squeezenet"|cite}}正是诞生在这个环境下的一个精度的网络，它能够在ImageNet数据集上达到[AlexNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/imagenet-classification-with-deep-convolutional-neural-networks.html){{"NIPS2012_4824"|cite}}近似的效果，但是参数比AlexNet少50倍，结合他们的模型压缩技术 Deep Compression{{"guo2016dynamic"|cite}}，模型文件可比AlexNet小510倍。
 
 ## 1. SqueezeNet 详解
 
@@ -31,7 +31,7 @@ SqueezeNet的模型压缩使用了3个策略：
 
 ### 1.2 Fire模块
 
-SqueezeNet是由若干个Fire模块结合卷积网络中卷积层，降采样层，全连接等层组成的。一个Fire模块由Squeeze部分和Expand部分组成（注意区分和Momenta的[SENet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.html)[4]的区别）。Squeeze部分是一组连续的$$1\times1$$卷积组成，Expand部分则是由一组连续的$$1\times1$$卷积和一组连续的$$3\times3$$卷积cancatnate组成，因此$$3\times3$$卷积需要使用same卷积，Fire模块的结构见图1。在Fire模块中，Squeeze部分$$1\times1$$卷积的**通道**数记做$$s_{1x1}$$，Expand部分$$1\times1$$卷积和$$3\times3$$卷积的**通道**数分别记做$$e_{1x1}$$和$$e_{3x3}$$（论文图画的不好，不要错误的理解成卷积的层数）。在Fire模块中，作者建议$$s_{1x1} < e_{1x1} + e_{3x3}$$，这么做相当于在两个$$3\times3$$卷积的中间加入了瓶颈层，作者的实验中的一个策略是$$s_{1x1} = \frac{e_{1x1}}{4} = \frac{e_{3x3}}{4}$$。图1中$$s_{1x1}=3$$，$$e_{1x1} = e_{3x3} = 4$$。
+SqueezeNet是由若干个Fire模块结合卷积网络中卷积层，降采样层，全连接等层组成的。一个Fire模块由Squeeze部分和Expand部分组成（注意区分和Momenta的[SENet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.html){{"hu2018squeeze"|cite}}的区别）。Squeeze部分是一组连续的$$1\times1$$卷积组成，Expand部分则是由一组连续的$$1\times1$$卷积和一组连续的$$3\times3$$卷积cancatnate组成，因此$$3\times3$$卷积需要使用same卷积，Fire模块的结构见图1。在Fire模块中，Squeeze部分$$1\times1$$卷积的**通道**数记做$$s_{1x1}$$，Expand部分$$1\times1$$卷积和$$3\times3$$卷积的**通道**数分别记做$$e_{1x1}$$和$$e_{3x3}$$（论文图画的不好，不要错误的理解成卷积的层数）。在Fire模块中，作者建议$$s_{1x1} < e_{1x1} + e_{3x3}$$，这么做相当于在两个$$3\times3$$卷积的中间加入了瓶颈层，作者的实验中的一个策略是$$s_{1x1} = \frac{e_{1x1}}{4} = \frac{e_{3x3}}{4}$$。图1中$$s_{1x1}=3$$，$$e_{1x1} = e_{3x3} = 4$$。
 
 <figure>
 <img src="/assets/SqueezeNet_1.png" alt="图1：SqueezeNet的Fire模块"/>
