@@ -223,22 +223,4 @@ ShuffleNet v2分析了模型性能更直接的指标：运行时间。根据对�
 
 ShuffleNet v2的证明和实验以及最后网络结构非常精彩，整篇论文读完给人一种畅快淋漓的感觉，建议读者们读完本文后拿出论文通读一遍，你一定会收获很多。
 
-## Reference
-
-\[1\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
-
-\[2\] Ma N, Zhang X, Zheng H T, et al. Shufflenet v2: Practical guidelines for efficient cnn architecture design\[J\]. arXiv preprint arXiv:1807.11164, 2018.
-
-\[3\] Xie S, Girshick R, Dollár P, et al. Aggregated residual transformations for deep neural networks\[C\]//Computer Vision and Pattern Recognition \(CVPR\), 2017 IEEE Conference on. IEEE, 2017: 5987-5995.
-
-\[4\] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
-
-[5] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
-
-[6] Chollet F. Xception: Deep learning with depthwise separable convolutions\[J\]. arXiv preprint, 2017: 1610.02357.
-
-[7] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
-
-[8] Huang G, Liu S, van der Maaten L, et al. CondenseNet: An Efficient DenseNet using Learned Group Convolutions[J]. group, 2017, 3(12): 11.
-
 
