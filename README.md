@@ -69,5 +69,6 @@
 * 2019-02-13：Group Normalization
 * 2019-02-19：Hierarchical Attention Networks for Document Classification
 * 2019-02-23：Regularized Evolution for Image Classifier Architecture Search
+* 2019-02-27：Switchable Normalization
 
 
