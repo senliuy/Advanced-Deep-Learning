@@ -4,9 +4,9 @@ tags: MobileNet
 
 ## 前言
 
-MobileNet\[1\]（这里叫做MobileNet v1，简称v1）中使用的Depthwise Separable Convolution是模型压缩的一个最为经典的策略，它是通过将跨通道的$$3\times3$$卷积换成单通道的$$3\times3$$卷积+跨通道的$$1\times1$$卷积来达到此目的的。
+MobileNet{{"howard2017mobilenets"|cite}}（这里叫做MobileNet v1，简称v1）中使用的Depthwise Separable Convolution是模型压缩的一个最为经典的策略，它是通过将跨通道的$$3\times3$$卷积换成单通道的$$3\times3$$卷积+跨通道的$$1\times1$$卷积来达到此目的的。
 
-MobileNet v2 \[2\]是在v1的Depthwise Separable的基础上引入了[残差结构](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)\[3\]。并发现了ReLU的在通道数较少的Feature Map上有非常严重信息损失问题，由此引入了Linear Bottlenecks和Inverted Residual。
+MobileNet v2 {{"sandler2018mobilenetv2"|cite}}是在v1的Depthwise Separable的基础上引入了[残差结构](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html){{"he2016deep"|cite}}。并发现了ReLU的在通道数较少的Feature Map上有非常严重信息损失问题，由此引入了Linear Bottlenecks和Inverted Residual。
 
 首先在这篇文章中我们会详细介绍两个版本的MobileNet，然后我们会介绍如何使用Keras实现这两个算法。
 
@@ -294,14 +294,4 @@ def MobileNetV2_relu(input_shape, k):
 Depthwise Separable卷积的设计非常精彩但遗憾的是目前cudnn对其的支持并不好，导致在使用GPU训练网络过程中我们无法从算法中获益，但是使用串行CPU并没有这个问题，这也就给了MobileNet很大的市场空间，尤其是在嵌入式平台。
 
 最后，不得不承认v2的论文的一系列证明非常精彩，虽然没有这些证明我们也能明白v2的工作原理，但是这些证明过程还是非常值得仔细品鉴的，尤其是对于从事科研方向的工作人员。
-
-
-
-## Reference
-
-\[1\] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
-
-\[2\] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
-
-\[3\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
 
