@@ -96,8 +96,8 @@ $$
 SN通过根据不同的任务调整不同归一化策略的权值使其可以直接应用到不同的任务中。图2可视化了在不同任务上不同归一化策略的权值比重：
 
 <figure>
-<img src="/assets/SN_2.png" alt="图1：SN在不同任务下的权值分布可视化图" />
-<figcaption>图1：SN在不同任务下的权值分布可视化图</figcaption>
+<img src="/assets/SN_2.png" alt="图2：SN在不同任务下的权值分布可视化图" />
+<figcaption>图2：SN在不同任务下的权值分布可视化图</figcaption>
 </figure>
 
 从图2中我们可以看出LSTM以及IST都学到了最适合它们本身的归一化策略。
@@ -107,8 +107,8 @@ SN通过根据不同的任务调整不同归一化策略的权值使其可以直
 SN也能根据batchsize的大小自动调整不同归一化策略的比重，如果batchsize的值比较小，SN学到的BN的权重就会很小，反之BN的权重就会很大，如图3所示：
 
 <figure>
-<img src="/assets/SN_3.png" alt="图1：SN在不同batchsize下的权值分布可视化图" />
-<figcaption>图1：SN在不同batchsize下的权值分布可视化图</figcaption>
+<img src="/assets/SN_3.png" alt="图3：SN在不同batchsize下的权值分布可视化图" />
+<figcaption>图3：SN在不同batchsize下的权值分布可视化图</figcaption>
 </figure>
 
 图3中括号的意思是(#GPU, batchsize)。
