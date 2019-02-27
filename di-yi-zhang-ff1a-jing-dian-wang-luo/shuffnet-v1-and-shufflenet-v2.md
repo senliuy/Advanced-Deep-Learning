@@ -4,9 +4,9 @@ tags: ShuffNet v1, ShuffleNet v2
 
 ## 前言
 
-在[ResNeXt](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/aggregated-residual-transformations-for-deep-neural-networks.html)\[3\]的文章中，分组卷积作为传统卷积核深度可分离卷积的一种折中方案被采用。这时大量的对于整个Feature Map的Pointwise卷积成为了ResNeXt的性能瓶颈。一种更高效的策略是在组内进行Pointwise卷积，但是这种组内Pointwise卷积的形式不利于通道之间的信息流通，为了解决这个问题，ShuffleNet v1中提出了通道洗牌（channel shuffle）操作。
+在[ResNeXt](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/aggregated-residual-transformations-for-deep-neural-networks.html){{"xie2017aggregated"|cite}}的文章中，分组卷积作为传统卷积核深度可分离卷积的一种折中方案被采用。这时大量的对于整个Feature Map的Pointwise卷积成为了ResNeXt的性能瓶颈。一种更高效的策略是在组内进行Pointwise卷积，但是这种组内Pointwise卷积的形式不利于通道之间的信息流通，为了解决这个问题，ShuffleNet v1{{"zhang2018shufflenet"|cite}}中提出了通道洗牌（channel shuffle）操作。
 
-在ShuffleNet v2的文章中作者指出现在普遍采用的FLOPs评估模型性能是非常不合理的，因为一批样本的训练时间除了看FLOPs，还有很多过程需要消耗时间，例如文件IO，内存读取，GPU执行效率等等。作者从内存消耗成本，GPU并行性两个方向分析了模型可能带来的非FLOPs的行动损耗，进而设计了更加高效的ShuffleNet v2。ShuffleNet v2的架构和[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)\[4\]有异曲同工之妙，而且其速度和精度都要优于DenseNet。
+在ShuffleNet v2的文章中作者指出现在普遍采用的FLOPs评估模型性能是非常不合理的，因为一批样本的训练时间除了看FLOPs，还有很多过程需要消耗时间，例如文件IO，内存读取，GPU执行效率等等。作者从内存消耗成本，GPU并行性两个方向分析了模型可能带来的非FLOPs的行动损耗，进而设计了更加高效的ShuffleNet v2{{"ma2018shufflenet"|cite}}。ShuffleNet v2的架构和[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html){{"huang2017densely"|cite}}有异曲同工之妙，而且其速度和精度都要优于DenseNet。
 
 ## 1. ShuffleNet v1
 
@@ -81,7 +81,7 @@ def channel_shuffle(x, groups):
 
 ### 1.2 ShuffleNet v1 单元
 
-图3.\(a\)是一个普通的带有残差结构的深度可分离卷积，例如，[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[5], [Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html)[6]。ShuffleNet v1的结构如图3.(b)，3.(c)。其中3.(b)不需要降采样，3.(c)是需要降采样的情况。
+图3.\(a\)是一个普通的带有残差结构的深度可分离卷积，例如，[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html){{"howard2017mobilenets"|cite}}, [Xception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/xception-deep-learning-with-depthwise-separable-convolutions.html){{"chollet2017xception"|cite}}。ShuffleNet v1的结构如图3.(b)，3.(c)。其中3.(b)不需要降采样，3.(c)是需要降采样的情况。
 
 <figure>
 <img src="/assets/ShuffleNet_3.png" alt="图3：(a) MobileNet, (b) ShuffleNet v1，(c) ShuffleNet v1降采样情况"/>
@@ -96,7 +96,7 @@ def channel_shuffle(x, groups):
 
 3. 如图3.(c)中需要降采样的情况，左侧shortcut部分使用的是步长为2的$$3\times3$$平均池化，右侧使用的是步长为2的$$3\times3$$的Depthwise卷积。
 
-4. 去掉了$$3\times3$$卷积之后的ReLU激活，目的是为了减少ReLU激活造成的信息损耗，具体原因见[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)[7]。
+4. 去掉了$$3\times3$$卷积之后的ReLU激活，目的是为了减少ReLU激活造成的信息损耗，具体原因见[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html){{"sandler2018mobilenetv2"|cite}}。
 
 5. 如果进行了降采样，为了保证参数数量不骤减，往往需要加倍通道数量。所以在3.(c)中使用的是拼接（Concat）操作用于加倍通道数，而3.(b)中则是一个单位加。
 
@@ -211,7 +211,7 @@ ShuffleNet v1完整网络的搭建可以通过堆叠ShuffleNet v1 单元的形�
 
 ShuffleNet v2能够得到非常高的精度是因为它和DenseNet有着思想上非常一致的结构：强壮的特征重用（Feature Reuse）。在DenseNet中，作者大量使用的拼接操作直接将上一层的Feature Map原汁原味的传到下一个乃至下几个模块。从6.(c)中我们也可以看处，左侧的直接映射和DenseNet的特征重用是非常相似的。
 
-不同于DenseNet的整个Feature Map的直接映射，ShuffleNet v2只映射了一半。恰恰是这一点不同，是ShuffleNet v2有了和DenseNet的升级版CondenseNet[8]相同的思想。在CondenseNet中，作者通过可视化DenseNet的特征重用和Feature Map的距离关系发现**距离越近的Feature Map之间的特征重用越重要**。ShuffleNet v2中第$$i$$个和第$$i+j$$个Feature Map的重用特征的数量是$$(\frac{1}{2})^j c$$。也就是距离越远，重用的特征越少。
+不同于DenseNet的整个Feature Map的直接映射，ShuffleNet v2只映射了一半。恰恰是这一点不同，是ShuffleNet v2有了和DenseNet的升级版CondenseNet{{"huang2018condensenet"|cite}}相同的思想。在CondenseNet中，作者通过可视化DenseNet的特征重用和Feature Map的距离关系发现**距离越近的Feature Map之间的特征重用越重要**。ShuffleNet v2中第$$i$$个和第$$i+j$$个Feature Map的重用特征的数量是$$(\frac{1}{2})^j c$$。也就是距离越远，重用的特征越少。
 
 ## 总结
 
