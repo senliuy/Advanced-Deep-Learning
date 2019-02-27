@@ -154,13 +154,3 @@ $$
 
 本文的创新性可以打满分，不止是其算法足够新颖，更重要的是他们开辟的使用强化学习来学习网络架构可能在未来几年引网络模型自动生成的方向，尤其是在硬件资源不再那么昂贵的时候。文章的探讨还比较基础，留下了大量的待开发空间为科研工作者所探索，期待未来几年出现更高效，更精确的模型的提出。
 
-## Reference
-
-\[1\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
-
-\[2\] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
-
-\[3\] Williams R J. Simple statistical gradient-following algorithms for connectionist reinforcement learning\[J\]. Machine learning, 1992, 8\(3-4\): 229-256.
-
-\[4\] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
-
