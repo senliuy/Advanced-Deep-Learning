@@ -133,7 +133,7 @@ history_simple = model_simple.fit_generator(train_generator,
 
 ### 2.4 Dropout
 
-Dropout\[1\]一直是解决过拟合非常有效的策略。在使用dropout时丢失率的设置是一个技术活，丢失率太小的话Dropout不能发挥其作用，丢失率太大的话模型会不容易收敛，甚至会一直震荡。在这里我在后面的全连接层和最后一层卷积层各加一个丢失率为0.25的Dropout。收敛曲线和精度曲线见图3，我们可以看出过拟合问题依旧存在，但是略有减轻，此时得到的测试集准确率是0.83375。
+Dropout一直是解决过拟合非常有效的策略。在使用dropout时丢失率的设置是一个技术活，丢失率太小的话Dropout不能发挥其作用，丢失率太大的话模型会不容易收敛，甚至会一直震荡。在这里我在后面的全连接层和最后一层卷积层各加一个丢失率为0.25的Dropout。收敛曲线和精度曲线见图3，我们可以看出过拟合问题依旧存在，但是略有减轻，此时得到的测试集准确率是0.83375。
 
 <figure>
 <img src="/assets/12306_3.png" alt="图3：加入Dropout之后的损失曲线和精度曲线"/>
@@ -241,8 +241,4 @@ for layer in trans_VGG16.layers:
 6. 采集并标注更多的数据。
 
 91%的精度远远不是我们利用这批数据能达到的最高精度，写作这篇文章的目的是为了探讨深度学习在物体分类中的使用方法和针对训练日志优化模型的过程，如果你有更好的策略欢迎在评论区给出。
-
-## Reference
-
-\[1\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
 
