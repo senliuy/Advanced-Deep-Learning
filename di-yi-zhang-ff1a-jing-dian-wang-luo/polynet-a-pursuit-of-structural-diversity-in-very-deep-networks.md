@@ -129,17 +129,3 @@ PolyNet从多项式的角度提出了更多由Inception和残差块组合而成�
 
 最后训练的时候使用的初始化策略和基于集成思想的随机路径反而非常有实用价值。
 
-## Reference
-
-\[1\] Zhang X, Li Z, Loy C C, et al. Polynet: A pursuit of structural diversity in very deep networks\[C\]//Computer Vision and Pattern Recognition \(CVPR\), 2017 IEEE Conference on. IEEE, 2017: 3900-3908.
-
-\[2\]Szegedy C, Ioffe S, Vanhoucke V, et al. Inception-v4, inception-resnet and the impact of residual connections on learning\[C\]//AAAI. 2017, 4: 12.
-
-\[3\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
-
-\[4\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
-
-\[5\] M. Abdi and S. Nahavandi. Multi-residual networks. arXiv preprint arXiv:1609.05672, 2016. 1, 2, 3, 4
-
-\[6\] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
-
