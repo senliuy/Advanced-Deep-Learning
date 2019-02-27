@@ -2,13 +2,13 @@
 
 ## 前言
 
-2012年之后，卷积网络的研究分成了两大流派，并且两个流派都在2014年有重要的研究成果发表。第一个流派是增加卷积网络的深度和宽度，经典的网络有ImageNet 2013年冠军ZF-net\[1\]以及我们在上篇文章中介绍的VGG系列\[2\]。另外一个流派是增加卷积核的拟合能力，或者说是增加网络的复杂度，典型的网络有可以拟合任意凸函数的Maxout Networks \[3\]，可以拟合任意函数的Network in Network \(NIN\)\[4\]，以及本文要解析的基于Inception的GoogLeNet\[5\]。为了能更透彻的了解GoogLeNet的思想，我们首先需要了解Maxout和NIN两种结构。
+2012年之后，卷积网络的研究分成了两大流派，并且两个流派都在2014年有重要的研究成果发表。第一个流派是增加卷积网络的深度和宽度，经典的网络有ImageNet 2013年冠军ZF-net{{"zeiler2014visualizing"|cite}}以及我们在上篇文章中介绍的VGG系列{{"simonyan2014very"|cite}}。另外一个流派是增加卷积核的拟合能力，或者说是增加网络的复杂度，典型的网络有可以拟合任意凸函数的Maxout Networks{{"goodfellow2013maxout"|cite}}，可以拟合任意函数的Network in Network \(NIN\){{"lin2013network"|cite}}，以及本文要解析的基于Inception的GoogLeNet{{"szegedy2015going"|cite}}。为了能更透彻的了解GoogLeNet的思想，我们首先需要了解Maxout和NIN两种结构。
 
 ## 1. 背景知识
 
 ### 1.1 Maxout Networks
 
-在之前介绍的AlexNet中，引入了Dropout \[6\]来减轻模型的过拟合的问题。Dropout可以看做是一种集成模型的思想，在每个step中，会将网络的隐层节点以概率$$p$$置0。Dropout和传统的bagging方法主要有以下两个方面不同：
+在之前介绍的AlexNet中，引入了Dropout {{"hinton2012improving"|cite}}来减轻模型的过拟合的问题。Dropout可以看做是一种集成模型的思想，在每个step中，会将网络的隐层节点以概率$$p$$置0。Dropout和传统的bagging方法主要有以下两个方面不同：
 
 1. Dropout的每个子模型的权值是共享的；
 2. 在训练的每个step中，Dropout每次会使用不同的样本子集训练不同的子网络。
@@ -160,7 +160,7 @@ $$I(X;Z) \leq I(X;Y)$$
 
 ### 1.5 Inception V2
 
-在VGG中，我们讲解过，一个5\*5的卷积核与两个3\*3的卷积核拥有相同大小的感受野，但是两个3\*3的卷积核拥有更强的拟合能力，所以在Inception V2 \[7\]的版本中，作者将5\*5的卷积替换为两个3\*3的卷积。其实本文的最大贡献是Batch normalization的提出，关于BN，我们会另开一个版块单独讲解。
+在VGG中，我们讲解过，一个5\*5的卷积核与两个3\*3的卷积核拥有相同大小的感受野，但是两个3\*3的卷积核拥有更强的拟合能力，所以在Inception V2 {{"ioffe2015batch"|cite}}的版本中，作者将5\*5的卷积替换为两个3\*3的卷积。其实本文的最大贡献是Batch normalization的提出，关于BN，我们会另开一个版块单独讲解。
 
 ```py
 def inception_v2(x):
@@ -183,7 +183,7 @@ def inception_v2(x):
 
 ### 1.6 Inception V3
 
-Inception V3\[8\]是将Inception V1和V2中的$$n\times n$$卷积换成一个$$n\times1$$和一个$$1\times n$$的卷积，这样做带来的好处有以下几点：
+Inception V3{{"szegedy2016rethinking"|cite}}是将Inception V1和V2中的$$n\times n$$卷积换成一个$$n\times1$$和一个$$1\times n$$的卷积，这样做带来的好处有以下几点：
 
 1. 节约了大量参数，提升了训练速度，减轻了过拟合的问题；
 2. 多层卷积增加了模型的拟合能力；
@@ -211,27 +211,5 @@ def inception_v3(x):
 
 ### 1.7 Inception V4
 
-Inception V4 \[9\]将残差网络\[10\]融合到了Inception模型中，即相当于在Inception中加入了一条输入到输出的short cut。
-
-## Reference
-
-\[1\] M. D. Zeiler and R. Fergus. Visualizing and understanding convolutional neural networks. In ECCV, 2014
-
-\[2\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
-
-\[3\] Goodfellow I J, Warde-Farley D, Mirza M, et al. Maxout networks\[J\]. arXiv preprint arXiv:1302.4389, 2013.
-
-\[4\] M. Lin, Q. Chen, and S. Yan. Network in network. CoRR, abs/1312.4400, 2013.
-
-\[5\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
-
-\[6\] Hinton G E, Srivastava N, Krizhevsky A, et al. Improving neural networks by preventing co-adaptation of feature detectors\[J\]. arXiv preprint arXiv:1207.0580, 2012.
-
-\[7\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
-
-\[8\] Szegedy C, Vanhoucke V, Ioffe S, et al. Rethinking the inception architecture for computer vision\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2818-2826.
-
-\[9\] Szegedy C, Ioffe S, Vanhoucke V, et al. Inception-v4, inception-resnet and the impact of residual connections on learning\[C\]//AAAI. 2017, 4: 12.
-
-\[10\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
+Inception V4 {{"szegedy2017inception"|cite}}将残差网络{{""|cite}}融合到了Inception模型中，即相当于在Inception中加入了一条输入到输出的short cut。
 
