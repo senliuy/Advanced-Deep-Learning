@@ -4,9 +4,9 @@ tags: NAS, NASNet, PNASNet, AutoML
 
 ## 前言
 
-在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)\[2\]和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html)\[3\]中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
+在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html){{"zoph2016neural"|cite}}和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html){{"zoph2018learning"|cite}}中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
 
-本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNASNet，其训练时间降为NASNet的1/8并且取得了比ImageNet上更优的效果。其主要的优化策略为：
+本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNASNet{{"liu2018progressive"|cite}}，其训练时间降为NASNet的1/8并且取得了比ImageNet上更优的效果。其主要的优化策略为：
 
 1. 更小的搜索空间；
 2. Sequential model-based optimization\(SMBO\)：一种启发式搜索的策略，训练的模型从简单到复杂，从剪枝的空间中进行搜索；
@@ -115,12 +115,4 @@ NAS中提倡学习dataset interest的网络结构，但是NASNet和PNASNet在CIF
 这篇PNASNet是之前NAS和NASNet的第三个系列，其着重点放在了优化强化学习的搜索空间的优化，几个优化的策略也是以此为目的。更少的参数是为了减小搜索空间的大小，SMBO是为了使用剪枝策略来优化强化学习探索的区域大小，而代理函数则提供了比随机采样更有效的采样策略。
 
 本文使用的剪枝搜索和策略函数是强化学习最常见的技巧，例如AlphaGo。作为一个强化学习届的小白，对此无法给下一个特别准确地总结，只能期待大牛们努力推出更高效，精度更高，以及能够以更小代价得出模型的方法。
-
-## Reference
-
-\[1\] Liu C, Zoph B, Shlens J, et al. Progressive neural architecture search\[J\]. arXiv preprint arXiv:1712.00559, 2017.
-
-\[2\] Zoph B, Le Q V. Neural architecture search with reinforcement learning\[J\]. arXiv preprint arXiv:1611.01578, 2016.
-
-\[3\] Zoph B, Vasudevan V, Shlens J, et al. Learning transferable architectures for scalable image recognition\[J\]. arXiv preprint arXiv:1707.07012, 2017, 2\(6\).
 
