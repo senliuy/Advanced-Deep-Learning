@@ -4,9 +4,9 @@ tags: Inception, Xception
 
 ## 前言
 
-深度可分离卷积（Depthwise Separable Convolution）率先是由 Laurent Sifre载气博士论文《Rigid-Motion Scattering For Image Classification》\[2\]中提出。经典的[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html) \[3\]系列算法便是采用深度可分离卷积作为其核心结构。
+深度可分离卷积（Depthwise Separable Convolution）率先是由 Laurent Sifre载气博士论文《Rigid-Motion Scattering For Image Classification》{{"sifre2014rigid"|cite}}中提出。经典的[MobileNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html) {{"howard2017mobilenets"|cite}}系列算法便是采用深度可分离卷积作为其核心结构。
 
-这篇文章主要从[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html) \[4\]的角度出发，探讨了Inception和深度可分离卷积的关系，从一个全新的角度解释了深度可分离卷积。再结合stoa的[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)\[5\]，一个新的架构Xception应运而生。Xception取义自Extreme Inception，即Xception是一种极端的Inception，下面我们来看看它是怎样的一种极端法。
+这篇文章主要从[Inception](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html) {{"szegedy2015going"|cite}}的角度出发，探讨了Inception和深度可分离卷积的关系，从一个全新的角度解释了深度可分离卷积。再结合stoa的[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html){{"he2016deep"|cite}}，一个新的架构Xception{{"chollet2017xception"|cite}}应运而生。Xception取义自Extreme Inception，即Xception是一种极端的Inception，下面我们来看看它是怎样的一种极端法。
 
 ## 1. Inception回顾
 
@@ -71,7 +71,7 @@ $$
 
 如果你看过深度可分离卷积的话你就会发现它和Xception几乎是等价的，区别之一就是先计算Pointwise卷积和先计算Depthwise的卷积的区别。
 
-在[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html)\[6\]中，我们指出bottleneck的最后一层$$1\times1$$卷积核为线性激活时能够更有助于减少信息损耗，这也就是Xception和深度可分离卷积（准确说是MobileNet v2）的第二个不同点。
+在[MobileNet v2](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/mobilenetxiang-jie.html){{"sandler2018mobilenetv2"|cite}}中，我们指出bottleneck的最后一层$$1\times1$$卷积核为线性激活时能够更有助于减少信息损耗，这也就是Xception和深度可分离卷积（准确说是MobileNet v2）的第二个不同点。
 
 结合残差结构，一个完整的模型见图4，其实现Keras官方已经[开源](https://github.com/keras-team/keras-applications/blob/master/keras_applications/xception.py)。
 
@@ -89,18 +89,4 @@ $$
 ## 3. 总结
 
 Xception的结构和MobileNet非常像，两个算法的提出时间近似，不存在谁抄袭谁的问题。他们从不同的角度揭示了深度可分离卷积的强大作用，MobileNet的思路是通过将普通$$3\times3$$卷积拆分的形式来减少参数数量，而Xception是通过对Inception的充分解耦来完成的。
-
-## Reference
-
-\[1\] Chollet F. Xception: Deep learning with depthwise separable convolutions\[J\]. arXiv preprint, 2017: 1610.02357.
-
-\[2\] L. Sifre. Rigid-motion scattering for image classification. PhD thesis, Ph. D. thesis, 2014. 1, 3
-
-\[3\] Howard A G, Zhu M, Chen B, et al. Mobilenets: Efficient convolutional neural networks for mobile vision applications\[J\]. arXiv preprint arXiv:1704.04861, 2017.
-
-\[4\] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.
-
-\[5\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
-
-\[6\] Sandler M, Howard A, Zhu M, et al. MobileNetV2: Inverted Residuals and Linear Bottlenecks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2018: 4510-4520.
 
