@@ -69,7 +69,7 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 
 ### 1.3 Scheduled Drop Path
 
-在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath\[4\]。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
+在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath{{"schulman2017proximal"|cite}}。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
 
 ### 1.4 其它超参
 
