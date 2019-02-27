@@ -16,7 +16,7 @@ GoogLeNet（链接处图9）则从特征多样性的角度研究了卷积网络�
 
 2016年ILSVRC的前几名都是模型集成，卷积网络的开创性结构陷入了短暂的停滞。当年的冠军是商汤可以和港中文联合推出的CUImage，它是6个模型的模型集成，并无创新性，此处不再赘述。
 
-2017年是ILSVRC比赛的最后一届，这一届的冠军由Momenta团队获得，他们提出了基于注意力机制的[SENet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.html)[6]（链接处图1，top5：2.21%），该方法通过自注意力（self-attention）机制为每个Feature Map学习一个权重。
+2017年是ILSVRC比赛的最后一届，这一届的冠军由Momenta团队获得，他们提出了基于注意力机制的[SENet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.html){{"hu2018squeeze"|cite}}（链接处图1，top5：2.21%），该方法通过自注意力（self-attention）机制为每个Feature Map学习一个权重。
 
 另外一个非常重要的网络是黄高团队于CVPR2017中提出的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)[7]，本质上是各个单元都有连接的密集连接结构（链接处图1）。
 
