@@ -21,6 +21,9 @@
     },
     "image-captions":{
       "caption": "Image - _CAPTION_"
-    }
+    },
+    "bibtex-indexed-cite": {
+            "path": "/"
+        }
   }  
 }
