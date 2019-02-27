@@ -18,9 +18,9 @@ GoogLeNet（链接处图9）则从特征多样性的角度研究了卷积网络�
 
 2017年是ILSVRC比赛的最后一届，这一届的冠军由Momenta团队获得，他们提出了基于注意力机制的[SENet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/squeeze-and-excitation-networks.html){{"hu2018squeeze"|cite}}（链接处图1，top5：2.21%），该方法通过自注意力（self-attention）机制为每个Feature Map学习一个权重。
 
-另外一个非常重要的网络是黄高团队于CVPR2017中提出的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html)[7]，本质上是各个单元都有连接的密集连接结构（链接处图1）。
+另外一个非常重要的网络是黄高团队于CVPR2017中提出的[DenseNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/densely-connected-convolutional-networks.html){{"huang2017densely"|cite}}，本质上是各个单元都有连接的密集连接结构（链接处图1）。
 
-除了ILSVRC的比赛中个冠军作品们之外，在提升网络精度中还有一些值得学习的算法。例如[Inception的几个变种](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html)[8, 9, 10]。基于多项式提出的[PolyNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/polynet-a-pursuit-of-structural-diversity-in-very-deep-networks.html)[11]，PolyNet采用了更加多样性的特征。
+除了ILSVRC的比赛中个冠军作品们之外，在提升网络精度中还有一些值得学习的算法。例如[Inception的几个变种](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/going-deeper-with-convolutions.html){{"ioffe2015batch","szegedy2016rethinking","szegedy2017inception"|cite}}。基于多项式提出的[PolyNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/polynet-a-pursuit-of-structural-diversity-in-very-deep-networks.html)[11]，PolyNet采用了更加多样性的特征。
 
 卷积网络的另外一个方向是轻量级的网络，即在不大程度损失模型精度的前提下，尽可能的压缩模型的大小，提升预测的速度。
 
