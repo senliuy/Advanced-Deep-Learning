@@ -69,13 +69,13 @@ NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一�
 
 ### 1.3 Scheduled Drop Path
 
-在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath{{"schulman2017proximal"|cite}}。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
+在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath{{"larsson2016fractalnet"|cite}}。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
 
 ### 1.4 其它超参
 
 在NASNet中，强化学习的搜索空间大大减小，很多超参数已经由算法写死或者人为调整。这里介绍一下NASNet需要人为设定的超参数。
 
-1. 激活函数统一使用ReLU，实验结果表明ELU nonlinearity[5]效果略优于ReLU；
+1. 激活函数统一使用ReLU，实验结果表明ELU nonlinearityDropPath{{"larsson2016fractalnet"|cite}}效果略优于ReLU；
 2. 全部使用Valid卷积，padding值由卷积核大小决定；
 3. Reduction Cell的Feature Map的数量需要乘以2，Normal Cell数量不变。初始数量人为设定，一般来说数量越多，计算越慢，效果越好；
 4. Normal Cell的重复次数（图3中的$$N$$）人为设定；
