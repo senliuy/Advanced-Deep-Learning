@@ -211,5 +211,5 @@ def inception_v3(x):
 
 ### 1.7 Inception V4
 
-Inception V4 {{"szegedy2017inception"|cite}}将残差网络{{""|cite}}融合到了Inception模型中，即相当于在Inception中加入了一条输入到输出的short cut。
+Inception V4 {{"szegedy2017inception"|cite}}将残差网络{{"he2016deep"|cite}}融合到了Inception模型中，即相当于在Inception中加入了一条输入到输出的short cut。
 
