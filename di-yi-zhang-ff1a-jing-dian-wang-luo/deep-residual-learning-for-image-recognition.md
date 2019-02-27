@@ -280,11 +280,4 @@ Andreas Veit等人的论文{{"veit2016residual"|cite}}指出残差网络可以�
 
 ![](/assets/ResNet_7.png)
 
-## Reference
-
-\[1\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
-
-\[2\] He K, Zhang X, Ren S, et al. Identity mappings in deep residual networks\[C\]//European Conference on Computer Vision. Springer, Cham, 2016: 630-645.
-
-\[3\] Veit A, Wilber M J, Belongie S. Residual networks behave like ensembles of relatively shallow networks\[C\]//Advances in Neural Information Processing Systems. 2016: 550-558.
 
