@@ -60,7 +60,7 @@ def dense_block(x, depth=5, growth_rate = 3):
 
 ### 1.4 Compression
 
-至此，DenseNet的Dense Block已经介绍完毕，在图2中，Dense Block之间的结构叫做压缩层（Compression Layer）。压缩层有降维和降采样两个作用。假设Dense Block的输出是$$m$$维的特征向量，那么下一个Dense Block的输入是$$\lfloor \theta m \rfloor$$，其中$$\theta$$是压缩因子（Compression Factor），用户自行设置的超参数。当$$\theta$$等于1时，Dense Block的输入和输出的维度相同，当$$\theta<1$$时，网络叫做DenseNet-C，在论文中，$$\theta=0.5$$。包含瓶颈层和压缩层的DenseNet叫做DenseNet-BC。Pooling层使用的是$$2\times2$$的Average Pooling层。
+至此，DenseNet的Dense Block已经介绍完毕，在图2中，Dense Block之间的结构叫做压缩层（Compression Layer）。压缩层有降维和降采样两个作用。假设Dense Block的输出是$$m$$维的特征向量，那么下一个Dense Block的输入是$$\lfloor \theta m \rfloor$$，其中$$\theta$$是压缩因子（Compression Factor），用户自行设置的超参数。当$$\theta$$等于1时，Dense Block的输入和输出的维度相同，当$$\theta < 1$$时，网络叫做DenseNet-C，在论文中，$$\theta=0.5$$。包含瓶颈层和压缩层的DenseNet叫做DenseNet-BC。Pooling层使用的是$$2\times2$$的Average Pooling层。
 
 下面Demo是在MNIST数据集上的DenseNet代码，完整代码见：[https://github.com/senliuy/CNN-Structures/blob/master/DenseNet.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/DenseNet.ipynb)
 
