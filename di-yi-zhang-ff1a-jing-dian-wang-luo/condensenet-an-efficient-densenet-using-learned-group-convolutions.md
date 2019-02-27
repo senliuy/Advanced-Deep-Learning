@@ -46,7 +46,7 @@ DenseNet，CondenseNet的训练和测试阶段的示意图如图1。其中的细
 <figcaption>图4：C=4时的CondenseNet的训练Epoch分布情况以及cosine学习率</figcaption>
 </figure>
 
-图4中是基于CIFAR-10数据集，CondenseNet的压缩率$$C=4$$，所以有3个浓缩阶段。学习率是采用的是_cosine shape learning rate_\[5\]。每次浓缩之后loss会有个明显的震动，最后一次loss震动的比较剧烈是因为一半的特征被剪枝掉。
+图4中是基于CIFAR-10数据集，CondenseNet的压缩率$$C=4$$，所以有3个浓缩阶段。学习率是采用的是_cosine shape learning rate_{{"loshchilov2016sgdr"|cite}}。每次浓缩之后loss会有个明显的震动，最后一次loss震动的比较剧烈是因为一半的特征被剪枝掉。
 
 ### 1.3 剪枝准则
 
@@ -93,16 +93,4 @@ CondenseNet的剪枝并不是直接将这个特征删除，而是通过掩码的
 ## 2. 总结
 
 文章最大的创新点是通过模型训练得到目前轻量级网络中常见的分组卷积的分组形式，比ShuffleNet解决分组卷积通信问题的方法更加有效，并结合Index层实现了测试时候的高效运行。最后，结合对DenseNet的dense block的改进完成了CondenseNet的完整结构。
-
-## Reference
-
-\[1\] Huang G, Liu S, van der Maaten L, et al. CondenseNet: An Efficient DenseNet using Learned Group Convolutions\[J\]. group, 2017, 3\(12\): 11.
-
-\[2\] Huang G, Liu Z, Weinberger K Q, et al. Densely connected convolutional networks\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2017, 1\(2\): 3.
-
-\[3\] Xie S, Girshick R, Dollár P, et al. Aggregated residual transformations for deep neural networks\[C\]//Computer Vision and Pattern Recognition \(CVPR\), 2017 IEEE Conference on. IEEE, 2017: 5987-5995.
-
-\[4\] Zhang, X., Zhou, X., Lin, M., Sun, J.: Shufflenet: An extremely efficient convolutional neural network for mobile devices. arXiv preprint arXiv:1707.01083 \(2017\)
-
-\[5\] I. Loshchilov and F. Hutter. SGDR: stochastic gradient descent with restarts. In ICLR, 2017. 4
 
