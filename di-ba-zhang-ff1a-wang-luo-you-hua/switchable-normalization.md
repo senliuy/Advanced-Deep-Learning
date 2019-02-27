@@ -2,9 +2,12 @@
 
 ## 前言
 
-在之前的文章中，我们介绍了BN\[2\]，LN\[3\]，IN\[4\]以及GN\[5\]的算法细节及适用的任务。虽然这些归一化方法往往能提升模型的性能，但是当你接收一个任务时，具体选择哪个归一化方法仍然需要人工选择，这往往需要大量的对照实验或者开发者优秀的经验才能选出最合适的归一化方法。本文提出了Switchable Normalization（SN），它的算法核心在于提出了一个可微的归一化层，可以让模型根据数据来学习到每一层该选择的归一化方法，亦或是三个归一化方法的加权和，如图1所示。所以SN是一个任务无关的归一化方法，不管是LN适用的RNN还是IN适用的图像风格迁移（IST），SN均能用到该应用中。作者在实验中直接将SN用到了包括分类，检测，分割，IST，LSTM等各个方向的任务中，SN均取得了非常好的效果。
+在之前的文章中，我们介绍了[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/batch-normalization.html)\[2\]，[LN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)\[3\]，[IN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.html)\[4\]以及[GN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/group-normalization.html)\[5\]的算法细节及适用的任务。虽然这些归一化方法往往能提升模型的性能，但是当你接收一个任务时，具体选择哪个归一化方法仍然需要人工选择，这往往需要大量的对照实验或者开发者优秀的经验才能选出最合适的归一化方法。本文提出了Switchable Normalization（SN），它的算法核心在于提出了一个可微的归一化层，可以让模型根据数据来学习到每一层该选择的归一化方法，亦或是三个归一化方法的加权和，如图1所示。所以SN是一个任务无关的归一化方法，不管是LN适用的RNN还是IN适用的图像风格迁移（IST），SN均能用到该应用中。作者在实验中直接将SN用到了包括分类，检测，分割，IST，LSTM等各个方向的任务中，SN均取得了非常好的效果。
 
-![](/assets/SN_1.png)
+<figure>
+<img src="/assets/SN_1.png" alt="图1：SN是LN，BN以及IN的加权和" />
+<figcaption>图1：SN是LN，BN以及IN的加权和</figcaption>
+</figure>
 
 ## 1. SN详解
 
@@ -82,13 +85,18 @@ $$
 
 ### 1.3 测试
 
-## 2 SN的优点
+在BN的测试过程中，为了计算其归一化统计量，传统的BN方法是从训练过程中利用滑动平均的方法得到的均值和方差。在SN的BN部分，它使用的是一种叫做**批平均**batch average的方法，它分成两步：1.固定网络中的SN层，从训练集中随机抽取若干个批量的样本，将输入输入到网络中；2.计算这些批量在特定SN层的$$\mu$$和$$\sigma$$的平均值，它们将会作为测试阶段的均值和方差。实验结果表明，在SN中批平均的效果略微优于滑动平均。
+
+## 2. SN的优点
 
 ### 2.1 SN的普遍适用性
 
 SN通过根据不同的任务调整不同归一化策略的权值使其可以直接应用到不同的任务中。图2可视化了在不同任务上不同归一化策略的权值比重：
 
-![](/assets/SN_2.png)
+<figure>
+<img src="/assets/SN_2.png" alt="图1：SN在不同任务下的权值分布可视化图" />
+<figcaption>图1：SN在不同任务下的权值分布可视化图</figcaption>
+</figure>
 
 从图2中我们可以看出LSTM以及IST都学到了最适合它们本身的归一化策略。
 
@@ -96,9 +104,20 @@ SN通过根据不同的任务调整不同归一化策略的权值使其可以直
 
 SN也能根据batchsize的大小自动调整不同归一化策略的比重，如果batchsize的值比较小，SN学到的BN的权重就会很小，反之BN的权重就会很大，如图3所示：
 
-![](/assets/SN_3.png)
+<figure>
+<img src="/assets/SN_3.png" alt="图1：SN在不同batchsize下的权值分布可视化图" />
+<figcaption>图1：SN在不同batchsize下的权值分布可视化图</figcaption>
+</figure>
 
 图3中括号的意思是(#GPU, batchsize)。
+
+## 3. 总结
+
+这篇文章介绍了统一了BN，LN以及IN三种归一化策略的SN，SN具有以下三个有点：
+
+1. 鲁棒性：无论batchsize的大小如何，SN均能取得非常好的效果；
+2. 通用性：SN可以直接应用到各种类型的应用中，减去了人工选择归一化策略的繁琐；
+3. 多样性：由于网络的不同层在网络中起着不同的作用，SN能够为每层学到不同的归一化策略，这种自适应的归一化策略往往要优于单一方案人工设定的归一化策略。
 
 
 ## Reference
