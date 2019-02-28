@@ -125,10 +125,5 @@ GRU的两个门机制是可以通过SGD和整个网络的参数共同调整的�
 RNN Encoder-Decoder模型的提出和RNN门机制的隐层单元（LSTM/GRU）在解决长期依赖问题得到非常好的效果是分不开的。因为解码器使用的是编码器最后一个时间片的输出，加入我们使用的是经典RNN结构，则编码器得到的特征向量将包含大量的最后一个时间片的特征，而早期时间片的特征会在大量的计算过程中被抹掉。
 
 ## 参考文献
-
-\[1\] Cho K, Van Merriënboer B, Gulcehre C, et al. Learning phrase representations using RNN encoder-decoder for statistical machine translation\[J\]. arXiv preprint arXiv:1406.1078, 2014.
-
-\[2\] Sutskever I, Vinyals O, Le Q V. Sequence to sequence learning with neural networks\[C\]//Advances in neural information processing systems. 2014: 3104-3112.
-
-\[3\] [https://zhuanlan.zhihu.com/p/28297161](https://zhuanlan.zhihu.com/p/28297161)
+\[1\] [https://zhuanlan.zhihu.com/p/28297161](https://zhuanlan.zhihu.com/p/28297161)
 
