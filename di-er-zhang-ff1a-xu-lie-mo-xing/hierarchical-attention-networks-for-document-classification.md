@@ -115,12 +115,4 @@ $$
 
 结合要解决的问题的具体内容设计与之对应的算法流程和网络结构是一个合格算法工程师必须要掌握的技能之一。本文做了很好的示范，它在文档分类任务中将一个文档按照句子和单词进行了分层，并且在每层中使用了效果非常好的注意力机制。通过层次的注意力机制我们可以分析每个单词，每个句子在文档分类中扮演的作用，这对我们理解模型是非常有帮助的。
 
-## Reference
-
-\[1\] Yang Z, Yang D, Dyer C, et al. Hierarchical attention networks for document classification\[C\]//Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. 2016: 1480-1489.
-
-[2] Bahdanau D, Cho K, Bengio Y. Neural machine translation by jointly learning to align and translate\[J\]. arXiv preprint arXiv:1409.0473, 2014.
-
-[3] Weston J, Chopra S, Bordes A. Memory networks[J]. arXiv preprint arXiv:1410.3916, 2014.
-
 

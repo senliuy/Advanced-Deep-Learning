@@ -31,14 +31,7 @@ $$
 所以，RNN的隐节点$$h_{t-1}$$有两个作用
 
 1. 计算在该时刻的预测值$$\hat{y}_t$$
-
-
-$$
-\hat{y}_t = \sigma(h_t * w + b)
-$$
-
-
-1. 计算下个时间片的隐节点状态$$h_t$$
+2. 计算下个时间片的隐节点状态$$h_t$$
 
 RNN的该特性也使RNN在很多学术和工业前景，例如OCR，语音识别，股票预测等领域上有了十足的进展。
 
@@ -61,7 +54,7 @@ eg2: The cats, which already ate a bunch of food, were full.
 
 ### 梯度消失/爆炸
 
-梯度消失和梯度爆炸是困扰RNN模型训练的关键原因之一，产生梯度消失和梯度爆炸是由于RNN的权值矩阵循环相乘导致的，相同函数的多次组合会导致极端的非线性行为。梯度消失和梯度爆炸主要存在RNN中，因为RNN中每个时间片使用相同的权值矩阵。对于一个DNN，虽然也涉及多个矩阵的相乘，但是通过精心设计权值的比例可以避免梯度消失和梯度爆炸的问题 \[2\]。
+梯度消失和梯度爆炸是困扰RNN模型训练的关键原因之一，产生梯度消失和梯度爆炸是由于RNN的权值矩阵循环相乘导致的，相同函数的多次组合会导致极端的非线性行为。梯度消失和梯度爆炸主要存在RNN中，因为RNN中每个时间片使用相同的权值矩阵。对于一个DNN，虽然也涉及多个矩阵的相乘，但是通过精心设计权值的比例可以避免梯度消失和梯度爆炸的问题{{"sussillo2014random"|cite}}。
 
 处理梯度爆炸可以采用梯度截断的方法。所谓梯度截断是指将梯度值超过阈值$$\theta$$的梯度手动降到$$\theta$$。虽然梯度截断会一定程度上改变梯度的方向，但梯度截断的方向依旧是朝向损失函数减小的方向。
 
@@ -69,7 +62,7 @@ eg2: The cats, which already ate a bunch of food, were full.
 
 ## 2. LSTM
 
-LSTM的全称是Long Short Term Memory，顾名思义，它具有记忆长短期信息的能力的神经网络。LSTM首先在1997年由Hochreiter & Schmidhuber \[1\] 提出，由于深度学习在2012年的兴起，LSTM又经过了若干代大牛[^1]的发展，由此便形成了比较系统且完整的LSTM框架，并且在很多领域得到了广泛的应用。本文着重介绍深度学习时代的LSTM。
+LSTM的全称是Long Short Term Memory，顾名思义，它具有记忆长短期信息的能力的神经网络。LSTM首先在1997年由Hochreiter & Schmidhuber {{"hochreiter1997long"|cite}} 提出，由于深度学习在2012年的兴起，LSTM又经过了若干代大牛[^1]的发展，由此便形成了比较系统且完整的LSTM框架，并且在很多领域得到了广泛的应用。本文着重介绍深度学习时代的LSTM。
 
 LSTM提出的动机是为了解决上面我们提到的长期依赖问题。传统的RNN节点输出仅由权值，偏置以及激活函数决定（图3）。RNN是一个链式结构，每个时间片使用的是相同的参数。
 
@@ -117,28 +110,16 @@ $$i_t$$用于控制$$\tilde{C}_t$$的哪些特征用于更新$$C_t$$，使用方
 
 ![](/assets/LSTM_10.png)
 
-$$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算方式和$$f_t$$以及$$i_t$$相同。在\[3\]的论文中指出，通过将$$b_o$$的均值初始化为1，可以使LSTM达到同GRU近似的效果。
+$$h_t$$由输出门$$o_t$$和单元状态$$C_t$$得到，其中$$o_t$$的计算方式和$$f_t$$以及$$i_t$$相同。在{{"gers1999learning"|cite}}的论文中指出，通过将$$b_o$$的均值初始化为1，可以使LSTM达到同GRU近似的效果。
 
 ## 3. 其他LSTM
 
-联想之前介绍的GRU \[4\]，LSTM的隐层节点的门的数量和工作方式貌似是非常灵活的，那么是否存在一个最好的结构模型或者比LSTM和GRU性能更好的模型呢？Rafal\[5\] 等人采集了能采集到的100个最好模型，然后在这100个模型的基础上通过变异的形式产生了10000个新的模型。然后通过在字符串，结构化文档，语言模型，音频4个场景的实验比较了这10000多个模型，得出的重要结论总结如下：
+联想之前介绍的GRU {{"cho2014learning"|cite}}，LSTM的隐层节点的门的数量和工作方式貌似是非常灵活的，那么是否存在一个最好的结构模型或者比LSTM和GRU性能更好的模型呢？Rafal {{"jozefowicz2015empirical"|cite}}等人采集了能采集到的100个最好模型，然后在这100个模型的基础上通过变异的形式产生了10000个新的模型。然后通过在字符串，结构化文档，语言模型，音频4个场景的实验比较了这10000多个模型，得出的重要结论总结如下：
 
 1. GRU，LSTM是表现最好的模型；
 2. GRU的在除了语言模型的场景中表现均超过LSTM；
 3. LSTM的输出门的偏置的均值初始化为1时，LSTM的性能接近GRU；
 4. 在LSTM中，门的重要性排序是遗忘门 &gt; 输入门 &gt; 输出门。
-
-# reference
-
-\[1\] Hochreiter, S, and J. Schmidhuber. “Long short-term memory.” Neural Computation 9.8\(1997\):1735-1780.
-
-\[2\] Sussillo, D. \(2014\). Random walks: Training very deep nonlinear feed-forward networks with smart initialization.CoRR,abs/1412.6558. 248, 259, 260, 344
-
-\[3\] Gers F A, Schmidhuber J, Cummins F. Learning to forget: Continual prediction with LSTM\[J\]. 1999.
-
-\[4\] Cho K, Van Merriënboer B, Gulcehre C, et al. Learning phrase representations using RNN encoder-decoder for statistical machine translation\[J\]. arXiv preprint arXiv:1406.1078, 2014.
-
-\[5\] Jozefowicz R, Zaremba W, Sutskever I. An empirical exploration of recurrent network architectures\[C\]//International Conference on Machine Learning. 2015: 2342-2350.
 
 [^1]: Felix Gers, Fred Cummins, Santiago Fernandez, Justin Bayer, Daan Wierstra, Julian Togelius, Faustino Gomez, Matteo Gagliolo, and Alex Gloves
 
