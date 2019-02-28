@@ -2,7 +2,7 @@
 
 ## 简介
 
-在很多时序分类（Temporal Classification\)的应用中，输入数据X和输出数据Y的标签长度并不相等，而且不存在单调的映射关系，例如机器翻译，对话系统等等。为了解决这个问题，作者提出了RNN Encoder-Decoder模型，RNN Encoder-Decoder是由两个RNN模型级联而成的，通过Encoder将输入数据编码成特征向量，再通过Decoder将特征向量解码成输出数据。
+在很多时序分类（Temporal Classification\)的应用中，输入数据X和输出数据Y的标签长度并不相等，而且不存在单调的映射关系，例如机器翻译，对话系统等等。为了解决这个问题，作者提出了RNN Encoder-Decoder{{"cho2014learning"\|cite}}模型，RNN Encoder-Decoder是由两个RNN模型级联而成的，通过Encoder将输入数据编码成特征向量，再通过Decoder将特征向量解码成输出数据。
 
 这篇论文的第二个贡献就是GRU\(Gated Recurrent Unit\)的提出，GRU和LSTM均是采用门机制的思想改造RNN的神经元，和LSTM相比，GRU更加简单，高效，且不容易过拟合，但有时候在更加复杂的场景中效果不如LSTM，算是RNN和LSTM在速度和精度上的一个折中方案。
 
@@ -70,7 +70,7 @@ $$
 
 RNN Encoder-Decoder不仅可以用于产生输出数据，根据训练好的模型，使用条件概率模型$$p_\mathbf{\theta} (\mathbf{y}_n|\mathbf{x}_n)$$，也可以对现有的的标签进行评分。在这篇论文的实验中，作者便是对SMT中的短语表进行了重新打分。
 
-另外一篇著名的Seq2Seq的论文 \[2\]几乎和这篇论文同时发表，在Seq2Seq中，编码器得到的特征向量仅用于作为解码器的第一个时间片的输入，结构如图2
+另外一篇著名的Seq2Seq的论文 {{"sutskever2014sequence"\|cite}}几乎和这篇论文同时发表，在Seq2Seq中，编码器得到的特征向量仅用于作为解码器的第一个时间片的输入，结构如图2
 
 ###### 图2：RNN Encoder-Decoder by Sutskever I
 
