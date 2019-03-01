@@ -4,10 +4,10 @@ tags: NLP, Transformer, BERT
 
 ## 前言
 
-BERT（**B**idirectional **E**ncoder **R**epresentations from **T**ransformers）近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11个方向大幅刷新了精度，可以说是近年来自残差网络最优突破性的一项技术了。论文的主要特点以下几点：
+BERT（**B**idirectional **E**ncoder **R**epresentations from **T**ransformers）{{"devlin2018bert"|cite}}近期提出之后，作为一个Word2Vec的替代者，其在NLP领域的11个方向大幅刷新了精度，可以说是近年来自残差网络最优突破性的一项技术了。论文的主要特点以下几点：
 
-1. 使用了Transformer [2]作为算法的主要框架，Transformer能更彻底的捕捉语句中的双向关系；
-2. 使用了Mask Language Model\(MLM\) [3] 和 Next Sentence Prediction\(NSP\) 的多任务训练目标；
+1. 使用了Transformer {{"vaswani2017attention"|cite}}作为算法的主要框架，Transformer能更彻底的捕捉语句中的双向关系；
+2. 使用了Mask Language Model\(MLM\) {{"taylor1953cloze"|cite}} 和 Next Sentence Prediction\(NSP\) 的多任务训练目标；
 3. 使用更强大的机器训练更大规模的数据，使BERT的结果达到了全新的高度，并且Google开源了BERT模型，用户可以直接使用BERT作为Word2Vec的转换矩阵并高效的将其应用到自己的任务中。
                     
 BERT的本质上是通过在海量的语料的基础上运行自监督学习方法为单词学习一个好的特征表示，所谓自监督学习是指在没有人工标注的数据上运行的监督学习。在以后特定的NLP任务中，我们可以直接使用BERT的特征表示作为该任务的词嵌入特征。所以BERT提供的是一个供其它任务迁移学习的模型，该模型可以根据任务微调或者固定之后作为特征提取器。BERT的源码和模型10月31号已经在Github上[开源](https://github.com/google-research/bert)，简体中文和多语言模型也于11月3号开源。
@@ -42,7 +42,7 @@ BERT提供了简单和复杂两个模型，对应的超参数分别如下：
 
 在上面的超参数中，L表示网络的层数（即Transformer blocks的数量），A表示Multi-Head Attention中self-Attention的数量，filter的尺寸是4H。
 
-论文中还对比了BERT和GPT[4]和ELMo[5]，它们两个的结构图如图3所示。
+论文中还对比了BERT和GPT{{"radford2018improving"|cite}}和ELMo{{"peters2017semi"|cite}}，它们两个的结构图如图3所示。
                  
 <figure>
 <img src="/assets/BERT_3.png" alt="图3：OpenAI GPT和ELMo" />
