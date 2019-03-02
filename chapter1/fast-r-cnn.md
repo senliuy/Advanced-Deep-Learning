@@ -2,7 +2,7 @@
 
 ## 简介
 
-在之前介绍的R-CNN\[1\]和SPP-net\[2\]中，它们都是先通过卷积网络提取特征，然后根据特征训练SVM做分类和回归器用于位置矫正。这种多阶段的流程有两个问题
+在之前介绍的R-CNN {{"girshick2014rich"|cite}}和SPP-net\[2\]中，它们都是先通过卷积网络提取特征，然后根据特征训练SVM做分类和回归器用于位置矫正。这种多阶段的流程有两个问题
 
 1. 保存中间变量需要使用大量的硬盘存储空间
 2. 不能根据分类和矫正结果调整卷积网络权值，会一定程度的限制网络精度。
@@ -207,12 +207,6 @@ layer {
 ### 3. 物体检测
 
 使用selective search输入图像中提取2000个候选区域，按照同训练样本相同的resize方法调整候选区域的大小。将所有的候选区域输入到训练好的神经网络，得到每一类的后验概率p和相对偏移r。通过预测概率给每一类一个置信度，并使用NMS对每一类确定最终候选区域。Fast-RCNN使用了奇异值分解来提升矩阵乘法的运算速度。
-
-## 参考文献
-
-\[1\] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in CVPR, 2014
-
-\[2\] K. He, X. Zhang, S. Ren, and J. Sun. Spatial pyramid pooling in deep convolutional networks for visual recognition. In ECCV, 2014. 1, 2, 3, 4, 5, 6, 7
 
 [^1]: Selective Search 无法通过GPU执行，这是造成Fast R-CNN无法实时的一个重要性能瓶颈。在Faster-RCNN中，对这一瓶颈进行了优化
 
