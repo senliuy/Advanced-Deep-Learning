@@ -2,9 +2,9 @@
 
 ## 简介
 
-Fast-RCNN \[1\]虽然实现了端到端的训练，而且也通过共享卷积的形式大幅提升了R-CNN的计算速度，但是其仍难以做到实时。其中一个最大的性能瓶颈便是候选区域的计算。在之前的物体检测系统中，Selective Search是最常用的候选区域提取方法，它贪心的根据图像的低层特征合并超像素（SuperPixel）。另外一个更快速的版本是EdgeBoxes \[4\]，虽然EdgeBoxes的提取速度达到了0.2秒一张图片，当仍然难以做到实时，而且EdgeBoxes为了速度牺牲了提取效果。Selective Search速度慢的一个重要原因是不同于检测网络使用GPU进行运算，SS使用的是CPU。从工程的角度讲，使用GPU实现SS是一个非常有效的方法，但是其忽视了共享卷积提供的非常有效的图像特征 。
+Fast-RCNN {{"girshick2015fast"|cite}} 虽然实现了端到端的训练，而且也通过共享卷积的形式大幅提升了R-CNN的计算速度，但是其仍难以做到实时。其中一个最大的性能瓶颈便是候选区域的计算。在之前的物体检测系统中，Selective Search {{"uijlings2013selective"|cite}} 是最常用的候选区域提取方法，它贪心的根据图像的低层特征合并超像素（SuperPixel）。另外一个更快速的版本是EdgeBoxes {{"zitnick2014edge"|cite}}，虽然EdgeBoxes的提取速度达到了0.2秒一张图片，当仍然难以做到实时，而且EdgeBoxes为了速度牺牲了提取效果。Selective Search速度慢的一个重要原因是不同于检测网络使用GPU进行运算，SS使用的是CPU。从工程的角度讲，使用GPU实现SS是一个非常有效的方法，但是其忽视了共享卷积提供的非常有效的图像特征 。
 
-由于卷积网络具有强大的拟合能力，很自然的我们可以想到可以使用卷积网络提取候选区域，由此，便产生了Faster R-CNN最重要的核心思想：RPN \(Region Proposal Networks\)。通过SPP-net \[5\]的实验得知，卷积网络可以很好的提取图像语义信息，例如图像的形状，边缘等等。所以，这些特征理论上也应该能够用提取候选区域（这也符合深度学习解决一切图像问题的思想）。在论文中，作者给RPN的定义如下：RPN是一种可以端到端训练的全卷积网络 \[6\]，主要是用来产生候选区域。
+由于卷积网络具有强大的拟合能力，很自然的我们可以想到可以使用卷积网络提取候选区域，由此，便产生了Faster R-CNN最重要的核心思想：RPN \(Region Proposal Networks\)。通过SPP-net {{"he2015spatial"|cite}} 的实验得知，卷积网络可以很好的提取图像语义信息，例如图像的形状，边缘等等。所以，这些特征理论上也应该能够用提取候选区域（这也符合深度学习解决一切图像问题的思想）。在论文中，作者给RPN的定义如下：RPN是一种可以端到端训练的全卷积网络 {{"long2015fully"|cite}}，主要是用来产生候选区域。
 
 RPN是通过一个叫做锚点（anchor）的机制实现的。锚点是通过在conv5上进行3\*3，步长为1的滑窗，在输入图像上取得的，在取锚点时，同一个中心点取了3个尺度，3个比例共9个锚点。Faster R-CNN的候选区域便是用RPN网络标注了标签的锚点。RPN的思想类似于Attention机制，Attention中where to look要看的地方便是锚点。
 
@@ -172,7 +172,7 @@ shift_y = np.arange(0, height) * self._feat_stride
 
 作者在论文中说这种锚点并没有经过精心设计，我认为，这批锚点表现好不是没有原因的，三中锚点分别包括被感受野包围，和感受野类似以及将感受野覆盖三种情况，可见这样设计锚点覆盖的情况还是非常全面的。
 
-由于每个中心对应一个256维的特征向量，而1个中心对应了9个不同的锚点，进而产生不同的标签。这似乎是一个1 vs n的映射，而这种方程是无解的。实际上，作者根据9种不同尺寸和比例的锚点，独立的训练9个不同的回归模型，这些模型的参数是不共享的。这就是RPN的模型为什么有6\*k个输出的原因，如图5。
+由于每个中心对应一个256维的特征向量，而1个中心对应了9个不同的锚点，进而产生不同的标签。这似乎是一个1 vs n的映射，而这种方程是无解的。实际上，作者根据9种不同尺寸和比例的锚点，独立的训练9个不同的回归模型，这些模型的参数是不共享的。这就是RPN的模型为什么有$$6\times k$$个输出的原因，如图5。
 
 ![](/assets/Faster R-CNN_5.png)
 
@@ -196,7 +196,7 @@ shift_y = np.arange(0, height) * self._feat_stride
         rpn_cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=rpn_cls_score, labels=rpn_label))
 ```
 
-能这样做的原因是因为1\*1卷积替代了全连接，这种只有卷积的网络结构叫做全卷积（PS: 先挖一坑）。
+能这样做的原因是因为$$1\times1$$卷积替代了全连接，这种只有卷积的网络结构叫做全卷积（PS: 先挖一坑）。
 
 #### 1.4 RPN的训练
 
@@ -230,19 +230,4 @@ Alternating Training 可以分成4个步骤
 
 和之前讲到的一样，使用RPN产生完候选区域后，剩下的便和Fast R-CNN一样了。
 
-## 参考文献
-
-\[1\] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in CVPR, 2014
-
-\[2\] R. Girshick, “Fast R-CNN,” in IEEE International Conference on Computer Vision \(ICCV\), 2015.
-
-\[3\] J. R. Uijlings, K. E. van de Sande, T. Gevers, and A. W. Smeulders, “Selective search for object recognition,” International Journal of Computer Vision \(IJCV\), 2013.
-
-\[4\] C. L. Zitnick and P. Dollar, “Edge boxes: Locating object ´ proposals from edges,” in European Conference on Computer Vision \(ECCV\), 2014.
-
-\[5\] K. He, X. Zhang, S. Ren, and J. Sun, “Spatial pyramid pooling in deep convolutional networks for visual recognition,” in European Conference on Computer Vision \(ECCV\), 2014.
-
-\[6\] J. Long, E. Shelhamer, and T. Darrell, “Fully convolutional networks for semantic segmentation,” in IEEE Conference on Computer Vision and Pattern Recognition \(CVPR\), 2015.
-
-\[7\] J. Dai, K. He, and J. Sun, “Instance-aware semantic segmentation via multi-task network cascades,” arXiv:1512.04412, 2015.
 
