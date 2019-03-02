@@ -6,11 +6,11 @@ tags: R-CNN, Object Detection
 
 论文发表于2014年，自2012年之后，物体检测的发展开始变得缓慢，一个重要的原因是基于计算机视觉的方法（SIFT，HOG）进入了一个瓶颈期。生物学上发现人类的视觉是一个多层次的流程，而SIFT或者HOG只相当于人类视觉的第一层，这是导致瓶颈期的一个重要原因。
 
-2012年，基于随机梯度下降的卷机网络在物体识别领域的突破性进展充分展现了CNN在提取图片特征上的巨大优越性 \[1\]。CNN的一个重要的特点是其多层次的结构更符合人类的生物特征。
+2012年，基于随机梯度下降的卷机网络在物体识别领域的突破性进展充分展现了CNN在提取图片特征上的巨大优越性 {{"NIPS2012_4824"|cite}}。CNN的一个重要的特点是其多层次的结构更符合人类的生物特征。
 
 但大规模深度学习网络的应用对数据量提出了更高的需求。在数据量稀缺的数据集上进行训练，迭代次数太少会导致模型拟合能力不足，迭代次数太多会导致过拟合。为了解决该问题，作者使用了在海量数据上的无监督学习的预训练加上稀缺专用数据集的fine-tune。
 
-在算法设计上，作者采用了 “Recognition Using Regions” \[2\]的思想，R-CNN使用Selective Search提取了2k-3k个候选区域，对每个候选区域单独进行特征提取和分类器训练，这也是R-CNN命名的由来。
+在算法设计上，作者采用了 “Recognition Using Regions” {{"gu2012recognition"|cite}}的思想，R-CNN {{"girshick2014rich"|cite}}使用Selective Search {{"uijlings2013selective"|cite}}提取了2k-3k个候选区域，对每个候选区域单独进行特征提取和分类器训练，这也是R-CNN命名的由来。
 
 同时，为了提高检测精度，作者使用了岭回归对检测位置进行了精校。以上方法的使用，使得算法在PASCAL数据集上的检测到达了新的高度。
 
@@ -42,7 +42,7 @@ R-CNN测试过程可分成五个步骤
 
 R-CNN输入网络的并不是原始图片，而是经过Selective Search选择的候选区域。
 
-1. Selective Search 使⽤ \[4\]的⽅法，将图像分成若⼲个⼩区域
+1. Selective Search 使⽤ {{"felzenszwalb2004efficient"|cite}} 的⽅法，将图像分成若⼲个⼩区域
 2. 计算相似度，合并相似度较⾼的区域，直到⼩区域全部合并完毕
 3. 输出所有存在过的区域，即候选区域 如下面伪代码：
 
@@ -105,7 +105,7 @@ Selective Search 伪代码 区域的合并规则是：
 
 #### 特征
 
-位置精校和\[5\]的思路类似，不同之处是使用CNN提取的特征而非DNN。同SVM一样，回归器也是使用的从Pool5层提取的特征。候选区域是选取的样本是和Ground Truth的IoU大于0.6的样本。
+位置精校和{{"felzenszwalb2010object"|cite}}的思路类似，不同之处是使用CNN提取的特征而非DNN。同SVM一样，回归器也是使用的从Pool5层提取的特征。候选区域是选取的样本是和Ground Truth的IoU大于0.6的样本。
 
 #### 标签
 
@@ -123,7 +123,7 @@ $$t_h = log(G_y/P_h)$$
 
 ### 4.1 CNN
 
-作者通过对比Alex-Net5\[1\] \(论文中叫做T-Net\), O-Net\[6\], 通过折中考虑mAP和训练时间，最终采用了Alex-Net。Alex-Net的网络结构如下图：
+作者通过对比Alex-Net5\(论文中叫做T-Net\), VGG（论文中叫做O-Net）, 通过折中考虑mAP和训练时间，最终采用了Alex-Net。Alex-Net的网络结构如下图：
 
 ![](/assets/rcnn_3.png)
 
@@ -145,19 +145,6 @@ w_{\star} = argmin_{\hat{w}_{\star}}\sum_{i}^{N}(t_{\star}^i - \hat{w}^T_{\star}
 $$
 其中$$\phi_5(P^i)$$表示候选区域$$P^i$$对应的Pool5层特特征向量。
 
-# 参考文献
-
-\[1\] \] A. Krizhevsky, I. Sutskever, and G. Hinton. ImageNet classification with deep convolutional neural networks. In NIPS, 2012. 1, 3, 4, 7
-
-\[2\] C. Gu, J. J. Lim, P. Arbelaez, and J. Malik. Recognition ´ using regions. In CVPR, 2009. 2
-
-\[3\] J. Uijlings, K. van de Sande, T. Gevers, and A. Smeulders. Selective search for object recognition. IJCV, 2013. 1, 2, 3, 4, 5, 9
-
-\[4\]. P. F. Felzenszwalb and D. P. Huttenlocher. Efficient GraphBased Image Segmentation. IJCV, 59:167–181, 2004. 1, 3, 4, 5, 7
-
-\[5\]. P. Felzenszwalb, R. Girshick, D. McAllester, and D. Ramanan. Object detection with discriminatively trained part based models. TPAMI, 2010. 2, 4, 7, 12
-
-\[6\]. K. Simonyan and A. Zisserman. Very Deep Convolutional Networks for Large-Scale Image Recognition. arXiv preprint, arXiv:1409.1556, 2014. 6, 7, 14
 
 [^1]: 原文：historically speaking, we arrived at these definition because we started by training SVMs on features computed by the ImageNet pre-trained CNN, and so fine-tuning was not a consideration at that point in time.
 
