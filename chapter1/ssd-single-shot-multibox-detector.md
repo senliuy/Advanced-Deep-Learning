@@ -2,13 +2,13 @@
 
 ## 前言
 
-在YOLO\[2\]的文章中我们介绍到YOLO存在三个缺陷：
+在YOLO {{"redmon2016you"|cite}} 的文章中我们介绍到YOLO存在三个缺陷：
 
 1. 两个bounding box功能的重复降低了模型的精度；
 2. 全连接层的使用不仅使特征向量失去了位置信息，还产生了大量的参数，影响了算法的速度；
 3. 只使用顶层的特征向量使算法对于小尺寸物体的检测效果很差。
 
-为了解决这些问题，SSD应运而生。SSD的全称是Single Shot MultiBox Detector，Single Shot表示SSD是像YOLO一样的单次检测算法，MultiBox指SSD每次可以检测多个物体，Detector表示SSD是用来进行物体检测的。
+为了解决这些问题，SSD {{"liu2016ssd"|cite}} 应运而生。SSD的全称是Single Shot MultiBox Detector，Single Shot表示SSD是像YOLO一样的单次检测算法，MultiBox指SSD每次可以检测多个物体，Detector表示SSD是用来进行物体检测的。
 
 针对YOLO的三个问题，SSD做出的改进如下：
 
@@ -130,9 +130,9 @@ SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very
 
 第一点不同的是在block5中，max\_pool2d的步长$$stride=1$$，此时图像将不会进行降采样，也就是说输入到block6的Feature Map的尺寸任然是$$38\times 38$$。
 
-SSD的$$3\times 3$$的conv6和$$1\times 1$$的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov \[4\]的方法。具体细节在DeepLab-LargeFov的论文中进行分析。
+SSD的$$3\times 3$$的conv6和$$1\times 1$$的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov {{"chen2014semantic"|cite}} 的方法。具体细节在DeepLab-LargeFov的论文中进行分析。
 
-在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）\[3\]，在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
+在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）{{"holschneider1990real"|cite}}，在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
 
 空洞卷积可以在不增加模型复杂度的同时扩大卷积操作的视野，通过在卷积核中插值0的形式完成的。如图3所示，\(a\)是膨胀率为1的卷积，也就是标准的卷积，其感受野的大小是$$3\times 3$$。\(b\)的膨胀率为2，卷积核变成了$$7\times 7$$的卷积核，其中只有9个红点处的值不为0，在不增加复杂度的同时感受野变成了$$7\times 7$$。\(c\)的膨胀率是4，感受野的大小变成了$$15\times 15$$。在设置感受野的膨胀率时要谨慎设计，否则如果卷积核大于Feature Map的尺寸之后程序会报错。
 
@@ -172,7 +172,7 @@ conv10_2_mbox_loc = Conv2D(n_boxes[4] * 4, (3, 3), padding='same', kernel_initia
 conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv11_2_mbox_loc')(conv11_2)
 ```
 
-其中第二行的L2Normalization使用的是ParseNet \[3\]中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
+其中第二行的L2Normalization使用的是ParseNet {{"liu2015parsenet"|cite}} 中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
 
 SSD对于第$$i$$个Feature Map的每个像素点都会产生n\_boxes\[i\]个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,4,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD相当于预测M个bounding box，其中：
 
@@ -369,7 +369,7 @@ $$
 
 ### 2. DSSD
 
-SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DSSD \[5\]，或者说用反卷积代替了基于双线性插值的上采样过程。下面我们来讲解DSSD是怎么进一步优化SSD的。
+SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DSSD {{"fu2017dssd"|cite}}，或者说用反卷积代替了基于双线性插值的上采样过程。下面我们来讲解DSSD是怎么进一步优化SSD的。
 
 #### 2.1 DSSD的骨干网络
 
@@ -388,7 +388,7 @@ DSSD并没有把反卷积部分构造的非常深，的原因有二：
 
 #### 2.2 反卷积
 
-反卷积\[6\]，又被叫做逆卷积，是在语义分割中应用中最常见的算法之一。下面通过一个例子来说明反卷积的工作原理：对于一个$$4\times4$$ 的输入$$x$$，经过$$3\times3$$ 卷积核的有效卷积，得到一个$$2\times2$$ 的特征向量$$y$$, 设卷积运算为$$y=Cx$$。$$C$$的本质上是一个稀疏矩阵\(很多开源框架卷积操作的实现方式\)：
+反卷积 {{"pinheiro2016learning"|cite}}，又被叫做逆卷积，是在语义分割中应用中最常见的算法之一。下面通过一个例子来说明反卷积的工作原理：对于一个$$4\times4$$ 的输入$$x$$，经过$$3\times3$$ 卷积核的有效卷积，得到一个$$2\times2$$ 的特征向量$$y$$, 设卷积运算为$$y=Cx$$。$$C$$的本质上是一个稀疏矩阵\(很多开源框架卷积操作的实现方式\)：
 
 ![](/assets/SSD_u1.png)
 
@@ -422,17 +422,4 @@ SSD算法的核心点在于
 
 DSSD的提出时间则较晚，其主要特别是反卷积的引入，从最近的趋势可以看出，物体检测和语义分割的交集越来越多，双方都不断的从对方汲取灵感来源来优化对应任务。
 
-## Reference
-
-\[1\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
-
-\[2\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
-
-\[3\] Liu,W.,Rabinovich,A.,Berg,A.C.:ParseNet:Looking wider to see better.In:ILCR.\(2016\)
-
-\[4\] Chen, L.C., Papandreou, G., Kokkinos, I., Murphy, K., Yuille, A.L.: Semantic image segmentation with deep convolutional nets and fully connected crfs. In: ICLR. \(2015\)
-
-\[5\] Fu C Y, Liu W, Ranga A, et al. DSSD: Deconvolutional single shot detector\[J\]. arXiv preprint arXiv:1701.06659, 2017.
-
-\[6\] P. O. Pinheiro, T.-Y. Lin, R. Collobert, and P. Dollr. Learning to refine object segments. InECCV, 2016.4
 
