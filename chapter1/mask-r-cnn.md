@@ -17,7 +17,7 @@
 1. 使用RPN网络产生候选区域；
 2. 分类，bounding box，掩码预测的多任务损失。
 
-在Fast R-CNN的解析文章中，我们介绍Fast R-CNN采用ROI池化来处理候选区域尺寸不同的问题。但是对于语义分割任务来说，一个非常重要的要求便是特征层和输入层像素的一对一，ROI池化显然不满足该要求。为了改进这个问题，作者仿照STN \[4\]中提出的双线性插值提出了ROIAlign，从而使Faster R-CNN的特征层也能进行语义分割。
+在Fast R-CNN的解析文章中，我们介绍Fast R-CNN采用ROI池化来处理候选区域尺寸不同的问题。但是对于语义分割任务来说，一个非常重要的要求便是特征层和输入层像素的一对一，ROI池化显然不满足该要求。为了改进这个问题，作者仿照[STN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/spatial-transform-networks.html) \[4\]中提出的双线性插值提出了ROIAlign，从而使Faster R-CNN的特征层也能进行语义分割。
 
 下面我们结合代码详细解析Mask R-CNN，代码我使用的是基于TensorFlow和Keras实现的版本：[https://github.com/matterport/Mask\_RCNN](https://github.com/matterport/Mask_RCNN)。
 
@@ -217,20 +217,6 @@ Mask R-CNN设计的主要接口有：
 
 1. 将FCN和Faster R-CNN合并，通过构建一个三任务的损失函数来优化模型；
 2. 使用RoIAlign优化了RoI Pooling，解决了Faster R-CNN在语义分割中的区域不匹配问题。
-
-## Reference
-
-\[1\] He K, Gkioxari G, Dollár P, et al. Mask r-cnn\[C\]//Computer Vision \(ICCV\), 2017 IEEE International Conference on. IEEE, 2017: 2980-2988.
-
-\[2\] J. Long, E. Shelhamer, and T. Darrell. Fully convolutional networks for semantic segmentation. In CVPR, 2015. 1, 3, 6
-
-\[3\] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015. 1, 2, 3, 4, 7
-
-\[4\] M. Jaderberg, K. Simonyan, A. Zisserman, and K. Kavukcuoglu. Spatial transformer networks. In NIPS, 2015. 4
-
-\[5\] T.-Y. Lin, P. Dollar, R. Girshick, K. He, B. Hariharan, and ´ S. Belongie. Feature pyramid networks for object detection. In CVPR, 2017. 2, 4, 5, 7
-
-\[6\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
 
 ### 附录A: 双线性插值
 
