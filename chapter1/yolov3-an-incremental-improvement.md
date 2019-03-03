@@ -78,15 +78,3 @@ YOLO9000是我认为在算法和应用上一个非常典型的结合体。在目
 
 最后扯一点有意思的题外话，作者作为一个有野心的技术大牛，性格反而有点可爱和萌，给开发的网络取名“Darknet”便透露着浓浓的中二风。在写YOLOv1和YOLOv2的论文时文风还比较正经，但是到了YOLOv3文风便奔放起来，还时不时的调戏一下读者和审稿人。这些事儿你可能想不到是一个满脸大胡子的光头大汉（仔细一看还挺帅的）做的，感兴趣的话可以欣赏一下作者的[主页](https://pjreddie.com)和他在TED上的[演讲](https://www.ted.com/talks/joseph_redmon_how_a_computer_learns_to_recognize_objects_instantly)。
 
-## Reference
-
-\[1\] Redmon J, Farhadi A. Yolov3: An incremental improvement\[J\]. arXiv preprint arXiv:1804.02767, 2018.
-
-\[2\] Redmon J, Farhadi A. YOLO9000: better, faster, stronger\[J\]. arXiv preprint, 2017.
-
-\[3\] T.-Y. Lin, P. Dollar, R. Girshick, K. He, B. Hariharan, and ′ S. Belongie. Feature pyramid networks for object detection. In CVPR, 2017. 2, 4, 5, 7
-
-\[4\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
-
-\[5\] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollar. Focal loss for dense object detection.arXiv preprint arXiv:1708.02002, 2017.1,3,4
-
