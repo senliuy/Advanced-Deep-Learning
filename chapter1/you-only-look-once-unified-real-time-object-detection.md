@@ -263,11 +263,3 @@ Faster R-CNN之后的算法均趋向于使用全卷积代替全连接层，但�
 
 不过暂时不用着急，YOLO也在不断进化，YOLOv2，YOLOv3将会在速度和精度上进行优化，我们会在后续的文章中介绍。
 
-## Reference
-
-\[1\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
-
-\[2\] R. Girshick, “Fast R-CNN,” in IEEE International Conference on Computer Vision \(ICCV\), 2015.
-
-\[3\] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015. 1, 2, 3, 4, 7
-
