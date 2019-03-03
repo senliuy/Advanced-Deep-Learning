@@ -177,15 +177,3 @@ Focal Loss的论文非常简单有效，非常符合何凯明等人的风格。F
 
 Focal Loss几乎可以应用到很多imbalance数据的领域，还是非常有实用价值的。
 
-## Reference
-
-\[1\] Lin T Y, Goyal P, Girshick R, et al. Focal loss for dense object detection\[J\]. IEEE transactions on pattern analysis and machine intelligence, 2018.
-
-\[2\] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in CVPR, 2014
-
-\[3\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
-
-\[4\] He K, Zhang X, Ren S, et al. Deep residual learning for image recognition\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 770-778.
-
-\[5\] T.-Y. Lin, P. Dollar, R. Girshick, K. He, B. Hariharan, and ´ S. Belongie. Feature pyramid networks for object detection. In CVPR, 2017. 2, 4, 5, 7
-
