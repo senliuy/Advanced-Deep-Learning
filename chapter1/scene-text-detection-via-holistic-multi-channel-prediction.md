@@ -114,7 +114,7 @@ HMCP的检测过程如图5：给定输入图像\(a\)得到\(b\)，\(c\)，\(d\)�
 
 ![](/assets/HMCP_5.png)
 
-对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）\[4\]得到的三角形$$T$$我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$，如图\(g\)。
+对于一个文本区域，假设其中有$$m$$个字符区域：$$U = \{u_i,i=1,...,m\}$$，通过德劳内三角化（Delaunary Triangulation）{{"kang2014orientation"|cite}}得到的三角形$$T$$我们可以得到一个由相邻字符间连接构成的图$$G=\{U,E\}$$，如图\(g\)。
 
 德劳内三角化能够有效的去除字符区域之间不必要的链接，维基百科给的德劳内三角化的定义是指德劳内三角化是一种三角剖分$$DT(P)$$，使得在P中没有点严格处于$$DT(P)$$中任意一个三角形外接圆的内部。德劳内三角化最大化了此三角剖分中三角形的最小角，换句话，此算法尽量避免出现“极瘦”的三角形，如图6。
 
@@ -188,16 +188,3 @@ $$
 ## 总结
 
 这篇论文巧妙的将语义分割用于场景文字检测领域，其三个掩码图的多任务模型的设计非常漂亮。最后通过三个掩码图生成检测框的算法技术性非常高，是一篇非常值得学习的论文。
-
-## Reference
-
-\[1\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
-
-\[2\] Xie S, Tu Z. Holistically-nested edge detection \[C\]//Proceedings of the IEEE international conference on computer vision. 2015: 1395-1403.
-
-\[3\] B. Epshtein, E. Ofek, and Y. Wexler. Detecting text in natural scenes with stroke width transform. In Proc. of CVPR, 2010.
-
-\[4\] L. Kang, Y. Li, and D. Doermann. Orientation robust text line detection in natural images. In Proc. of CVPR, 2014.
-
-\[5\] F. Yin and C. L. Liu. Handwritten text line extraction based on minimum spanning tree clustering. In Proc. of International Conference on Wavelet Analysis and Pattern Recognition, 2007.
-
