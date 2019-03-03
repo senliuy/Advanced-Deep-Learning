@@ -2,17 +2,17 @@
 
 ## 前言
 
-在这篇像极了奥运格言（Faster，Higher，Stronger）的论文 {{""|cite}}中，作者提出了YOLOv2和YOLO9000两个模型。
+在这篇像极了奥运格言（Faster，Higher，Stronger）的论文 {{"redmon2017yolo9000"|cite}}中，作者提出了YOLOv2和YOLO9000两个模型。
 
-其中YOLOv2采用了若干技巧对[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的速度和精度进行了提升。其中比较有趣的有以下几点：
+其中YOLOv2采用了若干技巧对[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html) {{"redmon2016you"|cite}} 的速度和精度进行了提升。其中比较有趣的有以下几点：
 
-1. 使用聚类产生的锚点代替[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html)和[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html)手工设计的锚点；
+1. 使用聚类产生的锚点代替[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html){{"ren2015faster"|cite}} 和[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html){{"liu2016ssd"|cite}} 手工设计的锚点；
 2. 在高分辨率图像上进行迁移学习，提升网络对高分辨图像的响应能力；
 3. 训练过程图像的尺寸不再固定，提升网络对不同训练数据的泛化能力。
 
 除了以上三点，YOLO还使用了残差网络的直接映射的思想，R-CNN系列的预测相对位移的思想，Batch Normalization，全卷积等思想。YOLOv2将算法的速度和精度均提升到了一个新的高度。正是所谓的速度更快（Faster），精度更高（Better/Higher）
 
-论文中提出的另外一个模型YOLO9000非常巧妙的使用了WordNet\[5\]的方式将检测数据集COCO和分类数据集ImageNet整理成一个多叉树，再通过提出的联合训练方法高效的训练多叉树对应的损失函数。YOLO9000是一个非常强大（Stronger）且有趣的模型，非常具有研究前景。
+论文中提出的另外一个模型YOLO9000非常巧妙的使用了WordNet {{"miller1990introduction"|cite}}的方式将检测数据集COCO和分类数据集ImageNet整理成一个多叉树，再通过提出的联合训练方法高效的训练多叉树对应的损失函数。YOLO9000是一个非常强大（Stronger）且有趣的模型，非常具有研究前景。
 
 在下面的章节中，我们将论文分成YOLOv2和YOLO9000两个部分并结合论文和源码对算法进行详细解析。
 
@@ -295,16 +295,4 @@ YOLO9000使用了YOLOv2的框架但是有以下改进：
 YOLO9000这篇论文算是干货满满的一篇文章，首先YOLOv2通过一系列非常有效的Trick将物体检测的速度和精度刷新到了新的高度。这些Trick不仅在YOLOv2中非常有效，而且对我们的其它任务也很有参考价值，例如高分辨率迁移学习应用到语义分割，多尺度训练应用到图像分类任务等。
 
 YOLO9000更是强大到令人发指，其对COCO的80类的子类和父类能进行检测并不让我感到意外，YOLO9000强大之处在于路径中没有COCO类别的156类中也取得了非常不错的效果。这种半监督学习是非常有研究和应用前景的一个方向，因为在我们的大部分场景中获得大量数据集难度非常大，但我们又可以多少搞到写数据，这时候就要发挥半监督学习的作用了。
-
-## Reference
-
-\[1\] Redmon J, Farhadi A. YOLO9000: better, faster, stronger\[J\]. arXiv preprint, 2017.
-
-\[2\] Redmon J, Divvala S, Girshick R, et al. You only look once: Unified, real-time object detection\[C\]//Proceedings of the IEEE conference on computer vision and pattern recognition. 2016: 779-788.
-
-\[3\] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015.
-
-\[4\] Liu W, Anguelov D, Erhan D, et al. Ssd: Single shot multibox detector\[C\]//European conference on computer vision. Springer, Cham, 2016: 21-37.
-
-\[5\] G. A. Miller, R. Beckwith, C. Fellbaum, D. Gross, and K. J. Miller. Introduction to wordnet: An on-line lexical database. International journal of lexicography, 3\(4\):235–244, 1990.
 
