@@ -4,7 +4,7 @@
 
 图像金字塔是传统的提升物体检测精度的策略之一，其能提升精度的一个原因是尺寸多样性的引入。但是图像金字塔也有一个非常严重的缺点：即增加了模型的计算量，一个经过3个尺度放大（1x,2x,3x）的图像金子塔要多处理14倍的像素点。
 
-SNIPER（Scale Normalization for Image Pyramid with Efficient Resampling）的提出动机便是解决图像金字塔计算量大的问题，图像金字塔存在一个固有的问题：对于一张放大之后的高分辨率的图片，其物体也随之放大，有时甚至待检测物体的尺寸超过了特征向量的感受野，这时候对大尺寸物体的检测便很难做到精确，因为这时候已经没有合适的特征向量了；对于一个缩小了若干倍的图像中的一个小尺寸物体，由于网络结构中降采样的存在，此时也很难找到合适的特征向量用于该物体的检测。因此作者在之前的SNIP\[2\]论文中便提出了高分辨率图像中的大尺寸物体和低分辨率图像中的小尺寸物体时应该忽略的。
+SNIPER（Scale Normalization for Image Pyramid with Efficient Resampling）{{"singh2018sniper"|cite}}的提出动机便是解决图像金字塔计算量大的问题，图像金字塔存在一个固有的问题：对于一张放大之后的高分辨率的图片，其物体也随之放大，有时甚至待检测物体的尺寸超过了特征向量的感受野，这时候对大尺寸物体的检测便很难做到精确，因为这时候已经没有合适的特征向量了；对于一个缩小了若干倍的图像中的一个小尺寸物体，由于网络结构中降采样的存在，此时也很难找到合适的特征向量用于该物体的检测。因此作者在之前的SNIP{{"singh2018analysis"|cite}}论文中便提出了高分辨率图像中的大尺寸物体和低分辨率图像中的小尺寸物体时应该忽略的。
 
 为了阐述SNIPER的提出动机，作者用很大的篇幅来对比R-CNN和Fast R-CNN的异同，一个重要的观点就是R-CNN具有尺度不变性，而Fast R-CNN不具有该特征。R-CNN先通过Selective Search选取候选区域，然后无论候选区域的尺寸是多少都会将其归一化到$$224\times224$$的尺寸，该策略虽然备受诟病，但是它却保证了R-CNN具有尺度不变性的特征。Fast R-CNN将resize的部分移到了使用了卷积之后，也就是使用RoI池化产生长度固定的特征向量，也就是说Fast R-CNN是将原始图像作为输入，无论里面的尺寸大小，均使用相同的卷积核计算特征向量。但是这样做真的合理吗？不同尺寸的待检测物体使用相同的卷积核来训练真的好吗？答案当然是否定的。
 
@@ -73,7 +73,7 @@ $$
 
 通过上面的分析，我们可以根据Ground Truth和弱RPN得到一批正chips和一批负chips，这批chips将作为训练样本直接输入给检测算法。SNIPER采用了Faster R-CNN作为这些chips的检测算法框架，并且SNIPER后面模型训练的细节也基本和Faster R-CNN相同，除了一点，SNIPER接的Faster R-CNN的RPN和Fast R-CNN使用了不同的标签系统。
 
-Faster R-CNN\[3\]系列论文中我们讲过，Faster R-CNN是由RPN和Fast R-CNN组成的多任务模型，在SNIPER中，两个任务会使用两个不同的标签，首先训练RPN时，chips中的待检测物体的Ground Truth并不会受范围$$\mathcal{R}$$的限制。但是再根据RPN提取的候选区域训练Fast R-CNN时，在范围$$\mathcal{R}$$之外的候选区域并不会参与Fast R-CNN的训练。这么做的原因作者没有指出，猜测是RPN需要检测的候选区域覆盖范围更广，因此需要更多的，范围更大的Ground Truth。而Fast R-CNN需要检测的更准确，因此把这个任务交给了能提取到更合适的特征向量的对应尺度。
+Faster R-CNN{{"ren2015faster"|cite}}系列论文中我们讲过，Faster R-CNN是由RPN和Fast R-CNN组成的多任务模型，在SNIPER中，两个任务会使用两个不同的标签，首先训练RPN时，chips中的待检测物体的Ground Truth并不会受范围$$\mathcal{R}$$的限制。但是再根据RPN提取的候选区域训练Fast R-CNN时，在范围$$\mathcal{R}$$之外的候选区域并不会参与Fast R-CNN的训练。这么做的原因作者没有指出，猜测是RPN需要检测的候选区域覆盖范围更广，因此需要更多的，范围更大的Ground Truth。而Fast R-CNN需要检测的更准确，因此把这个任务交给了能提取到更合适的特征向量的对应尺度。
 
 ## 2. SNIPER的测试过程
 
@@ -94,12 +94,4 @@ SNIPER使用的图像金字塔的尺度依次是$$(480,512)(800,1280)(1400,2000)
 另外，SNIPER仅仅是对训练速度的提升，往往更重要的检测速度并没有提升，反而是模型必须依赖图像金字塔，这反而降低了模型的通用性。
 
 最后，作者开源的源码和论文出入较大，读起来比较费劲，等之后有时间的话再详细学习这份源码。
-
-## Reference
-
-\[1\] Singh B, Najibi M, Davis L S. SNIPER: Efficient Multi-Scale Training\[J\]. arXiv preprint arXiv:1805.09300, 2018.
-
-\[2\] B. Singh and L. S. Davis. An analysis of scale invariance in object detection-snip. CVPR, 2018.
-
-\[3\] S. Ren, K. He, R. Girshick, and J. Sun. Faster r-cnn: Towards real-time object detection with region proposal networks. In Advances in neural information processing systems, pages 91–99, 2015.
 
