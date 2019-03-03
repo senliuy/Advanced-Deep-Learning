@@ -2,7 +2,7 @@
 
 ## 前言
 
-在这篇像极了奥运格言（Faster，Higher，Stronger）的论文\[1\]中，作者提出了YOLOv2和YOLO9000两个模型。
+在这篇像极了奥运格言（Faster，Higher，Stronger）的论文 {{""|cite}}中，作者提出了YOLOv2和YOLO9000两个模型。
 
 其中YOLOv2采用了若干技巧对[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的速度和精度进行了提升。其中比较有趣的有以下几点：
 
