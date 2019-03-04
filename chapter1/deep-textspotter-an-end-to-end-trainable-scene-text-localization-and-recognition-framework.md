@@ -4,7 +4,7 @@ tags: Deep TextSpotter, OCR, YOLOv2, STN, CTC
 
 ## 前言
 
-Deep TextSpotter的创新点并不多，基本上遵循了传统OCR或者物体检测的两步走的流程（图1），即先进行场景文字检测，再进行文字识别。在这个算法中，检测模块基于[YOLOv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html)\[2\]，识别模块基于[STN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/spatial-transform-networks.html)\[3\]，损失函数则使用了精度的[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)\[4\]。这几个算法在当时都是state-of-the-art的，因此其效果达到了最优也不难理解。这三个知识点已分别在本书的第四章，第五章和第二章进行了解析，算法细节可参考具体内容或者阅读论文。这里不在对上面三个算法的细节再做重复，只会对Deep TextSpotter的流程做一下梳理和解释。
+Deep TextSpotter{{"busta2017deep"|cite}}的创新点并不多，基本上遵循了传统OCR或者物体检测的两步走的流程（图1），即先进行场景文字检测，再进行文字识别。在这个算法中，检测模块基于[YOLOv2](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/yolo9000-better-faster-stronger.html){{"redmon2017yolo9000"|cite}}，识别模块基于[STN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/spatial-transform-networks.html){{"jaderberg2015spatial"|cite}}，损失函数则使用了精度的[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html){{"graves2006connectionist"|cite}}。这几个算法在当时都是state-of-the-art的，因此其效果达到了最优也不难理解。这三个知识点已分别在本书的第四章，第五章和第二章进行了解析，算法细节可参考具体内容或者阅读论文。这里不在对上面三个算法的细节再做重复，只会对Deep TextSpotter的流程做一下梳理和解释。
 
 Deep TextSpotter的一个创新点是将NMS放到了识别之后，使用识别置信度替代了传统的检测置信度。
 
@@ -58,7 +58,7 @@ $$
 
 ### 1.4 文本识别
 
-Deep TextSpotter使用的是基于字符序列识别方式，骨干网络使用的是基于图3的全卷积网络。网络支持宽的变长输入，但是高是固定的。图3中的Recurrent Convolution猜测是使用\[5\]的RCNN，论文中没有给出注释。
+Deep TextSpotter使用的是基于字符序列识别方式，骨干网络使用的是基于图3的全卷积网络。网络支持宽的变长输入，但是高是固定的。图3中的Recurrent Convolution猜测是使用{{"lai2015recurrent"|cite}}的结构，论文中没有给出注释。
 
 损失函数使用的是CTC，参考第二章[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)一节，此处不再废话。
 
@@ -75,16 +75,4 @@ Deep TextSpotter使用的是基于字符序列识别方式，骨干网络使用�
 由于使用了STN连接检测和识别，Deep TextSpotter是一个真正的端到端模型，所以在训练的过程中，只需要针对分类的loss进行训练。
 
 Deep TextSpotter，算法最核心的部件是STN，但是并没有cite该论文，识别中的RCNN也没cite，进而导致了理解上的困难，这毛病可不好。
-
-## Reference
-
-\[1\] Bušta M, Neumann L, Matas J. Deep textspotter: An end-to-end trainable scene text localization and recognition framework\[C\]//Computer Vision \(ICCV\), 2017 IEEE International Conference on. IEEE, 2017: 2223-2231.
-
-\[2\] Redmon J, Farhadi A. YOLO9000: better, faster, stronger\[J\]. arXiv preprint, 2017.
-
-\[3\] Jaderberg M, Simonyan K, Zisserman A. Spatial transformer networks\[C\]//Advances in neural information processing systems. 2015: 2017-2025.
-
-\[4\] Connectionist Temporal Classification : Labelling Unsegmented Sequence Data with Recurrent Neural Networks. Graves, A., Fernandez, S., Gomez, F. and Schmidhuber, J., 2006. Proceedings of the 23rd international conference on Machine Learning, pp. 369--376. DOI: 10.1145/1143844.1143891
-
-\[5\] Lai, S., Xu, L., Liu, K., & Zhao, J. \(2015, January\). Recurrent Convolutional Neural Networks for Text Classification. In AAAI \(Vol. 333, pp. 2267-2273\).
 
