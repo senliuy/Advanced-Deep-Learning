@@ -6,7 +6,7 @@ tags: OCR, RRPN, Faster R-CNN
 
 在场景文字检测中一个最常见的问题便是倾斜文本的检测，现在基于候选区域的场景文字检测方法，例如[CTPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.html){{"tian2016detecting"|cite}}，[DeepText](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.html){{"zhong2016deeptext"|cite}}等，其检测框均是与坐标轴平行的矩形区域，其根本原因在于数据的标签采用了$$(x,y,w,h)$$的形式。另外一种方法是基于语义分割，例如[HMCP](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/scene-text-detection-via-holistic-multi-channel-prediction.html){{"yao2016scene"|cite}}，EAST{{"zhou2017east"|cite}}等，但是基于分割算法的场景文字检测效率较低且并不擅长检测长序列文本。
 
-作者提出的RRPN（Rotation Region Proposal Network）可以归结到基于候选区域的类别当中，算法的主要贡献是提出了带旋转角度的锚点，并锚点的角度特征重新设计了IoU，NMS以及ROI池化等算法，RRPN的角度特征使其非常适合对倾斜文本进行检测。
+作者提出的RRPN（Rotation Region Proposal Network）{{"ma2018arbitrary"|cite}}可以归结到基于候选区域的类别当中，算法的主要贡献是提出了带旋转角度的锚点，并锚点的角度特征重新设计了IoU，NMS以及ROI池化等算法，RRPN的角度特征使其非常适合对倾斜文本进行检测。
 
 RRPN的这个特征使其不仅可以应用到场景文字检测，在一些存在明显角度特征的场景中，例如建筑物检测，也非常适用。
 
