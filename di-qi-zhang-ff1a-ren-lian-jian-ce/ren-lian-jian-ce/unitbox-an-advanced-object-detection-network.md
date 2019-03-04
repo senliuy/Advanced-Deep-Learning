@@ -2,7 +2,7 @@
 
 ## 前言
 
-UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.html)\[2\]类似的基于图像分割的方法进行人脸检测。在DenseBox中，bounding box的定位使用的是l2损失。l2损失的一个缺点是会使模型在训练过程中更偏向于尺寸更大的物体，因为大尺寸物体的l2损失更容易大于小物体。
+UnitBox{{"yu2016unitbox"|cite}}使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.html){{"huang2015densebox"|cite}}类似的基于图像分割的方法进行人脸检测。在DenseBox中，bounding box的定位使用的是l2损失。l2损失的一个缺点是会使模型在训练过程中更偏向于尺寸更大的物体，因为大尺寸物体的l2损失更容易大于小物体。
 
 为了解决这个问题，UnitBox中使用了IoU损失，顾名思义，IoU损失既是使用Ground Truth和预测bounding box的交并比作为损失函数。
 
@@ -110,10 +110,4 @@ UnitBox的提出虽然目的是为了解决人脸检测问题，但是从其算�
 * IoU损失将位置信息作为一个整体进行训练，而l2损失把它们当做互相独立的四个变量进行训练，这样得到的结果更准确；
 
 * 无论输入的样本是什么样子，IoU的值均介于$$[0,1]$$，这种天然的归一化的损失使模型具有更强的处理多尺度图像的能力。
-
-## Reference
-
-\[1\]Zhou X, Yao C, Wen H, et al. EAST: an efficient and accurate scene text detector\[C\]//Proc. CVPR. 2017: 2642-2651.
-
-\[2\] Qin H, Yan J, Li X, et al. Joint training of cascaded cnn for face detection\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 3456-3465.
 
