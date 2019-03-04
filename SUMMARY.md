@@ -71,6 +71,8 @@
   * [Instance Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.md)
   * [Group Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/group-normalization.md)
   * [Switchable Normalization](di-ba-zhang-ff1a-wang-luo-you-hua/switchable-normalization.md)
+* [第九章：生成对抗网络](di-jiu-zhang-ff1a-sheng-cheng-dui-kang-wang-luo.md)
+  * [Generative Adversarial Nets](di-jiu-zhang-ff1a-sheng-cheng-dui-kang-wang-luo/generative-adversarial-nets.md)
 * [其它应用](qi-ta-ying-yong.md)
   * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
   * [Image Style Transfer Using Convolutional Nerual Networks](qi-ta-ying-yong/image-style-transfer-using-convolutional-nerual-networks.md)
