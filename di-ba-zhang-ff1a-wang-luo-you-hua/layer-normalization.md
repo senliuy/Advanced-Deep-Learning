@@ -4,7 +4,7 @@ tags: Normalization
 
 ## 前言
 
-在上一篇的文章中我们介绍了[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/)\[2\]的计算方法并且讲解了BN如何应用在MLP以及CNN中如何使用BN。在文章的最后，我们指出BN并不适用于RNN等动态网络和batchsize较小的时候效果不好。Layer Normalization（LN）\[1\]的提出有效的解决BN的这两个问题。LN和BN不同点是归一化的维度是互相垂直的，如图1所示。在图1中$$N$$表示样本轴，$$C$$表示通道轴，$$F$$是每个通道的特征数量。BN如右侧所示，它是取不同样本的同一个通道的特征做归一化；LN则是如左侧所示，它取的是同一个样本的不同通道做归一化。
+在上一篇的文章中我们介绍了[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/){{"ioffe2015batch"|cite}}的计算方法并且讲解了BN如何应用在MLP以及CNN中如何使用BN。在文章的最后，我们指出BN并不适用于RNN等动态网络和batchsize较小的时候效果不好。Layer Normalization（LN）{{"ba2016layer"|cite}}的提出有效的解决BN的这两个问题。LN和BN不同点是归一化的维度是互相垂直的，如图1所示。在图1中$$N$$表示样本轴，$$C$$表示通道轴，$$F$$是每个通道的特征数量。BN如右侧所示，它是取不同样本的同一个通道的特征做归一化；LN则是如左侧所示，它取的是同一个样本的不同通道做归一化。
 
 <figure>
 <img src="/assets/LN_1.png" alt="图1：LN(左)和BN(右)对比示意图" />
@@ -172,9 +172,4 @@ LN是和BN非常近似的一种归一化方法，不同的是BN取的是不同�
 
 但是有些场景是不能使用BN的，例如batchsize较小或者在RNN中，这时候可以选择使用LN，LN得到的模型更稳定且起到正则化的作用。RNN能应用到小批量和RNN中是因为LN的归一化统计量的计算是和batchsize没有关系的。
 
-## Reference
-
-\[1\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
-
-\[2\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
 
