@@ -4,7 +4,7 @@ tags: Normalization
 
 ## 前言
 
-Group Normalization（GN）是何恺明提出的一种归一化策略，它是介于[Layer Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)（LN）\[2\]和 [Instance Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.html)（IN）\[3\]之间的一种折中方案，图1最右。它通过将**通道**数据分成几组计算归一化统计量，因此GN也是和批量大小无关的算法，因此可以用在batchsize比较小的环境中。作者在论文中指出GN要比LN和IN的效果要好。
+Group Normalization（GN）{{"wu2018group"|cite}}是何恺明团队提出的一种归一化策略，它是介于[Layer Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)（LN）{{"ba2016layer"|cite}}和 [Instance Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.html)（IN）{{"ulyanov2016instance"|cite}}之间的一种折中方案，图1最右。它通过将**通道**数据分成几组计算归一化统计量，因此GN也是和批量大小无关的算法，因此可以用在batchsize比较小的环境中。作者在论文中指出GN要比LN和IN的效果要好。
 
 <figure>
 <img src="/assets/GN_1.png" alt="图1：从左到右依次是BN，LN，IN以及GN" />
@@ -95,12 +95,4 @@ GN和其它算法一样也可以添加参数$$\gamma$$和$$\beta$$来保证网�
 ## 总结
 
 作为一种介于IN和LN之间的归一化策略，GN的效果反而优于另外两个算法，这令我非常困惑。虽然作者也尝试给出解释，但总是感觉这个解释有些过于主观，有根据结果推导原因的嫌疑。另外我也做了一些归一化方法的对比实验，实验结果并不如作者所说的那么理想。所以我们在设计网络时，如果batchsize尺寸可以做的比较大，BN仍旧是最优的选择。但是如果batchsize比较小，也许通过对照实验选出最好的归一化策略是最优的选择。
-
-## Reference
-
-\[1\] Wu Y, He K. Group normalization\[J\]. arXiv preprint arXiv:1803.08494, 2018.
-
-\[2\] Ba J L, Kiros J R, Hinton G E. Layer normalization\[J\]. arXiv preprint arXiv:1607.06450, 2016.
-
-\[3\] Vedaldi V L D U A. Instance Normalization: The Missing Ingredient for Fast Stylization\[J\]. arXiv preprint arXiv:1607.08022, 2016.
 
