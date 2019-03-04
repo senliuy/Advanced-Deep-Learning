@@ -4,7 +4,7 @@ tags: OCR, RRPN, Faster R-CNN
 
 ## 前言
 
-在场景文字检测中一个最常见的问题便是倾斜文本的检测，现在基于候选区域的场景文字检测方法，例如[CTPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.html)\[2\]，[DeepText](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.html)\[3\]等，其检测框均是与坐标轴平行的矩形区域，其根本原因在于数据的标签采用了$$(x,y,w,h)$$的形式。另外一种方法是基于语义分割，例如[HMCP](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/scene-text-detection-via-holistic-multi-channel-prediction.html)\[4\]，[EAST](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/east-an-efficient-and-accurate-scene-text-detector.html)\[5\]等，但是基于分割算法的场景文字检测效率较低且并不擅长检测长序列文本。
+在场景文字检测中一个最常见的问题便是倾斜文本的检测，现在基于候选区域的场景文字检测方法，例如[CTPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.html){{"tian2016detecting"|cite}}，[DeepText](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.html){{"zhong2016deeptext"|cite}}等，其检测框均是与坐标轴平行的矩形区域，其根本原因在于数据的标签采用了$$(x,y,w,h)$$的形式。另外一种方法是基于语义分割，例如[HMCP](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/scene-text-detection-via-holistic-multi-channel-prediction.html){{"yao2016scene"|cite}}，EAST{{"zhou2017east"|cite}}等，但是基于分割算法的场景文字检测效率较低且并不擅长检测长序列文本。
 
 作者提出的RRPN（Rotation Region Proposal Network）可以归结到基于候选区域的类别当中，算法的主要贡献是提出了带旋转角度的锚点，并锚点的角度特征重新设计了IoU，NMS以及ROI池化等算法，RRPN的角度特征使其非常适合对倾斜文本进行检测。
 
@@ -12,7 +12,7 @@ RRPN的这个特征使其不仅可以应用到场景文字检测，在一些存�
 
 ## 1.RPN回顾
 
-关于RPN的详细内容可参考[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html)\[6\]一文，在这里我们只进行简单的回顾。
+关于RPN的详细内容可参考[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html){{"ren2015faster"|cite}}一文，在这里我们只进行简单的回顾。
 
 RPN是一个全卷积网络，其首先通过3个尺寸，3个尺度的锚点在Feature Map上对输入图像进行密集采样。然后通过一个由判断锚点是前景还是背景的二分类任务和一个用于预测锚点和Ground Truth的位置相对距离的回归模型组成。
 
@@ -220,20 +220,5 @@ RRPN非常创新的提出了使用带角度的锚点处理场景文字检测中�
 结合目标检测中的一些Trick，应该能将检测精度进一步提高，使RRPN在特定场景的比赛中也非常有用。
 
 最后还有一点疑问：论文中说RRPN的位置精校部分只进行了二分类，但个人感觉更好的策略是Faster R-CNN中的多任务模型，粗略的看了一下代码好像也是使用的Faster R-CNN的策略。
-
-## Reference
-
-\[1\] Ma J, Shao W, Ye H, et al. Arbitrary-oriented scene text detection via rotation proposals\[J\]. IEEE Transactions on Multimedia, 2018.
-
-\[2\] Wolf, C., Jolion, J.: Object count / area graphs for the evaluation of object detection and segmentation algorithms. International Journal of Document Analysis 8, 280–296 (2006)
-
-\[3\] Zhong Z, Jin L, Zhang S, et al. Deeptext: A unified framework for text proposal generation and text detection in natural images\[J\]. arXiv preprint arXiv:1605.07314, 2016.
-
-\[4\] Yao C, Bai X, Sang N, et al. Scene text detection via holistic, multi-channel prediction\[J\]. arXiv preprint arXiv:1606.09002, 2016.
-
-\[5\] Zhou X, Yao C, Wen H, et al. EAST: an efficient and accurate scene text detector\[C\]//Proc. CVPR. 2017: 2642-2651.
-
-\[6\] Ren, S., He, K., Girshick, R., Sun, J.: Faster R-CNN: Towards real-time object detection with region proposal networks (2015), in Neural Information Processing Systems (NIPS)
-
 
 
