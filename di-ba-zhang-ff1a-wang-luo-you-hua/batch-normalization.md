@@ -4,9 +4,9 @@ tags: Normalization
 
 ## 前言
 
-Batch Normalization\(BN\)是深度学习中非常好用的一个算法，加入BN层的网络往往更加稳定并且BN还起到了一定的正则化的作用。在这篇文章中，我们将详细介绍BN的技术细节\[1\]以及其能工作的原因\[2\]。
+Batch Normalization\(BN\)是深度学习中非常好用的一个算法，加入BN层的网络往往更加稳定并且BN还起到了一定的正则化的作用。在这篇文章中，我们将详细介绍BN的技术细节{{"ioffe2015batch"|cite}}以及其能工作的原因{{"santurkar2018does"|cite}}。
 
-在提出BN的文章中\[1\]，作者BN能工作的原因是BN解决了普通网络的内部协变量偏移（Internel Covariate Shift, ICS）的问题，所谓ICS是指网络各层的分布不一致，网络需要适应这种不一致从而增加了学习的难度。而在\[2\]中，作者通过实验验证了BN其实和ICS的关系并不大，其能工作的原因是使损失平面更加平滑，并给出了其结论的数学证明。
+在提出BN的文章中{{"ioffe2015batch"|cite}}，作者BN能工作的原因是BN解决了普通网络的内部协变量偏移（Internel Covariate Shift, ICS）的问题，所谓ICS是指网络各层的分布不一致，网络需要适应这种不一致从而增加了学习的难度。而在{{"santurkar2018does"|cite}}中，作者通过实验验证了BN其实和ICS的关系并不大，其能工作的原因是使损失平面更加平滑，并给出了其结论的数学证明。
 
 ## 1. BN详解
 
@@ -168,7 +168,7 @@ BN除了可以应用在MLP上，其在CNN网络中的表现也非常好，但是
 
 ### 2.1 BN与ICS无关
 
-最近MIT的一篇文章\[2\]否定了BN的背后原理是因为其减少了ICS的问题。在这篇文章中，作者通过两个实验验证了ICS和BN的关系非常小的观点。
+最近MIT的一篇文章{{"santurkar2018does"|cite}}否定了BN的背后原理是因为其减少了ICS的问题。在这篇文章中，作者通过两个实验验证了ICS和BN的关系非常小的观点。
 
 第一个实验验证了ICS和网络性能的关系并不大，在这个实验中作者向使用了BN的网络中加入了随机噪声，目的是使这个网络的ICS更加严重。实验结果表明虽然加入了随机噪声的BN的ICS问题更加严重，但是它的性能是要优于没有使用BN的普通网络的，如图3所示。
 
@@ -200,9 +200,9 @@ $$
 
 ### 2.2 BN与损失平面
 
-通过上面两个实验，作者认为BN和ICS的关系不大，那么BN为什么效果好呢，作者认为BN的作用是平滑了损失平面（loss landscape），关于损失平面的介绍，参考文章[3]，这篇文章中介绍了损失平面的概念，并指出残差网络和DenseNet均起到了平滑损失平面的作用，因此他们具有较快的收敛速度。
+通过上面两个实验，作者认为BN和ICS的关系不大，那么BN为什么效果好呢，作者认为BN的作用是平滑了损失平面（loss landscape），关于损失平面的介绍，参考文章{{"li2018visualizing"|cite}}，这篇文章中介绍了损失平面的概念，并指出残差网络和DenseNet均起到了平滑损失平面的作用，因此他们具有较快的收敛速度。
 
-作者证明了BN处理之后的损失函数满足Lipschitz连续[4]，即损失函数的梯度小于一个常量，因此网络的损失平面不会震荡的过于严重。
+作者证明了BN处理之后的损失函数满足Lipschitz连续，即损失函数的梯度小于一个常量，因此网络的损失平面不会震荡的过于严重。
 
 $$
 ||f(x_1) - f(x_2)|| \leq L||x_1 - x_2||
@@ -275,12 +275,3 @@ BN也有一些不是非常适用的场景，在遇见这些场景时要谨慎的
 
 在Ioffe的论文中，他们认为BN能work的原因是因为减轻了ICS的问题，而在Santurkar的论文中则对齐进行了否定。它们结论的得出非常依赖他们自己给出的ICS的数学定义，这个定义是否不能说不对，但是感觉不够精确，BN真的和ICS没有一点关系吗？我是觉得不一定。
 
-## Reference
-
-\[1\] Ioffe S, Szegedy C. Batch normalization: Accelerating deep network training by reducing internal covariate shift\[J\]. arXiv preprint arXiv:1502.03167, 2015.
-
-\[2\] Santurkar S, Tsipras D, Ilyas A, et al. How Does Batch Normalization Help Optimization?\(No, It Is Not About Internal Covariate Shift\)\[J\]. arXiv preprint arXiv:1805.11604, 2018.
-
-[3] Hao Li, Zheng Xu, Gavin Taylor, and Tom Goldstein. Visualizing the loss landscape of neural nets. arXiv preprint arXiv:1712.09913, 2017.
-
-[4] https://en.wikipedia.org/wiki/Lipschitz_continuity
