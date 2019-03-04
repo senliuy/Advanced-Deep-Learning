@@ -266,16 +266,3 @@ IST如果能迁移到音频领域也许会有帮助，例如在TTS中如果可�
 
 算法另外一个缺点是对噪音比较敏感，尤其是当参与合成的风格图片和内容图片都是真实照片的时候。
 
-
-## Reference
-
-\[1\] Gatys L A, Ecker A S, Bethge M. Image style transfer using convolutional neural networks\[C\]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016: 2414-2423.
-
-\[2\] Gatys L A, Ecker A S, Bethge M. A neural algorithm of artistic style\[J\]. arXiv preprint arXiv:1508.06576, 2015.
-
-\[3\] Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition\[J\]. arXiv preprint arXiv:1409.1556, 2014.
-
-\[4\] Salimans T, Kingma D P. Weight normalization: A simple reparameterization to accelerate training of deep neural networks\[C\]//Advances in Neural Information Processing Systems. 2016: 901-909.
-
-\[5\] Gatys L, Ecker A S, Bethge M. Texture synthesis using convolutional neural networks\[C\]//Advances in Neural Information Processing Systems. 2015: 262-270.
-
