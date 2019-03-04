@@ -183,9 +183,3 @@ $$
 
 HED的缺点是模型过于庞大，Keras训练的模型超过了100MB，原因是fuse layer合并了VGG-16每个block的Feature Map，且每个side branch的尺寸均为输入图像的大小。由此引发了HED训练过程中显存占用问题，不过在目前GPU环境下训练HED算法还是没有问题的。
 
-## Reference
-
-\[1\] Xie S, Tu Z. Holistically-nested edge detection\[C\]//Proceedings of the IEEE international conference on computer vision. 2015: 1395-1403.
-
-\[2\] Zhou X, Yao C, Wen H, et al. EAST: an efficient and accurate scene text detector\[C\]//Proc. CVPR. 2017: 2642-2651.
-
