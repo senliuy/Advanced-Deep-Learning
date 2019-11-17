@@ -59,6 +59,7 @@
     * [Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework](chapter1/deep-textspotter-an-end-to-end-trainable-scene-text-localization-and-recognition-framework.md)
   * [实例解析：字符验证码破解](chapter1/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
   * [二维信息识别](chapter1/er-wei-xin-xi-shi-bie.md)
+    * [Show and Tell: A Neural Image Caption Generator](chapter1/er-wei-xin-xi-shi-bie/show-and-tell-a-neural-image-caption-generator.md)
 * [第六章：语义分割](di-liu-zhang-ff1a-yu-yi-fen-ge.md)
   * [U-Net: Convolutional Networks for Biomedical Image Segmentation](di-liu-zhang-ff1a-yu-yi-fen-ge/u-net-convolutional-networks-for-biomedical-image-segmentation.md)
 * [第七章：人脸识别](di-qi-zhang-ff1a-ren-lian-jian-ce.md)
