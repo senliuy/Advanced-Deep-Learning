@@ -2,7 +2,7 @@
 
 ## 前言
 
-本文是在边缘检测经典算法[HED](https://senliuy.gitbooks.io/advanced-deep-learning/content/qi-ta-ying-yong/holistically-nested-edge-detection.html){{"xie2015holistically"|cite}}之上的扩展，在这篇论文中我们讲过HED算法可以无缝转移到语义分割场景中。而这篇论文正是将场景文字检测任务转换成语义分割任务来实现HED用于文字检测的。图1是HED在身份证上进行边缘检测得到的掩码图，从图1中我们可以看出HED在文字检测场景中也是有一定效果的。
+本文是在边缘检测经典算法[HED](https://senliuy.gitbooks.io/advanced-deep-learning/content/qi-ta-ying-yong/holistically-nested-edge-detection.html){{"xie2015holistically"|cite}}之上的扩展，在这篇论文中我们讲过HED算法可以无缝转移到实例分割场景中。而这篇论文正是将场景文字检测任务转换成语义分割任务来实现HED用于文字检测的。图1是HED在身份证上进行边缘检测得到的掩码图，从图1中我们可以看出HED在文字检测场景中也是有一定效果的。
 
 ###### 图1：HED在身份证上得到的掩码图
 
@@ -187,4 +187,4 @@ $$
 
 ## 总结
 
-这篇论文巧妙的将语义分割用于场景文字检测领域，其三个掩码图的多任务模型的设计非常漂亮。最后通过三个掩码图生成检测框的算法技术性非常高，是一篇非常值得学习的论文。
+这篇论文巧妙的将实例分割用于场景文字检测领域，其三个掩码图的多任务模型的设计非常漂亮。最后通过三个掩码图生成检测框的算法技术性非常高，是一篇非常值得学习的论文。
