@@ -68,11 +68,11 @@ $$
 连接损失由正连接损失和负连接损失组成，分别表示为
 
 $$
-L_\text{link_pos} = W_\text{pos_pos} L_\text{link_CE}
+L_\text{link_pos} = W_\text{pos_link} L_\text{link_CE}
 $$
 
 $$
-L_\text{link_neg} = W_\text{neg_pos} L_\text{link_CE}
+L_\text{link_neg} = W_\text{neg_link} L_\text{link_CE}
 $$
 
 其中$$L_\text{link_CE}$$是连接的交叉熵损失，$$W_\text{pos_pos}$$和$$W_\text{neg_pos}$$是两个权值，他是跟素损失的权值矩阵$$W$$的计算得到：
