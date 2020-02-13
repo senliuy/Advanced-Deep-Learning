@@ -2,7 +2,7 @@
 
 ## 前言
 
-在前面的文章中，我们介绍了文本框回归的算法DeepText, CTPN以及RRPN；也介绍了以及实例分割的HMCP，在这里我们介绍一下另外一个基于实例分割的文字检测算法：PixelLink。根据PixelLink的算法名字我们也可以推测到，它有两个重点，一个是Pixel（像素），一个是Link（像素点之间的连接），这两个重点也是构成PixelLink的网络的输出层和损失函数优化的目标值。下面我们来看一下PixelLink的详细内容。
+在前面的文章中，我们介绍了文本框回归的算法[DeepText](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/deeptext-a-unified-framework-for-text-proposal-generation-and-text-detection-in-natural-images.html), [CTPN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/detecting-text-in-natural-image-with-connectionist-text-proposal-network.html){{"tian2016detecting"|cite}}以及RRPN；也介绍了以及实例分割的[HMCP](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/scene-text-detection-via-holistic-multi-channel-prediction.html){{"yao2016scene"|cite}}，在这里我们介绍一下另外一个基于实例分割的文字检测算法：PixelLink。根据PixelLink的算法名字我们也可以推测到，它有两个重点，一个是Pixel（像素），一个是Link（像素点之间的连接），这两个重点也是构成PixelLink的网络的输出层和损失函数优化的目标值。下面我们来看一下PixelLink的详细内容。
 
 ## 1. PixelLink详解
 
@@ -17,7 +17,10 @@ PixelLink是一个基于实例分割的算法，它的核心思想有两点：
 
 有的同学可能会对产生这么一个疑问：既然文本区域和非文本区域以及正连接和负连接是互斥的，那么为什么要使用正负两个功能重叠的头的？正如在SegLink中所介绍的，正连接用于表示两个像素是否属于同一个实例，而负连接是用来判断两个像素是否为不同的连接。
 
-![](/assets/PixelLink_1.png)
+<figure>
+<img src="/assets/PixelLink_1.png" alt="图1：PixelLink网络结构图" />
+<figcaption>图1：PixelLink网络结构图</figcaption>
+</figure>
 
 如图1的左侧部分所示，PixelLink的左侧是VGG-16的网络结构。有比较大变化的是VGG-16的最后一个Block，也就是图1网络的左下角，它的改变有两点：
 
@@ -60,11 +63,64 @@ $$
 
 其中$$L_{\text{pixel_CE}}$$表示局域文本/非文本区域的交叉熵损失函数。
 
+#### 1.3.2 连接损失$$L_\text{link}$$
 
+连接损失由正连接损失和负连接损失组成，分别表示为
 
+$$
+L_\text{link_pos} = W_\text{pos_pos} L_\text{link_CE}
+$$
 
+$$
+L_\text{link_neg} = W_\text{neg_pos} L_\text{link_CE}
+$$
 
+其中$$L_\text{link_CE}$$是连接的交叉熵损失，$$W_\text{pos_pos}$$和$$W_\text{neg_pos}$$是两个权值，他是跟素损失的权值矩阵$$W$$的计算得到：
 
+$$
+W_\text{pos_link} = W(i,j) * (Y_\text{link}(i,j,k)==1)
+$$
+
+$$
+W_\text{neg_link} = W(i,j) * (Y_\text{link}(i,j,k)==0)
+$$
+
+那么关于连接的类别平衡交叉熵损失函数表示为：
+
+$$
+L_\text{link} = \frac{L_\text{link_pos}}{rsum(W_\text{pos_link})} + \frac{L_\text{link_neg}}{rsum(W_\text{neg_link})} 
+$$
+
+其中$$rsum$$表示reduce-sum操作。
+
+### 1.3 后处理
+
+#### 1.3.1 像素合并
+
+当得到网络的输出结果后，PixelLink需要将其转化为文本框，整个流程的关键环节有三步：
+1. 当两个像素点都是正像素且它们之间至少有一个连接是正的时候，那么这两个像素点构成一个连通域；
+2. 使用并查集的方式确定所有的连接；
+3. 使用OpenCV的minAreaRect方式确定文字区域，它可以使矩形，也可以是多边形。
+
+#### 1.3.2 后处理
+
+由于PixelLink是基于实例分割的算法，所以他会产生很多小的区域，我们可以根据数据集的特征对这些误检进行过滤。
+
+## 2. 总结
+
+与传统的基于回归框的文字检测算法对比，这种基于实例分割的算法带来了两个优点：
+
+1. 更擅长小物体的检测：因为它使用的是像素连通域拼接的方式形成的文本框，这种从底到上的方法使得PixelLink非常善于检测小物体；
+
+2. 对训练集的数量依赖更小：基于像素的方法保证了PixelLink的样本数量，以及对复杂背景更鲁棒的抵抗能力，这使得PixelLink的训练数据的数量依赖更小。
+
+但是这种方式也给PixelLink带来了一些缺点：
+
+1. PixelLink的自底向上的方法使得大尺度的物体的检测的困难程度远大于小物体，可能会带来大尺寸物体的检测不准确；
+
+2. 这种只看该像素与其周围邻居而忽略了更多的上下文信息的方式可能会使PixelLink产生一些误检；
+
+3. 过分依赖后处理的操作来去掉误检，有些人工干预的痕迹，在有些场景中这些值很难确定，进而产生一些误检和漏检。
 
 
 
