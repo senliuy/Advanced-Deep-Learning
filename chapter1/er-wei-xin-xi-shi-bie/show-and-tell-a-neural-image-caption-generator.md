@@ -49,7 +49,7 @@ $$
 
 
 $$
-\log p(S|I; \theta) = \sum _{t=0} ^N \log p (S_t | I, S_0, \dots, S_{t-1})
+\log p(S|I; \theta) = \sum _{t=0} ^N \log p (S_t | I, S_0, \cdots, S_{t-1})
 $$
 
 
