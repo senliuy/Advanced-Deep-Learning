@@ -58,38 +58,38 @@ $$
 在上式中，$$S$$即为文本区域的总面积。PixelLink采用OHEM的策略来采样负样本（非文本区域），其中$$r\times S$$个损失值最大的负样本被采样用作PixelLink的负样本来优化。所有的正负样本的像素的权值构成矩阵$$W$$。像素损失$$L_{\text{pixel}}$$表示为：
 
 $$
-L_{\text{pixel}} = \frac{1}{(1+r)S} W L_{\text{pixel}\_\text{CE}}
+L_{\text{pixel}} = \frac{1}{(1+r)S} W L_{\text{pixel-CE}}
 
 $$
 
-其中$$L_{\text{pixel_CE}}$$表示局域文本/非文本区域的交叉熵损失函数。
+其中$$L_{\text{pixel-CE}}$$表示局域文本/非文本区域的交叉熵损失函数。
 
 #### 1.3.2 连接损失$$L_\text{link}$$
 
 连接损失由正连接损失和负连接损失组成，分别表示为
 
 $$
-L_\text{link_pos} = W_\text{pos_link} L_\text{link_CE}
+L_\text{link-pos} = W_\text{pos-link} L_\text{link-CE}
 $$
 
 $$
-L_\text{link_neg} = W_\text{neg_link} L_{\text{link}\_\text{CE}}
+L_\text{link-neg} = W_\text{neg-link} L_{\text{link-CE}}
 $$
 
-其中$$L_\text{link_CE}$$是连接的交叉熵损失，$$W_\text{pos_link}$$和$$W_\text{neg_link}$$是两个权值，他是跟素损失的权值矩阵$$W$$的计算得到：
+其中$$L_\text{link-CE}$$是连接的交叉熵损失，$$W_\text{pos-link}$$和$$W_\text{neg-link}$$是两个权值，他是跟素损失的权值矩阵$$W$$的计算得到：
 
 $$
-W_\text{pos_link} = W(i,j) * (Y_\text{link}(i,j,k)==1)
+W_\text{pos-link} = W(i,j) * (Y_\text{link}(i,j,k)==1)
 $$
 
 $$
-W_\text{neg_link} = W(i,j) * (Y_\text{link}(i,j,k)==0)
+W_\text{neg-link} = W(i,j) * (Y_\text{link}(i,j,k)==0)
 $$
 
 那么关于连接的类别平衡交叉熵损失函数表示为：
 
 $$
-L_\text{link} = \frac{L_\text{link_pos}}{rsum(W_\text{pos_link})} + \frac{L_\text{link_neg}}{rsum(W_\text{neg_link})} 
+L_\text{link} = \frac{L_\text{link-pos}}{rsum(W_\text{pos-link})} + \frac{L_\text{link-neg}}{rsum(W_\text{neg-link})} 
 $$
 
 其中$$rsum$$表示reduce-sum操作。
