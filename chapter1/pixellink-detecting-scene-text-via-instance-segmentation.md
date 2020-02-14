@@ -58,7 +58,8 @@ $$
 在上式中，$$S$$即为文本区域的总面积。PixelLink采用OHEM的策略来采样负样本（非文本区域），其中$$r\times S$$个损失值最大的负样本被采样用作PixelLink的负样本来优化。所有的正负样本的像素的权值构成矩阵$$W$$。像素损失$$L_{\text{pixel}}$$表示为：
 
 $$
-L_{\text{pixel}} = \frac{1}{(1+r)S} W L_\text{pixel_CE}
+L_{\text{pixel}} = \frac{1}{(1+r)S} W L_{\text{pixel}\_\text{CE}}
+
 $$
 
 其中$$L_{\text{pixel_CE}}$$表示局域文本/非文本区域的交叉熵损失函数。
@@ -72,7 +73,7 @@ L_\text{link_pos} = W_\text{pos_link} L_\text{link_CE}
 $$
 
 $$
-L_\text{link_neg} = W_\text{neg_link} L_\text{link_CE}
+L_\text{link_neg} = W_\text{neg_link} L_{\text{link}\_\text{CE}}
 $$
 
 其中$$L_\text{link_CE}$$是连接的交叉熵损失，$$W_\text{pos_link}$$和$$W_\text{neg_link}$$是两个权值，他是跟素损失的权值矩阵$$W$$的计算得到：
