@@ -24,9 +24,11 @@ Show and Tell{{"vinyals2015show"|cite}}这篇论文也是采用的[Encoder-Decod
 
 $$
 x_{-1} = CNN(I)
-\\
+$$
+$$
 x_{t} = W_e S_t, \quad t \in \{0 ... N-1\}
-\\
+$$
+$$
 p_{t+1} = \text{LSTM}(x_t)
 $$
 
