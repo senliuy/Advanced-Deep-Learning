@@ -25,14 +25,14 @@ ResNet被广泛的用于文字识别的骨干网络，这里采用了一个45层
 
 从图1的中间部分我们可以看出，ResNet得到的特征层$$\mathcal{Q}$$加上位置编码信息直接给到由自注意力机制组成的Transformer编码层，这里使用的是多头的Self-Attention。关于Transformer的详细讲解，可以看我的另外一篇文章，这里只对网络流程做一下梳理。
 
- 1. 使用不同的3个特征矩阵乘以图像特征$$\mathcal{Q}$$，我们得到3个不同的向量，他们分别是Query向量（$$\mathbf{Q}$$），Key向量（$$\mathbf{K}$$）和Value向量（$$\mathbf{V}$$）。
- 2. 根据$$\mathbf{Q}, \mathbf{K}, \mathbf{V}$$我们可以得到Self-Attention的矩阵表示：
+ 1： 使用不同的3个特征矩阵乘以图像特征$$\mathcal{Q}$$，我们得到3个不同的向量，他们分别是Query向量（$$\mathbf{Q}$$），Key向量（$$\mathbf{K}$$）和Value向量（$$\mathbf{V}$$）。
+ 2： 根据$$\mathbf{Q}, \mathbf{K}, \mathbf{V}$$我们可以得到Self-Attention的矩阵表示：
 
 $$
 Attention(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d}}\right)\mathbf{V}.
 $$
 
- 3. 多头自注意力机制
+ 3： 多头自注意力机制
 
 Multi-Head Self Attention是由多个Single-Head Self拼接而成的，表示为
 
@@ -48,7 +48,7 @@ $$
 
 其中$$\mathbf{W}^Q_i \in \mathbb{R} ^ {d_\text{model} \times d_k}, \mathbf{W}^K_i \in \mathbb{R} ^ {d_\text{model} \times d_k}, \mathbf{W}^V_i \in \mathbb{R} ^ {d_\text{model} \times d_v}$$ 以及$$\mathbf{W} ^ O \in \mathbb{R} ^ {hd_v \times d_\text{model}}$$是参数矩阵。
 
- 4. 与Feature Map一起提供给编码器的位置向量，它的编码方式和Transformer论文提供的方式相同。
+ 4：与Feature Map一起提供给编码器的位置向量，它的编码方式和Transformer论文提供的方式相同。
  
 ### 1.3 解码层
 
