@@ -2,11 +2,14 @@
 
 ## 前言
 
-[Transformer](){{"vaswani2017attention"|cite}}被提出以来，几乎刷榜了NLP的所有任务，自然而然的大伙会想到使用Transformer来做场景文字的识别。而Transformer的特点使其具有了识别弧形文字，二维文字的天然优势。这篇文章提出的Bi-STR{{"bleeker2019bidirectional"|cite}}算法便是在卷积特征之后加入了Transformer同时作为编码器和解码器，同时加入了位置编码和方向编码来作为额外的特征。Bi-STR大幅刷新了ASTER的识别准确率，尤其是长文本的识别准确率。
+[Transformer](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/attention-is-all-you-need.html){{"vaswani2017attention"|cite}}被提出以来，几乎刷榜了NLP的所有任务，自然而然的大伙会想到使用Transformer来做场景文字的识别。而Transformer的特点使其具有了识别弧形文字，二维文字的天然优势。这篇文章提出的Bi-STR{{"bleeker2019bidirectional"|cite}}算法便是在卷积特征之后加入了Transformer同时作为编码器和解码器，同时加入了位置编码和方向编码来作为额外的特征。Bi-STR大幅刷新了ASTER的识别准确率，尤其是长文本的识别准确率。
 
 ## 1. Bi-STR算法详解
 
-![](/assets/Bi-STR_1.png)
+<figure>
+<img src="/assets/Bi-STR_1.png" alt="图1：Bi-STR网络结构图" />
+<figcaption>图1：Bi-STR网络结构图</figcaption>
+</figure>
 
 Bi-STR的网络结构如图1所示，从图1左侧的高层架构我们可以看出它是由3个主要部分组成：
 
