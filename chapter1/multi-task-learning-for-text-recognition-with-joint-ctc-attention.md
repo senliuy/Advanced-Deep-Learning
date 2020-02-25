@@ -2,17 +2,19 @@
 
 ## 前言
 
+这篇文章带来一份OCR源码（PyTorch）的梳理，代码地址为：https://github.com/bityigoss/mtl-text-recognition。这份源码使用了CTC loss和Attention Loss的多任务模型，也可以说是基于CRNN和Image Caption两个任务的多任务模型。
+
 ## 1. MTL详解
 
 ![](/assets/MTL-OCR_1.png)
 
-## 1.1 网络概览
+### 1.1 网络概览
 
 MTL的网络结构的后半部分如图1所示，在它之前是一个由CNN组成的特征提取网络，最终得到的Feature Map会以列为时间片为单位输入到RNN中，也就是输入到图像的$$x_1, x_2, ..., x_T$$。RNN之后有两个Head，一个是CTC，另外一个是Attention Decoder，他们两个共同组成网络的损失函数。如果只考虑左侧CTC的话，那么它就是一个标准的CRNN模型。
 
-## 1.2 代码梳理
+### 1.2 代码梳理
 
-### 1.2.1 执行脚本
+#### 1.2.1 执行脚本
 
 要梳理MTL的代码流程，我们先要知道网络的一些超参，在源码的README中，多任务模型的调用方式如下（源文件README有误）：
 
@@ -41,7 +43,7 @@ CUDA_VISIBLE_DEVICES=0 python mtl_train.py \
 
 作者在这里面有个错误，如果要执行多任务模型，需要执行`python mtl_train.py`而不是上面给出的`python train.py`。因为在作者的代码中，`train.py`调用的是`model.py`，而`mtl_train.py`则调用的是`mtl_model.py`。
 
-### 1.2.2 网络模型
+#### 1.2.2 网络模型
 
 在上面提到了执行多任务训练要调用`mtl_model.py`文件，下面我们来梳理一下这个文件。这个文件的第一个重点在源码的第19-24行，在这里我们确认模型是否要使用STN。STN的实现定义在`./modules/transformation.py`文件中。
 
@@ -145,3 +147,28 @@ AttentioCell的核心代码在`prediction.py`文件的81-91行，它是一个基
     cur_hidden = self.rnn(concat_context, prev_hidden)
     return cur_hidden, alpha
 ```
+
+#### 1.2.3 损失函数
+
+介绍完MTL的网络结构，我们再回到`mtl_train.py`看一下网络的损失函数。如果我们在训练模型的时候选择了多任务训练，那么在文件的第98-100行我们可以得到两个任务具体的损失函数，其中CTC使用的自然是CTC损失函数，而Attention Decoder使用的则是交叉熵损失函数。
+
+```py
+if opt.mtl:
+    ctc_criterion = torch.nn.CTCLoss(zero_infinity=True).to(device)
+    attn_criterion = torch.nn.CrossEntropyLoss(ignore_index=0).to(device)
+```
+
+在源码的第155-165行则是使用上面定义的损失韩式来分别计算两个任务的损失，并最终采用加权的方式得到最终的损失函数。权值参数通过`--ctc_weight`超参设置，源码中的值是0.2。
+
+#### 1.2.4 测试，推理
+
+从`mtl_infer.py`或者`mtl_test.py`中我们可以看出，在测试或者推理的时候，MTL可以选择从使用CTC的输出或者是Attention Decoder的输出。
+
+## 2.总结
+
+这份代码的质量比较高
+
+
+
+
+
