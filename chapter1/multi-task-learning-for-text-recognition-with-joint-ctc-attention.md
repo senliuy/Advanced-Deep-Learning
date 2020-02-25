@@ -160,6 +160,22 @@ if opt.mtl:
 
 在源码的第155-165行则是使用上面定义的损失韩式来分别计算两个任务的损失，并最终采用加权的方式得到最终的损失函数。权值参数通过`--ctc_weight`超参设置，源码中的值是0.2。
 
+```py
+if opt.mtl:
+    # ctc loss
+    ctc_preds, attn_preds = model(image, attn_text)
+    ctc_preds = ctc_preds.log_softmax(2)
+    preds_size = torch.IntTensor([ctc_preds.size(1)] * batch_size)
+    ctc_preds = ctc_preds.permute(1, 0, 2)  # to use CTCLoss format
+    ctc_cost = ctc_criterion(ctc_preds, ctc_text, preds_size, ctc_length)
+    # attn loss
+    target = attn_text[:, 1:]  # without [GO] Symbol
+    attn_cost = attn_criterion(attn_preds.view(-1, attn_preds.shape[-1]), target.contiguous().view(-1))
+     cost = opt.ctc_weight * ctc_cost + (1.0 - opt.ctc_weight) * attn_cost
+```
+
+
+
 #### 1.2.4 测试，推理
 
 从`mtl_infer.py`或者`mtl_test.py`中我们可以看出，在测试或者推理的时候，MTL可以选择从使用CTC的输出或者是Attention Decoder的输出。
