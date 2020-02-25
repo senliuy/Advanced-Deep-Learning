@@ -130,7 +130,7 @@ else:
 
 解码过程和训练过程略有不同，它使用的预测的结果（最后三行）作为上个时间片的输入编码，而训练的时候使用的是GroundTruth。
 
-AttentioCell的核心代码在`prediction.py`文件的81-91行，它是一个基于单向LSTM的生成器，它的输入有三个
+AttentioCell的核心代码在`prediction.py`文件的81-91行，它是一个基于单向LSTM的生成器，它的输入有三个，其中`prev_hidden`是上一个时间片的隐层状态，`batch_H`是双向LSTM的输出，也就是图1中的$$h_1, h_2, ..., h_L$$，`char_onehots`是GroundTruth的前$$i-1$$个时间片（训练时）或者之前的预测结果（测试时）的one-hot编码。
 
 ```py
  def forward(self, prev_hidden, batch_H, char_onehots):
