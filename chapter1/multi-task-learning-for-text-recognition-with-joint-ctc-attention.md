@@ -12,9 +12,11 @@ MTL的网络结构的后半部分如图1所示，在它之前是一个由CNN组�
 
 ## 1.2 代码梳理
 
-要梳理MTL的代码流程，我们先要知道网络的一些超参，在源码的README中，作者给出源码的调用方式如下：
+### 1.2.1 执行脚本
 
-```
+要梳理MTL的代码流程，我们先要知道网络的一些超参，在源码的README中，作者给出多任务模型的调用方式如下：
+
+```bash
 CUDA_VISIBLE_DEVICES=0 python train.py \
 	--train_data data/synch/lmdb_train \
 	--valid_data data/synch/lmdb_val \
@@ -27,8 +29,14 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 	--FeatureExtraction ResNet \
 	--SequenceModeling BiLSTM \
 	--Prediction CTC \
+	--mtl \
+	--without_prediction \
 	--experiment_name none_resnet_bilstm_ctc \
 	--continue_model saved_models/pretrained_model.pth
 ```
 
-前面四项是用来控制读取数据的超参。5-7个比较直观，第8个`Transformation`是用来控制是否使用STN
+前面四项是用来控制读取数据的超参。5-7个比较直观，第8个`--Transformation`是用来控制是否使用STN，第9个`--FeatureExtraction`是提取图像特征的网络结构，第10个`--SequenceModeling`是图1中‘Shared Encoder’的结构。`--Prediction`是预测的时候选择图1中的CTC的分支或者是Attention Decoder分支。`--mtl`是选择模型的训练方式，是选择一个任务进行训练还是训练多任务模型。`--without_prediction`是指模型加载的方式，是否需要预测模块。
+
+除了上面列出的，在`train.py`文件中还有很多可以调整的超参，例如优化方式中涉及的学习策略，学习率；数据处理方式的图像尺寸等。
+
+
