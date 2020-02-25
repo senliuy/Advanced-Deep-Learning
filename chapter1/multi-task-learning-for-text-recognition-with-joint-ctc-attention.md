@@ -95,3 +95,53 @@ else:
     raise Exception('Prediction is not Joint CTC-Attention')
 ```
 
+Attention预测的计算方式在`./modules/prediction.py`文件中，它采用了Image Caption式的生成模型来进行预测，核心代码在第43-66行
+
+```py
+if is_train:
+    for i in range(num_steps):
+        # one-hot vectors for a i-th char. in a batch
+        char_onehots = self._char_to_onehot(text[:, i], onehot_dim=self.num_classes)
+        # hidden : decoder's hidden s_{t-1}, batch_H : encoder's hidden H, char_onehots : one-hot(y_{t-1})
+        hidden, alpha = self.attention_cell(hidden, batch_H, char_onehots)
+        output_hiddens[:, i, :] = hidden[0]  # LSTM hidden index (0: hidden, 1: Cell)
+        probs = self.generator(output_hiddens)
+```
+
+我们先看训练时的分支，在预测第$$i+1$$个时间片的输出时，我们首先对Ground Truth的前$$i$$个时间片的内容进行one-hot编码，之后通过attention_cell得到当前时间片的输出。遍历的时间片的总个数超参由`--batch_max_length`定义的，源码中的值是25，也就是说Attention Decoder分支最大支持25个字符的识别。
+
+```py
+else:
+    if torch.cuda.is_available():
+        targets = torch.cuda.LongTensor(batch_size).fill_(0)  # [GO] token
+        probs = torch.cuda.FloatTensor(batch_size, num_steps, self.num_classes).fill_(0)
+    else:
+        targets = torch.LongTensor(batch_size).fill_(0)  # [GO] token
+        probs = torch.FloatTensor(batch_size, num_steps, self.num_classes).fill_(0)
+
+        for i in range(num_steps):
+            char_onehots = self._char_to_onehot(targets, onehot_dim=self.num_classes)
+            hidden, alpha = self.attention_cell(hidden, batch_H, char_onehots)
+            probs_step = self.generator(hidden[0])
+            probs[:, i, :] = probs_step
+            _, next_input = probs_step.max(1)
+            targets = next_input
+```
+
+解码过程和训练过程略有不同，它使用的预测的结果（最后三行）作为上个时间片的输入编码，而训练的时候使用的是GroundTruth。
+
+AttentioCell的核心代码在`prediction.py`文件的81-91行，它是一个基于单向LSTM的生成器，它的输入有三个
+
+```py
+ def forward(self, prev_hidden, batch_H, char_onehots):
+    # [batch_size x num_encoder_step x num_channel] -> [batch_size x num_encoder_step x hidden_size]
+    batch_H_proj = self.i2h(batch_H)
+    prev_hidden_proj = self.h2h(prev_hidden[0]).unsqueeze(1)
+    e = self.score(torch.tanh(batch_H_proj + prev_hidden_proj))  # batch_size x num_encoder_step * 1
+
+    alpha = F.softmax(e, dim=1)
+    context = torch.bmm(alpha.permute(0, 2, 1), batch_H).squeeze(1)  # batch_size x num_channel
+    concat_context = torch.cat([context, char_onehots], 1)  # batch_size x (num_channel + num_embedding)
+    cur_hidden = self.rnn(concat_context, prev_hidden)
+    return cur_hidden, alpha
+```
