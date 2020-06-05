@@ -74,3 +74,5 @@
 * 2020-02-15：PixelLink: Detecting Scene Text via Instance Segmentation
 * 2020-02-24：Bidirectional Scene Text Recognition with a Single Decoder
 
+
+
