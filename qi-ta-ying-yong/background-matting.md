@@ -6,7 +6,7 @@
 
 ![](/assets/BGMatting1.png)
 
-在训练模型时，用户首先使用Adobe开源的包含alpha通道数据的数据集进行数据合成，然后在合成数据上进行有监督的训练。为了提升模型在真实场景中的泛化能力，由于这种数据往往都是无标签的。所以Background Matting使用一个判断图像质量的判别器来对无标签的真实场景的数据进行训练。
+在训练模型时，用户首先使用Adobe开源的包含alpha通道数据的数据集进行数据合成，然后在合成数据上进行有监督的训练。为了提升模型在真实场景中的泛化能力，由于这种数据往往都是无标签的。所以Background Matting使用一个判断图像质量的判别器来对无标签的真实场景的数据进行训练。源码已开源[Background-Matting](https://github.com/senguptaumd/Background-Matting)。
 
 ## 1. 算法详解
 
@@ -24,10 +24,28 @@
 
 #### 1.1.1 输入
 
-从图1中我们可以看出，Background Matting共有四个输入，其中 Input和Background比较好理解，就是使用同一台拍摄设备在同一个环境下拍摄的有人和无人的两张照片。在尝试该算法的过程中，发现一个重要的一点是当拍摄照片时，要保证Input的背景和无人的Background的内容保持一致，要尽量避免阴影和反射现象的出现。
+从图1中我们可以看出，Background Matting共有四个输入，其中 Input（$$I$$）和Background（$$B$$）比较好理解，就是使用同一台拍摄设备在同一个环境下拍摄的有人和无人的两张照片。在尝试该算法的过程中，发现一个重要的一点是当拍摄照片时，要保证Input的背景和无人的Background的内容保持一致，要尽量避免阴影和反射现象的出现。
 
-Soft Segmentation是由分割算法得到的掩码图，论文中的分割算法使用的是Deep Labv3+
+Soft Segmentation（$$S$$）是由分割算法得到的掩码图，论文中的分割算法使用的是Deep Labv3+，它使用类似于其它生成三元图的类似的方法来进行处理，包括10次腐蚀，5次膨胀以及一次高斯模糊。这一部分在`test_background-matting_image.py`的141-143行。
 
+```py
+rcnn = cv2.erode(rcnn, kernel_er, iterations=10)
+rcnn = cv2.dilate(rcnn, kernel_dil, iterations=5)
+rcnn=cv2.GaussianBlur(rcnn.astype(np.float32),(31,31),0)
+```
+Motion Cuses（$$M$$）是在处理视频时当前帧的前后各两帧，即$$M \equiv \{I_{-2T}, I_{-T}, I_{+T}, I_{+2T}\}$$，这些帧转化为灰度图后合成一个batch形成$$M$$。
+
+#### 1.1.2 网络结构
+
+整个网络可以分成Encoder和Decoder两部分，在Encoder中，四个输入图像将会被Encoder成不同的Feature Map，网络结构的细节可以去`network.py`文件去查看。其中输入图像的网络结构在17-20行：
+```py
+model_enc1 = [nn.ReflectionPad2d(3),nn.Conv2d(input_nc[0], ngf, kernel_size=7, padding=0,bias=use_bias), norm_layer(ngf), nn.ReLU(True)]
+model_enc1 += [nn.Conv2d(ngf , ngf * 2, kernel_size=3,stride=2, padding=1, bias=use_bias),norm_layer(ngf * 2),nn.ReLU(True)]
+model_enc2 = [nn.Conv2d(ngf*2 , ngf * 4, kernel_size=3,stride=2, padding=1, bias=use_bias),norm_layer(ngf * 4),nn.ReLU(True)]
+```
+它是由一个镜面padding（用于提升模型在边界处的抠图效果），连续3组步长为2的卷积，BN，ReLU组成，最终得到的Feature Map的尺寸是$$256\times\frac{W}{4}\times\frac{H}{4}$$。
+
+另外三个图像$$B$$，$$S$$，$$M$$和输入图像的
 ### 1.2 损失函数
 
 
