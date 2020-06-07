@@ -36,7 +36,7 @@ rcnn=cv2.GaussianBlur(rcnn.astype(np.float32),(31,31),0)
 
 Motion Cuses（$$M$$）是在处理视频时当前帧的前后各两帧，即$$M \equiv \{I_{-2T}, I_{-T}, I_{+T}, I_{+2T}\}$$，这些帧转化为灰度图后合成一个batch形成$$M$$。
 
-#### 1.1.2 网络结构
+#### 1.1.2 预测网络
 
 Background Matting可以看做一个‘编码器-解码器’的结构，其中编码器又叫做Context Switching Block，它是由**Encoder**，**Selector**以及**Combinator**组成，下面结合源码对齐细节进行介绍。
 
@@ -89,9 +89,10 @@ def forward(self, image,back,seg,multi):
     out_dec_fg=self.model_res_dec_fg(out_dec)
     out_dec_fg1=self.model_dec_fg1(out_dec_fg)
     fg_out=self.model_fg_out(torch.cat([out_dec_fg1,img_feat1],dim=1))
-    
 ```
-**$$\alpha$$预测分支**：和前景预测分支类似，它首先经过一组3个残差块的解码器进行继续解码，然后经过两组双线性差值，卷积，BN，ReLU操作进行解码，最后经过一组镜面Padding，卷积以及Tanh之后得到最终预测的alpha matte，使用Tanh的原因是因为alpha matte的每个像素的值需要介于0和1之间。这一部分的核心代码如下：
+
+$$\alpha$$**预测分支**：和前景预测分支类似，它首先经过一组3个残差块的解码器进行继续解码，然后经过两组双线性差值，卷积，BN，ReLU操作进行解码，最后经过一组镜面Padding，卷积以及Tanh之后得到最终预测的alpha matte，使用Tanh的原因是因为alpha matte的每个像素的值需要介于0和1之间。这一部分的核心代码如下：
+
 ```py
 model_res_dec_al=[]
 for i in range(n_blocks2):
@@ -110,8 +111,15 @@ def forward(self, image,back,seg,multi):
     al_out=self.model_al_out(out_dec_al)
 ```
 
+### 1.1.3 判别网络
+
+
 
 ### 1.2 损失函数
+
+### 1.3 模型训练
+
+## 2. 总结
 
 
 
