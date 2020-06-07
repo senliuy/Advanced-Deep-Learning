@@ -82,7 +82,7 @@
 * [其它应用](qi-ta-ying-yong.md)
   * [Holistically-Nested Edge Detection](qi-ta-ying-yong/holistically-nested-edge-detection.md)
   * [Image Style Transfer Using Convolutional Nerual Networks](qi-ta-ying-yong/image-style-transfer-using-convolutional-nerual-networks.md)
-  * Background Matting
+  * [Background Matting： The World is Your Green Screen](qi-ta-ying-yong/background-matting.md)
 * [Tags](tags.md)
 * [References](references.md)
 
