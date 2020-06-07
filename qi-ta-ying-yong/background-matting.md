@@ -26,7 +26,7 @@
 
 从图1中我们可以看出，Background Matting共有四个输入，其中 Input和Background比较好理解，就是使用同一台拍摄设备在同一个环境下拍摄的有人和无人的两张照片。在尝试该算法的过程中，发现一个重要的一点是当拍摄照片时，要保证Input的背景和无人的Background的内容保持一致，要尽量避免阴影和反射现象的出现。
 
-Soft Segmentation是由
+Soft Segmentation是由分割算法得到的掩码图，论文中的分割算法使用的是Deep Labv3+
 
 ### 1.2 损失函数
 
