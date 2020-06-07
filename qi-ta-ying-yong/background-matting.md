@@ -91,7 +91,7 @@ def forward(self, image,back,seg,multi):
     fg_out=self.model_fg_out(torch.cat([out_dec_fg1,img_feat1],dim=1))
     
 ```
-**\alpha预测分支**：和前景预测分支类似，它首先经过一组3个残差块的解码器进行继续解码，然后经过两组双线性差值，卷积，BN，ReLU操作进行解码，最后经过一组镜面Padding，卷积以及Tanh之后得到最终预测的alpha matte，使用Tanh的原因是因为alpha matte的每个像素的值需要介于0和1之间。这一部分的核心代码如下：
+**$$\alpha$$预测分支**：和前景预测分支类似，它首先经过一组3个残差块的解码器进行继续解码，然后经过两组双线性差值，卷积，BN，ReLU操作进行解码，最后经过一组镜面Padding，卷积以及Tanh之后得到最终预测的alpha matte，使用Tanh的原因是因为alpha matte的每个像素的值需要介于0和1之间。这一部分的核心代码如下：
 ```py
 model_res_dec_al=[]
 for i in range(n_blocks2):
