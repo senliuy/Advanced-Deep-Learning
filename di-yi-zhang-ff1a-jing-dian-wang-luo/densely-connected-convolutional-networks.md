@@ -2,21 +2,21 @@
 
 ## 前言
 
-在残差网络的文章中，我们知道残差网格{{"he2016deep"|cite}},{{"he2016identity"|cite}}能够应用在特别深的网络中的一个重要原因是，无论正向计算精度还是反向计算梯度，信息都能毫无损失的从一层传到另一层。如果我们的目的是保证信息毫无阻碍的传播，那么残差网络的stacking残差块的设计便不是信息流通最合适的结构。
+在残差网络的文章中，我们知道残差网格,能够应用在特别深的网络中的一个重要原因是，无论正向计算精度还是反向计算梯度，信息都能毫无损失的从一层传到另一层。如果我们的目的是保证信息毫无阻碍的传播，那么残差网络的stacking残差块的设计便不是信息流通最合适的结构。
 
-基于信息流通的原理，一个最简单的思想便是在网络中的每个卷积操作中，将其低层的所有特征作为该网络的输入，也就是在一个层数为L的网络中加入$$\frac{L(L+1)}{2}$$个short-cut, 如图1。为了更好的保存低层网络的特征，DenseNet {{"huang2017densely"|cite}}使用的是将不同层的输出拼接在一起，而在残差网络中使用的是单位加操作。以上便是DenseNet算法的动机。
+基于信息流通的原理，一个最简单的思想便是在网络中的每个卷积操作中，将其低层的所有特征作为该网络的输入，也就是在一个层数为L的网络中加入$$\frac{L(L+1)}{2}$$个short-cut, 如图1。为了更好的保存低层网络的特征，DenseNet 使用的是将不同层的输出拼接在一起，而在残差网络中使用的是单位加操作。以上便是DenseNet算法的动机。
 
-###### 图1：DenseNet中一个Dense Block的设计
+#### 图1：DenseNet中一个Dense Block的设计
 
-![](/assets/DenseNet_1.png)
+![](../.gitbook/assets/DenseNet_1.png)
 
 ## 1. DenseNet算法解析及源码实现
 
 在DenseNet中，如果全部采用图1的结构的话，第L层的输入是之前所有的Feature Map拼接到一起。考虑到现今内存/显存空间的问题，该方法显然是无法应用到网络比较深的模型中的，故而DenseNet采用了图2所示的堆积Dense Block的形式，下面我们针对图2详细解析DenseNet算法。
 
-###### 图2：DenseNet网络结构
+#### 图2：DenseNet网络结构
 
-![](/assets/DenseNet_2.png)
+![](../.gitbook/assets/DenseNet_2.png)
 
 ### 1.1 Dense Block
 
@@ -28,7 +28,7 @@ $$y_l = H_l(x_l)$$
 
 其中，中括号$$[y_0, y_1, ..., y_{l-1}]$$表示拼接操作，即按照Feature Map将$$l-1$$个输入拼接成一个Tensor。$$H_l(\cdot)$$表示合成函数（Composite function）。在实现时，我使用了stored\_features存储每个合成函数的输出。
 
-```py
+```python
 def dense_block(x, depth=5, growth_rate = 3):
     nb_input_feature_map = x.shape[3].value
     stored_features = x
@@ -42,7 +42,7 @@ def dense_block(x, depth=5, growth_rate = 3):
 
 合成函数位于Dense Block的每一个节点中，其输入是拼接在一起的Feature Map, 输出则是这些特征经过`BN->ReLU->3*3`卷积的三步得到的结果，其中卷积的Feature Map的数量是成长率（Growth Rate）。在DenseNet中，成长率k一般是个比较小的整数，在论文中，$$k=12$$。但是拼接在一起的Feature Map的数量一般比较大，为了提高网络的计算性能，DenseNet先使用了$$1\times1$$卷积将输入数据降维到$$4k$$，再使用$$3\times3$$卷积提取特征，作者将这一过程标准化为`BN->ReLU->1*1卷积->BN->ReLU->3*3卷积`，这种结构定义为DenseNetB。
 
-```py
+```python
  def composite_function(x, growth_rate):
     if DenseNetB: #Add 1*1 convolution when using DenseNet B
         x = BatchNormalization()(x)
@@ -64,7 +64,7 @@ def dense_block(x, depth=5, growth_rate = 3):
 
 下面Demo是在MNIST数据集上的DenseNet代码，完整代码见：[https://github.com/senliuy/CNN-Structures/blob/master/DenseNet.ipynb](https://github.com/senliuy/CNN-Structures/blob/master/DenseNet.ipynb)
 
-```py
+```python
 def dense_net(input_image, nb_blocks = 2):
     x = Conv2D(kernel_size=(3,3), filters=8, strides=1, padding='same', activation='relu')(input_image)
     for block in range(nb_blocks):

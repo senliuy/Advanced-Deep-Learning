@@ -4,9 +4,9 @@ tags: MobileNet
 
 ## 前言
 
-MobileNet{{"howard2017mobilenets"|cite}}（这里叫做MobileNet v1，简称v1）中使用的Depthwise Separable Convolution是模型压缩的一个最为经典的策略，它是通过将跨通道的$$3\times3$$卷积换成单通道的$$3\times3$$卷积+跨通道的$$1\times1$$卷积来达到此目的的。
+MobileNet（这里叫做MobileNet v1，简称v1）中使用的Depthwise Separable Convolution是模型压缩的一个最为经典的策略，它是通过将跨通道的$$3\times3$$卷积换成单通道的$$3\times3$$卷积+跨通道的$$1\times1$$卷积来达到此目的的。
 
-MobileNet v2 {{"sandler2018mobilenetv2"|cite}}是在v1的Depthwise Separable的基础上引入了[残差结构](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html){{"he2016deep"|cite}}。并发现了ReLU的在通道数较少的Feature Map上有非常严重信息损失问题，由此引入了Linear Bottlenecks和Inverted Residual。
+MobileNet v2 是在v1的Depthwise Separable的基础上引入了[残差结构](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)。并发现了ReLU的在通道数较少的Feature Map上有非常严重信息损失问题，由此引入了Linear Bottlenecks和Inverted Residual。
 
 首先在这篇文章中我们会详细介绍两个版本的MobileNet，然后我们会介绍如何使用Keras实现这两个算法。
 
@@ -16,26 +16,19 @@ MobileNet v2 {{"sandler2018mobilenetv2"|cite}}是在v1的Depthwise Separable的�
 
 传统的卷积网络是跨通道的，对于一个通道数为$$M$$的输入Feature Map，我们要得到通道数为$$N$$的输出Feature Map。普通卷积会使用$$N$$个不同的$$D_K \times D_K \times M$$以滑窗的形式遍历输入Feature Map，因此对于一个尺寸为$$D_K\times D_K$$的卷积的参数个数为$$D_K \times D_K \times M \times N$$。一个普通的卷积可以表示为：
 
-
 $$
 G_{k,l,n} = \sum_{i,j,m} \mathbf{K}_{i,j,m,n} \cdot \mathbf{K}_{k+i-1, l+j-1, m}
 $$
 
-
 它的一层网络的计算代价约为：
-
 
 $$
 D_K \times D_K \times M \times N \times D_W \times D_H
 $$
 
-
 其中$$(D_W, D_H)$$为Feature Map的尺寸。普通卷积如图1所示。
 
-<figure>
-<img src="/assets/MobileNet_1.png" alt="图1：普通卷积的Feature Map之间的卷积核情况"/>
-<figcaption>图1：普通卷积的Feature Map之间的卷积核情况</figcaption>
-</figure>
+ ![&#x56FE;1&#xFF1A;&#x666E;&#x901A;&#x5377;&#x79EF;&#x7684;Feature Map&#x4E4B;&#x95F4;&#x7684;&#x5377;&#x79EF;&#x6838;&#x60C5;&#x51B5;](../.gitbook/assets/MobileNet_1.png)图1：普通卷积的Feature Map之间的卷积核情况
 
 v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参数数量和计算代价过于高昂的问题。Depthwise Separable Convolution分成Depthwise Convolution和Pointwise Convolution。
 
@@ -43,26 +36,19 @@ v1中介绍的Depthwise Separable Convolution就是解决了传统卷积的参�
 
 其中Depthwise卷积是指不跨通道的卷积，也就是说Feature Map的每个通道有一个独立的卷积核，并且这个卷积核作用且仅作用在这个通道之上，如图2所示。
 
-<figure>
-<img src="/assets/MobileNet_2.png" alt="图2：Depthwise卷积示意图（3个通道）"/>
-<figcaption>图2：Depthwise卷积示意图（3个通道）</figcaption>
-</figure>
+ ![&#x56FE;2&#xFF1A;Depthwise&#x5377;&#x79EF;&#x793A;&#x610F;&#x56FE;&#xFF08;3&#x4E2A;&#x901A;&#x9053;&#xFF09;](../.gitbook/assets/MobileNet_2.png)图2：Depthwise卷积示意图（3个通道）
 
 从图2和图1的对比中我们可以看出，因为放弃了卷积时的跨通道。Depthwise卷积的参数数量为$$D_K \times D_K \times M$$。Depthwise Convolution的数学表达式为：
-
 
 $$
 \hat{G}_{k,l,m} = \sum_{i,j} \hat{K}_{i,j,n} \cdot F_{k+i-1, l+j-1, m}
 $$
 
-
 它的计算代价也是传统卷积的$$\frac{1}{N}$$为:
-
 
 $$
 D_K \times D_K \times M \times D_W \times D_H
 $$
-
 
 在Keras中，我们可以使用[`DepthwiseConv2D`](https://github.com/titu1994/MobileNetworks/blob/master/depthwise_conv.py)实现Depthwise卷积操作，它有几个重要的参数：
 
@@ -79,45 +65,34 @@ Depthwise卷积的操作虽然非常高效，但是它仅相当于对当前的Fe
 
 为了解决这些问题，v1中引入了Pointwise卷积用于特征合并以及升维或者降维。很自然的我们可以想到使用$$1\times1$$卷积来完成这个功能。Pointwise的参数数量为$$M\times N$$，计算量为：
 
-
 $$
 M\times N \times D_W \times D_H
 $$
 
-
 Pointwise的可视化如图3：
 
-<figure>
-<img src="/assets/MobileNet_3.png" alt="图3: Pointwise卷积示意图"/>
-<figcaption>图3：Pointwise卷积示意图 </figcaption>
-</figure>
+ ![&#x56FE;3: Pointwise&#x5377;&#x79EF;&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/MobileNet_3.png)图3：Pointwise卷积示意图
 
 ### 1.4 Depthwise Separable卷积
 
 合并1.2中的Depthwise卷积和1.3中的Pointwise卷积便是v1中介绍的Depthwise Separable卷积。它的一组操作（一次Depthwise卷积加一次Pointwise卷积）的参数数量为：$$D_K \times D_K \times M + M\times N$$是普通卷积的
 
-
 $$
 \frac{D_K \times D_K \times M + M\times N}{D_K \times D_K \times M \times N} = \frac{1}{N} + \frac{1}{D_K^2}
 $$
 
-
 计算量为：
-
 
 $$
 D_K \times D_K \times M \times D_W \times D_H + M\times N \times D_W \times D_H
 $$
 
-
 和普通卷积的比值为：
-
 
 $$
 \frac{D_K \times D_K \times M \times D_W \times D_H + M\times N \times D_W \times D_H
 }{D_K \times D_K \times M \times N \times D_W \times D_H} = \frac{1}{N} + \frac{1}{D_K^2}
 $$
-
 
 对于一个$$3\times3$$的卷积而言，v1的参数量和计算代价均为普通卷积的$$\frac{1}{8}$$左右。
 
@@ -127,7 +102,7 @@ $$
 
 首先我们搭建的传统卷积的结构如下面代码片段：
 
-```py
+```python
 def Simple_NaiveConvNet(input_shape, k):
     inputs = Input(shape=input_shape)
     x = Conv2D(filters=32, kernel_size=(3,3), strides=(2,2), padding='same', activation='relu', name='n_conv_1')(inputs)
@@ -145,7 +120,7 @@ def Simple_NaiveConvNet(input_shape, k):
 
 通过将$$3\times3$$的`Conv2D()`换成$$3\times3$$的`DepthwiseConv2D`加上$$1\times1$$的`Conv2D()`（第一层保留传统卷积），我们将其改造成了MobileNet v1。
 
-```py
+```python
 def Simple_MobileNetV1(input_shape, k):
     inputs = Input(shape=input_shape)
     x = Conv2D(filters=32, kernel_size=(3,3), strides=(2,2), padding='same', activation='relu', name='m_conv_1')(inputs)
@@ -166,23 +141,13 @@ def Simple_MobileNetV1(input_shape, k):
 
 通过`Summary()`函数我们可以得到每个网络的每层的参数数量，见图4，左侧是普通卷积，右侧是MobileNet v1。
 
-<figure>
-<img src="/assets/MobileNet_4.png" alt="图4: 普通卷积和MobileNet v1网络结构参数汇总"/>
-<figcaption>图4: 普通卷积和MobileNet v1网络结构参数汇总 </figcaption>
-</figure>
-
-
+ ![&#x56FE;4: &#x666E;&#x901A;&#x5377;&#x79EF;&#x548C;MobileNet v1&#x7F51;&#x7EDC;&#x7ED3;&#x6784;&#x53C2;&#x6570;&#x6C47;&#x603B;](../.gitbook/assets/MobileNet_4.png)图4: 普通卷积和MobileNet v1网络结构参数汇总
 
 普通卷积的参数总量为259,082，去除未改造的部分剩余的参数数量为239,936。v1的参数总量为48,330去掉未改造的部分剩余参数29,184个。两个的比值为$$\frac{239,936}{29,184} \approx 8.22$$，符合我们之前的推算。
 
 接着我们在MNIST上跑一下实验，我们在CPU（Intel i7）和GPU（Nvidia 1080Ti）两个环境下运行一下，得到的收敛曲线如图5。在都训练10个epoch的情况下，我们发现MobileNet v1的结果要略差于传统卷积，这点完全可以理解，毕竟MobileNet v1的参数更少。
 
-<figure>
-<img src="/assets/MobileNet_5.png" alt="图5: 使用ReLU激活函数的通道数和信息损耗之间的关系"/>
-<figcaption>图5: 普通卷积和MobileNet v1在MNIST上的收敛曲线图</figcaption>
-</figure>
-
-
+ ![&#x56FE;5: &#x4F7F;&#x7528;ReLU&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x7684;&#x901A;&#x9053;&#x6570;&#x548C;&#x4FE1;&#x606F;&#x635F;&#x8017;&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;](../.gitbook/assets/MobileNet_5.png)图5: 普通卷积和MobileNet v1在MNIST上的收敛曲线图
 
 对比单个Epcoh的训练时间，我们发现了一个奇怪的现象，在CPU上，v1的训练时间约70秒，传统卷积训练时间为140秒，这和我们的直觉是相同的。但是在GPU环境下，传统卷积和v1的训练时间分别为40秒和50秒，v1在GPU上反而更慢了，这是什么原因呢？
 
@@ -196,10 +161,7 @@ def Simple_MobileNetV1(input_shape, k):
 
 当我们单独去看Feature Map的每个通道的像素的值的时候，其实这些值代表的特征可以映射到一个低维子空间的一个流形区域上。在进行完卷积操作之后往往会接一层激活函数来增加特征的非线性性，一个最常见的激活函数便是ReLU。根据我们在[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html)中介绍的数据处理不等式\(DPI\)，ReLU一定会带来信息损耗，而且这种损耗是没有办法恢复的，ReLU的信息损耗是当通道数非常少的时候更为明显。为什么这么说呢？我们看图6中这个例子，其输入是一个表示流形数据的矩阵，和卷机操作类似，他会经过$$n$$个ReLU的操作得到$$n$$个通道的Feature Map，然后我们试图通过这$$n$$个Feature Map还原输入数据，还原的越像说明信息损耗的越少。从图6中我们可以看出，当$$n$$的值比较小时，ReLU的信息损耗非常严重，当时当$$n$$的值比较大的时候，输入流形就能还原的很好了。
 
-<figure>
-<img src="/assets/MobileNet_6.png" alt="图6: 使用ReLU激活函数的通道数和信息损耗之间的关系"/>
-<figcaption>图6: 使用ReLU激活函数的通道数和信息损耗之间的关系</figcaption>
-</figure>
+ ![&#x56FE;6: &#x4F7F;&#x7528;ReLU&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x7684;&#x901A;&#x9053;&#x6570;&#x548C;&#x4FE1;&#x606F;&#x635F;&#x8017;&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;](../.gitbook/assets/MobileNet_6.png)图6: 使用ReLU激活函数的通道数和信息损耗之间的关系
 
 根据对上面提到的信息损耗问题分析，我们可以有两种解决方案：
 
@@ -210,7 +172,7 @@ def Simple_MobileNetV1(input_shape, k):
 
 我们当然不能把ReLU全部换成线性激活函数，不然网络将会退化为单层神经网络，一个折中方案是在输出Feature Map的通道数较少的时候也就是bottleneck部分使用线性激活函数，其它时候使用ReLU。代码片段如下：
 
-```py
+```python
 def _bottleneck(inputs, nb_filters, t):
     x = Conv2D(filters=nb_filters * t, kernel_size=(1,1), padding='same')(inputs)
     x = Activation(relu6)(x)
@@ -226,43 +188,29 @@ def _bottleneck(inputs, nb_filters, t):
 
 这里使用了MobileNet中介绍的ReLU6激活函数，它是对ReLU在6上的截断，数学形式为：
 
-
 $$
 ReLU(6) = min(max(0,x),6)
 $$
 
-
 图7便是结合了残差网络和线性激活函数的MobileNet v2的一个block，最右侧是v1。
 
-<figure>
-<img src="/assets/MobileNet_7.png" alt="图7: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比"/>
-<figcaption>图7: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比</figcaption>
-</figure>
-
+ ![&#x56FE;7: v2&#x7684;Linear Bottleneck&#x548C;v1&#x7684;Depthwise Separable&#x5377;&#x79EF;&#x5BF9;&#x6BD4;](../.gitbook/assets/MobileNet_7.png)图7: v2的Linear Bottleneck和v1的Depthwise Separable卷积对比
 
 ### 2.2 Inverted Residual
 
 当激活函数使用ReLU时，我们可以通过增加通道数来减少信息的损耗，使用参数$$t$$来控制，该层的通道数是输入Feature Map的$$t$$倍。传统的残差块的$$t$$一般取小于1的小数，常见的取值为0.1，而在v2中这个值一般是介于$$5-10$$之间的数，在作者的实验中，$$t=6$$。考虑到残差网络和v2的$$t$$的不同取值范围，他们分别形成了锥子形（两头小中间大）和沙漏形（两头大中间小）的结构，如图8所示，其中斜线Feature Map表示使用的是线性激活函数。这也就是为什么这种形式的卷积block被叫做Interved Residual block，因为他把short-cut转移到了bottleneck层。
 
-<figure>
-<img src="/assets/MobileNet_8.png" alt="图8: 残差网络的的Residual block和v2的Inverted Residual block卷积对比"/>
-<figcaption>图8: 残差网络的的Residual block和v2的Inverted Residual block卷积对比</figcaption>
-</figure>
-
+ ![&#x56FE;8: &#x6B8B;&#x5DEE;&#x7F51;&#x7EDC;&#x7684;&#x7684;Residual block&#x548C;v2&#x7684;Inverted Residual block&#x5377;&#x79EF;&#x5BF9;&#x6BD4;](../.gitbook/assets/MobileNet_8.png)图8: 残差网络的的Residual block和v2的Inverted Residual block卷积对比
 
 ### 2.3 MobileNet v2
 
 综上我们可以得到MobileNet v2的一个block的详细参数，如图9所示，其中$$s$$代表步长：
 
-<figure>
-<img src="/assets/MobileNet_9.png" alt="图9: MobileNetv2 block的超参数"/>
-<figcaption>图9: MobileNetv2 block的超参数</figcaption>
-</figure>
-
+ ![&#x56FE;9: MobileNetv2 block&#x7684;&#x8D85;&#x53C2;&#x6570;](../.gitbook/assets/MobileNet_9.png)图9: MobileNetv2 block的超参数
 
 MobileNet v2的实现可以通过堆叠bottleneck的形式实现，如下面代码片段
 
-```py
+```python
 def MobileNetV2_relu(input_shape, k):
     inputs = Input(shape = input_shape)
     x = Conv2D(filters=32, kernel_size=(3,3), padding='same')(inputs)
@@ -283,11 +231,7 @@ def MobileNetV2_relu(input_shape, k):
 
 在这篇文章中，我们介绍了两个版本的MobileNet，它们和传统卷积的对比如图10。
 
-<figure>
-<img src="/assets/MobileNet_10.png" alt="图10: 普通卷积(a) vs MobileNet v1(b) vs MobileNet v2(c, d)"/>
-<figcaption>图10: 普通卷积(a) vs MobileNet v1(b) vs MobileNet v2(c, d)</figcaption>
-</figure>
-
+ ![&#x56FE;10: &#x666E;&#x901A;&#x5377;&#x79EF;\(a\) vs MobileNet v1\(b\) vs MobileNet v2\(c, d\)](../.gitbook/assets/MobileNet_10.png)图10: 普通卷积\(a\) vs MobileNet v1\(b\) vs MobileNet v2\(c, d\)
 
 如图\(b\)所示，MobileNet v1最主要的贡献是使用了Depthwise Separable Convolution，它又可以拆分成Depthwise卷积和Pointwise卷积。MobileNet v2主要是将残差网络和Depthwise Separable卷积进行了结合。通过分析单通道的流形特征对残差块进行了改进，包括对中间层的扩展\(d\)以及bottleneck层的线性激活\(c\)。Depthwise Separable Convolution的分离式设计直接将模型压缩了8倍左右，但是精度并没有损失非常严重，这一点还是非常震撼的。
 

@@ -2,22 +2,22 @@
 
 ## 前言
 
-个人非常喜欢何凯明的文章，两个原因，1\) 简单，2\) 好用。对比目前科研届普遍喜欢把问题搞复杂，通过复杂的算法尽量把审稿人搞蒙从而提高论文的接受率的思想，无论是著名的残差网络还是这篇Mask R-CNN，大神的论文尽量遵循著名的奥卡姆剃刀原理：即在所有能解决问题的算法中，选择最简单的那个。霍金在出版《时间简史》中说“书里每多一个数学公式，你的书将会少一半读者”。Mask R-CNN {{"he2017mask"|cite}} 更是过分到一个数学公式都没有，而是通过对问题的透彻的分析，提出针对性非常强的解决方案，下面我们来一睹Mask R-CNN的真容。
+个人非常喜欢何凯明的文章，两个原因，1\) 简单，2\) 好用。对比目前科研届普遍喜欢把问题搞复杂，通过复杂的算法尽量把审稿人搞蒙从而提高论文的接受率的思想，无论是著名的残差网络还是这篇Mask R-CNN，大神的论文尽量遵循著名的奥卡姆剃刀原理：即在所有能解决问题的算法中，选择最简单的那个。霍金在出版《时间简史》中说“书里每多一个数学公式，你的书将会少一半读者”。Mask R-CNN  更是过分到一个数学公式都没有，而是通过对问题的透彻的分析，提出针对性非常强的解决方案，下面我们来一睹Mask R-CNN的真容。
 
 ## 动机
 
-语义分割和物体检测是计算机视觉领域非常经典的两个重要应用。在语义分割领域，FCN {{"long2015fully"|cite}} 是代表性的算法；在物体检测领域，代表性的算法是Faster R-CNN {{"ren2015faster"|cite}}。很自然的会想到，结合FCN和Faster R-CNN不仅可以是模型同时具有物体检测和语义分割两个功能，还可以是两个功能互相辅助，共同提高模型精度，这便是Mask R-CNN的提出动机。Mask R-CNN的结构如图1
+语义分割和物体检测是计算机视觉领域非常经典的两个重要应用。在语义分割领域，FCN  是代表性的算法；在物体检测领域，代表性的算法是Faster R-CNN 。很自然的会想到，结合FCN和Faster R-CNN不仅可以是模型同时具有物体检测和语义分割两个功能，还可以是两个功能互相辅助，共同提高模型精度，这便是Mask R-CNN的提出动机。Mask R-CNN的结构如图1
 
-###### 图1：Mask R-CNN框架图
+**图1：Mask R-CNN框架图**
 
-![](/assets/Mask_R-CNN_1.png)
+![](../.gitbook/assets/Mask_R-CNN_1.png)
 
 如图1所示，Mask R-CNN分成两步：
 
 1. 使用RPN网络产生候选区域；
 2. 分类，bounding box，掩码预测的多任务损失。
 
-在Fast R-CNN的解析文章中，我们介绍Fast R-CNN采用ROI池化来处理候选区域尺寸不同的问题。但是对于语义分割任务来说，一个非常重要的要求便是特征层和输入层像素的一对一，ROI池化显然不满足该要求。为了改进这个问题，作者仿照[STN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/spatial-transform-networks.html) {{"jaderberg2015spatial"|cite}}中提出的双线性插值提出了ROIAlign，从而使Faster R-CNN的特征层也能进行语义分割。
+在Fast R-CNN的解析文章中，我们介绍Fast R-CNN采用ROI池化来处理候选区域尺寸不同的问题。但是对于语义分割任务来说，一个非常重要的要求便是特征层和输入层像素的一对一，ROI池化显然不满足该要求。为了改进这个问题，作者仿照[STN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/spatial-transform-networks.html) 中提出的双线性插值提出了ROIAlign，从而使Faster R-CNN的特征层也能进行语义分割。
 
 下面我们结合代码详细解析Mask R-CNN，代码我使用的是基于TensorFlow和Keras实现的版本：[https://github.com/matterport/Mask\_RCNN](https://github.com/matterport/Mask_RCNN)。
 
@@ -27,7 +27,7 @@
 
 在第一章中，我们介绍过卷积网络的一个重要特征：深层网络容易响应语义特征，浅层网络容易响应图像特征。但是到了物体检测领域，这个特征便成了一个重要的问题，高层网络虽然能响应语义特征，但是由于Feature Map的尺寸较小，含有的几何信息并不多，不利于物体检测；浅层网络虽然包含比较多的几何信息，但是图像的语义特征并不多，不利于图像的分类，这个问题在小尺寸物体检测上更为显著和，这也就是为什么物体检测算法普遍对小物体检测效果不好的最重要原因之一。很自然地可以想到，使用合并了的深层和浅层特征来同时满足分类和检测的需求。
 
-Mask R-CNN的骨干框架使用的是该团队在CVPR2017的另外一篇文章FPN {{"lin2017feature"|cite}}。FPN使用的是图像金字塔的思想以解决物体检测场景中小尺寸物体检测困难的问题，传统的图像金字塔方法（图2.a）采用输入多尺度图像的方式构建多尺度的特征，该方法的最大问题便是识别时间为单幅图的k倍，其中k是缩放的尺寸个数。Faster R-CNN等方法为了提升检测速度，使用了单尺度的Feature Map（图2.b），但单尺度的特征图限制了模型的检测能力，尤其是训练集中覆盖率极低的样本（例如较大和较小样本）。不同于Faster R-CNN只使用最顶层的Feature Map，SSD {{"liu2016ssd"|cite}}利用卷积网络的层次结构，从VGG的第conv4\_3开始，通过网络的不同层得到了多尺度的Feature Map（图2.c），该方法虽然能提高精度且基本上没有增加测试时间，但没有使用更加低层的Feature Map，然而这些低层次的特征对于检测小物体是非常有帮助的。
+Mask R-CNN的骨干框架使用的是该团队在CVPR2017的另外一篇文章FPN 。FPN使用的是图像金字塔的思想以解决物体检测场景中小尺寸物体检测困难的问题，传统的图像金字塔方法（图2.a）采用输入多尺度图像的方式构建多尺度的特征，该方法的最大问题便是识别时间为单幅图的k倍，其中k是缩放的尺寸个数。Faster R-CNN等方法为了提升检测速度，使用了单尺度的Feature Map（图2.b），但单尺度的特征图限制了模型的检测能力，尤其是训练集中覆盖率极低的样本（例如较大和较小样本）。不同于Faster R-CNN只使用最顶层的Feature Map，SSD 利用卷积网络的层次结构，从VGG的第conv4\_3开始，通过网络的不同层得到了多尺度的Feature Map（图2.c），该方法虽然能提高精度且基本上没有增加测试时间，但没有使用更加低层的Feature Map，然而这些低层次的特征对于检测小物体是非常有帮助的。
 
 针对上面这些问题，FPN采用了SSD的金字塔内Feature Map的形式。与SSD不同的是，FPN不仅使用了VGG中层次深的Feature Map，并且浅层的Feature Map也被应用到FPN中。并通过自底向上（bottom-up），自顶向下（top-down）以及横向连接（lateral connection）将这些Feature Map高效的整合起来，在提升精度的同时并没有大幅增加检测时间（图2.d）。
 
@@ -35,13 +35,13 @@ Mask R-CNN的骨干框架使用的是该团队在CVPR2017的另外一篇文章FP
 
 图2：金字塔特征的几种形式。
 
-![](/assets/Mask_R-CNN_2.png)
+![](../.gitbook/assets/Mask_R-CNN_2.png)
 
 FPN的代码出现在`./mrcnn/model.py`中，核心代码如下：
 
-###### 代码片段1：FPN结构
+**代码片段1：FPN结构**
 
-```py
+```python
 # Build the shared convolutional layers.
 # Bottom-up Layers
 # Returns a list of the last layers of each stage, 5 in total.
@@ -80,9 +80,9 @@ mrcnn_feature_maps = [P2, P3, P4, P5]
 
 自底向上方法反映在上面代码的第6行或者第8行，自底向上即是卷积网络的前向过程，在Mask R-CNN中，用户可以根据配置文件选择使用ResNet-50或者ResNet-101。代码中的`resnet_graph`就是一个残差块网络，其返回值C2，C3，C4，C5，是每次池化之后得到的Feature Map，该函数也实现在`./mrcnn/model.py`中（代码片段2）。需要注意的是在残差网络中，C2，C3，C4，C5经过的降采样次数分别是2，3，4，5即分别对应原图中的步长分别是4，8，16，32。
 
-###### 代码片段2：残差网络
+**代码片段2：残差网络**
 
-```py
+```python
 def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
     """Build a ResNet graph.
         architecture: Can be resnet50 or resnet101
@@ -129,7 +129,7 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
 
 图3：FPN的自顶向上路径和横向连接
 
-![](/assets/Mask_R-CNN_3.png)
+![](../.gitbook/assets/Mask_R-CNN_3.png)
 
 残差网络得到的C1-C5由于经历了不同的降采样次数，所以得到的Feature Map的尺寸也不同。为了提升计算效率，首先FPN使用1\*1进行了降维，得到P5，然后使用双线性插值进行上采样，将P5上采样到和C4相同的尺寸。
 
@@ -137,7 +137,7 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
 
 FPN使用单位加的操作来更新特征，这种单位加操作叫做横向连接。由于使用了单位加，所以P2，P3，P4，P5应该具有相同数量的Feature Map（源码中该值为256），所以FPN使用了1\*1卷积进行降维。
 
-在更新完Feature Map之后，FPN在P2，P3，P4，P5之后均接了一个3\*3卷积操作（代码片段1第22-25行），该卷积操作是为了减轻上采样的混叠效应（aliasing effect）[^1]。
+在更新完Feature Map之后，FPN在P2，P3，P4，P5之后均接了一个3\*3卷积操作（代码片段1第22-25行），该卷积操作是为了减轻上采样的混叠效应（aliasing effect）。
 
 ### 2. 两步走策略
 
@@ -147,21 +147,21 @@ $$L= L_{cls} + L_{box} + L_{mask}$$
 
 上式中，$$L_{cls}$$表示bounding box的分类损失值，$$L_{box}$$表示bounding box的回归损失值，$$L_{mask}$$表示mask部分的损失值，图4。在这份源码中，作者使用了近似联合训练（Approximate Joint Training），所以损失函数会由也会加上RPN的分类和回归loss。这一部分代码在`./mrcnn/model.py`的2004-2025行。$$L_{cls}$$和$$L_{box}$$的计算方式与Faster R-CNN相同，下面我们重点讨论$$L_{mask}$$。
 
-###### 图4：Mask R-CNN的损失函数
+**图4：Mask R-CNN的损失函数**
 
-![](/assets/Mask_R-CNN_4.png)
+![](../.gitbook/assets/Mask_R-CNN_4.png)
 
 在进行掩码预测时，FCN的分割和预测是同时进行的，即要预测每个像素属于哪一类。而Mask R-CNN将分类和语义分割任务进行了解耦，即每个类单独的预测一个而知掩码，这种解耦提升了语义分割的效果，从图5上来看，提升效果还是很明显的。
 
-###### 图5：Mask R-CNN解耦分类和分割的精度提升
+**图5：Mask R-CNN解耦分类和分割的精度提升**
 
-![](/assets/Mask_R-CNN_5.png)
+![](../.gitbook/assets/Mask_R-CNN_5.png)
 
 所以Mask R-CNN基于FCN将ROI区域映射成为一个$$m\times m\times nb\_class$$（FCN是$$m\times m$$）的特征层，例如他图4中的$$28\times28\times80$$。由于每个候选区域的分割是一个二分类任务，所以$$L_{mask}$$使用的是二值交叉熵（`binary_crossentropy`）损失函数，对应的代码为（1182-1184行）
 
-###### 代码片段3：$$L_{mask}$$
+**代码片段3：**
 
-```py
+```python
 loss = K.switch(tf.size(y_true) > 0,
                 K.binary_crossentropy(target=y_true, output=y_pred),
                 tf.constant(0.0))
@@ -179,9 +179,9 @@ RoI Pooling的下一步是对Feature Map分bin，加入我们需要一个$$7\tim
 
 对比ROI Pooling之前的Feature Map，ROI Pooling分别在横向和纵向产生了4.75和1.625的误差，对于物体分类或者物体检测场景来说，这几个像素的位移或许对结果影响不大，但是语义分割任务通常要精确到每个像素点，因此ROI Pooling是不能应用到Mask R-CNN中的。
 
-###### 图6：ROI Pooling的区域不匹配问题
+**图6：ROI Pooling的区域不匹配问题**
 
-![](/assets/Mask_R-CNN_6.png)
+![](../.gitbook/assets/Mask_R-CNN_6.png)
 
 为了解决这个问题，作者提出了RoIAlign。RoIAlign并没有取整的过程，可以全程使用浮点数操作，步骤如下：
 
@@ -192,15 +192,15 @@ RoI Pooling的下一步是对Feature Map分bin，加入我们需要一个$$7\tim
 
 上面步骤如图7所示。
 
-###### 图7：RoIAlign可视化
+**图7：RoIAlign可视化**
 
-![](/assets/Mask_R-CNN_7.png)
+![](../.gitbook/assets/Mask_R-CNN_7.png)
 
 RoIAlign操作通过`tf.image.crop_and_resize`一个函数便可以实现，在./mrcnn/model.py的第421-423行。由于Mask R-CNN使用了FPN作为骨干架构，所以使用了循环保存每次Pooling之后的Feature Map。
 
 代码片段4：RoIAlign
 
-```py
+```python
 tf.image.crop_and_resize(feature_maps[i], level_boxes, box_indices, self.pool_shape, method="bilinear")
 ```
 
@@ -224,49 +224,37 @@ Mask R-CNN设计的主要接口有：
 
 **线性插值**：已知在直线上两点$$(x_0, y_0)$$，$$(x_1, y_1)$$，则在$$[x_0, x_1]$$区间内任意一点$$[x,y]$$满足等式
 
-
 $$
 \frac{y-y_0}{x-x_0} = \frac{y_1 - y_0}{x_1 - x_0}
 $$
 
-
 即已知$$x$$的情况下，$$y$$的计算方式为：
-
 
 $$
 y = \frac{x_1 - x}{x_1 - x_0} y_0 + \frac{x-x_0}{x_1-x_0} y_1
 $$
 
-
 **双线性插值**：双线性插值即在二维空间的每个维度分别进行线性插值，如图8
 
-###### 图8：双线性插值
+**图8：双线性插值**
 
-![](/assets/Mask_R-CNN_A1.png)
+![](../.gitbook/assets/Mask_R-CNN_A1.png)
 
 已知二维空间中4点$$Q_{11}=(x_1, y_1)$$，$$Q_{12}=(x_1, y_2)$$，$$Q_{21}=(x_2, y_1)$$，$$Q_{22}=(x_2, y_2)$$，我们要求的是空间中一点中$$P=(x,y)$$的值$$f(P)$$。
 
 首先在$$y$$轴上进行线性插值据得到$$R_1$$和$$R_2$$：
 
-
 $$
 f(R_1) = f(x,y_1)=\frac{x_2-x}{x_2-x_1}f(Q_{11}) = \frac{x-x_1}{x_2-x_1}f(Q_{21})
 $$
-
-
 
 $$
 f(R_2) = f(x,y_2)=\frac{x_2-x}{x_2-x_1}f(Q_{12}) = \frac{x-x_1}{x_2-x_1}f(Q_{22})
 $$
 
-
 在根据$$R_1$$和$$R_2$$在$$x$$轴上进行线性插值
-
 
 $$
 f(P) = \frac{y_2-y}{y_2-y_1}f(x,y_1) = \frac{y-y_1}{y_2-y_1}f(x, y_2)
 $$
-
-
-
 

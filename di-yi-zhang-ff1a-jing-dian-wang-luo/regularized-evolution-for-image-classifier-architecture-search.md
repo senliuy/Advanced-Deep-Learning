@@ -12,13 +12,9 @@ tags: AutoML, Aging Evolution, CNN
 
 ### 1.1 搜索空间
 
-AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html){{"zoph2018learning"|cite}}相同的搜索空间。仿照NASNet的思想，AmoebaNet也是学习两个Cell：\(1\) Normal Cell，\(2\) Reduction Cell，在这里两个Cell是完全独立的。然后通过重复堆叠Normal Cell和Reduction Cell的形式我们可以得到一个完整的网络，如图1左所示。其中Normal Cell中步长始终为1，因此不会改变Feature Map的尺寸，Reduction Cell的步长为2，因此会将Feature Map的尺寸降低为原来的1/2。因此我们可以连续堆叠更多的Normal Cell以获得更大的模型容量（不能堆叠Reduction Cell），如图1左侧图中Normal Cell右侧的$$\times$$N的符号所示。在堆叠Normal Cell时，AmoebaNet使用了shortcut的机制，即一个Normal Cell的输入来自上一层，另外一个输入来自上一层的上一层，如图1中间部分。
+AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html)相同的搜索空间。仿照NASNet的思想，AmoebaNet也是学习两个Cell：\(1\) Normal Cell，\(2\) Reduction Cell，在这里两个Cell是完全独立的。然后通过重复堆叠Normal Cell和Reduction Cell的形式我们可以得到一个完整的网络，如图1左所示。其中Normal Cell中步长始终为1，因此不会改变Feature Map的尺寸，Reduction Cell的步长为2，因此会将Feature Map的尺寸降低为原来的1/2。因此我们可以连续堆叠更多的Normal Cell以获得更大的模型容量（不能堆叠Reduction Cell），如图1左侧图中Normal Cell右侧的$$\times$$N的符号所示。在堆叠Normal Cell时，AmoebaNet使用了shortcut的机制，即一个Normal Cell的输入来自上一层，另外一个输入来自上一层的上一层，如图1中间部分。
 
-<figure>
-<img src="/assets/AmoebaNet_1.png" alt="图1：AmoebaNet的搜索空间：(左)由Normal Cell和Reduction Cell构成的完整网络；(中)Normal Cell内部的跳跃连接；(右)一个Normal/Reduction Cell 的内部结构"/>
-<figcaption>图1：AmoebaNet的搜索空间：(左)由Normal Cell和Reduction Cell构成的完整网络；(中)Normal Cell内部的跳跃连接；(右)一个Normal/Reduction Cell 的内部结</figcaption>
-</figure>
-
+ ![&#x56FE;1&#xFF1A;AmoebaNet&#x7684;&#x641C;&#x7D22;&#x7A7A;&#x95F4;&#xFF1A;\(&#x5DE6;\)&#x7531;Normal Cell&#x548C;Reduction Cell&#x6784;&#x6210;&#x7684;&#x5B8C;&#x6574;&#x7F51;&#x7EDC;&#xFF1B;\(&#x4E2D;\)Normal Cell&#x5185;&#x90E8;&#x7684;&#x8DF3;&#x8DC3;&#x8FDE;&#x63A5;&#xFF1B;\(&#x53F3;\)&#x4E00;&#x4E2A;Normal/Reduction Cell &#x7684;&#x5185;&#x90E8;&#x7ED3;&#x6784;](../.gitbook/assets/AmoebaNet_1.png)图1：AmoebaNet的搜索空间：\(左\)由Normal Cell和Reduction Cell构成的完整网络；\(中\)Normal Cell内部的跳跃连接；\(右\)一个Normal/Reduction Cell 的内部结
 
 在每个卷积操作中，我们需要学习两个参数：
 
@@ -31,7 +27,7 @@ AmoebaNet使用的是和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learn
 
 AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
-![](/assets/AmoebaNet_2.png)
+![](../.gitbook/assets/AmoebaNet_2.png)
 
 在介绍代码之前，我们先看三条血淋淋的社会现实：
 
@@ -57,10 +53,7 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 第17行是使用变异（mutation）操作产生父代的子代，变量名是`child`。变异的操作包括随机替换卷积操作（op mutation）和随机替换输入Feature Map（hidden state mutation），如图3所示。在每次变异中，只会进行一次变异操作，亦或是操作变异，亦或是输入变异。
 
-<figure>
-<img src="/assets/AmoebaNet_3.png" alt="图3：AmoebaNet的变异操作：(上)Hidden State Mutation改变模型的输入Feature Map；(下)Op Mutation改变一个卷积操作"/>
-<figcaption>图3：AmoebaNet的变异操作：(上)Hidden State Mutation改变模型的输入Feature Map；(下)Op Mutation改变一个卷积操作</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;AmoebaNet&#x7684;&#x53D8;&#x5F02;&#x64CD;&#x4F5C;&#xFF1A;\(&#x4E0A;\)Hidden State Mutation&#x6539;&#x53D8;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x5165;Feature Map&#xFF1B;\(&#x4E0B;\)Op Mutation&#x6539;&#x53D8;&#x4E00;&#x4E2A;&#x5377;&#x79EF;&#x64CD;&#x4F5C;](../.gitbook/assets/AmoebaNet_3.png)图3：AmoebaNet的变异操作：\(上\)Hidden State Mutation改变模型的输入Feature Map；\(下\)Op Mutation改变一个卷积操作
 
 第18-20行依次是训练这个子代网络架构并将它依次插入`population`和`history`中。
 
@@ -74,14 +67,11 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 通过上面的进化策略，产生的网络结构如图4所示，作者将其命名为AmoebaNet-A：
 
-<figure>
-<img src="/assets/AmoebaNet_4.png" alt="图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(下)Reduction Cell"/>
-<figcaption>图4：AmoebaNet-A结构：(左)由Normal Cell和Reduction Cell构成的AmoebaNet-A；(中)Normal Cell；(右)Reduction Cell</figcaption>
-</figure>
+ ![&#x56FE;4&#xFF1A;AmoebaNet-A&#x7ED3;&#x6784;&#xFF1A;\(&#x5DE6;\)&#x7531;Normal Cell&#x548C;Reduction Cell&#x6784;&#x6210;&#x7684;AmoebaNet-A&#xFF1B;\(&#x4E2D;\)Normal Cell&#xFF1B;\(&#x4E0B;\)Reduction Cell](../.gitbook/assets/AmoebaNet_4.png)图4：AmoebaNet-A结构：\(左\)由Normal Cell和Reduction Cell构成的AmoebaNet-A；\(中\)Normal Cell；\(右\)Reduction Cell
 
 在图4中还有两个要手动设置的参数，一个参数是连续堆叠的Normal Cell的个数$$N$$，另外一个是卷积核的数量。在第一个Reduction之前卷积核的数量是$$F$$，后面每经过一次Reduction，卷积核的数量$$\times$$2。这两个参数是需要人工设置的超参数。
 
-实验结果表明，当AmoebaNet的参数数量（$$N=6$$，$$F=190$$）达到了NASNet以及[PNASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.html){{"liu2018progressive"|cite}}的量级（80MB+）时，AmoebaNet和其它两个网络在ImageNet上的精度是非常接近的。虽然AmoebaNet得到的网络和NASNet以及PNASNet非常接近，但是其基于AE的收敛速度是要明显快于基于强化学习的收敛速度的。
+实验结果表明，当AmoebaNet的参数数量（$$N=6$$，$$F=190$$）达到了NASNet以及[PNASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/progressive-neural-architecture-search.html)的量级（80MB+）时，AmoebaNet和其它两个网络在ImageNet上的精度是非常接近的。虽然AmoebaNet得到的网络和NASNet以及PNASNet非常接近，但是其基于AE的收敛速度是要明显快于基于强化学习的收敛速度的。
 
 而最好的AmoebaNet的参数数量达到了469M时，AmoebaNet-A取得了目前在ImageNet上最优的测试结果。但是不知道是得益于AmoebaNet的网络结构还是其巨大的参数数量带来的模型容量的巨大提升。
 
@@ -89,11 +79,7 @@ AmoebaNet的进化算法Aging Evolution（AE）如图2所示。
 
 从模型的精度上来看Aging Evolution（AE）和RL（Reinfrocement Learning）得到的同等量级参数的架构在ImageNet上的表现是几乎相同的，因此我们无法冒然的下结论说AE得到的模型要优于AL。但是AE的收敛速度快于RL是非常容易从实验结果中看到的。另外作者也添加了一个Random Search（RS）做对照实验，三个方法的收敛曲线图如图5所示：
 
-<figure>
-<img src="/assets/AmoebaNet_5.png" alt="图5：AE，RL及RS在收敛速度上的对比曲线"/>
-<figcaption>图5：AE，RL及RS在收敛速度上的对比曲线</figcaption>
-</figure>
-
+ ![&#x56FE;5&#xFF1A;AE&#xFF0C;RL&#x53CA;RS&#x5728;&#x6536;&#x655B;&#x901F;&#x5EA6;&#x4E0A;&#x7684;&#x5BF9;&#x6BD4;&#x66F2;&#x7EBF;](../.gitbook/assets/AmoebaNet_5.png)图5：AE，RL及RS在收敛速度上的对比曲线
 
 ## 2. 总结
 

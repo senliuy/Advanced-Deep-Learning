@@ -4,22 +4,15 @@ tags: Normalization
 
 ## 前言
 
-Group Normalization（GN）{{"wu2018group"|cite}}是何恺明团队提出的一种归一化策略，它是介于[Layer Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)（LN）{{"ba2016layer"|cite}}和 [Instance Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.html)（IN）{{"ulyanov2016instance"|cite}}之间的一种折中方案，图1最右。它通过将**通道**数据分成几组计算归一化统计量，因此GN也是和批量大小无关的算法，因此可以用在batchsize比较小的环境中。作者在论文中指出GN要比LN和IN的效果要好。
+Group Normalization（GN）是何恺明团队提出的一种归一化策略，它是介于[Layer Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)（LN）和 [Instance Normalization](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/instance-normalization.html)（IN）之间的一种折中方案，图1最右。它通过将**通道**数据分成几组计算归一化统计量，因此GN也是和批量大小无关的算法，因此可以用在batchsize比较小的环境中。作者在论文中指出GN要比LN和IN的效果要好。
 
-<figure>
-<img src="/assets/GN_1.png" alt="图1：从左到右依次是BN，LN，IN以及GN" />
-<figcaption>图1：从左到右依次是BN，LN，IN以及GN</figcaption>
-</figure>
-
-
-
+ ![&#x56FE;1&#xFF1A;&#x4ECE;&#x5DE6;&#x5230;&#x53F3;&#x4F9D;&#x6B21;&#x662F;BN&#xFF0C;LN&#xFF0C;IN&#x4EE5;&#x53CA;GN](../.gitbook/assets/GN_1.png)图1：从左到右依次是BN，LN，IN以及GN
 
 ## 1. GN详解
 
 ### 1.1 GN算法
 
 和之前所有介绍过的归一化算法相同，GN也是根据该层的输入数据计算均值和方差，然后使用这两个值更新输入数据：
-
 
 $$
 \mu_i = \frac{1}{m}\sum_{k \in \mathcal{S}_i} x_k
@@ -29,35 +22,27 @@ $$
 \hat{x}_i = \frac{1}{\sigma_i} (x_i-\mu_i)
 $$
 
-
 之前所介绍的所有归一化方法均可以使用上面式子进行概括，区别它们的是$$\mathcal{S}_i$$是如何取得的：
 
 对于BN来说，它是取不同batch的同一个channel上的所有的值：
-
 
 $$
 \mathcal{S}_i = \{k | k_C = i_C\}
 $$
 
-
 而LN是从同一个batch的不同的channel上取所有的值：
-
 
 $$
 \mathcal{S}_i = \{k | k_N = i_N\}
 $$
 
-
 IN即不跨batch，也不跨channel：
-
 
 $$
 \mathcal{S}_i = \{k | k_N = i_N, k_C = i_C\}
 $$
 
-
 GN是将Channel分成若干组，只使用组内的数据计算均值和方差。通常组数$$G$$是一个超参数，TensorFlow中的默认值是32。
-
 
 $$
 \mathcal{S}_i = \{k | k_N = i_N, \lfloor \frac{k_C}{C/G}\rfloor = \lfloor \frac{i_C}{C/G}\rfloor\}
@@ -71,7 +56,7 @@ GN和其它算法一样也可以添加参数$$\gamma$$和$$\beta$$来保证网�
 
 论文中给出了基于TensorFlow的GN额源码：
 
-```py
+```python
 1 def GroupNorm(x, gamma, beta, G, eps=1e−5):
 2     # x: input features with shape [N,C,H,W]
 3     # gamma, beta: scale and offset, with shape [1,C,1,1]
@@ -84,7 +69,7 @@ GN和其它算法一样也可以添加参数$$\gamma$$和$$\beta$$来保证网�
 10    return x * gamma + beta
 ```
 
-第6行代码将Tensor中添加一个’组‘的维度，形成一个五维张量。第7行的`axes`的值为[2,3,4]表明计算归一化统计量时即不会跨batch，也不会跨组。
+第6行代码将Tensor中添加一个’组‘的维度，形成一个五维张量。第7行的`axes`的值为\[2,3,4\]表明计算归一化统计量时即不会跨batch，也不会跨组。
 
 ### 1.2 GN的原理
 

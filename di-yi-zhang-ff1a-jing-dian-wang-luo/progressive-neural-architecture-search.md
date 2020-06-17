@@ -4,9 +4,9 @@ tags: NAS, NASNet, PNASNet, AutoML
 
 ## 前言
 
-在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html){{"zoph2016neural"|cite}}和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html){{"zoph2018learning"|cite}}中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
+在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)和[NASNet](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/learning-transferable-architectures-for-scalable-image-recognition.html)中我们介绍了如何使用强化学习训练卷积网络的超参。NAS是该系列的第一篇，提出了使用强化学习训练一个控制器（RNN），该控制器的输出是卷积网络的超参，可以生成一个完整的卷积网络。NASNet提出学习网络的一个单元比直接整个网络效率更高且更容易迁移到其它数据集，并在ImageNet上取得了当时最优的效果。
 
-本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNASNet{{"liu2018progressive"|cite}}，其训练时间降为NASNet的1/8并且取得了比ImageNet上更优的效果。其主要的优化策略为：
+本文是约翰霍普金斯在读博士刘晨曦在Google实习的一篇文章，基于NASNet提出了PNASNet，其训练时间降为NASNet的1/8并且取得了比ImageNet上更优的效果。其主要的优化策略为：
 
 1. 更小的搜索空间；
 2. Sequential model-based optimization\(SMBO\)：一种启发式搜索的策略，训练的模型从简单到复杂，从剪枝的空间中进行搜索；
@@ -20,11 +20,9 @@ tags: NAS, NASNet, PNASNet, AutoML
 
 回顾NASNet的控制器策略，它是一个有$$2\times B \times 5$$个输出的LSTM，其中2表示分别学习Normal Cell和Reduction Cell。$$B$$表示每个网络单元有$$B$$个网络块。$$5$$表示网络块有5个需要学习的超参，记做$$(I_1, I_2, O_1, O_2, C)$$。$$I_1, I_2 \in \mathcal{I}_b$$用于预测网络块两个隐层状态的输入（Input），它会从之前一个，之前两个，或者已经计算的网络块中选择一个。$$O_1, O_2 \in \mathcal{O}$$用于预测对两个隐层状态的输入的操作（Operation，共有13个，具体见NASNet。$$C\in \mathcal{C}$$表示$$O_1, O_2$$的合并方式，有单位加和合并两种操作。因此它的搜索空间的大小为：
 
-
 $$
 (2^2\times13^2 \times 3^2\times13^2 \times4^2\times13^2 \times5^2\times13^2 \times6^2\times13^2 \times 2)^2 \approx 2.0\times 10^{34}
 $$
-
 
 PNASNet的控制器的运作方式和NASNet类似，但也有几点不同。
 
@@ -45,11 +43,9 @@ PNASNet的控制器的运作方式和NASNet类似，但也有几点不同。
 
 因此PNASNet的搜索空间的大小是：
 
-
 $$
 2^2\times8^2 \times 3^2\times8^2 \times4^2\times8^2 \times5^2\times8^2 \times6^2\times8^2 \approx 5.6\times 10^{14}
 $$
-
 
 我们可以写一些规则来排除掉两个隐层状态的对称的情况，但即使排除掉对称的情况后，NASNet的搜索空间的大小仍然为$$10^{28}$$，PNASNet的搜索空间仍然为$$10^{12}$$。这两个值的具体计算比较复杂，且和本文主要要讲解的内容关系不大，感兴趣的读者自行推算。
 
@@ -63,12 +59,9 @@ $$
 
 仿照上一段的过程，我们可以使用$$b\geq2$$更新的代理函数$$\pi$$得到$$b+1$$的top-K的扩展结构并更新得到新的代理函数$$\pi$$。以此类推直到$$b=B$$，如Algorithm1和图1。
 
-![](/assets/PNASNet_a1.png)
+![](../.gitbook/assets/PNASNet_a1.png)
 
-<figure>
-<img src="/assets/PNASNet_1.png" alt="图1：SMBO流程图（B=3）"/>
-<figcaption>图1：SMBO流程图（B=3）</figcaption>
-</figure>
+ ![&#x56FE;1&#xFF1A;SMBO&#x6D41;&#x7A0B;&#x56FE;&#xFF08;B=3&#xFF09;](../.gitbook/assets/PNASNet_1.png)图1：SMBO流程图（B=3）
 
 SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/connectionist-temporal-classification-labelling-unsegmented-sequence-data-with-recurrent-neural-networks.html)中介绍的宽度为K的Beam Search。
 
@@ -94,10 +87,7 @@ SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/c
 
 根据1.2节介绍的SMBO的搜索过程，PNASNet可以非常容易得得出网络块数小于等于$$B$$的所有模型，其结果如图2所示。
 
-<figure>
-<img src="/assets/PNASNet_2.png" alt="图2：PNASNet得出的B=1,2,3,4,5的几个网络单元，推荐使用B=5"/>
-<figcaption>图2：PNASNet得出的B=1,2,3,4,5的几个网络单元，推荐使用B=5</figcaption>
-</figure>
+ ![&#x56FE;2&#xFF1A;PNASNet&#x5F97;&#x51FA;&#x7684;B=1,2,3,4,5&#x7684;&#x51E0;&#x4E2A;&#x7F51;&#x7EDC;&#x5355;&#x5143;&#xFF0C;&#x63A8;&#x8350;&#x4F7F;&#x7528;B=5](../.gitbook/assets/PNASNet_2.png)图2：PNASNet得出的B=1,2,3,4,5的几个网络单元，推荐使用B=5
 
 作者也尝试了$$B>5$$的情况，发现这时候模型的精度会下降，推测原因是因为搜索空间过去庞大了。
 
@@ -105,10 +95,7 @@ SMBO像极了我们在[CTC](https://senliuy.gitbooks.io/advanced-deep-learning/c
 
 NAS中提倡学习dataset interest的网络结构，但是NASNet和PNASNet在CIFAR-10上学习到的结构迁移到ImageNet上也可以取得非常好的效果。作者通过一组不同网络单元在CIFAR-10和ImageNet上的实验验证了CIFAR-10和ImageNet在网络结构上的强相关性，实验结果见图3。
 
-<figure>
-<img src="/assets/PNASNet_3.png" alt="图3：CIFAR10和ImageNet对网络单元的强相关性"/>
-<figcaption>图3：CIFAR10和ImageNet对网络单元的强相关性</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;CIFAR10&#x548C;ImageNet&#x5BF9;&#x7F51;&#x7EDC;&#x5355;&#x5143;&#x7684;&#x5F3A;&#x76F8;&#x5173;&#x6027;](../.gitbook/assets/PNASNet_3.png)图3：CIFAR10和ImageNet对网络单元的强相关性
 
 ## 3. 总结
 

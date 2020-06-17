@@ -2,17 +2,17 @@
 
 ## 前言
 
-在这篇像极了奥运格言（Faster，Higher，Stronger）的论文 {{"redmon2017yolo9000"|cite}}中，作者提出了YOLOv2和YOLO9000两个模型。
+在这篇像极了奥运格言（Faster，Higher，Stronger）的论文 中，作者提出了YOLOv2和YOLO9000两个模型。
 
-其中YOLOv2采用了若干技巧对[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html) {{"redmon2016you"|cite}} 的速度和精度进行了提升。其中比较有趣的有以下几点：
+其中YOLOv2采用了若干技巧对[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)  的速度和精度进行了提升。其中比较有趣的有以下几点：
 
-1. 使用聚类产生的锚点代替[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html){{"ren2015faster"|cite}} 和[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html){{"liu2016ssd"|cite}} 手工设计的锚点；
+1. 使用聚类产生的锚点代替[Faster R-CNN](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks.html) 和[SSD](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/ssd-single-shot-multibox-detector.html) 手工设计的锚点；
 2. 在高分辨率图像上进行迁移学习，提升网络对高分辨图像的响应能力；
 3. 训练过程图像的尺寸不再固定，提升网络对不同训练数据的泛化能力。
 
 除了以上三点，YOLO还使用了残差网络的直接映射的思想，R-CNN系列的预测相对位移的思想，Batch Normalization，全卷积等思想。YOLOv2将算法的速度和精度均提升到了一个新的高度。正是所谓的速度更快（Faster），精度更高（Better/Higher）
 
-论文中提出的另外一个模型YOLO9000非常巧妙的使用了WordNet {{"miller1990introduction"|cite}}的方式将检测数据集COCO和分类数据集ImageNet整理成一个多叉树，再通过提出的联合训练方法高效的训练多叉树对应的损失函数。YOLO9000是一个非常强大（Stronger）且有趣的模型，非常具有研究前景。
+论文中提出的另外一个模型YOLO9000非常巧妙的使用了WordNet 的方式将检测数据集COCO和分类数据集ImageNet整理成一个多叉树，再通过提出的联合训练方法高效的训练多叉树对应的损失函数。YOLO9000是一个非常强大（Stronger）且有趣的模型，非常具有研究前景。
 
 在下面的章节中，我们将论文分成YOLOv2和YOLO9000两个部分并结合论文和源码对算法进行详细解析。
 
@@ -24,9 +24,9 @@ YOLOv2使用的是和YOLOv1相同的思路，算法流程参考[YOLOv1](https://
 
 YOLOv1之后，一系列算法和技巧的提出极大的提高了深度学习在各个领域的泛化能力。作者总结了可能在物体检测中有用的方法和技巧（图1）并将它们结合成了我们要介绍的YOLOv2。所以YOLOv2并没有像SSD或者Faster R-CNN具有很大的难度，更多的是在YOLOv1基础上的技巧方向的提升。在下面的篇幅中，我们将采用和论文相同的结构并结合基于Keras的[源码](https://github.com/yhcc/yolo2)对YOLOv2中涉及的技巧进行讲解。
 
-###### 图1：YOLOv2中使用的技巧及带来的性能提升
+**图1：YOLOv2中使用的技巧及带来的性能提升**
 
-![](/assets/YOLOv2_1.png)
+![](../.gitbook/assets/YOLOv2_1.png)
 
 #### 1.1.1. BN替代Dropout
 
@@ -51,9 +51,9 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 3. Darknet-19进行了5次降采样，但是在最后一层卷积并没有添加池化层，目的是为了获得更高分辨率的Feature Map；
 4. Darknet-19中并不含有全连接，使用的是全局平均池化的方式产生长度固定的特征向量。
 
-###### 图2：Darknet网络结构
+**图2：Darknet网络结构**
 
-![](/assets/YOLOv2_2.png)
+![](../.gitbook/assets/YOLOv2_2.png)
 
 首先，YOLOv2使用的是$$416\times416$$的输入图像，考虑到很多情况下待检测物体的中心点容易出现在图像的中央，所以使用$$416\times416$$经过5次降采样之后生成的Feature Map的尺寸是$$13\times13$$，这种奇数尺寸的Feature Map获得的中心点的特征向量更准确。其实这也和YOLOv1产生$$7\times7$$的理念是相同的。
 
@@ -76,21 +76,19 @@ YOLOv2使用了DarkNet-19作为骨干网络（图2），在这里我们需要注
 
 YOLOv2并没有直接使用欧氏距离作为聚类标准，因为大尺寸的样本产生的误差要比小样本大。锚点作为候选框的先验，当然是希望锚点与Ground Truth的IoU越大越好，所以这里使用了IoU作为分类标准，即：
 
-
 $$
 d(box, centroid) = 1 - IOU(box, centroid)
 $$
 
-
 聚类的数目$$k$$是一个超参数，经过一系列的对比试验（图3），出于对速度和精度的折中考虑，YOLOv2使用的是$$k=5$$的值。
 
-###### 图3：k-means的$$k$$和IoU均值的实验对比
+**图3：k-means的和IoU均值的实验对比**
 
-![](/assets/YOLOv2_3.png)
+![](../.gitbook/assets/YOLOv2_3.png)
 
 遗憾的是我并没有在源码中找到k-means的实现，在darknet源码中找到了两组值：
 
-```py
+```python
 # coco
 anchors =  0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828  
 
@@ -102,9 +100,9 @@ anchors =  1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053
 
 为了验证上面总结的思想，我用python实现了一份用于锚点聚类的k-means，源码见[链接](https://github.com/senliuy/Advanced-Deep-Learning/blob/master/assets/yolo2_kmeans.ipynb)。核心算法见代码片段1：
 
-###### 代码片段1：用于锚点聚类的k-means
+**代码片段1：用于锚点聚类的k-means**
 
-```py
+```python
 def kmeans(boxes, k, dist=np.median):
     """
     Calculates k-means clustering with the Intersection over Union (IoU) metric.
@@ -128,7 +126,7 @@ def kmeans(boxes, k, dist=np.median):
 
 跑了一下在pascal voc上的聚类，得到的$$k=5$$和$$k=9$$的实验结果如下:
 
-```
+```text
 # k=5
 Accuracy: 60.07%
 Boxes:
@@ -162,8 +160,9 @@ Ratios:
 
 YOLOv2使用了和YOLOv1类似的损失函数，不同的是YOLOv2将分类任务从cell中解耦。因为在YOLOv1中，cell负责预测与之匹配的类别，bounding box负责位置精校，也就是预测位置。YOLOv1的输出层我们在[YOLOv1](https://senliuy.gitbooks.io/advanced-deep-learning/content/chapter1/you-only-look-once-unified-real-time-object-detection.html)的图3中进行了描述。但是在YOLOv2中使用了锚点机制，物体的类别和位置均是由锚点对应的特征向量决定的，如图4。
 
-###### 图4：YOLOv2的输出层
-![](/assets/YOLOv2_4.png)
+**图4：YOLOv2的输出层**
+
+![](../.gitbook/assets/YOLOv2_4.png)
 
 在Keras源码中使用的是80类的COCO数据集，锚点数$$k=5$$，所以YOLOv2的每个cell的输出层有$$(80+5)\times 5 = 425$$个节点。
 
@@ -193,9 +192,9 @@ $$Pr(object)\times IoU(b, object) = \sigma(t_o)$$
 
 上式表示的几何关系见图5。
 
-###### 图5：YOLOv2的预测值和匹配cell的几何关系
+**图5：YOLOv2的预测值和匹配cell的几何关系**
 
-![](/assets/YOLOv2_5.png)
+![](../.gitbook/assets/YOLOv2_5.png)
 
 YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5个任务组成的多任务损失函数。源码中各个模型的权重也和YOLOv1中提到的权重一致。
 
@@ -210,9 +209,9 @@ YOLOv2的损失函数`./utils/loss_util.py`和YOLOv1的是相同的，均是由5
 1. $$26\times26\times512$$的Feature Map首先通过TensorFlow的`space_to_depth()`函数转换成$$13\times13\times2048$$的Feature Map（图6）然后再和后面的Feature Map进行映射的；
 2. 论文中采用的是类似残差网络的映射方式，也就是将Feature Map执行单位加操作，但是源码中使用的是DenseNet的方式，也就是Merge成$$13\times13\times(2048+1024)$$的 Feature Map。
 
-###### 图6：tf.space\_to\_depth\(\)
+**图6：tf.space\_to\_depth\(\)**
 
-![](/assets/YOLOv2_6.png)
+![](../.gitbook/assets/YOLOv2_6.png)
 
 图1显示该方法带来了1%的性能提升。
 
@@ -244,9 +243,9 @@ ImageNet的数据集的标签是通过WordNet\[5\]的方式组织的，WordNet�
 
 在YOLOv2中，作者将WordNet简化成了一个分层的树结构，即WordTree。WordTree的生成方式也很简单，如果一个节点含有多个父节点，只需要保存到根节点路径最短的那条路径即可，生成的层次树模型见图7。在DarkNet的源码中，WordTree以二进制文件的形式保存在[./data/9k.tree](https://github.com/pjreddie/darknet/blob/master/data/9k.tree)文件中。在9k.tree中，第一列表示类别的标签，标签的类别可以在[./data/9k.names](https://github.com/pjreddie/darknet/blob/master/data/9k.names)通过行数（从0开始计数）对应上，9k.tree的第二列表示该节点的父节点，值为$$-1$$的话表示父节点为空。
 
-###### 图7：YOLO9000的WordTree
+**图7：YOLO9000的WordTree**
 
-![](/assets/YOLOv2_7.png)
+![](../.gitbook/assets/YOLOv2_7.png)
 
 例如从8888\(military officer\)行开始向上回溯到根节点，走过的路径依次是:
 
@@ -267,9 +266,9 @@ $$Pr(Corgi) = Pr(Corgi|dog) \times Pr(dog|canine) \times ... \times Pr(living th
 
 其中$$Pr(object) = 1$$。Pr\(Corgi\|dog\)则是在‘dog’的所有下义词中为‘Corgi’的概率，由softmax激活函数求得，其它情况依次类推（图8）。
 
-###### 图8：在ImageNet和在WordTree下的预测。
+**图8：在ImageNet和在WordTree下的预测。**
 
-![](/assets/YOLOv2_8.png)
+![](../.gitbook/assets/YOLOv2_8.png)
 
 图8是作者为了验证其想法建立的WordTree 1k模型，在构建WordTree时添加了369个中间节点以便构成一个完整的WordTree。根据上面的分析，YOLO9000是一个多标签分类的模型，例如‘Corgi’则是一个含有1369个标签的的数据，其one-hot编码的形式为在第（6920，6912，6856，6781，6767，6522，6519，6468，5174，5170，1042，865，2）共13个位置处为1，其余的位置均为0。
 

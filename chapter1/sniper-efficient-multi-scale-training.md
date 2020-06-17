@@ -4,7 +4,7 @@
 
 图像金字塔是传统的提升物体检测精度的策略之一，其能提升精度的一个原因是尺寸多样性的引入。但是图像金字塔也有一个非常严重的缺点：即增加了模型的计算量，一个经过3个尺度放大（1x,2x,3x）的图像金子塔要多处理14倍的像素点。
 
-SNIPER（Scale Normalization for Image Pyramid with Efficient Resampling）{{"singh2018sniper"|cite}}的提出动机便是解决图像金字塔计算量大的问题，图像金字塔存在一个固有的问题：对于一张放大之后的高分辨率的图片，其物体也随之放大，有时甚至待检测物体的尺寸超过了特征向量的感受野，这时候对大尺寸物体的检测便很难做到精确，因为这时候已经没有合适的特征向量了；对于一个缩小了若干倍的图像中的一个小尺寸物体，由于网络结构中降采样的存在，此时也很难找到合适的特征向量用于该物体的检测。因此作者在之前的SNIP{{"singh2018analysis"|cite}}论文中便提出了高分辨率图像中的大尺寸物体和低分辨率图像中的小尺寸物体时应该忽略的。
+SNIPER（Scale Normalization for Image Pyramid with Efficient Resampling）的提出动机便是解决图像金字塔计算量大的问题，图像金字塔存在一个固有的问题：对于一张放大之后的高分辨率的图片，其物体也随之放大，有时甚至待检测物体的尺寸超过了特征向量的感受野，这时候对大尺寸物体的检测便很难做到精确，因为这时候已经没有合适的特征向量了；对于一个缩小了若干倍的图像中的一个小尺寸物体，由于网络结构中降采样的存在，此时也很难找到合适的特征向量用于该物体的检测。因此作者在之前的SNIP论文中便提出了高分辨率图像中的大尺寸物体和低分辨率图像中的小尺寸物体时应该忽略的。
 
 为了阐述SNIPER的提出动机，作者用很大的篇幅来对比R-CNN和Fast R-CNN的异同，一个重要的观点就是R-CNN具有尺度不变性，而Fast R-CNN不具有该特征。R-CNN先通过Selective Search选取候选区域，然后无论候选区域的尺寸是多少都会将其归一化到$$224\times224$$的尺寸，该策略虽然备受诟病，但是它却保证了R-CNN具有尺度不变性的特征。Fast R-CNN将resize的部分移到了使用了卷积之后，也就是使用RoI池化产生长度固定的特征向量，也就是说Fast R-CNN是将原始图像作为输入，无论里面的尺寸大小，均使用相同的卷积核计算特征向量。但是这样做真的合理吗？不同尺寸的待检测物体使用相同的卷积核来训练真的好吗？答案当然是否定的。
 
@@ -18,14 +18,11 @@ SNIPER策略最重要的贡献是提出了尺寸固定（$$512 \times 512$$）�
 
 作为一个采样策略，SNIPER的输入数据是原始的数据集，输出的是在图像上采样得到的子图（chips），如图1的虚线部分所示，而这些chips会直接作为s。当然，chips上的物体的Ground Truth也需要针对性的修改。那么这些chips是怎么计算的呢，下面我们详细分析之。
 
-<figure>
-<img src="/assets/SNIPER.png" alt="图1：SNIPER的chips示意图" />
-<figcaption>图1：SNIPER的chips示意图</figcaption>
-</figure>
+ ![&#x56FE;1&#xFF1A;SNIPER&#x7684;chips&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/SNIPER.png)图1：SNIPER的chips示意图
 
 ### 1.1 Chips生成
 
-按照图像金字塔的思想，一个原始输入图片会通过构建多个尺度$$\{s_1,s_2, ..., s_n\}$$的形式图像金字塔，源码中使用的是3个尺度(3.0, 1.667, 512.0/ms)，分别表示把图像放大3倍，1.667倍以及最大边长固定位512。
+按照图像金字塔的思想，一个原始输入图片会通过构建多个尺度$$\{s_1,s_2, ..., s_n\}$$的形式图像金字塔，源码中使用的是3个尺度\(3.0, 1.667, 512.0/ms\)，分别表示把图像放大3倍，1.667倍以及最大边长固定位512。
 
 在图像金字塔的某个的图像上（假设大小为$$W_i\times H_i$$）通过步长为32的滑窗的方法得到约$$\frac{W_i}{32} \times \frac{H_i}{32}$$个$$512\times512$$的chip。
 
@@ -47,10 +44,7 @@ $$
 
 图2中得到的chips便是从图1中的虚线部分裁剪出来的。如图2所示，绿色的Ground Truth代表的是和该chips匹配的待检测物体，而红色的Ground Truth由于面积不在范围内，因此不会被标注出来，在检测的时候等同的看做背景区域。
 
-<figure>
-<img src="/assets/SNIPER_2.jpeg" alt="图2：由图1得到的chips" />
-<figcaption>图2：由图1得到的chips</figcaption>
-</figure>
+ ![&#x56FE;2&#xFF1A;&#x7531;&#x56FE;1&#x5F97;&#x5230;&#x7684;chips](../.gitbook/assets/SNIPER_2.jpeg)图2：由图1得到的chips
 
 需要注意一点，源码中生成chips的方式并不是之前所说的先生成图像金字塔，再从图像金字塔中裁剪出$$512\times512$$的chips。源码中采用的方式是从原图中采样出等比例的chips，再将其resize到$$512\times512$$。这两种策略是等价的，但是第二种无疑实现起来更为简单。
 
@@ -64,16 +58,13 @@ $$
 
 如图3所示，上排绿色部分表示Ground Truth，下排红色区域表示弱RPN预测的候选区域，橙色区域表示根据弱RPN得到的负chips。
 
-<figure>
-<img src="/assets/SNIPER_3.png" alt="图3：SNIPER中的负chips" />
-<figcaption>图3：SNIPER中的负chips</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;SNIPER&#x4E2D;&#x7684;&#x8D1F;chips](../.gitbook/assets/SNIPER_3.png)图3：SNIPER中的负chips
 
 ### 1.4 SNIPER的训练
 
 通过上面的分析，我们可以根据Ground Truth和弱RPN得到一批正chips和一批负chips，这批chips将作为训练样本直接输入给检测算法。SNIPER采用了Faster R-CNN作为这些chips的检测算法框架，并且SNIPER后面模型训练的细节也基本和Faster R-CNN相同，除了一点，SNIPER接的Faster R-CNN的RPN和Fast R-CNN使用了不同的标签系统。
 
-Faster R-CNN{{"ren2015faster"|cite}}系列论文中我们讲过，Faster R-CNN是由RPN和Fast R-CNN组成的多任务模型，在SNIPER中，两个任务会使用两个不同的标签，首先训练RPN时，chips中的待检测物体的Ground Truth并不会受范围$$\mathcal{R}$$的限制。但是再根据RPN提取的候选区域训练Fast R-CNN时，在范围$$\mathcal{R}$$之外的候选区域并不会参与Fast R-CNN的训练。这么做的原因作者没有指出，猜测是RPN需要检测的候选区域覆盖范围更广，因此需要更多的，范围更大的Ground Truth。而Fast R-CNN需要检测的更准确，因此把这个任务交给了能提取到更合适的特征向量的对应尺度。
+Faster R-CNN系列论文中我们讲过，Faster R-CNN是由RPN和Fast R-CNN组成的多任务模型，在SNIPER中，两个任务会使用两个不同的标签，首先训练RPN时，chips中的待检测物体的Ground Truth并不会受范围$$\mathcal{R}$$的限制。但是再根据RPN提取的候选区域训练Fast R-CNN时，在范围$$\mathcal{R}$$之外的候选区域并不会参与Fast R-CNN的训练。这么做的原因作者没有指出，猜测是RPN需要检测的候选区域覆盖范围更广，因此需要更多的，范围更大的Ground Truth。而Fast R-CNN需要检测的更准确，因此把这个任务交给了能提取到更合适的特征向量的对应尺度。
 
 ## 2. SNIPER的测试过程
 

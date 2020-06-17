@@ -4,12 +4,9 @@ tags: Normalization
 
 ## 前言
 
-在上一篇的文章中我们介绍了[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/){{"ioffe2015batch"|cite}}的计算方法并且讲解了BN如何应用在MLP以及CNN中如何使用BN。在文章的最后，我们指出BN并不适用于RNN等动态网络和batchsize较小的时候效果不好。Layer Normalization（LN）{{"ba2016layer"|cite}}的提出有效的解决BN的这两个问题。LN和BN不同点是归一化的维度是互相垂直的，如图1所示。在图1中$$N$$表示样本轴，$$C$$表示通道轴，$$F$$是每个通道的特征数量。BN如右侧所示，它是取不同样本的同一个通道的特征做归一化；LN则是如左侧所示，它取的是同一个样本的不同通道做归一化。
+在上一篇的文章中我们介绍了[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/)的计算方法并且讲解了BN如何应用在MLP以及CNN中如何使用BN。在文章的最后，我们指出BN并不适用于RNN等动态网络和batchsize较小的时候效果不好。Layer Normalization（LN）的提出有效的解决BN的这两个问题。LN和BN不同点是归一化的维度是互相垂直的，如图1所示。在图1中$$N$$表示样本轴，$$C$$表示通道轴，$$F$$是每个通道的特征数量。BN如右侧所示，它是取不同样本的同一个通道的特征做归一化；LN则是如左侧所示，它取的是同一个样本的不同通道做归一化。
 
-<figure>
-<img src="/assets/LN_1.png" alt="图1：LN(左)和BN(右)对比示意图" />
-<figcaption>图1：LN(左)和BN(右)对比示意图</figcaption>
-</figure>
+ ![&#x56FE;1&#xFF1A;LN\(&#x5DE6;\)&#x548C;BN\(&#x53F3;\)&#x5BF9;&#x6BD4;&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/LN_1.png)图1：LN\(左\)和BN\(右\)对比示意图
 
 ## 1. BN的问题
 
@@ -25,11 +22,7 @@ RNN可以展开成一个隐藏层共享参数的MLP，随着时间片的增多�
 
 另外如果在测试时我们遇到了长度大于任何一个训练样本的测试样本，我们无法找到保存的归一化统计量，所以BN无法运行。
 
-<figure>
-<img src="/assets/LN_2.png" alt="图2：RNN中使用BN会导致batchsize过小的问题" />
-<figcaption>图2：RNN中使用BN会导致batchsize过小的问题</figcaption>
-</figure>
-
+ ![&#x56FE;2&#xFF1A;RNN&#x4E2D;&#x4F7F;&#x7528;BN&#x4F1A;&#x5BFC;&#x81F4;batchsize&#x8FC7;&#x5C0F;&#x7684;&#x95EE;&#x9898;](../.gitbook/assets/LN_2.png)图2：RNN中使用BN会导致batchsize过小的问题
 
 ## 2. LN详解
 
@@ -39,7 +32,6 @@ RNN可以展开成一个隐藏层共享参数的MLP，随着时间片的增多�
 
 先看MLP中的LN。设$$H$$是一层中隐层节点的数量，$$l$$是MLP的层数，我们可以计算LN的归一化统计量$$\mu$$和$$\sigma$$：
 
-
 $$
 \mu^l = \frac{1}{H}\sum_{i=1}^H a_i^l
 \qquad
@@ -47,45 +39,35 @@ $$
  - \mu^l)^2}
 $$
 
-
 注意上面统计量的计算是和样本数量没有关系的，它的数量只取决于隐层节点的数量，所以只要隐层节点的数量足够多，我们就能保证LN的归一化统计量足够具有代表性。通过$$\mu^l$$和$$\sigma^l$$可以得到归一化后的值$$\hat{a}^l$$：
-
 
 $$
 \hat{\mathbf{a}}^l = \frac{\mathbf{a}^l - \mu^l}{(\sigma^l)^2 + \sqrt{\epsilon}}
 $$
 
-
 其中$$\epsilon$$是一个很小的小数，防止除0（论文中忽略了这个参数）。
 
 在LN中我们也需要一组参数来保证归一化操作不会破坏之前的信息，在LN中这组参数叫做增益（gain）$$g$$和偏置（bias）$$b$$（等同于BN中的$$\gamma$$和$$\beta$$）。假设激活函数为$$f$$，最终LN的输出为：
-
 
 $$
 \mathbf{h}^l = f(\mathbf{g}^l \odot \hat{\mathbf{a}}^l + \mathbf{b}^l)
 $$
 
-
 合并公式\(2\)，\(3\)并忽略参数$$l$$，我们有：
-
 
 $$
 \mathbf{h} = f(\frac{\mathbf{g}}{\sqrt{\sigma^2 + \epsilon}} \odot (\mathbf{a} - \mu)+ \mathbf{b})
 $$
 
-
 ### 2.2 RNN中的LN
 
 在RNN中，我们可以非常简单的在每个时间片中使用LN，而且在任何时间片我们都能保证归一化统计量统计的是$$H$$个节点的信息。对于RNN时刻$$t$$时的节点，其输入是$$t-1$$时刻的隐层状态$$h^{t-1}$$和$$t$$时刻的输入数据$$\mathbf{x}_t$$，可以表示为：
-
 
 $$
 \mathbf{a}^t = W_{hh}h^{t-1} + W_{xh}\mathbf{x}^t
 $$
 
-
 接着我们便可以在$$\mathbf{a}^t$$上采取和1.1节中完全相同的归一化过程：
-
 
 $$
 \mathbf{h}^t = f(\frac{\mathbf{g}}{\sqrt{(\sigma^t)^2 + \epsilon}} \odot (\mathbf{a}^t - \mu^t)+ \mathbf{b})
@@ -95,7 +77,6 @@ $$
 \sigma^t = \sqrt{\frac{1}{H} \sum_{i=1}^H(a_i^t
  - \mu^t)^2}
 $$
-
 
 ### 2.3 LN与ICS和损失平面平滑
 
@@ -109,7 +90,7 @@ LN能减轻ICS吗？当然可以，至少LN将每个训练样本都归一化到�
 
 这里使用的是MNIST数据集，但是归一化操作只添加到了后面的MLP部分。Keras官方源码中没有LN的实现，我们可以通过`pip install keras-layer-normalization`进行安装，使用方法见下面代码
 
-```py
+```python
 from keras_layer_normalization import LayerNormalization
 
 # 构建LN CNN网络
@@ -126,19 +107,15 @@ model_ln.add(LayerNormalization())
 model_ln.add(Dense(10, activation='softmax'))
 ```
 
-另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。图3的完整代码见连接：https://github.com/senliuy/keras_layerNorm_mlp_lstm/blob/master/mnist.ipynb 。
+另外两个对照试验也使用了这个网络结构，不同点在于归一化部分。图3左侧是batchsize=128时得到的收敛曲线，从中我们可以看出BN和LN均能取得加速收敛的效果，且BN的效果要优于LN。图3右侧是batchsize=8是得到的收敛曲线，这时BN反而会减慢收敛速度，验证了我们上面的结论，对比之下LN要轻微的优于无归一化的网络，说明了LN在小尺度批量上的有效性。图3的完整代码见连接：[https://github.com/senliuy/keras\_layerNorm\_mlp\_lstm/blob/master/mnist.ipynb](https://github.com/senliuy/keras_layerNorm_mlp_lstm/blob/master/mnist.ipynb) 。
 
-<figure>
-<img src="/assets/LN_3.png" alt="图3：batchsize=128(左)和batchsize=8(右)损失收敛曲线示意图" />
-<figcaption>图3：batchsize=128(左)和batchsize=8(右)损失收敛曲线示意图</figcaption>
-</figure>
-
+ ![&#x56FE;3&#xFF1A;batchsize=128\(&#x5DE6;\)&#x548C;batchsize=8\(&#x53F3;\)&#x635F;&#x5931;&#x6536;&#x655B;&#x66F2;&#x7EBF;&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/LN_3.png)图3：batchsize=128\(左\)和batchsize=8\(右\)损失收敛曲线示意图
 
 ### 3.2 LSTM上的归一化
 
 另外一组对照实验是基于imdb的二分类任务，使用了glove作为词嵌入。这里设置了无LN的LSTM和带LN的LSTM的作为对照试验。LN\_LSTM源码参考 [https://github.com/cleemesser/keras-layer-norm-work](https://github.com/cleemesser/keras-layer-norm-work) 其网络结构如下面代码：
 
-```py
+```python
 # https://github.com/cleemesser/keras-layer-norm-work
 from lstm_ln import LSTM_LN
 model_ln = Sequential()
@@ -154,13 +131,9 @@ model_ln.summary()
 1. LN得到的模型更稳定；
 2. LN有正则化的作用，得到的模型更不容易过拟合。
 
-至于论文中所说的加速收敛的效果，从我的实验上结果上看不到明显的加速。源码见：https://github.com/senliuy/keras_layerNorm_mlp_lstm/blob/master/imdb.ipynb 。
+至于论文中所说的加速收敛的效果，从我的实验上结果上看不到明显的加速。源码见：[https://github.com/senliuy/keras\_layerNorm\_mlp\_lstm/blob/master/imdb.ipynb](https://github.com/senliuy/keras_layerNorm_mlp_lstm/blob/master/imdb.ipynb) 。
 
-<figure>
-<img src="/assets/LN_4.png" alt="图4：训练集损失值(左)验证集准确率(右)示意图" />
-<figcaption>图4：训练集损失值(左)验证集准确率(右)示意图</figcaption>
-</figure>
-
+ ![&#x56FE;4&#xFF1A;&#x8BAD;&#x7EC3;&#x96C6;&#x635F;&#x5931;&#x503C;\(&#x5DE6;\)&#x9A8C;&#x8BC1;&#x96C6;&#x51C6;&#x786E;&#x7387;\(&#x53F3;\)&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/LN_4.png)图4：训练集损失值\(左\)验证集准确率\(右\)示意图
 
 ### 3.3 CNN上的归一化
 
@@ -171,5 +144,4 @@ model_ln.summary()
 LN是和BN非常近似的一种归一化方法，不同的是BN取的是不同样本的同一个特征，而LN取的是同一个样本的不同特征。在BN和LN都能使用的场景中，BN的效果一般优于LN，原因是基于不同数据，同一特征得到的归一化特征更不容易损失信息。
 
 但是有些场景是不能使用BN的，例如batchsize较小或者在RNN中，这时候可以选择使用LN，LN得到的模型更稳定且起到正则化的作用。RNN能应用到小批量和RNN中是因为LN的归一化统计量的计算是和batchsize没有关系的。
-
 

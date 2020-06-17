@@ -2,13 +2,13 @@
 
 ## 前言
 
-在YOLO {{"redmon2016you"|cite}} 的文章中我们介绍到YOLO存在三个缺陷：
+在YOLO  的文章中我们介绍到YOLO存在三个缺陷：
 
 1. 两个bounding box功能的重复降低了模型的精度；
 2. 全连接层的使用不仅使特征向量失去了位置信息，还产生了大量的参数，影响了算法的速度；
 3. 只使用顶层的特征向量使算法对于小尺寸物体的检测效果很差。
 
-为了解决这些问题，SSD {{"liu2016ssd"|cite}} 应运而生。SSD的全称是Single Shot MultiBox Detector，Single Shot表示SSD是像YOLO一样的单次检测算法，MultiBox指SSD每次可以检测多个物体，Detector表示SSD是用来进行物体检测的。
+为了解决这些问题，SSD  应运而生。SSD的全称是Single Shot MultiBox Detector，Single Shot表示SSD是像YOLO一样的单次检测算法，MultiBox指SSD每次可以检测多个物体，Detector表示SSD是用来进行物体检测的。
 
 针对YOLO的三个问题，SSD做出的改进如下：
 
@@ -18,9 +18,9 @@
 
 SSD的算法如图1。
 
-###### 图1：SSD算法流程
+**图1：SSD算法流程**
 
-![](/assets/SSD_1.png)
+![](../.gitbook/assets/SSD_1.png)
 
 从某个角度讲，SSD和RPN的相似度也非常高，网络结构都是全卷积，都是采用了锚点进行采样，不同之处有下面两点：
 
@@ -35,15 +35,15 @@ SSD的算法如图1。
 
 SSD的流程和YOLO是一样的，输入一张图片得到一系列候选区域，使用NMS得到最终的检测框。与YOLO不同的是，SSD使用了不同阶段的Feature Map用于检测，YOLO和SSD的对比如图2所示。
 
-###### 图1：SSD vs YOLO
+**图1：SSD vs YOLO**
 
-![](/assets/SSD_2.png)
+![](../.gitbook/assets/SSD_2.png)
 
 在详解SSD之前，我先在代码片段1中列出SSD的超参数（`./models/keras_ssd300.py`），随后我们会在下面的章节中介绍这些超参数是如何使用的。
 
-###### 代码片段1：SSD的超参数
+**代码片段1：SSD的超参数**
 
-```py
+```python
 def ssd_300(image_size,
             n_classes,
             mode='training',
@@ -79,9 +79,9 @@ def ssd_300(image_size,
 
 首先我们先看一下SSD的骨干网络的源码（`./models/keras_ssd300.py`），再结合源码和图2我们来剖析SSD的算法细节。
 
-###### 代码片段2：SSD骨干网络源码。注意源码中的变量名称和图2不一样，我在代码中进行了更正。
+**代码片段2：SSD骨干网络源码。注意源码中的变量名称和图2不一样，我在代码中进行了更正。**
 
-```py
+```python
 conv1_1 = Conv2D(64, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv1_1')(x1)
 conv1_2 = Conv2D(64, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv1_2')(conv1_1)
 pool1 = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same', name='pool1')(conv1_2)
@@ -130,15 +130,15 @@ SSD采用的是VGG-16的作为骨干网络，VGG的详细内容参考文章[Very
 
 第一点不同的是在block5中，max\_pool2d的步长$$stride=1$$，此时图像将不会进行降采样，也就是说输入到block6的Feature Map的尺寸任然是$$38\times 38$$。
 
-SSD的$$3\times 3$$的conv6和$$1\times 1$$的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov {{"chen2014semantic"|cite}} 的方法。具体细节在DeepLab-LargeFov的论文中进行分析。
+SSD的$$3\times 3$$的conv6和$$1\times 1$$的conv7的卷积核是通过预训练模型的fc6和fc7采样得到，这种从全连接层中采样卷积核的方法参考的是DeepLab-LargeFov  的方法。具体细节在DeepLab-LargeFov的论文中进行分析。
 
-在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution）{{"holschneider1990real"|cite}}，在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
+在VGG的卷积部分之后，全连接被换成了卷机操作，在block6的卷积含有一个参数`rate=6`。此时的卷积操作为空洞卷积（Dilation Convolution），在TensorFLow中使用`tf.nn.atrous_conv2d()`调用。
 
 空洞卷积可以在不增加模型复杂度的同时扩大卷积操作的视野，通过在卷积核中插值0的形式完成的。如图3所示，\(a\)是膨胀率为1的卷积，也就是标准的卷积，其感受野的大小是$$3\times 3$$。\(b\)的膨胀率为2，卷积核变成了$$7\times 7$$的卷积核，其中只有9个红点处的值不为0，在不增加复杂度的同时感受野变成了$$7\times 7$$。\(c\)的膨胀率是4，感受野的大小变成了$$15\times 15$$。在设置感受野的膨胀率时要谨慎设计，否则如果卷积核大于Feature Map的尺寸之后程序会报错。
 
-###### 图3：空洞卷积示例图
+**图3：空洞卷积示例图**
 
-![](/assets/SSD_3.png)
+![](../.gitbook/assets/SSD_3.png)
 
 fc7之后输出的Feature Map的大小是$$19\times 19$$，经过block8的一次padding和一次valid卷积之后（即相当于一次same卷积），再经过一次步长为2的降采样，输入到block 9的Feature Map的尺寸是$$10\times 10$$。block 9的操作和block 8相同，即输入到block 8的Feature Map的尺寸是$$5\times 5$$。block 10和block 11使用的是valid卷积，所以图像的尺寸分别是3和1。这样我们便得到了图2中Feature Map尺寸的变化过程。
 
@@ -146,9 +146,9 @@ fc7之后输出的Feature Map的大小是$$19\times 19$$，经过block8的一次
 
 在卷积网络中，不同深度的Feature Map趋向于响应不同程度的特征，SDD使用了骨干网络中的多个Feature Map用于预测检测框。通过图1和图2我们可以发现，SSD使用的是conv4\_3, fc7, conv8\_2, conv9\_2, conv10\_2, conv11\_2分别用于检测尺寸从小到大的物体,如代码片段3 （`./models/keras_ssd300.py`）。
 
-###### 代码片段3：SSD使用全卷积预测检测框
+**代码片段3：SSD使用全卷积预测检测框**
 
-```py
+```python
 # Feed conv4_3 into the L2 normalization layer
 conv4_3_norm = L2Normalization(gamma_init=20, name='conv4_3_norm')(conv4_3)
 
@@ -172,15 +172,13 @@ conv10_2_mbox_loc = Conv2D(n_boxes[4] * 4, (3, 3), padding='same', kernel_initia
 conv11_2_mbox_loc = Conv2D(n_boxes[5] * 4, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv11_2_mbox_loc')(conv11_2)
 ```
 
-其中第二行的L2Normalization使用的是ParseNet {{"liu2015parsenet"|cite}} 中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
+其中第二行的L2Normalization使用的是ParseNet  中提出的全局归一化。即对像素点的在通道维度上进行归一化，其中gamma是一个可训练的放缩变量。
 
 SSD对于第$$i$$个Feature Map的每个像素点都会产生n\_boxes\[i\]个锚点进行分类和位置精校，其中n\_boxes的值为\[4,6,6,6,4,4\]，我们在1.3节会介绍n\_boxes值的计算方法。SSD相当于预测M个bounding box，其中：
-
 
 $$
 M = 38\times 38\times 4 + 19\times 19\times 6 + 10\times 10\times 6 + 5\times 5\times 6+ 3\times 3\times 4 +1\times 1\times 4=8732
 $$
-
 
 上式便是图2中最右侧8732的计算方式。也就是对于一张300\*300的输入图片，SSD要预测8732个检测框，所以SSD本质上可以看做是密集采样。SSD的分类有$$C+1$$个值包括C类前景和1类背景，回归包括物体位置的四要素\(y,x,h,w\)。对于20类的Pascal VOC来说SSD是一个含有$$8732\times(21+4)$$的多任务模型。
 
@@ -192,11 +190,9 @@ $$
 
 SSD使用多尺度的Feature Map的原因是使用不同层次的Feature Map检测不同尺寸的物体，所以onv4\_3, fc7, conv8\_2, conv9\_2, conv10\_2, conv11\_2的锚点的尺寸也是从小到大。论文中给出的值是从0.2到0.9间一个线性变化的值：
 
-
 $$
 s_k = s_{min} + \frac{s_{max} - s_{min}}{m-1}(k-1), k\in[1,m]
 $$
-
 
 $$s_{min}$$和$$s_{max}$$是两个超参数，需要根据不同的数据集自行调整。论文中给出的例子是$$s_{min}=0.2$$，$$s_{max}=0.9$$，$$m=6$$。$$s_k$$表示的是锚点大小相对于Feature Map的比例，通过上式得出的值依次是`[0.2, 0.34, 0.48, 0.62, 0.76, 0.9]`。
 
@@ -208,21 +204,19 @@ $$a_r$$的取值也是一个超参数，在源码中，定义在`aspect_ratios_p
 
 通过上面的介绍，我们得到了锚点四要素中的$$w$$和$$h$$，锚点的$$x$$, $$y$$通过下式得到
 
-
 $$
 (x,y) = (\frac{i+0.5}{|f_k|}, \frac{j+0.5}{|f_k|}), i,j\in [0, |f_k|]
 $$
 
-
 $$i,j$$ 即Feature Map像素点的坐标，$$f_k$$是Feature Map的尺寸。图4便是在$$8\times 8$$和$$4\times 4$$的Feature Map上得到不同尺度的锚点的示例。
 
-###### 图4：锚点示例，改图也展示了锚点对Ground Truth的响应。
+**图4：锚点示例，改图也展示了锚点对Ground Truth的响应。**
 
-![](/assets/SSD_4.png)
+![](../.gitbook/assets/SSD_4.png)
 
 锚点如何设计是一种见仁见智的方案，例如源码中锚点的尺度便和论文不同，在源码中，尺度定义在jupyter notebook 文件`./ssd300_training.ipynb`中。关于具体如何定义这些锚点其实不必太过在意，这些锚点的作用是为检测框提供一个先验假设，网络最后输出的候选框还是要经过Ground Truth纠正的。
 
-```py
+```python
 scales_pascal = [0.1, 0.2, 0.37, 0.54, 0.71, 0.88, 1.05] # The anchor box scaling factors used in the original SSD300 for the Pascal VOC datasets
 scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scaling factors used in the original SSD300 for the MS COCO datasets
 ```
@@ -231,9 +225,9 @@ scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scalin
 
 源码中，锚点是在`keras_layers/keras_layer_AnchorBoxes`中实现的，通过AnchorBoxes函数调用。网络中的6个Feature Map会产生6组共8732个先验box，如代码片段4所示。
 
-###### 代码片段4：计算先验box
+**代码片段4：计算先验box**
 
-```py
+```python
 # Output shape of anchors: `(batch, height, width, n_boxes, 8)`
 conv4_3_norm_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[0], next_scale=scales[1], aspect_ratios=aspect_ratios[0],
                                          two_boxes_for_ar1=two_boxes_for_ar1, this_steps=steps[0], this_offsets=offsets[0], clip_boxes=clip_boxes,
@@ -260,9 +254,9 @@ conv9_2_mbox_priorbox = AnchorBoxes(img_height, img_width, this_scale=scales[5],
 从Feature Map得到锚点之后，我们要确定Ground Truth和哪个锚点匹配，与之匹配的锚点将负责该Ground Truth的预测。在YOLO中，Ground Truth的中心点落在哪个单元内，则该单元的bounding box负责预测其准确的边界。SSD的锚点匹配采用了‘bipartite’和‘multi’两种策略，匹配源码位于`./ssd_encoder_decoder/`目录下面。  
 在bipartite模式中，每个Ground Truth选择与其IoU（论文用的是Jaccard Overlap）最大的锚点进行匹配.如果一个锚点被多个Ground Truth匹配，那么该锚点只匹配与其IoU最大的Ground Truth，其它Ground Truth从剩下的锚点中选择Iou最大的那个进行匹配。bipartite可以保证每个Ground Truth都会有唯一的一个锚点进行匹配。bipartite的源码见代码片段5。
 
-###### 代码片段5：bipartite匹配
+**代码片段5：bipartite匹配**
 
-```py
+```python
 def match_bipartite_greedy(weight_matrix):
     '''
     Parameters:
@@ -301,9 +295,9 @@ def match_bipartite_greedy(weight_matrix):
 
 在bipartite策略中被匹配的锚点数量是非常少的，这就造成了训练时的正负样本的不平衡。所以需要multi策略进行纠正，源码中也是使用的multi策略。mutli在bipartite策略的基础上增加了所有与Ground Truth的IoU大于阈值$$\theta$$（源码中$$\theta=0.5$$）的锚点作为匹配锚点。SSD中一个Ground Truth是可以有多个锚点与其匹配的，但是反过来是不行的，一个锚点只能与和它IoU最大的Ground Truth进行匹配。mutli策略的源码见代码片段6
 
-###### 代码片段6：multi匹配
+**代码片段6：multi匹配**
 
-```py
+```python
 def match_multi(weight_matrix, threshold):
     '''
     Returns:
@@ -336,11 +330,9 @@ $$L(x,c,l,g) = \frac{1}{N} (L_{conf}(x, c) + \alpha L_{loc}(x,l,g))$$
 
 对于分类任务，SSD使用的是softmax多类别的损失函数，上式中的$$c$$表示分类置信度：
 
-
 $$
 L_{conf}(x,c) = - \sum^{N}_{i\in Pos} x^p_{i,j}log(\hat{c}^p_i) - \sum_{i\in Neg} log(\hat{c}^0_i), \hat{c}^p_i=\frac{exp(c^p_i)}{\sum_p exp(c^p_i)}
 $$
-
 
 对于回归任务，SSD预测的是正锚点和Ground Truth的相对位移，损失函数使用的是Smooth L1损失函数。$$l$$表示预测的锚点和Ground Truth的相对位移，而$$g$$表示实际的相对位移。其中$$l$$和$$g$$包含物体位置的四要素$$(\hat{g}^{cx}_j, \hat{g}^{cy}_j, \hat{g}^w_j, \hat{g}^h_j)$$。
 
@@ -351,11 +343,9 @@ $$\hat{g}^h_j = log(\frac{g^h_j}{d^h_i})$$
 
 损失函数表示为实际偏移和预测偏移的Smooth L1损失：
 
-
 $$
 L_{loc}(x,l,g) = - \sum^{N}_{i\in Pos} \sum_{m \in {cx,cy,w,h}} x^k_{i,j} smooth_{L1} (l^m_i - \hat{g}^m_j)
 $$
-
 
 与Faster R-CNN的$$(x,y)$$表示左上角不同，SDD的$$(cx,cy)$$表示的是锚点的中心点。
 
@@ -369,15 +359,15 @@ $$
 
 ### 2. DSSD
 
-SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DSSD {{"fu2017dssd"|cite}}，或者说用反卷积代替了基于双线性插值的上采样过程。下面我们来讲解DSSD是怎么进一步优化SSD的。
+SSD一个非常有意思的变种是使用反卷积增加了上下文信息的DSSD ，或者说用反卷积代替了基于双线性插值的上采样过程。下面我们来讲解DSSD是怎么进一步优化SSD的。
 
 #### 2.1 DSSD的骨干网络
 
 在骨干网络方面，DSSD使用了层数更深的Residual Net-101，检测模块的网络是从conv5\_x之后开始的，用于进行检测的则包括conv3\_x，conv5\_x和添加的检测模块，如图5。
 
-###### 图5：DSSD的骨干网络
+**图5：DSSD的骨干网络**
 
-![](/assets/SSD_5.png)
+![](../.gitbook/assets/SSD_5.png)
 
 DSSD并没有把反卷积部分构造的非常深，的原因有二：
 
@@ -388,27 +378,27 @@ DSSD并没有把反卷积部分构造的非常深，的原因有二：
 
 #### 2.2 反卷积
 
-反卷积 {{"pinheiro2016learning"|cite}}，又被叫做逆卷积，是在语义分割中应用中最常见的算法之一。下面通过一个例子来说明反卷积的工作原理：对于一个$$4\times4$$ 的输入$$x$$，经过$$3\times3$$ 卷积核的有效卷积，得到一个$$2\times2$$ 的特征向量$$y$$, 设卷积运算为$$y=Cx$$。$$C$$的本质上是一个稀疏矩阵\(很多开源框架卷积操作的实现方式\)：
+反卷积 ，又被叫做逆卷积，是在语义分割中应用中最常见的算法之一。下面通过一个例子来说明反卷积的工作原理：对于一个$$4\times4$$ 的输入$$x$$，经过$$3\times3$$ 卷积核的有效卷积，得到一个$$2\times2$$ 的特征向量$$y$$, 设卷积运算为$$y=Cx$$。$$C$$的本质上是一个稀疏矩阵\(很多开源框架卷积操作的实现方式\)：
 
-![](/assets/SSD_u1.png)
+![](../.gitbook/assets/SSD_u1.png)
 
 反卷积相当于卷积网络的正向和反向的传播中做相反的运算，即正向的时候左乘$$C^T$$，反向的时候左乘$$(C^T)^T=C$$ 的运算，所以有些人更喜欢把反卷积叫做转置卷积。
 
 图5中的Deconvolution Module（反卷积模块）展开如图6所示。
 
-###### 图6：DSSD的反卷积模块
+**图6：DSSD的反卷积模块**
 
-![](/assets/SSD_6.png)
+![](../.gitbook/assets/SSD_6.png)
 
 DSSD的反卷积模块分成两部分：图6的上半部分是反卷积Feature Map，其尺寸为$$H\times W$$；图6的下半部分是SSD的Feature Map，其尺寸是反卷积Feature Map的二倍，即$$2H \times 2W$$，进行了两组卷积和BN操作，得到一组$$2H \times 2W$$的FeatureMap。在反卷积部分中，通过步长为2的反卷积操作和一组$$3\times3$$卷积得到$$2H\times 2W$$的Feature Map。最后通过单位积操作和一个ReLU激活函数得到最终$$2W\times2H$$的Feature Map。同时作者也尝试了单位和操作，但是效果并不如单位积。
 
 #### 2.3 预测模块
 
-作者在反卷积模块之后尝试了几种预测模块，图7。其中(a)是最常见的预测模块，例如SSD，YOLO；(b)和(c)分别是YOLOv2和YOLOv3采用的模块，不同的是YOLO需要上采样或者将采样到相同的尺寸。(c)是DSSD采用的预测模块，作者同时尝试了图7所有模块，实验结果表明(c)在DSSD中表现最好。
+作者在反卷积模块之后尝试了几种预测模块，图7。其中\(a\)是最常见的预测模块，例如SSD，YOLO；\(b\)和\(c\)分别是YOLOv2和YOLOv3采用的模块，不同的是YOLO需要上采样或者将采样到相同的尺寸。\(c\)是DSSD采用的预测模块，作者同时尝试了图7所有模块，实验结果表明\(c\)在DSSD中表现最好。
 
-###### 图7：DSSD中预测模块的几个变种
+**图7：DSSD中预测模块的几个变种**
 
-![](/assets/SSD_7.png)
+![](../.gitbook/assets/SSD_7.png)
 
 #### 2.4 DSSD的锚点聚类
 
@@ -421,5 +411,4 @@ SSD算法的核心点在于
 2. 利用Faster R-CNN的锚点机制改进候选框。
 
 DSSD的提出时间则较晚，其主要特别是反卷积的引入，从最近的趋势可以看出，物体检测和语义分割的交集越来越多，双方都不断的从对方汲取灵感来源来优化对应任务。
-
 

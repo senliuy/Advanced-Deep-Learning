@@ -1,10 +1,10 @@
-# Attention Is All You Need
+# Attention Is All you Need
 
 tags: NLP, Attention
 
 ## 前言
 
-[注意力（Attention）机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html) 由Bengio团队与2014年提出并在近年广泛的应用在深度学习中的各个领域{{"bahdanau2014neural"|cite}}，例如在计算机视觉方向用于捕捉图像上的感受野，或者NLP中用于定位关键token或者特征。谷歌团队近期提出的用于生成词向量的BERT {{"devlin2018bert"|cite}}算法在NLP的11项任务中取得了效果的大幅提升，堪称2018年深度学习领域最振奋人心的消息。而BERT算法的最重要的部分便是本文中提出的Transformer{{"vaswani2017attention"|cite}}的概念。
+[注意力（Attention）机制](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-er-zhang-ff1a-xu-lie-mo-xing/neural-machine-translation-by-jointly-learning-to-align-and-translate.html) 由Bengio团队与2014年提出并在近年广泛的应用在深度学习中的各个领域，例如在计算机视觉方向用于捕捉图像上的感受野，或者NLP中用于定位关键token或者特征。谷歌团队近期提出的用于生成词向量的BERT 算法在NLP的11项任务中取得了效果的大幅提升，堪称2018年深度学习领域最振奋人心的消息。而BERT算法的最重要的部分便是本文中提出的Transformer的概念。
 
 正如论文的题目所说的，Transformer中抛弃了传统的CNN和RNN，整个网络结构完全是由Attention机制组成。更准确地讲，Transformer由且仅由self-Attenion和Feed Forward Neural Network组成。一个基于Transformer的可训练的神经网络可以通过堆叠Transformer的形式进行搭建，作者的实验是通过搭建编码器和解码器各6层，总共12层的Encoder-Decoder，并在机器翻译中取得了BLEU值得新高。
 
@@ -23,106 +23,66 @@ Transformer的提出解决了上面两个问题，首先它使用了Attention机
 
 论文中的验证Transformer的实验室基于机器翻译的，下面我们就以机器翻译为例子详细剖析Transformer的结构，在机器翻译中，Transformer可概括为如图1：
 
-<figure>
-<img src="/assets/Transformer_1.png" alt="图1：Transformer用于机器翻译" />
-<figcaption>图1：Transformer用于机器翻译</figcaption>
-</figure>
-
-
+ ![&#x56FE;1&#xFF1A;Transformer&#x7528;&#x4E8E;&#x673A;&#x5668;&#x7FFB;&#x8BD1;](../.gitbook/assets/Transformer_1.png)图1：Transformer用于机器翻译
 
 Transformer的本质上是一个Encoder-Decoder的结构，那么图1可以表示为图2的结构：
 
-<figure>
-<img src="/assets/Transformer_2.png" alt="图2：Transformer的Encoder-Decoder结构" />
-<figcaption>图2：Transformer的Encoder-Decoder结构</figcaption>
-</figure>
+ ![&#x56FE;2&#xFF1A;Transformer&#x7684;Encoder-Decoder&#x7ED3;&#x6784;](../.gitbook/assets/Transformer_2.png)图2：Transformer的Encoder-Decoder结构
 
 如论文中所设置的，编码器由6个编码block组成，同样解码器是6个解码block组成。与所有的生成模型相同的是，编码器的输出会作为解码器的输入，如图3所示：
 
-<figure>
-<img src="/assets/Transformer_3.png" alt="图3：Transformer的Encoder和Decoder均由6个block堆叠而成" />
-<figcaption>图3：Transformer的Encoder和Decoder均由6个block堆叠而成</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;Transformer&#x7684;Encoder&#x548C;Decoder&#x5747;&#x7531;6&#x4E2A;block&#x5806;&#x53E0;&#x800C;&#x6210;](../.gitbook/assets/Transformer_3.png)图3：Transformer的Encoder和Decoder均由6个block堆叠而成
 
 我们继续分析每个encoder的详细结构：在Transformer的encoder中，数据首先会经过一个叫做‘self-attention’的模块得到一个加权之后的特征向量$$Z$$，这个$$Z$$便是论文公式1中的$$\text{Attention}(Q,K,V)$$：
-
 
 $$
 \text{Attention}(Q,K,V)=\text{softmax}(\frac{QK^T}{\sqrt{d_k}})V
 $$
 
-
 第一次看到这个公式你可能会一头雾水，在后面的文章中我们会揭开这个公式背后的实际含义，在这一段暂时将其叫做$$Z$$。
 
 得到$$Z$$之后，它会被送到encoder的下一个模块，即Feed Forward Neural Network。这个全连接有两层，第一层的激活函数是ReLU，第二层是一个线性激活函数，可以表示为：
-
 
 $$
 \text{FFN}(Z) = max(0, ZW_1 +b_1)W_2 + b_2
 $$
 
-
 Encoder的结构如图4所示：
 
-<figure>
-<img src="/assets/Transformer_4.png" alt="图4：Transformer由self-attention和Feed Forward neural network组成" />
-<figcaption>图4：Transformer由self-attention和Feed Forward neural network组成</figcaption>
-</figure>
-
+ ![&#x56FE;4&#xFF1A;Transformer&#x7531;self-attention&#x548C;Feed Forward neural network&#x7EC4;&#x6210;](../.gitbook/assets/Transformer_4.png)图4：Transformer由self-attention和Feed Forward neural network组成
 
 Decoder的结构如图5所示，它和encoder的不同之处在于Decoder多了一个Encoder-Decoder Attention，两个Attention分别用于计算输入和输出的权值：
 
 1. Self-Attention：当前翻译和已经翻译的前文之间的关系；
 2. Encoder-Decnoder Attention：当前翻译和编码的特征向量之间的关系。
 
-<figure>
-<img src="/assets/Transformer_5.png" alt="图5：Transformer的解码器由self-attention，encoder-decoder attention以及FFNN组成" />
-<figcaption>图5：Transformer的解码器由self-attention，encoder-decoder attention以及FFNN组成</figcaption>
-</figure>
-
+ ![&#x56FE;5&#xFF1A;Transformer&#x7684;&#x89E3;&#x7801;&#x5668;&#x7531;self-attention&#xFF0C;encoder-decoder attention&#x4EE5;&#x53CA;FFNN&#x7EC4;&#x6210;](../.gitbook/assets/Transformer_5.png)图5：Transformer的解码器由self-attention，encoder-decoder attention以及FFNN组成
 
 ### 1.2 输入编码
 
 1.1节介绍的就是Transformer的主要框架，下面我们将介绍它的输入数据。如图6所示，首先通过Word2Vec等词嵌入方法将输入语料转化成特征向量，论文中使用的词嵌入的维度为$$d_{model}=512$$。
 
-<figure>
-<img src="/assets/Transformer_6.png" alt="图6：单词的输入编码" />
-<figcaption>图6：单词的输入编码</figcaption>
-</figure>
+ ![&#x56FE;6&#xFF1A;&#x5355;&#x8BCD;&#x7684;&#x8F93;&#x5165;&#x7F16;&#x7801;](../.gitbook/assets/Transformer_6.png)图6：单词的输入编码
 
 在最底层的block中，$$x$$将直接作为Transformer的输入，而在其他层中，输入则是上一个block的输出。为了画图更简单，我们使用更简单的例子来表示接下来的过程，如图7所示：
 
-<figure>
-<img src="/assets/Transformer_7.png" alt="图7：输入编码作为一个tensor输入到encoder中" />
-<figcaption>图7：输入编码作为一个tensor输入到encoder中</figcaption>
-</figure>
-
-
+ ![&#x56FE;7&#xFF1A;&#x8F93;&#x5165;&#x7F16;&#x7801;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;tensor&#x8F93;&#x5165;&#x5230;encoder&#x4E2D;](../.gitbook/assets/Transformer_7.png)图7：输入编码作为一个tensor输入到encoder中
 
 ### 1.3 Self-Attention
 
 Self-Attention是Transformer最核心的内容，然而作者并没有详细讲解，下面我们来补充一下作者遗漏的地方。回想Bahdanau等人提出的用Attention\\[2\\]，其核心内容是为输入向量的每个单词学习一个权重，例如在下面的例子中我们判断it代指的内容，
 
-```
+```text
 The animal didn't cross the street because it was too tired
 ```
 
 通过加权之后可以得到类似图8的加权情况，在讲解self-attention的时候我们也会使用图8类似的表示方式
 
-<figure>
-<img src="/assets/Transformer_8.png" alt="图8：经典Attention可视化示例图" />
-<figcaption>图8：经典Attention可视化示例图</figcaption>
-</figure>
+ ![&#x56FE;8&#xFF1A;&#x7ECF;&#x5178;Attention&#x53EF;&#x89C6;&#x5316;&#x793A;&#x4F8B;&#x56FE;](../.gitbook/assets/Transformer_8.png)图8：经典Attention可视化示例图
 
 在self-attention中，每个单词有3个不同的向量，它们分别是Query向量（Q），Key向量（K）和Value向量（V），长度均是64。它们是通过3个不同的权值矩阵由嵌入向量$$X$$乘以三个不同的权值矩阵$$W^Q$$，$$W^K$$，$$W^V$$得到，其中三个矩阵的尺寸也是相同的。均是$$512\times 64$$。
 
-<figure>
-<img src="/assets/Transformer_9.png" alt="图9：Q，K，V的计算示例图" />
-<figcaption>图9：Q，K，V的计算示例图
-</figcaption>
-</figure>
-
-
+ ![&#x56FE;9&#xFF1A;Q&#xFF0C;K&#xFF0C;V&#x7684;&#x8BA1;&#x7B97;&#x793A;&#x4F8B;&#x56FE;](../.gitbook/assets/Transformer_9.png)图9：Q，K，V的计算示例图
 
 那么Query，Key，Value是什么意思呢？它们在Attention的计算中扮演着什么角色呢？我们先看一下Attention的计算方法，整个过程可以分成7步：
 
@@ -136,40 +96,21 @@ The animal didn't cross the street because it was too tired
 
 上面步骤的可以表示为图10的形式。
 
-<figure>
-<img src="/assets/Transformer_10.png" alt="图10：Self-Attention计算示例图" />
-<figcaption>图10：Self-Attention计算示例图
-</figcaption>
-</figure>
+ ![&#x56FE;10&#xFF1A;Self-Attention&#x8BA1;&#x7B97;&#x793A;&#x4F8B;&#x56FE;](../.gitbook/assets/Transformer_10.png)图10：Self-Attention计算示例图
 
 实际计算过程中是采用基于矩阵的计算方式，那么论文中的$$Q$$，$$V$$，$$K$$的计算方式如图11：
 
-<figure>
-<img src="/assets/Transformer_11.png" alt="图11：Q，V，K的矩阵表示" />
-<figcaption>图11：Q，V，K的矩阵表示
-</figcaption>
-</figure>
-
-
+ ![&#x56FE;11&#xFF1A;Q&#xFF0C;V&#xFF0C;K&#x7684;&#x77E9;&#x9635;&#x8868;&#x793A;](../.gitbook/assets/Transformer_11.png)图11：Q，V，K的矩阵表示
 
 图10总结为如图12所示的矩阵形式：
 
-<figure>
-<img src="/assets/Transformer_12.png" alt="图12：Self-Attention的矩阵表示" />
-<figcaption>图12：Self-Attention的矩阵表示
-</figcaption>
-</figure>
+ ![&#x56FE;12&#xFF1A;Self-Attention&#x7684;&#x77E9;&#x9635;&#x8868;&#x793A;](../.gitbook/assets/Transformer_12.png)图12：Self-Attention的矩阵表示
 
 这里也就是公式1的计算方式。
 
-在self-attention需要强调的最后一点是其采用了[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html) {{"he2016deep"|cite}}中的short-cut结构，目的当然是解决深度学习中的退化问题，得到的最终结果如图13。
+在self-attention需要强调的最后一点是其采用了[残差网络](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/deep-residual-learning-for-image-recognition.html) 中的short-cut结构，目的当然是解决深度学习中的退化问题，得到的最终结果如图13。
 
-<figure>
-<img src="/assets/Transformer_13.png" alt="图13：Self-Attention中的short-cut连接" />
-<figcaption>图13：Self-Attention中的short-cut连接
-</figcaption>
-</figure>
-
+ ![&#x56FE;13&#xFF1A;Self-Attention&#x4E2D;&#x7684;short-cut&#x8FDE;&#x63A5;](../.gitbook/assets/Transformer_13.png)图13：Self-Attention中的short-cut连接
 
 ### 1.3 Multi-Head Attention
 
@@ -181,12 +122,7 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 整个过程如图14所示：
 
-<figure>
-<img src="/assets/Transformer_14.png" alt="图14：Multi-Head Attention" />
-<figcaption>图14：Multi-Head Attention
-</figcaption>
-</figure>
-
+ ![&#x56FE;14&#xFF1A;Multi-Head Attention](../.gitbook/assets/Transformer_14.png)图14：Multi-Head Attention
 
 同self-attention一样，multi-head attention也加入了short-cut机制。
 
@@ -202,12 +138,7 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 而一个完整可训练的网络结构便是encoder和decoder的堆叠（各$$N$$个，$$N=6$$），我们可以得到图15中的完整的Transformer的结构（即论文中的图1）：
 
-<figure>
-<img src="/assets/Transformer_15.png" alt="图15：Transformer的完整结构图" />
-<figcaption>图15：Transformer的完整结构图
-</figcaption>
-</figure>
-
+ ![&#x56FE;15&#xFF1A;Transformer&#x7684;&#x5B8C;&#x6574;&#x7ED3;&#x6784;&#x56FE;](../.gitbook/assets/Transformer_15.png)图15：Transformer的完整结构图
 
 ## 2. 位置编码
 
@@ -217,34 +148,25 @@ Multi-Head Attention相当于$$h$$个不同的self-attention的集成（ensemble
 
 那么怎么编码这个位置信息呢？常见的模式有：a. 根据数据学习；b. 自己设计编码规则。在这里作者采用了第二种方式。那么这个位置编码该是什么样子呢？通常位置编码是一个长度为$$d_model$$的特征向量，这样便于和词向量进行单位加的操作，如图16。
 
-<figure>
-<img src="/assets/Transformer_16.png" alt="图15：Transformer的完整结构图" />
-<figcaption>图16：Position Embedding
-</figcaption>
-</figure>
-
-
+ ![&#x56FE;15&#xFF1A;Transformer&#x7684;&#x5B8C;&#x6574;&#x7ED3;&#x6784;&#x56FE;](../.gitbook/assets/Transformer_16.png)图16：Position Embedding
 
 论文给出的编码公式如下：
-
 
 $$
 PE(pos, 2i) = sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
 $$
 
-
-
 $$
 PE(pos, 2i+1) = cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
 $$
 
-
 在上式中，$$pos$$表示单词的位置，$$i$$表示单词的维度。关于位置编码的实现可在Google开源的算法中[`get_timing_signal_1d()`](https://github.com/tensorflow/tensor2tensor/blob/23bd23b9830059fbc349381b70d9429b5c40a139/tensor2tensor/layers/common_attention.py)函数找到对应的代码。
 
-作者这么设计的原因是考虑到在NLP任务重，除了单词的绝对位置，单词的相对位置也非常重要。根据公式$$sin(\alpha+\beta) = sin \alpha cos \beta + cos \alpha sin\beta $$ 以及 $$cos(\alpha + \beta) = cos \alpha cos \beta - sin \alpha sin\beta$$，这表明位置$$k+p$$的位置向量可以表示为位置$$k$$的特征向量的线性变化，这为模型捕捉单词之间的相对位置关系提供了非常大的便利。
+作者这么设计的原因是考虑到在NLP任务重，除了单词的绝对位置，单词的相对位置也非常重要。根据公式$$sin(\alpha+\beta) = sin \alpha cos \beta + cos \alpha sin\beta$$ 以及 $$cos(\alpha + \beta) = cos \alpha cos \beta - sin \alpha sin\beta$$，这表明位置$$k+p$$的位置向量可以表示为位置$$k$$的特征向量的线性变化，这为模型捕捉单词之间的相对位置关系提供了非常大的便利。
 
 ## 3. 总结
 
 **优点**：（1）虽然Transformer最终也没有逃脱传统学习的套路，Transformer也只是一个全连接（或者是一维卷积）加Attention的结合体。但是其设计已经足够有创新，因为其抛弃了在NLP中最根本的RNN或者CNN并且取得了非常不错的效果，算法的设计非常精彩，值得每个深度学习的相关人员仔细研究和品位。（2）Transformer的设计最大的带来性能提升的关键是将任意两个单词的距离是1，这对解决NLP中棘手的长期依赖问题是非常有效的。（3）Transformer不仅仅可以应用在NLP的机器翻译领域，甚至可以不局限于NLP领域，是非常有科研潜力的一个方向。（4）算法的并行性非常好，符合目前的硬件（主要指GPU）环境。
 
 **缺点**：（1）粗暴的抛弃RNN和CNN虽然非常炫技，但是它也使模型丧失了捕捉局部特征的能力，RNN + CNN + Transformer的结合可能会带来更好的效果。（2）Transformer失去的位置信息其实在NLP中非常重要，而论文中在特征向量中加入Position Embedding也只是一个权宜之计，并没有改变Transformer结构上的固有缺陷。
+

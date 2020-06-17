@@ -2,15 +2,15 @@
 
 ## 前言
 
-在R-CNN {{"girshick2014rich"|cite}}系列的论文中，目标检测被分成了候选区域提取和候选区域分类及精校两个阶段。不同于这些方法，YOLO将整个目标检测任务整合到一个回归网络中。对比Fast R-CNN {{"girshick2015fast"|cite}}提出的两步走的端到端方案，YOLO {{"redmon2016you"|cite}}的单阶段的使其是一个更彻底的端到端的算法（图1）。YOLO的检测过程分为三步：
+在R-CNN 系列的论文中，目标检测被分成了候选区域提取和候选区域分类及精校两个阶段。不同于这些方法，YOLO将整个目标检测任务整合到一个回归网络中。对比Fast R-CNN 提出的两步走的端到端方案，YOLO 的单阶段的使其是一个更彻底的端到端的算法（图1）。YOLO的检测过程分为三步：
 
 1. 图像Resize到448\*448；
 2. 将图片输入卷积网络；
 3. NMS得到最终候选框。
 
-###### 图1：YOLO算法框架
+**图1：YOLO算法框架**
 
-![](/assets/YOLOv1_1.png)
+![](../.gitbook/assets/YOLOv1_1.png)
 
 虽然在一些数据集上的表现不如Fast R-CNN及其后续算法，但是YOLO带来的最大提升便是检测速度的提升。在YOLO算法中，检测速度达到了45帧/秒，而一个更快速的Fast Yolo版本则达到了155帧/秒。另外在YOLO的背景检测错误率要低于Fast R-CNN。最后，YOLO算法具有更好的通用性，通过Pascal数据集训练得到的模型在艺术品问检测中得到了比Fast R-CNN更好的效果。
 
@@ -20,7 +20,7 @@ YOLO源码是使用DarkNet框架实现的，由于本人对DarkNet并不熟悉�
 
 ## YOL算法详解
 
-YOLO检测速度远远超过R-CNN系列的重要原因是YOLO将整个物体检测统一成了一个回归问题。YOLO的输入是整张待检测图片，输出则是得到的检测结果，整个过程只经过一次卷积网络。Faster R-CNN {{"ren2015faster"|cite}}虽然使用全卷积的思想实现了候选区域的权值共享，但是每个候选区域的特征向量任然要单独的计算分类概率和bounding box。
+YOLO检测速度远远超过R-CNN系列的重要原因是YOLO将整个物体检测统一成了一个回归问题。YOLO的输入是整张待检测图片，输出则是得到的检测结果，整个过程只经过一次卷积网络。Faster R-CNN 虽然使用全卷积的思想实现了候选区域的权值共享，但是每个候选区域的特征向量任然要单独的计算分类概率和bounding box。
 
 YOLO实现统一检测的方法是增加网络的输出节点数量，其实也算是空间换时间的一种策略。在Faster R-CNN的Fast R-CNN部分，网络有分类和回归两个任务，网络输出节点个数是$$C+5$$，其中$$C$$是数据集的类别个数。而YOLO的输出层O节点个数达到了$$S\times S\times (C+B\times 5)$$，下面我们来讲解输出节点每个字符的含义。
 
@@ -30,13 +30,13 @@ YOLO实现统一检测的方法是增加网络的输出节点数量，其实也�
 
 YOLO将输入图像分成$$S\times S$$的窗格（Grid），如果Ground Truth的中心落在某个单元（cell）内，则该单元责该物体的检测，如图2所示。
 
-###### 图2：$$S\times S$$窗格
+**图2：窗格**
 
-![](/assets/YOLOv1_2.png)
+![](../.gitbook/assets/YOLOv1_2.png)
 
 什么是某个单元负责落在该单元内的物体检测呢？举例说明一下，首先我们将输出层$$O_{S\times S \times (C+B \times 5)}$$看做一个三维矩阵，如果物体的中心落在第$$(i,j)$$个单元内，那么网络只优化一个$$C+B\times5$$维的向量，即向量$$O[i,j,:]$$。$$S$$是一个超参数，在源码中$$S=7$$，即配置文件`./yolo/config.py`的CELL\_SIZE变量。
 
-```py
+```python
 CELL_SIZE = 7
 ```
 
@@ -44,15 +44,15 @@ CELL_SIZE = 7
 
 $$B$$是每个单元预测的bounding box的数量，$$B$$的个数同样是一个超参数。在`./yolo/config.py`文件中$$B=2$$，YOLO使用多个bounding box是为了每个cell计算top-B个可能的预测结果，这样做虽然牺牲了一些时间，但却提升了模型的检测精度。
 
-```py
+```python
 BOXES_PER_CELL = 2
 ```
 
 注意不管YOLO使用了多少个bounding box，每个单元的bounding box均有相同的优化目标值。在`./yolo/yolo_net.py`中，Ground Truth的label值被复制了$$B$$次。每个bounding box要预测5个值：bounding box $$(x,y,w,h)$$以及置信度$$P$$。其中\(x,y\)是bounding box相对于每个cell中心的相对位置，$$(w,h)$$是物体相对于整幅图的尺寸。
 
-###### 代码片段1：bounding box预处理
+**代码片段1：bounding box预处理**
 
-```py
+```python
 boxes = tf.tile(boxes, [1, 1, 1, self.boxes_per_cell, 1]) / self.image_size
 classes = labels[..., 5:]
 offset = tf.reshape(
@@ -70,7 +70,7 @@ boxes_tran = tf.stack(
 
 labels需要往前追溯到Pascal voc文件的解析代码中，位于文件`./utils/pascal_voc.py`的139和145行
 
-```py
+```python
 boxes = [(x2 + x1) / 2.0, (y2 + y1) / 2.0, x2 - x1, y2 - y1]
 ...
 label[y_ind, x_ind, 1:5] = boxes
@@ -78,9 +78,9 @@ label[y_ind, x_ind, 1:5] = boxes
 
 置信度$$P$$表示bounding box中物体为待检测物体的概率以及bounding box对该物体的覆盖程度的乘积。所以$$P = Pr(Object) \times IOU_{pred}^{truth}$$。如果bounding box没有覆盖物体，$$P=0$$，否则$$P=IOU_{pred}^{truth}$$。
 
-###### 代码片段2：bounding box的标签值处理
+**代码片段2：bounding box的标签值处理**
 
-```py
+```python
 predict_boxes = tf.reshape(
     predicts[:, self.boundary2:],
     [self.batch_size, self.cell_size, self.cell_size, self.boxes_per_cell, 4])
@@ -111,7 +111,7 @@ $$Pr(Class_i|Object)\times Pr(Object)\times IOU_{pred}^{truth}=Pr(Class_i) \time
 
 该部分代码在`./test.py`文件中：
 
-```py
+```python
 for i in range(self.boxes_per_cell):
     for j in range(self.num_class):
         probs[:, :, i, j] = np.multiply(class_probs[:, :, j], scales[:, :, i])
@@ -121,7 +121,7 @@ for i in range(self.boxes_per_cell):
 
 不同于Faster R-CNN添加了背景类，YOLO仅使用了数据集提供的物体类别，在Pascal VOC中，待检测物体有20类，具体类别内容了列在了配置文件`./yolo/config.py`中
 
-```py
+```python
 CLASSES = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
            'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
            'motorbike', 'person', 'pottedplant', 'sheep', 'sofa',
@@ -130,15 +130,15 @@ CLASSES = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
 
 对于输出层的两个超参数，$$S=7$$，$$B=2$$。则输出层的结构如图3所示。
 
-###### 图3：YOLO的输出层
+**图3：YOLO的输出层**
 
-![](/assets/YOLOv1_3.png)
+![](../.gitbook/assets/YOLOv1_3.png)
 
 ### 2. 输入层
 
 YOLO作为一个统计检测算法，整幅图是直接输入网络的。因为检测需要更细粒度的图像特征，YOLO将图像Resize到了448\*448而不是物体分类中常用的224\*224的尺寸。resize在`./utils/pascal_voc.py`中，需要注意的是YOLO并没有采用VGG中先将图像等比例缩放再裁剪的形式，而是直接将图片非等比例resize。所以YOLO的输出图片的尺寸并不是标准比例的。
 
-```py
+```python
 image = cv2.resize(image, (self.image_size, self.image_size))
 ```
 
@@ -146,20 +146,17 @@ image = cv2.resize(image, (self.image_size, self.image_size))
 
 YOLO使用了GoogLeNet作为骨干架构，但是使用了更少的参数，同时YOLO也不像GoogLeNet有3个输出层，图4。为了提高模型的精度，作者也使用了在ImageNet进行预训练的迁移学习策略。
 
-###### 图4：YOLO的骨干架构
+**图4：YOLO的骨干架构**
 
-![](/assets/YOLOv1_4.png)
+![](../.gitbook/assets/YOLOv1_4.png)
 
 研究发现，在AlexNet中提出的ReLU存在Dead ReLU的问题，所谓Dead ReLU是指由于ReLU的x负数部分的导数永远为0，会导致一部分神经元永远不会被激活，从而一些参数永远不会被更新。
 
 为了解决这个问题，Andrew NG团队提出了leaky ReLU，即在负数部分给与一个很小的梯度，leaky ReLU拥有ReLU的所有优点，但同时不会有Dead ReLU的问题。YOLO中的leaky ReLU（$$\phi(x)$$）表示为
 
-$$\phi(x) = \begin{cases}
-x & if x > 0 \\
-0.1 \times x & otherwise
-\end{cases}$$
+$$\phi(x) = \begin{cases} x & if x > 0 \\ 0.1 \times x & otherwise \end{cases}$$
 
-```py
+```python
 def leaky_relu(alpha):
     def op(inputs):
         return tf.nn.leaky_relu(inputs, alpha=alpha, name='leaky_relu')
@@ -172,7 +169,7 @@ def leaky_relu(alpha):
 
 YOLO的输出层包含标签种类决定了YOLO的损失函数必须是一个多任务的损失函数。根据1.2节的介绍我们已知YOLO的输出层包含分类信息，置信度$$P$$和bounding box的坐标信息$$(x,y,w,h)$$。我们先给出YOLO的损失函数的表达式再逐步解析损失函数这样设计的动机。
 
-![](/assets/YOLOv1_6.png)
+![](../.gitbook/assets/YOLOv1_6.png)
 
 #### 4.1 noobj
 
@@ -186,7 +183,7 @@ YOLO并没有使用深度学习常用的均方误差（MSE）而是使用和方�
 
 需要注意的是TF的源码（`./yolo/config.py`）使用的并不是论文和DarkNet源码中给出的超参数。对于损失函数的四个任务，坐标预测，前景预测，背景预测和分类预测的权值使用的权值分别是1，1，2，5。该值并不是非常重要，通常需要根据模型在验证集上的表现调整。
 
-```py
+```python
 OBJECT_SCALE = 1.0
 NOOBJECT_SCALE = 1.0
 CLASS_SCALE = 2.0
@@ -205,9 +202,9 @@ $$I^{obj}_{i,j}$$，$$I^{obj}_{i}$$和$$I^{noobj}_{i,j}$$分别是代码片段2�
 
 YOLO的损失函数见代码片段3
 
-###### 代码片段3：YOLO的损失函数
+**代码片段3：YOLO的损失函数**
 
-```py
+```python
 # class_loss
 class_delta = response * (predict_classes - classes)
 class_loss = tf.reduce_mean(
@@ -247,9 +244,9 @@ YOLO的快速我们已经一再重复，其性能的提升是因为YOLO统一检
 * Other：分类错误且IoU&gt;0.1
 * Background：IoU&lt;0.1的所有样本
 
-###### 图5：Fast R-CNN vs YOLO
+**图5：Fast R-CNN vs YOLO**
 
-![](/assets/YOLOv1_5.png)
+![](../.gitbook/assets/YOLOv1_5.png)
 
 YOLO的论文中也指出YOLO的通用性更强，例如在人类画作的数据集上YOLO的表现要优于Fast R-CNN。但是为什么通用性更好至今我尚未想通，等待大神补充。
 

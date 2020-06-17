@@ -73,6 +73,5 @@
 * 2019-11-17：Show and Tell: A Neural Image Caption Generator
 * 2020-02-15：PixelLink: Detecting Scene Text via Instance Segmentation
 * 2020-02-24：Bidirectional Scene Text Recognition with a Single Decoder
-
-
+* 2020-06-14：Background Matting： The World is Your Green Screen
 

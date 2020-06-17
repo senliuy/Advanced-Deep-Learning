@@ -4,7 +4,7 @@ tags: OCR, DenseBox
 
 ## 前言
 
-DenseBox{{"huang2015densebox"|cite}}百度IDL的作品，提出的最初动机是为了解决普适的物体检测问题。其在2015年初就被提出来了，甚至比Fast R-CNN还要早，但是由于论文发表的比较晚，虽然算法上非常有创新点，但是依旧阻挡不了Fast R-CNN一统江山。
+DenseBox百度IDL的作品，提出的最初动机是为了解决普适的物体检测问题。其在2015年初就被提出来了，甚至比Fast R-CNN还要早，但是由于论文发表的比较晚，虽然算法上非常有创新点，但是依旧阻挡不了Fast R-CNN一统江山。
 
 DenseBox的主要贡献如下：
 
@@ -27,19 +27,12 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 
 训练集的标签是一个$$60\times60\times5$$的热图（图1），$$60\times60$$表示热图的尺寸，从这个尺寸我们也可以看出训练样本经过了两次降采样。$$5$$表示热图的通道数，组成方式如下：
 
-<figure>
-<img src="/assets/DenseBox_1.png" alt="图1：DenseBox的Ground Truth" />
-<figcaption>图1：DenseBox的Ground Truth</figcaption>
-</figure>
+ ![&#x56FE;1&#xFF1A;DenseBox&#x7684;Ground Truth](../../.gitbook/assets/DenseBox_1.png)图1：DenseBox的Ground Truth
 
 1. 图1中最前面的热图用于标注人脸区域置信度，前景为1，背景为0。DenseBox并没有使用左图的人脸矩形区域而是使用半径（$$r_c$$）为Ground Truth的高的0.3倍的圆作为标签值，而圆形的中心就是热图的中心，即有图中的白色圆形部分；
+2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示，Ground Truth为蓝色矩形，表示为$$d^* = (d^*_{x^t},d^*_{x^b},d^*_{y^t},d^*_{y^b})$$, 绿色为预测的矩形，表示为$$\hat{d} = (\hat{d}_{x^t},\hat{d}_{x^b},\hat{d}_{y^t},\hat{d}_{y^b})$$。\(论文中符号的使用混乱且有错误，这里没有采用和论文完全相同的符号\)。
 
-2. 图1中后面的四个热图表示像素点到最近的Ground Truth的四个边界的距离，如图2所示，Ground Truth为蓝色矩形，表示为$$d^* = (d^*_{x^t},d^*_{x^b},d^*_{y^t},d^*_{y^b})$$, 绿色为预测的矩形，表示为$$\hat{d} = (\hat{d}_{x^t},\hat{d}_{x^b},\hat{d}_{y^t},\hat{d}_{y^b})$$。(论文中符号的使用混乱且有错误，这里没有采用和论文完全相同的符号)。
-
-<figure>
-<img src="/assets/DenseBox_2.jpeg" alt="图2：DenseBox中距离热图示意图" width="300" align="middle"/>
-<figcaption>图2：DenseBox中距离热图示意图</figcaption>
-</figure>
+ ![&#x56FE;2&#xFF1A;DenseBox&#x4E2D;&#x8DDD;&#x79BB;&#x70ED;&#x56FE;&#x793A;&#x610F;&#x56FE;](../../.gitbook/assets/DenseBox_2.jpeg)图2：DenseBox中距离热图示意图
 
 如果训练样本中的人脸比较密集，一个patch中可能出现多个人脸，如果某个人脸和中心点处的人脸的高的比例在$$[0.8,1.25]$$之间，则认为该样本为正样本。
 
@@ -49,12 +42,9 @@ DenseBox没有使用整幅图作为输入，因为作者考虑到一张图上的
 
 DenseBox使用了16层的VGG-19作为骨干网络，但是只使用了其前12层，如图3所示。
 
-<figure>
-<img src="/assets/DenseBox_3.png" alt="图3：DenseBox中的网络结构" width="600"/>
-<figcaption>图3：DenseBox中的网络结构</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;DenseBox&#x4E2D;&#x7684;&#x7F51;&#x7EDC;&#x7ED3;&#x6784;](../../.gitbook/assets/DenseBox_3.png)图3：DenseBox中的网络结构
 
-首先需要注意的是在网络的Conv3_4和Conv4_4之间发生了一次特征融合，融合的方式是Conv4_4层的双线性插值上采样，因此得到的Feature Map和Conv3_4是相同的，即为$$60\times60$$，通过计算我们可以得知Conv3_4层的感受野的尺寸是$$48\times48$$，该层的尺寸和标签中的人脸尺寸接近，用于捕捉人脸区域的关键特征；Conv4_4层的感受野的大小是$$118\times118$$，用于捕捉人脸的上下文特征。
+首先需要注意的是在网络的Conv3\_4和Conv4\_4之间发生了一次特征融合，融合的方式是Conv4\_4层的双线性插值上采样，因此得到的Feature Map和Conv3\_4是相同的，即为$$60\times60$$，通过计算我们可以得知Conv3\_4层的感受野的尺寸是$$48\times48$$，该层的尺寸和标签中的人脸尺寸接近，用于捕捉人脸区域的关键特征；Conv4\_4层的感受野的大小是$$118\times118$$，用于捕捉人脸的上下文特征。
 
 上采样之后网络有两个分支，分别用于计算检测损失和Bounding Box的回归损失，分支由$$1\times1$$卷积核Dropout组成。从这里我们看出DenseBox也是一个多任务模型，下面我们开始介绍这个多任务模型。
 
@@ -129,12 +119,9 @@ $$\lambda_{loc}$$是平衡两个任务的参数，论文中值为3。位置$$d_i
 
 ### 1.5 结合关键点检测的多任务模型
 
-论文中指出当DenseBox加入关键点检测的任务分支时模型的精度会进一步提升，这时只需要在图3的conv3_4和conv4_4融合之后的结果上添加一个用于关键点检测的分支即可，分支的详细结构如图4所示。
+论文中指出当DenseBox加入关键点检测的任务分支时模型的精度会进一步提升，这时只需要在图3的conv3\_4和conv4\_4融合之后的结果上添加一个用于关键点检测的分支即可，分支的详细结构如图4所示。
 
-<figure>
-<img src="/assets/DenseBox_4.png" alt="图4：Refine Network的网络结构" width="600"/>
-<figcaption>图4：Refine Network的网络结构</figcaption>
-</figure>
+ ![&#x56FE;4&#xFF1A;Refine Network&#x7684;&#x7F51;&#x7EDC;&#x7ED3;&#x6784;](../../.gitbook/assets/DenseBox_4.png)图4：Refine Network的网络结构
 
 假设样本有$$N$$个关键点（在MALF中$$N=72$$），DenseBox的关键点检测的输出是$$N$$个热图，热图中的每个像素点表示改点为对应位置关键点的置信度。
 
@@ -144,7 +131,7 @@ Landmark使用了1.4节中介绍的灰色区域和Hard Negative Mining方法进�
 
 ### 1.6 Refine Network
 
-加入关键点检测分支之后，DenseBox根据关键点的置信度图和boudning box的置信度图构成了新的检测损失，并将其命名为Refine Network，如图4的蓝色虚线部分。更详细的讲，Refine Net通过拼接的方式融合了关键点检测的Conv5_2_landmark层和图2中bounding box的Conv5_2_det层，之后接了Max Pooling层，卷积层，上采样层最后生成新的预测值$$\hat{y}$$。Refine Network也是使用了相同的l2损失函数，表示为$$\mathcal{L}_{rf}$$。
+加入关键点检测分支之后，DenseBox根据关键点的置信度图和boudning box的置信度图构成了新的检测损失，并将其命名为Refine Network，如图4的蓝色虚线部分。更详细的讲，Refine Net通过拼接的方式融合了关键点检测的Conv5_2\_landmark层和图2中bounding box的Conv5\_2\_det层，之后接了Max Pooling层，卷积层，上采样层最后生成新的预测值_$$\hat{y}$$_。Refine Network也是使用了相同的l2损失函数，表示为$$\mathcal{L}_{rf}$$。
 
 ### 1.7 最终输出
 
@@ -169,3 +156,4 @@ DenseBox的检测过程如图5所示，先考虑不带关键点检测的流程�
 ## 总结
 
 DenseBox在今天看来技术性依旧非常强，虽然作为一个人脸检测的论文被发表，但是其思想也可以迁移到通用的物体检测中。而且得到的效果几乎和Faster R-CNN旗鼓相当。由于采用了FCN的架构，DenseBox本身的速度应该不会太慢，唯一的性能瓶颈应该是图像金字塔的引入。在之后的研究中，DenseBox通过SPP-Net中的金字塔池化的方式将检测时间优化到了GPU的实时。本来DenseBox在物体检测中能有更大的价值的，但是由于其仅限于百度内部使用，并没有开源，论文投稿也比较晚造成了R-CNN系列的一统天下。当然R-CNN系列凭借其代码的规范性，算法的通用性等优点一统天下也不意外。
+

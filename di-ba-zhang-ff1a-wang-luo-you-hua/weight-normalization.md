@@ -4,7 +4,7 @@ tags：Normalization
 
 ## 前言
 
-之前介绍的[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/batch-normalization.html)[2]和[LN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)[3]都是在数据的层面上做的归一化，而这篇文章介绍的Weight Normalization（WN\)是在权值的维度上做的归一化。WN的做法是将权值向量$$\mathbf{w}$$在其欧氏范数和其方向上解耦成了参数向量$$\mathbf{v}$$和参数标量$$g$$后使用SGD分别优化这两个参数。
+之前介绍的[BN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/batch-normalization.html)\[2\]和[LN](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-ba-zhang-ff1a-wang-luo-you-hua/layer-normalization.html)\[3\]都是在数据的层面上做的归一化，而这篇文章介绍的Weight Normalization（WN\)是在权值的维度上做的归一化。WN的做法是将权值向量$$\mathbf{w}$$在其欧氏范数和其方向上解耦成了参数向量$$\mathbf{v}$$和参数标量$$g$$后使用SGD分别优化这两个参数。
 
 WN也是和样本量无关的，所以可以应用在batchsize较小以及RNN等动态网络中；另外BN使用的基于mini-batch的归一化统计量代替全局统计量，相当于在梯度计算中引入了噪声。而WN则没有这个问题，所以在生成模型，强化学习等噪声敏感的环境中WN的效果也要优于BN。
 
@@ -16,27 +16,19 @@ WN没有一如额外参数，这样更节约显存。同时WN的计算效率也�
 
 神经网络的一个节点计算可以表示为：
 
-
 $$
 y = \phi(\mathbf{w}\cdot\mathbf{x}+b)
 $$
 
-
 其中$$\mathbf{w}$$是一个$$k$$-维的特征向量，$$y$$是该神经节点的输出，所以是一个标量。在得到损失值后，我们会根据损失函数的值使用SGD等优化策略更新$$\mathbf{w}$$和$$b$$。WN提出的归一化策略是将$$\mathbf{w}$$分解为一个参数向量$$\mathbf{v}$$和一个参数标量$$g$$，分解方法为
-
 
 $$
 \mathbf{w} = \frac{g}{||\mathbf{v}||} \mathbf{v}
 $$
 
-
 上式中$$||\mathbf{v}||$$表示$$\mathbf{v}$$的欧氏范数。当$$\mathbf{v}=\mathbf{w}$$且$$g = ||\mathbf{w}||$$时，WN还原为普通的计算方法，所以WN的网络容量是要大于普通神经网络的。
 
-<figure>
-<img src="/assets/WN_1.png" alt="图1：权值向量的分解可视化" />
-<figcaption>图1：权值向量的分解可视化</figcaption>
-</figure>
-
+ ![&#x56FE;1&#xFF1A;&#x6743;&#x503C;&#x5411;&#x91CF;&#x7684;&#x5206;&#x89E3;&#x53EF;&#x89C6;&#x5316;](../.gitbook/assets/WN_1.png)图1：权值向量的分解可视化
 
 当我们将$$g$$固定为$$||\mathbf{w}||$$时，我们只优化$$\mathbf{v}$$，这时候相当于只优化$$\mathbf{w}$$的方向而保留其范数。当$$\mathbf{v}$$固定为$$\mathbf{w}$$时，这时候相当于只优化$$\mathbf{w}$$的范数，而保留其方向，这样为我们优化权值提供了更多可以选择的空间，且解耦方向与范数的策略也能加速其收敛。
 
@@ -44,13 +36,11 @@ $$
 
 $$\mathbf{v}$$和$$g$$的更新值可以通过SGD计算得到：
 
-
 $$
 \nabla_g L = \frac{\nabla_{\mathbf w}L \cdot \mathbf{v}}{||\mathbf{v}||}
 \qquad
 \nabla_{\mathbf{v}} L = \frac{g}{||\mathbf{v}||} \nabla_{\mathbf{w}} L - \frac{g\nabla_g L}{||\mathbf{v}||^2} \mathbf{v}
 $$
-
 
 其中$$L$$为损失函数，$$\nabla_{\mathbf{w}}L$$为$$\mathbf{w}$$在$$L$$下的梯度值。
 
@@ -60,7 +50,6 @@ $$
 
 1.1节的梯度更新公式也可以写作：
 
-
 $$
 \nabla_{\mathbf{v}} L = \frac{g}{||\mathbf{v}||} M_{\mathbf{w}} \nabla_{\mathbf w}L
 \quad
@@ -69,10 +58,9 @@ $$
 M_{\mathbf{w}} = I - \frac{\mathbf{w}\mathbf{w}'}{||\mathbf{w}||^2}
 $$
 
-
 推导方式如下：
 
-![](/assets/WN_a1.png)
+![](../.gitbook/assets/WN_a1.png)
 
 倒数第二步的推导是因为$$\mathbf{v}$$是$$\mathbf{w}$$的方向向量。上面公式反应了WN两个重要特征：
 
@@ -81,7 +69,7 @@ $$
 
 这两个特征都会加速模型的收敛。
 
-具体原因论文的说法比较复杂，其核心思想有两点：1.由于$$\mathbf{w}$$垂直于$$M_{\mathbf{w}}$$，所以$$\nabla_{\mathbf{v}}L$$非常接近于垂直参数方向$$\mathbf{w}$$，这样对于矫正梯度更新方向是非常有效的；2.$$\mathbf{v}$$和梯度更新值中的噪声量成正比，而$$\mathbf{v}$$是和更新量成反比，所以当更新值中噪音较多时，更新值会变小，这说明WN有自稳定（self-stablize）的作用。这个特点使得我们可以在WN中使用比较大的学习率。[^1]
+具体原因论文的说法比较复杂，其核心思想有两点：1.由于$$\mathbf{w}$$垂直于$$M_{\mathbf{w}}$$，所以$$\nabla_{\mathbf{v}}L$$非常接近于垂直参数方向$$\mathbf{w}$$，这样对于矫正梯度更新方向是非常有效的；2.$$\mathbf{v}$$和梯度更新值中的噪声量成正比，而$$\mathbf{v}$$是和更新量成反比，所以当更新值中噪音较多时，更新值会变小，这说明WN有自稳定（self-stablize）的作用。这个特点使得我们可以在WN中使用比较大的学习率。
 
 另一个角度从新权值的协方差矩阵出发的，假设$$\mathbf{w}$$的协方差矩阵是$$\mathbf{C}$$，那么$$\mathbf{v}$$的协方差矩阵$$\mathbf{D} = (g^2/||\mathbf{v}||^2)M_{\mathbf{w}}\mathbf{C}M_{\mathbf{w}}$$，当去掉$$\mathbf{D}$$中的特征值后我们发现新的$$\mathbf{D}$$非常趋近于一个单位矩阵，这说明了$$\mathbf{w}$$是$$\mathbf{C}$$的主特征向量（dominant eigenvector），说明WN有助于提升收敛速度。
 
@@ -124,6 +112,4 @@ $$
 4. 对噪声更不敏感，更适用在GAN，RL等场景中。
 
 说WN不像归一化的原因是它并没有对得到的特征范围进行约束的功能，所以WN依旧对参数的初始值非常敏感，这也是WN一个比较严重的问题。
-
-[^1]: 这是我对于论文的2.1节的比较主观的个人理解，当初看的时候就非常头疼，理解可能有偏差，希望各位读者给出正确的批评指正。
 

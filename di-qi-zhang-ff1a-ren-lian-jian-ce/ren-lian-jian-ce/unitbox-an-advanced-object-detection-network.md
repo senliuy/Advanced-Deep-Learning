@@ -2,7 +2,7 @@
 
 ## 前言
 
-UnitBox{{"yu2016unitbox"|cite}}使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.html){{"huang2015densebox"|cite}}类似的基于图像分割的方法进行人脸检测。在DenseBox中，bounding box的定位使用的是l2损失。l2损失的一个缺点是会使模型在训练过程中更偏向于尺寸更大的物体，因为大尺寸物体的l2损失更容易大于小物体。
+UnitBox使用了和[DenseBox](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-qi-zhang-ff1a-ren-lian-jian-ce/ren-lian-jian-ce/densebox-unifying-landmark-localization-with-end-to-end-object-detection.html)类似的基于图像分割的方法进行人脸检测。在DenseBox中，bounding box的定位使用的是l2损失。l2损失的一个缺点是会使模型在训练过程中更偏向于尺寸更大的物体，因为大尺寸物体的l2损失更容易大于小物体。
 
 为了解决这个问题，UnitBox中使用了IoU损失，顾名思义，IoU损失既是使用Ground Truth和预测bounding box的交并比作为损失函数。
 
@@ -13,21 +13,15 @@ UnitBox{{"yu2016unitbox"|cite}}使用了和[DenseBox](https://senliuy.gitbooks.i
 1. DenseBox网络结构是全卷积网络，输出层是一个$$\frac{m}{4}\times \frac{n}{4}$$的Feature Map，是一个image-to-image的任务；
 2. 输出Feature Map的每个像素点$$(x_i, y_i)$$都是可以确定一个检测框的样本，包样本含置信度$$y$$和该点到bounding box四条边的距离$$(x_t,x_b,y_t,y_b)$$，如图1所示
 
-<figure>
-<img src="/assets/UnitBox_1.jpeg" alt="图1：UnitBox的Ground Truth" align="center"/>
-<figcaption>图1：UnitBox的Ground Truth</figcaption>
-</figure>
+ ![&#x56FE;1&#xFF1A;UnitBox&#x7684;Ground Truth](../../.gitbook/assets/UnitBox_1.jpeg)图1：UnitBox的Ground Truth
 
 Unitbox的一个最重要的特征是使用IoU损失替代了传统的l2损失，下面我们先从IoU损失入手讲解UnitBox。
 
-### 1.1 IoU损失的前向计算 
+### 1.1 IoU损失的前向计算
 
 前向计算非常简单，如图2中的伪代码所示：
 
-<figure>
-<img src="/assets/UnitBox_2.png" alt="图2：IoU损失前向计算伪代码" width="400"/>
-<figcaption>图2：IoU损失前向计算伪代码</figcaption>
-</figure>
+ ![&#x56FE;2&#xFF1A;IoU&#x635F;&#x5931;&#x524D;&#x5411;&#x8BA1;&#x7B97;&#x4F2A;&#x4EE3;&#x7801;](../../.gitbook/assets/UnitBox_2.png)图2：IoU损失前向计算伪代码
 
 注意结合图1中的$$x$$和$$\tilde{x}$$的定义理解图2中的伪代码，$$X$$计算的是预测bounding box的面积，$$\tilde{X}$$则是ground truth的bounding box的面积，$$I$$是两个区域的交集，$$U$$是两个区域的并集。
 
@@ -84,10 +78,7 @@ $$
 
 UnitBox的网络结构如图3所示，下面分析几个重要的方面
 
-<figure>
-<img src="/assets/UnitBox_3.png" alt="图3：UnitBox网络结构"/>
-<figcaption>图3：UnitBox网络结构</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;UnitBox&#x7F51;&#x7EDC;&#x7ED3;&#x6784;](../../.gitbook/assets/UnitBox_3.png)图3：UnitBox网络结构
 
 ### 1.3.1 网络的输入输出
 
@@ -108,6 +99,5 @@ UnitBox的提出虽然目的是为了解决人脸检测问题，但是从其算�
 写这篇文章的目的主要是介绍UnitBox中引入的IoU损失，IoU损失有如下优点
 
 * IoU损失将位置信息作为一个整体进行训练，而l2损失把它们当做互相独立的四个变量进行训练，这样得到的结果更准确；
-
 * 无论输入的样本是什么样子，IoU的值均介于$$[0,1]$$，这种天然的归一化的损失使模型具有更强的处理多尺度图像的能力。
 

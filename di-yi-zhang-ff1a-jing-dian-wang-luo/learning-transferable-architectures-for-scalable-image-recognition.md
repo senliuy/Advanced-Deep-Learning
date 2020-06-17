@@ -4,9 +4,9 @@ tags: NAS, NASNet, AutoML
 
 ## 前言
 
-在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html){{"zoph2016neural"|cite}}一文中我们介绍了如何使用强化学习学习一个完整的CNN网络或是一个独立的RNN单元，这种dataset interest的网络的效果也是目前最优的。但是NAS提出的网络的计算代价是相当昂贵的，仅仅在CIFAR-10上学习一个网络就需要500台GPU运行28天才能找到最优结构。这使得NAS很难迁移到大数据集上，更不要提ImageNet这样几百G的数据规模了。而在目前的行内规则上，如果不能在ImageNet上取得令人信服的结果，你的网络结构很难令人信服的。
+在[NAS](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)一文中我们介绍了如何使用强化学习学习一个完整的CNN网络或是一个独立的RNN单元，这种dataset interest的网络的效果也是目前最优的。但是NAS提出的网络的计算代价是相当昂贵的，仅仅在CIFAR-10上学习一个网络就需要500台GPU运行28天才能找到最优结构。这使得NAS很难迁移到大数据集上，更不要提ImageNet这样几百G的数据规模了。而在目前的行内规则上，如果不能在ImageNet上取得令人信服的结果，你的网络结构很难令人信服的。
 
-为了将NAS迁移到大数据集乃至ImageNet上，这篇文章提出了在小数据（CIFAR-10）上学习一个网络单元（Cell），然后通过堆叠更多的这些网络单元的形式将网络迁移到更复杂，尺寸更大的数据集上面。因此这篇文章的最大贡献便是介绍了如何使用强化学习学习这些网络单元。作者将用于ImageNet的NAS简称为NASNet{{"zoph2018learning"|cite}}，文本依旧采用NASNet的简称来称呼这个算法。实验数据也证明了NASNet的有效性，其在ImageNet的top-1精度和top-5精度均取得了当时最优的效果。
+为了将NAS迁移到大数据集乃至ImageNet上，这篇文章提出了在小数据（CIFAR-10）上学习一个网络单元（Cell），然后通过堆叠更多的这些网络单元的形式将网络迁移到更复杂，尺寸更大的数据集上面。因此这篇文章的最大贡献便是介绍了如何使用强化学习学习这些网络单元。作者将用于ImageNet的NAS简称为NASNet，文本依旧采用NASNet的简称来称呼这个算法。实验数据也证明了NASNet的有效性，其在ImageNet的top-1精度和top-5精度均取得了当时最优的效果。
 
 阅读本文前，强烈建议移步到我的《[Neural Architecture Search with Reinforecement Learning](https://senliuy.gitbooks.io/advanced-deep-learning/content/di-yi-zhang-ff1a-jing-dian-wang-luo/neural-architecture-search-with-reinforecement-learning.html)》介绍文章中，因为本文并不会涉及强化学习部分，只会介绍控制器是如何学习一个NASNet网络块的。
 
@@ -18,11 +18,7 @@ tags: NAS, NASNet, AutoML
 
 NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络块（block）组成，在实验中$$B=5$$。每个块的具体形式如图1右侧部分，每个块有并行的两个卷积组成，它们会由控制器决定选择哪些Feature Map作为输入（灰色部分）以及使用哪些运算（黄色部分）来计算输入的Feature Map。最后它们会由控制器决定如何合并这两个Feature Map。
 
-<figure>
-<img src="/assets/NASNet_1.png" alt="图1：NASNet控制器结构示意图"/>
-<figcaption>图1：NASNet控制器结构示意图</figcaption>
-</figure>
-
+ ![&#x56FE;1&#xFF1A;NASNet&#x63A7;&#x5236;&#x5668;&#x7ED3;&#x6784;&#x793A;&#x610F;&#x56FE;](../.gitbook/assets/NASNet_1.png)图1：NASNet控制器结构示意图
 
 更精确的讲，NASNet网络单元的计算分为5步：
 
@@ -32,11 +28,7 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 4. 为2的Feature Map选择一个元素；
 5. 选择一个合并3，4得到的Feature Map的运算。
 
-<figure>
-<img src="/assets/NASNet_2.png" alt="图2：NASNet生成的CNN单元。(左)：Normal Cell，（右）Reduction Cell"/>
-<figcaption>图2：NASNet生成的CNN单元。(左)：Normal Cell，（右）Reduction Cell</figcaption>
-</figure>
-
+ ![&#x56FE;2&#xFF1A;NASNet&#x751F;&#x6210;&#x7684;CNN&#x5355;&#x5143;&#x3002;\(&#x5DE6;\)&#xFF1A;Normal Cell&#xFF0C;&#xFF08;&#x53F3;&#xFF09;Reduction Cell](../.gitbook/assets/NASNet_2.png)图2：NASNet生成的CNN单元。\(左\)：Normal Cell，（右）Reduction Cell
 
 在3，4中我们可以选择的操作有：
 
@@ -64,32 +56,29 @@ NASNet的控制器的结构如图1所示，每个网络单元由$$B$$的网络�
 
 NASNet的强化学习思路和NAS相同，有几个技术细节这里说明一下：
 
-1. NASNet进行迁移学习时使用的优化策略是Proximal Policy Optimization（PPO）{{"schulman2017proximal"|cite}}；
+1. NASNet进行迁移学习时使用的优化策略是Proximal Policy Optimization（PPO）；
 2. 作者尝试了均匀分布的搜索策略，效果略差于策略搜索。
 
 ### 1.3 Scheduled Drop Path
 
-在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath{{"larsson2016fractalnet"|cite}}。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
+在优化类似于Inception的多分支结构时，以一定概率随机丢弃掉部分分支是避免过拟合的一种非常有效的策略，例如DropPath。但是DropPath对NASNet不是非常有效。在NASNet的Scheduled Drop Path中，丢弃的概率会随着训练时间的增加线性增加。这么做的动机很好理解：训练的次数越多，模型越容易过拟合，DropPath的避免过拟合的作用才能发挥的越有效。
 
 ### 1.4 其它超参
 
 在NASNet中，强化学习的搜索空间大大减小，很多超参数已经由算法写死或者人为调整。这里介绍一下NASNet需要人为设定的超参数。
 
-1. 激活函数统一使用ReLU，实验结果表明ELU nonlinearityDropPath{{"clevert2015fast"|cite}}效果略优于ReLU；
+1. 激活函数统一使用ReLU，实验结果表明ELU nonlinearityDropPath效果略优于ReLU；
 2. 全部使用Valid卷积，padding值由卷积核大小决定；
 3. Reduction Cell的Feature Map的数量需要乘以2，Normal Cell数量不变。初始数量人为设定，一般来说数量越多，计算越慢，效果越好；
 4. Normal Cell的重复次数（图3中的$$N$$）人为设定；
 5. 深度可分离卷积在深度卷积和单位卷积中间不使用BN或ReLU;
 6. 使用深度可分离卷积时，该算法执行两次；
-7. 所有卷积遵循ReLU->卷积->BN的计算顺序；
+7. 所有卷积遵循ReLU-&gt;卷积-&gt;BN的计算顺序；
 8. 为了保持Feature Map的数量的一致性，必要的时候添加$$1\times1$$卷积。
 
-堆叠Cell得到的CIFAR_10和ImageNet的实验结果如图3所示。
+堆叠Cell得到的CIFAR\_10和ImageNet的实验结果如图3所示。
 
-<figure>
-<img src="/assets/NASNet_3.png" alt="图3：NASNet的CIFAR10和ImageNet的网络结构"/>
-<figcaption>图3：NASNet的CIFAR10和ImageNet的网络结构</figcaption>
-</figure>
+ ![&#x56FE;3&#xFF1A;NASNet&#x7684;CIFAR10&#x548C;ImageNet&#x7684;&#x7F51;&#x7EDC;&#x7ED3;&#x6784;](../.gitbook/assets/NASNet_3.png)图3：NASNet的CIFAR10和ImageNet的网络结构
 
 ## 2. 总结
 
@@ -97,8 +86,7 @@ NASNet最大的贡献是解决了NAS无法应用到大数据集上的问题，�
 
 NASNet已经不再是一个dataset interest的网络了，因为其中大量的参数都是人为设定的，网络的搜索空间更倾向于**密集连接的方式**。这种人为设定参数的一个正面影响就是减小了强化学习的搜索空间，从而提高运算速度，在相同的硬件环境下，NASNet的速度要比NAS快7倍。
 
-NASNet的网络单元本质上是一个更复杂的Inception，可以通过堆叠
-网络单元的形式将其迁移到任意分类任务，乃至任意类型的任务中。论文中使用NASNet进行的物体检测也要优于其它网络。
+NASNet的网络单元本质上是一个更复杂的Inception，可以通过堆叠 网络单元的形式将其迁移到任意分类任务，乃至任意类型的任务中。论文中使用NASNet进行的物体检测也要优于其它网络。
 
 本文使用CIFAR-10得到的网络单元其实并不是非常具有代表性，理想的数据集应该是ImageNet。但是现在由于硬件的计算能力受限，无法在ImageNet上完成网络单元的学习，随着硬件性能提升，基于ImageNet的NASNet一定会出现。或者我们也可以期待某个土豪团队多费电电费帮我们训练出这样一个架构来。
 

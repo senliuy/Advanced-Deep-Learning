@@ -16,7 +16,7 @@
 
 从信息论的角度讲，由于DPI（数据处理不等式）的存在，在前向传输的过程中，随着层数的加深，Feature Map包含的图像信息会逐层减少，而ResNet的直接映射的加入，保证了$$l+1$$层的网络一定比$$l$$层包含更多的图像信息。
 
-基于这种使用直接映射来连接网络不同层直接的思想，残差网络{{"he2016deep"|cite}},{{"he2016identity"|cite}}应运而生。
+基于这种使用直接映射来连接网络不同层直接的思想，残差网络,应运而生。
 
 ## 1. 残差网络
 
@@ -24,37 +24,33 @@
 
 残差网络是由一系列残差块组成的（图1）。一个残差块可以用表示为：
 
-
 $$
 x_{l+1}= x_l+\mathcal{F}(x_l, {W_l})
 $$
 
-
 残差块分成两部分直接映射部分和残差部分。$$h(x_l)$$是直接映射，反应在图1中是左边的曲线；$$\mathcal{F}(x_l, {W_l})$$是残差部分，一般由两个或者三个卷积操作构成，即图1中右侧包含卷积的部分。
 
-###### 图1：残差块
+#### 图1：残差块
 
-![](/assets/ResNet_1.png)
+![](../.gitbook/assets/ResNet_1.png)
 
 图1中的'Weight‘在卷积网络中是指卷积操作，’addition‘是指单位加操作。
 
 在卷积网络中，$$x_l$$可能和$$x_{l+1}$$的Feature Map的数量不一样，这时候就需要使用$$1\times1$$卷积进行升维或者降维（图2）。这时，残差块表示为：
 
-
 $$
 x_{l+1}= h(x_l)+\mathcal{F}(x_l, {W_l})
 $$
 
-
 其中$$h(x_l) = W'_lx$$。其中$$W'_l$$$$1\times1$$卷核，是实验结果$$1\times1$$卷积对模型性能提升有限，所以一般是在升维或者降维时才会使用。
 
-###### 图2：1\*1残差块
+#### 图2：1\*1残差块
 
-![](/assets/ResNet_2.png)
+![](../.gitbook/assets/ResNet_2.png)
 
 一般，这种版本的残差块叫做resnet\_v1，keras代码实现如下：
 
-```py
+```python
 def res_block_v1(x, input_filter, output_filter):
     res_x = Conv2D(kernel_size=(3,3), filters=output_filter, strides=1, padding='same')(x)
     res_x = BatchNormalization()(res_x)
@@ -79,7 +75,7 @@ def res_block_v1(x, input_filter, output_filter):
 
 在实现过程中，一般是直接stack残差块的方式。
 
-```py
+```python
 def resnet_v1(x):
     x = Conv2D(kernel_size=(3,3), filters=16, strides=1, padding='same', activation='relu')(x)
     x = res_block_v1(x, 16, 16)
@@ -97,17 +93,13 @@ def resnet_v1(x):
 
 残差块一个更通用的表示方式是
 
-
 $$
 y_l= h(x_l)+\mathcal{F}(x_l, {W_l})
 $$
 
-
-
 $$
 x_{l+1} = f(y_l)
 $$
-
 
 现在我们先不考虑升维或者降维的情况，那么在\[1\]中，$$h(\cdot)$$是直接映射，$$f(\cdot)$$是激活函数，一般使用ReLU。我们首先给出两个假设：
 
@@ -116,19 +108,15 @@ $$
 
 那么这时候残差块可以表示为：
 
-
 $$
 x_{l+1} = x_l + \mathcal{F}(x_l, {W_l})
 $$
 
-
 对于一个更深的层$$L$$，其与$$l$$层的关系可以表示为
-
 
 $$
 x_L = x_l + \sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})
 $$
-
 
 这个公式反应了残差网络的两个属性：
 
@@ -137,15 +125,13 @@ $$
 
 根据BP中使用的导数的链式法则，损失函数$$\varepsilon$$关于$$x_l$$的梯度可以表示为
 
-
 $$
 \frac{\partial \varepsilon}{\partial x_l} = \frac{\partial \varepsilon}{\partial x_L}\frac{\partial x_L}{\partial x_l} = \frac{\partial \varepsilon}{\partial x_L}(1+\frac{\partial }{\partial x_l}\sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})) = \frac{\partial \varepsilon}{\partial x_L}+\frac{\partial \varepsilon}{\partial x_L} \frac{\partial }{\partial x_l}\sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})
 $$
 
-
 上面公式反映了残差网络的两个属性：
 
-1. 在整个训练过程中，$$\frac{\partial }{\partial x_l}\sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i}) $$不可能一直为-1，也就是说在残差网络中不会出现梯度消失的问题。
+1. 在整个训练过程中，$$\frac{\partial }{\partial x_l}\sum_{i=1}^{L-1}\mathcal{F}(x_i, {W_i})$$不可能一直为-1，也就是说在残差网络中不会出现梯度消失的问题。
 2. $$\frac{\partial \varepsilon}{\partial x_L}$$表示$$L$$层的梯度可以直接传递到任何一个比它浅的$$l$$层。
 
 通过分析残差网络的正向和反向两个过程，我们发现，当残差块满足上面两个假设时，信息可以非常畅通的在高层和低层之间相互传导，说明这两个假设是让残差网络可以训练深度模型的充分条件。那么这两个假设是必要条件吗？
@@ -154,27 +140,21 @@ $$
 
 对于假设1，我们采用反证法，假设$$h(x_l) = \lambda_l x_l$$，那么这时候，残差块（图3.b）表示为
 
-
 $$
 x_{l+1} = \lambda_lx_l + \mathcal{F}(x_l, {W_l})
 $$
 
-
 对于更深的L层
-
 
 $$
 x_{L} = (\prod_{i=l}^{L-1}\lambda_l)x_l + \sum_{i=l}^{L-1}((\prod_{i=l}^{L-1})\mathcal{F}(x_l, {W_l})
 $$
 
-
 为了简化问题，我们只考虑公式的左半部分$$x'_{L} = (\prod_{i=l}^{L-1}\lambda_l)x_l$$，损失函数$$\varepsilon$$对$$x_l$$求偏微分得
-
 
 $$
 \frac{\partial\varepsilon}{\partial x_l} = \frac{\partial\varepsilon}{\partial x'_L} (\prod_{i=l}^{L-1}\lambda_i)
 $$
-
 
 上面公式反映了两个属性：
 
@@ -185,13 +165,13 @@ $$
 
 对于其它不影响梯度的$$h(\cdot)$$，例如LSTM中的门机制（图3.c，图3.d）或者Dropout（图3.f）以及\[1\]中用于降维的$$1\times1$$卷积（图3.e）也许会有效果，作者采用了实验的方法进行验证，实验结果见图4
 
-###### 图3：直接映射的变异模型
+#### 图3：直接映射的变异模型
 
-![](/assets/ResNet_3.png)
+![](../.gitbook/assets/ResNet_3.png)
 
-###### 图4：变异模型（均为110层）在Cifar10数据集上的表现
+#### 图4：变异模型（均为110层）在Cifar10数据集上的表现
 
-![](/assets/ResNet_4.png)
+![](../.gitbook/assets/ResNet_4.png)
 
 从图4的实验结果中我们可以看出，在所有的变异模型中，依旧是直接映射的效果最好。下面我们对图3中的各种变异模型的分析
 
@@ -202,45 +182,39 @@ $$
 
 所以我们可以得出结论：假设1成立，即
 
-
 $$
 y_l = x_l + \mathcal{F}(x_l, w_l)
 $$
-
-
 
 $$
 y_{l+1} = x_{l+1} + \mathcal{F}(x_{l+1}, w_{l+1}) = f(y_l) + \mathcal{F}(f(y_l), w_{l+1})
 $$
 
-
 ### 2.2 激活函数的位置
 
 \[1\] 提出的残差块可以详细展开如图5.a，即在卷积之后使用了BN做归一化，然后在和直接映射单位加之后使用了ReLU作为激活函数。
 
-###### 图5：激活函数在残差网络中的使用
+#### 图5：激活函数在残差网络中的使用
 
-![](/assets/ResNet_5.png)
+![](../.gitbook/assets/ResNet_5.png)
 
 在2.1节中，我们得出假设“直接映射是最好的选择”，所以我们希望构造一种结构能够满足直接映射，即定义一个新的残差结构$$\hat{f}(\cdot)$$：
-
 
 $$
 y_{l+1} = y_l + \mathcal{F}(\hat{f}(y_l), w_{l+1})
 $$
 
-
 上面公式反应到网络里即将激活函数移到残差部分使用，即图5.c，这种在卷积之后使用激活函数的方法叫做post-activation。然后，作者通过调整ReLU和BN的使用位置得到了几个变种，即5.d中的ReLU-only pre-activation和5.d中的 full pre-activation。作者通过对照试验对比了这几种变异模型，结果见图6。
 
-###### 图6：基于激活函数位置的变异模型在Cifar10上的实验结果
+#### 图6：基于激活函数位置的变异模型在Cifar10上的实验结果
 
-![](/assets/ResNet_6.png)
+![](../.gitbook/assets/ResNet_6.png)
 
 而实验结果也表明将激活函数移动到残差部分可以提高模型的精度。
 
 该网络一般就在resnet\_v2，keras实现如下：
 
-```py
+```python
 def res_block_v2(x, input_filter, output_filter):
     res_x = BatchNormalization()(x)
     res_x = Activation('relu')(res_x)
@@ -267,17 +241,15 @@ def resnet_v2(x):
 
 一个残差网络的搭建也是采用堆叠残差块的形式，在是否降维的时候选择不同的残差块。残差网络v1给出的示意图如图7所示。
 
-###### 图7：残差网络展开成二叉树
+#### 图7：残差网络展开成二叉树
 
-![](/assets/ResNet_8.jpg)
-
+![](../.gitbook/assets/ResNet_8.jpg)
 
 ## 3.残差网络与模型集成
 
-Andreas Veit等人的论文{{"veit2016residual"|cite}}指出残差网络可以从模型集成的角度理解。如图7所示，对于一个3层的残差网络可以展开成一棵含有8个节点的二叉树，而最终的输出便是这8个节点的集成。而他们的实验也验证了这一点，随机删除残差网络的一些节点网络的性能变化较为平滑，而对于VGG等stack到一起的网络来说，随机删除一些节点后，网络的输出将完全随机。
+Andreas Veit等人的论文指出残差网络可以从模型集成的角度理解。如图7所示，对于一个3层的残差网络可以展开成一棵含有8个节点的二叉树，而最终的输出便是这8个节点的集成。而他们的实验也验证了这一点，随机删除残差网络的一些节点网络的性能变化较为平滑，而对于VGG等stack到一起的网络来说，随机删除一些节点后，网络的输出将完全随机。
 
-###### 图8：残差网络展开成二叉树
+#### 图8：残差网络展开成二叉树
 
-![](/assets/ResNet_7.png)
-
+![](../.gitbook/assets/ResNet_7.png)
 

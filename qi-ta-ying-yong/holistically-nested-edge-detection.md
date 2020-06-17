@@ -1,20 +1,22 @@
 # Holistically-Nested Edge Detection
 
+## Holistically-Nested Edge Detection
+
 tags: HED, Edge Detection
 
-# 前言
+## 前言
 
 本文提出了一个新的网络结构用于边缘检测，即本文的题目Holistically-Nested Network（HED）。其中Holistically表示该算法试图训练一个image-to-image的网络；Nested则强调在生成的输出过程中通过不断的集成和学习得到更精确的边缘预测图的过程。从图1中HED和传统Canny算法进行边缘检测的效果对比图我们可以看到HED的效果要明显优于Canny算子的。
 
-###### 图1：HED vs Canny
+**图1：HED vs Canny**
 
-![](/assets/HED_1.png)
+![](../.gitbook/assets/HED_1.png)
 
 由于是HED是image-to-image的，所以该算法也很容易扩展到例如语义分割的其它领域。此外在OCR中的文字检测中，文字区域往往具有比较强的边缘特征，因此HED也可以扩展到场景文字检测中，著名的EAST \[2\]算法便得到了HED的启发。
 
 下面我们结合HED的[Keras源码](https://github.com/lc82111/Keras_HED)对HED展开详细分析。
 
-### 1.1 HED的骨干网络
+#### 1.1 HED的骨干网络
 
 HED创作于2015年，使用了当时state-of-the-art的VGG-16作为骨干网络，并且使用迁移学习初始化了网络权重。
 
@@ -26,19 +28,19 @@ HED使用了多尺度的特征，类似多尺度特征的思想还有Inception�
 * \(d\) Training independent network: 使用完全独立的网络训练同一张图片，得到多个尺度的结果，该方法类似于集成模型；
 * \(e\) Holistically-Nested networks: HED采用的方法，下面详细介绍。
 
-###### 图2：几种提取多尺度特征的算法的网络结构
+**图2：几种提取多尺度特征的算法的网络结构**
 
-![](/assets/HED_2.png)
+![](../.gitbook/assets/HED_2.png)
 
-### 1.2 Holistically-Nested networks
+#### 1.2 Holistically-Nested networks
 
 Holistically-Nested networks的结构如图3以及下面代码：
 
-###### 图3：Holistically-Nested networks结构图
+**图3：Holistically-Nested networks结构图**
 
-![](/assets/HED_3.png)
+![](../.gitbook/assets/HED_3.png)
 
-```py
+```python
 # Input
 img_input = Input(shape=(480,480,3), name='input')
 # Block 1
@@ -84,7 +86,7 @@ model = Model(inputs=[img_input], outputs=[o1, o2, o3, o4, o5, ofuse])
 
 无论从图3还是源码，VGG-16的骨干架构是非常明显的。在VGG-16的5个block的Max Pooling降采样之前，HED通过side\_branch函数产生了5个分支，side\_branch的源码如下
 
-```py
+```python
 def side_branch(x, factor):
     x = Conv2D(1, (1, 1), activation=None, padding='same')(x)
     kernel_size = (2*factor, 2*factor)
@@ -96,29 +98,25 @@ def side_branch(x, factor):
 
 HED的fuse branch层是由5个side\_branch的输出通过Concatenate操作合并而成的。网络的5个side\_branch和一个fuse branch通过sigmoid激活函数后共同作为网络的输出，每个输出的尺寸均和输入图像相同。
 
-### 1.3 HED的损失函数
+#### 1.3 HED的损失函数
 
-#### 1.3.1 训练
+**1.3.1 训练**
 
 设HED的训练集为$$S=\{(X_n, Y_n), n=1,...,N\}$$，其中$$X_n = \{x_j^{(n)}, j=1,...,|X_n|\}$$表示原始输入图像，$$Y_n = \{y_j^{(n)}, j=1,...,|X_n|\}$$表示$$X_n$$的二进制边缘标签map，故$$y_j^{(n)}\in\{0,1\}$$，$$|X_n|$$是一张图像的像素点的个数。
 
 假设VGG-16的网络的所有参数值为$$\mathbf{W}$$，如果网络有$$M$$个side branch的话，那么定义side branch的参数值为$$\mathbf{w} = (\mathbf{w}^{(1)},...,\mathbf{w}^{(M)})$$，则HED关于side branch的目标函数定义为：
 
-
 $$
 \mathcal{L}_{\text{side}}(\mathbf{W}, \mathbf{w}) = \sum^M_{m=1}\alpha_m \ell_{side}^{(m)}(\mathbf{W}, \mathbf{w}^{(m)})
 $$
-
 
 其中$$\alpha_m$$表示每个side branch的损失函数的权值，可以根据训练日志进行调整或者均为1/5。
 
 $$\ell_{side}^{(m)}(\mathbf{W},\mathbf{w}^{(m)})$$是每个side branch的损失函数，该损失函数是一个类别平衡的交叉熵损失函数：
 
-
 $$
 \ell_{side}^{(m)}(\mathbf{W},\mathbf{w}^{(m)}) = -\beta\sum_{j\in Y_+}log \text{Pr}(y_j=1|X;\mathbf{W},\mathbf{w}^{(m)}) - (1-\beta) \sum_{j\in Y_-}log \text{Pr}(y_j=0|X;\mathbf{W},\mathbf{w}^{(m)})
 $$
-
 
 其中$$\beta$$适用于平衡边缘检测的正负样本不均衡的类别平衡权值，其中$$\beta=\frac{|Y_-|}{|Y|}$$, $$1-\beta = \frac{|Y_+|}{Y}$$。$$|Y_+|$$表示非边缘像素的个数，那么$$|Y_-|$$则表示边缘像素的个数。
 
@@ -126,7 +124,7 @@ $$\hat{Y}_{\text{side}}^{(m)} = \text{Pr}(y_j=1|X;\mathbf{W},\mathbf{w}^{(m)}) =
 
 类别平衡损失函数实现如下
 
-```py
+```python
 def cross_entropy_balanced(y_true, y_pred):
     _epsilon = _to_tensor(K.epsilon(), y_pred.dtype.base_dtype)
     y_pred   = tf.clip_by_value(y_pred, _epsilon, 1 - _epsilon)
@@ -143,23 +141,19 @@ def cross_entropy_balanced(y_true, y_pred):
 
 如图3所示，fuse层表示为m个side branch的加权和（代码中的$$1\times1$$卷积起到的作用），即$$\hat{Y}_{\text{fuse}} \equiv \sigma(\sum_{m=1}^M h_m \hat{A}_{\text{side}}^{(m)})$$，fuse层的损失函数1定义为：
 
-
 $$
 \mathcal{L}_{\text{fuse}}(\mathbf{W},\mathbf{w},\mathbf{h}) = \text{Dist}(Y, \hat{Y}_{\text{fuse}})
 $$
-
 
 其中$$\text{Dist}(\cdot,\cdot)$$表示交叉熵损失函数。源码中使用的是类别平衡的交叉熵损失函数，个人认为源码中的方案更科学。
 
 最后，训练模型时的目标函数便是最小化side branch损失$$\mathcal{L}_{\text{side}}(\mathbf{W}, \mathbf{w})$$以及fuse损失$$\mathcal{L}_{\text{fuse}}(\mathbf{W},\mathbf{w},\mathbf{h})$$的和：
 
-
 $$
 (\mathbf{W},\mathbf{w},\mathbf{h})^{\star}= \text{argmin}(\mathcal{L}{\text{side}}(\mathbf{W}+\mathcal{L}{\text{fuse}}(\mathbf{W},\mathbf{w},\mathbf{h}))
 $$
 
-
-#### 1.3.2 测试
+**1.3.2 测试**
 
 给定一张图片$$X$$，HED预测$$M$$个side branch和一个fuse layer：
 
@@ -169,13 +163,11 @@ $$
 
 HED的输出是所以side branch和fuse layer的均值:
 
-
 $$
 \hat{Y}_{\text{HED}} = \text{Average}(\hat{Y}_{\text{fuse}}, \hat{Y}_{\text{side}}^{(1)}, ..., \hat{Y}_{\text{side}}^{(1)})
 $$
 
-
-## 总结
+### 总结
 
 我是在研究EAST的时候读到的这篇论文，EAST算法的核心之一是使用语义分割构建损失函数，而其语义分割的标签便是由类似HED的结构得到的。
 
