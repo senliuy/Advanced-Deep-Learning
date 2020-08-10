@@ -62,6 +62,7 @@
     * [Deep TextSpotter: An End-to-End Trainable Scene Text Localization and Recognition Framework](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie/duan-dao-duan-wen-zi-jian-ce-yu-shi-bie/deep-textspotter-an-end-to-end-trainable-scene-text-localization-and-recognition-framework.md)
   * [实例解析：字符验证码破解](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie/shi-li-jie-xi-ff1a-yan-zheng-ma-po-jie.md)
   * [二维信息识别](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie/er-wei-xin-xi-shi-bie/README.md)
+    * [基于Seq2Seq的公式识别引擎](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie/er-wei-xin-xi-shi-bie/ji-yu-seq2seq-de-gong-shi-shi-bie-yin-qing.md)
     * [Show and Tell: A Neural Image Caption Generator](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie/er-wei-xin-xi-shi-bie/show-and-tell-a-neural-image-caption-generator.md)
     * [Show, Attend and Tell: Neural Image Caption Generation with Visual Attention](di-wu-zhang-ff1a-guang-xue-zi-fu-shi-bie/er-wei-xin-xi-shi-bie/show-attend-and-tell-neural-image-caption-generation-with-visual-attention.md)
 * [第六章：语义分割](di-liu-zhang-ff1a-yu-yi-fen-ge/README.md)
